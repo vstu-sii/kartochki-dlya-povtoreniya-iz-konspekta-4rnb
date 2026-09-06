@@ -69,7 +69,7 @@ docker compose -f compose.dev.yml up --build
 
 ## Прод
 
-Прод URL: `ВСТАВИТЬ_ССЫЛКУ_ПОСЛЕ_ДЕПЛОЯ`
+Прод URL: (https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com
 
 Заглушка hello-world, задеплоено по инструкции из `docs/deploy.md`. Delivery вписывает сюда реальную ссылку сразу после деплоя.
 
