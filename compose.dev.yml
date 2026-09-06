@@ -1,0 +1,14 @@
+# Заглушка dev окружения для лабы 1. Собираем hello-world из корневого Dockerfile,
+# чтобы CI и деплой было на чём проверять. Реальный сервис бота и база появятся в лабе 2-3.
+
+services:
+  hello-world:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - APP_ENV=${APP_ENV:-dev}
+
+# TODO лаба 2-3: добавить сервис бота (backend/), сервис базы данных (postgres или sqlite volume)
