@@ -11,4 +11,3 @@ services:
     environment:
       - APP_ENV=${APP_ENV:-dev}
 
-# TODO лаба 2-3: добавить сервис бота (backend/), сервис базы данных (postgres или sqlite volume)
