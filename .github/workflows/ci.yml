@@ -31,9 +31,3 @@ jobs:
 
       - name: Сборка образа из Dockerfile
         run: docker build -t sii-lab1-hello-world .
-
-      # TODO лаба 2-3: как появится код в backend/, добавить сюда шаги
-      # - установка зависимостей
-      # - lint (ruff/eslint смотря на чём пишем)
-      # - unit тесты из tests/
-      # - прогон evals из tests/evals/ на data/golden
