@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Проверка что нужные доки на месте
+        run: |
+          test -f docs/prd.md
+          test -f docs/hypotheses.md
+          test -f docs/glossary.md
+          test -f docs/brief.md
+          test -f docs/research.md
+          test -f docs/model-candidates.md
+          test -f docs/quality/success-criteria.md
+          test -f docs/quality/golden-dataset-plan.md
+          test -f notebooks/lab1_experiments.ipynb
+          echo "структура доков ок"
+
+      - name: Валидация compose файла
+        run: docker compose -f compose.dev.yml config
+
+      - name: Сборка образа из Dockerfile
+        run: docker build -t sii-lab1-hello-world .
+
+      # TODO лаба 2-3: как появится код в backend/, добавить сюда шаги
+      # - установка зависимостей
+      # - lint (ruff/eslint смотря на чём пишем)
+      # - unit тесты из tests/
+      # - прогон evals из tests/evals/ на data/golden
