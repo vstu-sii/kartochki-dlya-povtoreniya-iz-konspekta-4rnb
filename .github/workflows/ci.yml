@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: [main, lab1-delivery-initiation]
+  workflow_dispatch:
 
 jobs:
   lint-and-build:
