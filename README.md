@@ -1,5 +1,7 @@
 # Карточки для устной защиты лабы
 
+[![CI](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/workflows/ci.yml/badge.svg?branch=lab1-delivery-initiation)](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/workflows/ci.yml)
+
 ## Что это
 
 Телеграм бот, которому скидываешь PDF методички или конспект лекции по своей лабораторной работе. Бот вытаскивает из него 5-10 ключевых тезисов и превращает их в вопросы. Дальше ты отвечаешь текстом, а бот сверяет твой ответ с ключевыми моментами и говорит, где ты не прав.
