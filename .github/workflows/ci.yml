@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Проверка артефактов роли
+        env:
+          ROLE_BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          case "$ROLE_BRANCH" in
+            lab1-product-initiation)
+              files=(
+                docs/prd.md
+                docs/hypotheses.md
+                docs/insights.md
+                docs/glossary.md
+                docs/brief.md
+              )
+              ;;
+            lab1-ai-initiation)
+              files=(
+                docs/research.md
+                docs/model-candidates.md
+                docs/experiments/lab1.md
+                notebooks/lab1_experiments.ipynb
+              )
+              ;;
+            lab1-quality-initiation)
+              files=(
+                docs/quality/success-criteria.md
+                docs/quality/golden-dataset-plan.md
+                docs/quality/dod-draft.md
+              )
+              ;;
+            *)
+              files=(README.md compose.dev.yml Dockerfile docs/deploy.md)
+              ;;
+          esac
+
+          for file in "${files[@]}"; do
+            test -f "$file" || { echo "Нет обязательного файла: $file"; exit 1; }
+          done
+
+          echo "Артефакты ветки $ROLE_BRANCH на месте"
+
+      - name: Валидация compose файла
+        run: docker compose -f compose.dev.yml config
+
+      - name: Сборка образа из Dockerfile
+        run: docker build -t sii-lab1-hello-world .
