@@ -14,6 +14,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Lint Markdown and configuration files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          extensions = {".md", ".yml", ".yaml", ".json", ".html"}
+          problems = []
+          for path in Path(".").rglob("*"):
+              if not path.is_file() or ".git" in path.parts or path.suffix.lower() not in extensions:
+                  continue
+              for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                  if "\t" in line:
+                      problems.append(f"{path}:{number}: tab character")
+                  if line != line.rstrip():
+                      problems.append(f"{path}:{number}: trailing whitespace")
+          if problems:
+              raise SystemExit("\n".join(problems))
+          print("Lint passed")
+          PY
+
+      - name: Format check
+        run: |
+          git diff --check
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          for path in Path("notebooks").glob("*.ipynb") if Path("notebooks").exists() else []:
+              json.loads(path.read_text(encoding="utf-8"))
+          print("Formatting and notebook JSON are valid")
+          PY
+
       - name: Проверка артефактов роли
         env:
           ROLE_BRANCH: ${{ github.head_ref || github.ref_name }}
