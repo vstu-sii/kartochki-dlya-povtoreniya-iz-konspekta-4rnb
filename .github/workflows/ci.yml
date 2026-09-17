@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, lab1-delivery-initiation]
+  workflow_dispatch:
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown and configuration files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          extensions = {".md", ".yml", ".yaml", ".json", ".html"}
+          problems = []
+          for path in Path(".").rglob("*"):
+              if not path.is_file() or ".git" in path.parts or path.suffix.lower() not in extensions:
+                  continue
+              for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+                  if "\t" in line:
+                      problems.append(f"{path}:{number}: tab character")
+                  if line != line.rstrip():
+                      problems.append(f"{path}:{number}: trailing whitespace")
+          if problems:
+              raise SystemExit("\n".join(problems))
+          print("Lint passed")
+          PY
+
+      - name: Format check
+        run: |
+          git diff --check
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          for path in Path("notebooks").glob("*.ipynb") if Path("notebooks").exists() else []:
+              json.loads(path.read_text(encoding="utf-8"))
+          print("Formatting and notebook JSON are valid")
+          PY
+
+      - name: Проверка артефактов роли
+        env:
+          ROLE_BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          case "$ROLE_BRANCH" in
+            lab1-product-initiation)
+              files=(
+                docs/prd.md
+                docs/hypotheses.md
+                docs/insights.md
+                docs/glossary.md
+                docs/brief.md
+              )
+              ;;
+            lab1-ai-initiation)
+              files=(
+                docs/research.md
+                docs/model-candidates.md
+                docs/experiments/lab1.md
+                notebooks/lab1_experiments.ipynb
+              )
+              ;;
+            lab1-quality-initiation)
+              files=(
+                docs/quality/success-criteria.md
+                docs/quality/golden-dataset-plan.md
+                docs/quality/dod-draft.md
+              )
+              ;;
+            *)
+              files=(README.md compose.dev.yml Dockerfile docs/deploy.md)
+              ;;
+          esac
+
+          for file in "${files[@]}"; do
+            test -f "$file" || { echo "Нет обязательного файла: $file"; exit 1; }
+          done
+
+          echo "Артефакты ветки $ROLE_BRANCH на месте"
+
+      - name: Валидация compose файла
+        run: docker compose -f compose.dev.yml config
+
+      - name: Сборка образа из Dockerfile
+        run: docker build -t sii-lab1-hello-world .
