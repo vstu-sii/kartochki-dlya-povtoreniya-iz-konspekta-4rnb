@@ -1,5 +1,5 @@
-# ml
+# ML / AI Service
 
-Пустышка до лабы 3. Сюда переедет всё что не просто вызов LLM API через промпт, например свои скрипты оценки качества извлечения тезисов, фичи для ранжирования вопросов и подобное.
+`app.py` — health-only сервис AI для compose-скелета лабораторной 2. Контракт реализации: `api/openapi.yaml`; пайплайн: `docs/ai-pipeline.md`; спайки: `notebooks/lab2_spikes.ipynb`.
 
-В лабе 1 вся логика работы с моделью это эксперименты в `notebooks/lab1_experiments.ipynb` и выводы в `docs/research.md`.
+В лабораторной 3 здесь появятся provider gateway, промпты, schema/grounding validators и eval runner. Текущий сервис не вызывает внешний API.

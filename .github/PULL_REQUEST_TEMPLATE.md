@@ -1,7 +1,7 @@
 ## Роль
 
 <!-- Product / VO, AI Engineer, Delivery, Quality & Safety -->
-<!-- Проверь что ветка и заголовок PR совпадают с таблицей в README, раздел "Ветки и PR" -->
+<!-- Ветка: lab2-[role]-design · Заголовок: Lab2: [Role] — Design Deliverables -->
 
 ## Что сделано в этой лабе
 

@@ -1,5 +1,5 @@
-# backend
+# Backend
 
-Сюда переедет реальный код бота/API, когда дойдём до лабы 2-3.
+Health-only HTTP-сервис для трёх контейнеров compose: `telegram-adapter`, `app-api`, `data-service`. Имя задаётся `SERVICE_NAME`; `GET /health` используется health check.
 
-В лабе 1 тут пусто, hello-world живёт через корневой `Dockerfile` и `compose.dev.yml`. Возможно бот в итоге будет тонким клиентом к API отсюда, решаем это в лабе 2.
+Назначение в лабораторной 2 — проверить границы C4, сети и параллельную работу ролей. Handlers прикладного API и интеграция с Telegram добавляются в лабораторной 3.

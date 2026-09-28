@@ -1,5 +1,9 @@
 # tests
 
-Пустышка. Автоматические evals на golden dataset появятся с лабы 3, тогда сюда добавятся `tests/evals/` и обычные unit тесты для backend.
+В лабораторной 2 dependency-free тесты проверяют комплектность, воспроизводимость notebook, архитектурные границы, число и формат golden cases, SQL/compose и наличие скриншота.
 
-В лабе 1 CI только проверяет что нужные документы на месте и что `compose.dev.yml` валиден, смотри `.github/workflows/ci.yml`.
+```bash
+python -m unittest discover -s tests -p "test_lab2*.py" -v
+```
+
+С лабораторной 3 добавляются unit/contract/integration tests и mini-eval реального pipeline.

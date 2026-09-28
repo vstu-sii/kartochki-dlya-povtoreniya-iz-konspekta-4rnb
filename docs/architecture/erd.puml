@@ -1,0 +1,90 @@
+@startuml
+hide circle
+skinparam linetype ortho
+title ERD — Карточки для устной защиты
+
+entity app_users {
+  * id : uuid <<PK>>
+  --
+  telegram_user_id : bigint <<UQ>>
+  created_at : timestamptz
+}
+
+entity documents {
+  * id : uuid <<PK>>
+  --
+  user_id : uuid <<FK>>
+  sha256 : char(64)
+  page_count : int
+  estimated_tokens : int
+  extracted_text : text (TTL 24h)
+  page_map : jsonb (TTL 24h)
+}
+
+entity card_sets {
+  * id : uuid <<PK>>
+  --
+  document_id : uuid <<FK>>
+  model : varchar
+  prompt_version : varchar
+  fallback_used : boolean
+  estimated_cost_usd : numeric
+}
+
+entity cards {
+  * id : uuid <<PK>>
+  --
+  card_set_id : uuid <<FK>>
+  position : smallint
+  question : varchar
+  reference_answer : varchar
+  source_page : int
+  source_quote : varchar
+}
+
+entity study_sessions {
+  * id : uuid <<PK>>
+  --
+  user_id : uuid <<FK>>
+  card_set_id : uuid <<FK>>
+  status : varchar
+  current_position : smallint
+  expires_at : timestamptz
+}
+
+entity answer_attempts {
+  * id : uuid <<PK>>
+  --
+  session_id : uuid <<FK>>
+  card_id : uuid <<FK>>
+  verdict : varchar
+  score : smallint
+  feedback : varchar
+}
+
+entity card_ratings {
+  * session_id : uuid <<PK,FK>>
+  * card_id : uuid <<PK,FK>>
+  --
+  useful : boolean
+}
+
+entity ai_call_metrics {
+  * trace_id : varchar <<PK>>
+  --
+  operation : varchar
+  model : varchar
+  latency_ms : int
+  estimated_cost_usd : numeric
+}
+
+app_users ||--o{ documents
+documents ||--o| card_sets
+card_sets ||--|{ cards
+app_users ||--o{ study_sessions
+card_sets ||--o{ study_sessions
+study_sessions ||--o{ answer_attempts
+cards ||--o{ answer_attempts
+study_sessions ||--o{ card_ratings
+cards ||--o{ card_ratings
+@enduml

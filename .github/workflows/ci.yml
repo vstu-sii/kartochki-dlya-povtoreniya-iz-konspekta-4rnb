@@ -1,4 +1,4 @@
-name: CI
+name: Lab 2 CI
 
 on:
   pull_request:
@@ -7,27 +7,26 @@ on:
     branches: [main]
 
 jobs:
-  lint-and-build:
+  validate-design-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Проверка что нужные доки на месте
+      - name: Проверка артефактов и notebook
         run: |
-          test -f docs/prd.md
-          test -f docs/hypotheses.md
-          test -f docs/glossary.md
-          test -f docs/brief.md
-          test -f docs/research.md
-          test -f docs/model-candidates.md
-          test -f docs/quality/success-criteria.md
-          test -f docs/quality/golden-dataset-plan.md
-          test -f notebooks/lab1_experiments.ipynb
-          echo "структура доков ок"
+          python -m unittest discover -s tests -p "test_lab2*.py" -v
+
+      - name: Setup Node for aact
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Проверка C4 через aact
+        run: npx --yes aact@beta check
 
       - name: Валидация compose файла
         run: docker compose -f compose.dev.yml config
 
-      - name: Сборка образа из Dockerfile
-        run: docker build -t sii-lab1-hello-world .
+      - name: Сборка compose-скелета
+        run: docker compose -f compose.dev.yml build
