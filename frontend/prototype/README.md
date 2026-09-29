@@ -8,4 +8,4 @@
 python -m http.server 8080 --directory frontend/prototype
 ```
 
-Скриншот: `screenshots/key-screens.png` (обновлён 2026-09-28 после проживания UC).
+Скриншот: `screenshots/key-screens.png`
