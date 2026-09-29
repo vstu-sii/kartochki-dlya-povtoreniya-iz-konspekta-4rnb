@@ -1,6 +1,5 @@
 # Проверка aact — лабораторная 2
 
-**Дата:** 2026-09-29
 **Источник диаграммы:** `docs/architecture/c4-container.puml`  
 **Конфиг:** `aact.config.ts`
 
