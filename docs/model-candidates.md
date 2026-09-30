@@ -66,7 +66,7 @@
 - GigaChat ограничения: https://developers.sber.ru/docs/ru/gigachat/limitations
 - Groq rate limits: https://console.groq.com/docs/rate-limits
 
-## Решение лаборатории 2: основная модель и цена решения
+## Решение лабораторной работы 2: основная модель и цена решения
 
 ### Почему выбран Gemini 3.8 Flash
 
