@@ -27,8 +27,8 @@ control "PDF extractor" as PDF
 control "Context guard" as Guard
 control "Prompt builder" as Prompt
 control "Model gateway" as Gateway
-cloud "Gemini 3.8 Flash\nprimary" as Primary
-cloud "Gemini 3.5 Flash-Lite\nfallback" as Fallback
+participant "Gemini 3.8 Flash\nprimary" as Primary
+participant "Gemini 3.5 Flash-Lite\nfallback" as Fallback
 control "Schema validator" as Schema
 control "Grounding checks" as Ground
 database "Session store" as Store
