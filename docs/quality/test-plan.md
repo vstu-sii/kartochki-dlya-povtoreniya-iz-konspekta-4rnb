@@ -13,7 +13,7 @@
 | Database | constraints, FK/cascade, миграция с нуля, TTL job, изоляция user_id | временный PostgreSQL | каждый PR |
 | Integration | Telegram Adapter → Application API → mock AI/Data | compose, provider mock | каждый PR |
 | AI eval mini | 8 фиксированных кейсов: 4 generation, 2 review, 2 safety | runner поверх JSONL, замороженные model/prompt | каждый PR после лабы 3 |
-| AI eval full | все 36+ кейсов, три прогона, разрез primary/fallback | выбранный eval tool | nightly и перед релизом |
+| AI eval full | все 120+ кейсов, метрика по уникальным кейсам и три прогона для проверки вариативности, разрез primary/fallback | выбранный eval tool | nightly и перед релизом |
 | Security | prompt injection, oversized input, output escaping, secret/log leak, IDOR | pytest + attack fixtures | каждый PR (дешёвые), полный в лабе 4 |
 | Performance | p50/p95 generation/review, concurrency, timeout/fallback | k6/Locust | перед релизом |
 | Manual UC | пять сценариев без подсказок | человек не из команды | конец спринта |
@@ -38,7 +38,7 @@
 - стоимость полной сессии ≤$0.04;
 - 0 утечек секретов/чужих сессий в security tests.
 
-Порог качества подтверждается baseline, а не объявляется фактом заранее. До реального запуска значения являются критериями приёмки.
+Порог качества подтверждается baseline, а не объявляется фактом заранее. До реального запуска значения являются критериями приёмки. Для offline-метрик используются соответствующие поднаборы: `GEN` — schema/grounding, `REV` — непротиворечивость разбора, `SAFE` — защитные отказы. Пользовательская полезность подтверждается telemetry реальных оценок, а не десятью UX-фикстурами.
 
 ## CI с лабораторной 3
 

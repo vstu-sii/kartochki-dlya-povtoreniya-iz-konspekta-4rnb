@@ -34,7 +34,7 @@
 
 - [x] Этот DoD покрывает каждый артефакт проверяемыми критериями.
 - [x] DoD согласован Product и всей командой — `docs/team-sync-lab2.md`.
-- [x] `docs/quality/golden-dataset/dataset.jsonl`: 36 пар, покрытие UC-01…UC-05, краевые и security-кейсы.
+- [x] `docs/quality/golden-dataset/dataset.jsonl`: 120 пар, покрытие UC-01…UC-05, краевые и security-кейсы; поднаборы имеют заявленный минимальный объём.
 - [x] `docs/quality/golden-dataset/README.md`: происхождение, формат, владелец, версия, процесс изменения.
 - [x] `docs/quality/test-plan.md`: unit, contract, integration, eval, security, нагрузка и CI-план.
 - [x] `docs/quality/threat-model.md`: точки недоверенного ввода, OWASP LLM Top 10, права модели, атаки лабы 4.
