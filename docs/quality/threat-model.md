@@ -1,6 +1,6 @@
 # Threat model: карточки из PDF
 
-**Версия:** 1.0 · 2026-09-28  
+**Версия:** 1.1 · 2026-10-01  
 **Метод:** OWASP Top 10 for LLM Applications 2025 + анализ потоков C4.  
 **Источник:** [OWASP GenAI — LLM Top 10](https://genai.owasp.org/llm-top-10/).
 
@@ -8,19 +8,23 @@
 
 Активы: Telegram user id, PDF/извлечённый текст, ответы студента, карточки, API-ключ Gemini, system prompt, метрики стоимости, БД. Границы: Telegram ↔ Adapter, внутренние HTTP-контейнеры, AI Service ↔ Gemini, Data Service ↔ PostgreSQL.
 
-## Точки входа недоверенного текста
+## Матрица точек входа недоверенного текста
 
-1. имя и бинарное содержимое PDF;
-2. извлечённый текст, метаданные и скрытые инструкции PDF;
-3. текстовый ответ студента;
-4. Telegram message/callback payload;
-5. ответ LLM до schema/grounding validation;
-6. значения заголовков `X-Request-ID` и `Idempotency-Key`;
-7. golden dataset и будущие prompt-файлы из PR.
+Для каждой точки отдельно указано, что разрешено модели и какое окончательное решение остаётся за обычным кодом. Модель никогда не является субъектом авторизации и не выполняет побочные эффекты.
 
-## Права модели
+| № | Точка входа и возможный вред | Права модели именно для этой точки | Что решает код | Проверка |
+|---|---|---|---|---|
+| 1 | Имя и бинарное содержимое PDF: подмена типа, PDF/ZIP bomb, parser exploit | Модель не получает имя файла и бинарные байты; она не может открыть файл или выбрать парсер | Код проверяет MIME и magic bytes, лимиты 20 МБ/40 страниц/времени, запускает изолированный парсер и отклоняет файл до вызова модели | повреждённый PDF, неверный MIME, превышение размера и таймаут парсера |
+| 2 | Извлечённый текст, метаданные и скрытые инструкции PDF: prompt injection и ложное grounding | Модель получает только ограниченный фрагмент как данные и может предложить JSON `CardSet`; tools, сеть, БД и изменение system prompt запрещены | Код отделяет system prompt от данных, ограничивает токены, проверяет строгую схему, `source_page`/`source_quote` и отклоняет неподтверждённые карточки | SAFE-003, скрытая инструкция и ссылка на несуществующую страницу |
+| 3 | Текстовый ответ студента: injection, чрезмерная длина, попытка изменить оценку или чужую сессию | Модель видит один нормализованный ответ и эталон текущей карточки и может вернуть только `AnswerReview`; она не выбирает пользователя, сессию или запись в БД | Код проверяет ownership по Telegram user id, лимит 2000 символов, текущую карточку, schema/policy gate и только затем сохраняет результат | IDOR двумя пользователями, длинный ответ, prompt injection в ответе |
+| 4 | Telegram message/callback payload: подмена команды, callback id или пользователя | Модель не получает сырой Telegram update, token и callback; ей передаётся только разрешённый текст для конкретной операции | Adapter проверяет тип update, chat/user id, allowlist команд и соответствие callback активной сессии; Application API выполняет rate limit и авторизацию | подмена callback, неизвестная команда, повтор старого callback и чужой user id |
+| 5 | Ответ LLM до schema/grounding validation: лишние поля, HTML, команды и неверные цитаты | Модель может только предложить JSON; её вывод не имеет права исполняться, отправляться пользователю или записываться в БД самостоятельно | Код применяет strict schema, лимиты, allowlist значений, grounding, Telegram escaping и policy gate; при ошибке выполняет fallback либо безопасный отказ | malformed JSON, лишние поля, `<script>`, неверная цитата и неизвестный verdict |
+| 6 | Значения `X-Request-ID` и `Idempotency-Key`: log injection, коллизия и replay чужой операции | Модель вообще не получает эти заголовки и не может создавать, изменять или интерпретировать ключи | Код проверяет формат/длину/набор символов, при необходимости создаёт request id сам, связывает idempotency key с user id и типом операции, хранит результат с TTL и возвращает прежний ответ только тому же владельцу | CR/LF в заголовке, слишком длинное значение, повтор тем же и другим пользователем, параллельные повторы |
+| 7 | Golden dataset и будущие prompt-файлы из PR: poisoning тестов или подмена системных правил | Модель не может изменять, принимать или сливать файлы из PR; текст golden dataset используется только как тестовые данные, а prompt загружается только в выбранной кодом версии | Loader/CI проверяет JSONL-схему, уникальные id, provenance, объём и допустимые поля; код не исполняет строки dataset как инструкции. Prompt loader принимает только фиксированный путь и версию, а изменение проходит human review | невалидный JSONL, дубликат id, отсутствующий provenance, инструкция внутри expected_answer и подмена пути prompt |
 
-Модель может только вернуть JSON `CardSet` или `AnswerReview`. Она не имеет сетевых tools, shell, файловой системы, БД, Telegram token, возможности отправить сообщение или изменить prompt. Все действия выполняет код после schema, grounding, ownership и limit checks.
+## Общие права модели
+
+Модель может вернуть только JSON `CardSet` или `AnswerReview` в пределах строки соответствующей точки входа. У неё нет сетевых tools, shell, файловой системы, БД, Telegram token и права выполнять отправку, запись или авторизацию. Окончательное решение всегда принимает код после перечисленных проверок.
 
 ## OWASP LLM Top 10 применительно к продукту
 
@@ -43,11 +47,13 @@
 |---|---|---|---|
 | Чтение чужой сессии через подмену id | средняя / высокий | каждый запрос связывает resource с Telegram user id | IDOR-тест двумя пользователями |
 | Zip/PDF bomb или parser exploit | средняя / высокий | MIME+magic bytes, size/page/time limits, sandbox parser, обновления | corpus повреждённых PDF |
-| Prompt injection в PDF | высокая / средний | нет tools, boundary prompt, grounding | SAFE-003 и набор атак лабы 4 |
+| Prompt injection в PDF | высокая / средний | нет tools, boundary prompt, grounding | SAFE-003 и набор атак лабораторной 4 |
 | Утечка API key | низкая / критический | env/secret store, redact headers, secret scanning | canary secret в лог-тесте |
 | XSS/Markdown injection в UI/Telegram | средняя / средний | escape output, allowlist formatting, CSP для web prototype | payload `<script>` и markdown links |
 | Перерасход токенов | средняя / средний | quota per user/day, idempotency, max attempts/cost alert | concurrency/retry test |
 | Подмена provider response | низкая / высокий | TLS, schema, expected model id, no dynamic base URL in user input | mock malformed/unknown model |
+| Подмена idempotency/request headers | средняя / средний | валидация, привязка ключа к владельцу и операции, TTL | replay и concurrent duplicate для двух пользователей |
+| Poisoning dataset или prompt через PR | низкая / высокий | schema/provenance checks, фиксированный prompt path/version, human review | вредоносная строка dataset и подмена prompt path |
 
 ## Регулятор одной строкой
 
@@ -64,8 +70,9 @@
 7. malformed JSON, лишние поля, неверная страница/цитата от модели;
 8. timeout/429/5xx primary и полный outage провайдера;
 9. canary-секреты и персональные данные в логах;
-10. dependency/container scan и фиксация digest/tag.
+10. poisoning golden dataset и подмена версии prompt-файла из PR;
+11. dependency/container scan и фиксация digest/tag.
 
 ## Критерий приёмки
 
-Critical/high сценарии не приводят к чтению чужих данных, исполнению model output, утечке секрета или неконтролируемому расходу. Найденная уязвимость имеет владельца, срок и regression test.
+Для каждой из семи точек входа явно указаны права модели, решение кода и проверка. Critical/high сценарии не приводят к чтению чужих данных, исполнению model output, утечке секрета или неконтролируемому расходу. Найденная уязвимость имеет владельца, срок и regression test.
