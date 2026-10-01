@@ -1,0 +1,30 @@
+@startuml C4_Container
+!include <C4/C4_Container>
+
+title C4 Container — Карточки для устной защиты
+
+AddElementTag("acl", $bgColor="#E8F0FE", $borderColor="#1A73E8", $legendText="Anti-corruption layer")
+AddElementTag("repo", $bgColor="#E6F4EA", $borderColor="#188038", $legendText="Data owner")
+
+Person(student, "Студент", "Пользователь Telegram")
+System_Ext(telegram, "Telegram", "Bot API")
+System_Ext(gemini, "Gemini API", "LLM provider")
+
+System_Boundary(cards_system, "Карточки для устной защиты") {
+  Container(telegram_adapter, "Telegram Adapter", "Python", "Преобразует Telegram updates в команды приложения", $tags="acl")
+  Container(app_api, "Application API", "Python / HTTP", "Оркестрирует use cases, лимиты и idempotency")
+  Container(ai_service, "AI Service", "Python / HTTP", "Промпты, primary/fallback, schema и grounding validation", $tags="acl")
+  Container(data_service, "Data Service", "Python / HTTP", "Единственный CRUD-владелец данных и TTL очистки", $tags="repo")
+  ContainerDb(postgres, "PostgreSQL", "PostgreSQL 16", "Документы, карточки, сессии, ответы и оценки")
+}
+
+Rel(student, telegram_adapter, "Использует бота через клиент Telegram", "Telegram UI")
+Rel(telegram, telegram_adapter, "Доставляет updates и принимает ответы", "HTTPS/Webhook")
+Rel(telegram_adapter, app_api, "Команды и DTO", "JSON/HTTP")
+Rel(app_api, ai_service, "Генерация карточек и проверка ответа", "OpenAPI JSON/HTTP")
+Rel(app_api, data_service, "Создаёт и читает сессии/карточки", "JSON/HTTP")
+Rel(data_service, postgres, "Читает и записывает мастер-данные", "SQL/TCP")
+Rel(ai_service, gemini, "Structured outputs", "JSON/HTTPS")
+
+SHOW_LEGEND()
+@enduml
