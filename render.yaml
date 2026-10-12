@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: kartochki-dlya-povtoreniya-iz-konspekta
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_PROVIDER
+        value: deterministic
+      - key: GEMINI_API_KEY
+        sync: false

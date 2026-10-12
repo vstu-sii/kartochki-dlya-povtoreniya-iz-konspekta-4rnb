@@ -1,0 +1,83 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cards}
+      POSTGRES_USER: ${POSTGRES_USER:-cards}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cards}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./migrations/001_lab3_prototype.sql:/docker-entrypoint-initdb.d/001_lab3.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cards} -d ${POSTGRES_DB:-cards}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal]
+
+  ai-service:
+    build: ./ml
+    environment:
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-deterministic}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-gemini-3.8-flash}
+      TRACE_FILE: /data/traces.jsonl
+    volumes:
+      - traces:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal, egress]
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-cards}:${POSTGRES_PASSWORD:-cards}@postgres:5432/${POSTGRES_DB:-cards}
+      AI_SERVICE_URL: http://ai-service:8001
+    depends_on:
+      postgres: {condition: service_healthy}
+      ai-service: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal, edge]
+
+  frontend:
+    build: ./frontend/prototype
+    ports: ["8080:80"]
+    depends_on:
+      backend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [edge]
+
+  tracing:
+    build: ./ml/tracing
+    environment:
+      TRACE_FILE: /data/traces.jsonl
+    volumes:
+      - traces:/data:ro
+    ports: ["3000:3000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [edge]
+
+networks:
+  edge:
+  internal:
+    internal: true
+  egress:
+
+volumes:
+  postgres-data:
+  traces:
