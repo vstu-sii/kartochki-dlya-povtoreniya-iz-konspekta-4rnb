@@ -1,0 +1,10 @@
+.env
+.venv*/
+__pycache__/
+*.py[cod]
+*.db
+test_lab3.db
+.pytest_cache/
+artifacts/traces.jsonl
+artifacts/evals/eval-traces.jsonl
+artifacts/*.tmp
