@@ -1,0 +1,21 @@
+name: Lab3 evals
+
+on:
+  pull_request:
+  push:
+    branches: ["lab3-*-prototype"]
+
+jobs:
+  mini-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run deterministic mini eval
+        run: python tests/evals/run_evals.py --mini --fail-below 0.90 --output artifacts/evals/mini-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab3-mini-eval
+          path: artifacts/evals/mini-results.json
