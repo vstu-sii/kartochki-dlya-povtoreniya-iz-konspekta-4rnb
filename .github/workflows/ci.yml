@@ -21,5 +21,7 @@ jobs:
       - run: curl --fail http://localhost:3000/health
       - name: Verify UI gateway, API, model and database
         run: python tests/e2e_compose.py
+      - if: failure()
+        run: docker compose -f compose.yml logs --no-color
       - if: always()
         run: docker compose -f compose.yml down -v

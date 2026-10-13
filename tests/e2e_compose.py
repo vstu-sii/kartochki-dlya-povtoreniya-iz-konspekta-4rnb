@@ -1,6 +1,7 @@
 """Black-box smoke test for the running Compose system."""
 
 import json
+import urllib.error
 import urllib.request
 
 
@@ -14,8 +15,12 @@ def request(path: str, payload: dict | None = None) -> dict:
         data=data,
         headers={"Content-Type": "application/json", "Idempotency-Key": "ci-e2e-lab3"},
     )
-    with urllib.request.urlopen(req, timeout=90) as response:
-        return json.load(response)
+    try:
+        with urllib.request.urlopen(req, timeout=90) as response:
+            return json.load(response)
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"{req.method} {path} returned HTTP {exc.code}: {body}") from exc
 
 
 created = request(
