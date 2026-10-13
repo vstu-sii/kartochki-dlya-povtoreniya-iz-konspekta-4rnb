@@ -11,15 +11,22 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.database import init_db
 from backend.routers.ai import router as ai_router
-from telegram_bot.app import TOKEN as TELEGRAM_BOT_TOKEN
-from telegram_bot.app import process_update, telegram
+try:
+    # The single-container Render image includes the adapter. In local Compose
+    # it runs as its own service, so the backend image intentionally omits it.
+    from telegram_bot.app import TOKEN as TELEGRAM_BOT_TOKEN
+    from telegram_bot.app import process_update, telegram
+except ModuleNotFoundError:  # local multi-container topology
+    TELEGRAM_BOT_TOKEN = ""
+    process_update = None
+    telegram = None
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     init_db()
     public_url = os.getenv("RENDER_EXTERNAL_URL", "").rstrip("/")
-    if TELEGRAM_BOT_TOKEN and public_url:
+    if TELEGRAM_BOT_TOKEN and public_url and telegram:
         secret = hashlib.sha256(TELEGRAM_BOT_TOKEN.encode()).hexdigest()
         await telegram(
             "setWebhook",
@@ -58,7 +65,7 @@ async def telegram_webhook(
     request: Request,
     telegram_secret: str | None = Header(default=None, alias="X-Telegram-Bot-Api-Secret-Token"),
 ):
-    if not TELEGRAM_BOT_TOKEN:
+    if not TELEGRAM_BOT_TOKEN or not process_update:
         raise HTTPException(status_code=404)
     expected = hashlib.sha256(TELEGRAM_BOT_TOKEN.encode()).hexdigest()
     if telegram_secret != expected:
