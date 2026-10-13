@@ -139,7 +139,9 @@ async def poll() -> None:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    task = asyncio.create_task(poll()) if TOKEN else None
+    # Production uses a Telegram webhook registered by backend.main. Local
+    # Compose has no public URL, so the adapter uses long polling instead.
+    task = asyncio.create_task(poll()) if TOKEN and not os.getenv("RENDER_EXTERNAL_URL") else None
     yield
     if task:
         task.cancel()
