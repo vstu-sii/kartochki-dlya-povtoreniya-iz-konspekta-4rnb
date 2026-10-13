@@ -20,6 +20,8 @@ Telegram Adapter входит в тот же Compose. Без токена он �
 бота создайте токен через BotFather и задайте `TELEGRAM_BOT_TOKEN` в локальном
 `.env` или в секретах прод-сервиса. После этого бот принимает PDF до 10 МБ,
 создаёт карточки, показывает источник, проверяет ответы и переключает карточки.
+Оценки «полезно/не полезно» и текущая позиция сохраняются в БД; после `/start`
+бот продолжает последнюю незавершённую сессию.
 Локально адаптер использует long polling; на Render backend автоматически
 регистрирует защищённый webhook на `RENDER_EXTERNAL_URL`, поэтому сервису не
 нужно постоянно опрашивать Telegram.
@@ -48,14 +50,15 @@ docker compose -f compose.yml config --quiet
 | Application API | `backend/` | валидация, async-вызов AI, идемпотентность, сохранение |
 | Baseline | `ml/models/baseline.py` | structured cards/review, retry и fallback |
 | Trace SDK/dashboard | `ml/tracing/` | prompt, response, model, latency и fallback каждого вызова |
-| БД | `backend/models/`, `migrations/` | documents, card sets, cards, reviews |
+| БД | `backend/models/`, `migrations/` | documents, card sets, cards, reviews, study sessions, ratings |
 | Evals | `tests/evals/`, `.github/workflows/evals.yml` | mini/full прогоны и порог CI |
 | Product validation | `docs/use-cases/validation-lab3.md` | E2E, отклонения, задачи и владельцы |
 
 ## Ограничения текущего прототипа
 
 - PDF должен содержать текстовый слой; OCR сканов оставлен на следующий спринт;
-- состояние текущей карточки Telegram хранится в памяти адаптера и сбрасывается при его перезапуске, при этом созданные карточки и проверки остаются в БД;
+- история изменений оценки не хранится: повторная оценка заменяет текущее значение;
+- автоматическое удаление учебных сессий через 30 дней оставлено на следующий спринт;
 - локальный baseline имеет 69,05% agreement review и не выдаётся за качество Gemini;
 - `render.yaml` обновляет существующий Render-сервис, а не создаёт новый продукт.
 
