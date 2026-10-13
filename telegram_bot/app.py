@@ -14,7 +14,7 @@ from fastapi import FastAPI
 
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
-BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000").rstrip("/")
+BACKEND_URL = (os.getenv("BACKEND_URL") or os.getenv("RENDER_EXTERNAL_URL") or "http://backend:8000").rstrip("/")
 TELEGRAM_API = f"https://api.telegram.org/bot{TOKEN}" if TOKEN else ""
 TELEGRAM_FILE_API = f"https://api.telegram.org/file/bot{TOKEN}" if TOKEN else ""
 sessions: dict[int, dict] = {}
@@ -38,7 +38,15 @@ async def send(chat_id: int, text: str, reply_markup: dict | None = None) -> Non
 
 
 def keyboard() -> dict:
-    return {"inline_keyboard": [[{"text": "Следующая карточка", "callback_data": "next"}]]}
+    return {
+        "inline_keyboard": [
+            [
+                {"text": "👍 Полезно", "callback_data": "rate:useful"},
+                {"text": "👎 Не полезно", "callback_data": "rate:not_useful"},
+            ],
+            [{"text": "Следующая карточка", "callback_data": "next"}],
+        ]
+    }
 
 
 async def show_card(chat_id: int) -> None:
@@ -67,7 +75,19 @@ async def create_from_pdf(chat_id: int, document: dict) -> None:
         )
         response.raise_for_status()
         result = response.json()
-    sessions[chat_id] = {"cards": result["cards"], "index": 0, "awaiting_answer": False}
+        session_response = await client.post(
+            f"{BACKEND_URL}/v1/ai/sessions",
+            json={"card_set_id": result["card_set_id"], "user_id": f"telegram:{chat_id}"},
+        )
+        session_response.raise_for_status()
+        persisted = session_response.json()
+    sessions[chat_id] = {
+        "session_id": persisted["session_id"],
+        "cards": persisted["cards"],
+        "index": persisted["current_position"],
+        "ratings": persisted.get("ratings", {}),
+        "awaiting_answer": False,
+    }
     await send(chat_id, f"Готово: {len(result['cards'])} карточек. Результат сохранён в БД.")
     await show_card(chat_id)
 
@@ -78,7 +98,7 @@ async def review_answer(chat_id: int, text: str) -> None:
     async with httpx.AsyncClient(timeout=70.0) as client:
         response = await client.post(
             f"{BACKEND_URL}/v1/ai/answer-reviews",
-            json={"session_id": f"tg_{chat_id}", "card": card, "student_answer": text},
+            json={"session_id": state["session_id"], "card": card, "student_answer": text},
         )
         response.raise_for_status()
         result = response.json()
@@ -91,10 +111,30 @@ async def process_update(update: dict) -> None:
     if callback := update.get("callback_query"):
         chat_id = callback["message"]["chat"]["id"]
         await telegram("answerCallbackQuery", {"callback_query_id": callback["id"]})
-        if callback.get("data") == "next" and chat_id in sessions:
+        action = callback.get("data", "")
+        if action == "next" and chat_id in sessions:
             state = sessions[chat_id]
-            state["index"] = (state["index"] + 1) % len(state["cards"])
+            next_position = state["index"] + 1
+            async with httpx.AsyncClient(timeout=20.0) as client:
+                response = await client.patch(
+                    f"{BACKEND_URL}/v1/ai/sessions/{state['session_id']}/progress",
+                    json={"current_position": next_position},
+                )
+                response.raise_for_status()
+            state["index"] = next_position % len(state["cards"])
             await show_card(chat_id)
+        elif action.startswith("rate:") and chat_id in sessions:
+            state = sessions[chat_id]
+            card = state["cards"][state["index"]]
+            value = action.split(":", 1)[1]
+            async with httpx.AsyncClient(timeout=20.0) as client:
+                response = await client.put(
+                    f"{BACKEND_URL}/v1/ai/sessions/{state['session_id']}/ratings/{card['card_id']}",
+                    json={"value": value},
+                )
+                response.raise_for_status()
+            state.setdefault("ratings", {})[card["card_id"]] = value
+            await send(chat_id, "Оценка сохранена: полезно." if value == "useful" else "Оценка сохранена: не полезно.", keyboard())
         return
 
     message = update.get("message") or {}
@@ -103,7 +143,21 @@ async def process_update(update: dict) -> None:
         return
     text = (message.get("text") or "").strip()
     if text in {"/start", "/help"}:
-        await send(chat_id, "Пришлите одну PDF-методичку. Я создам 5 карточек, покажу источники и проверю ответы.")
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            response = await client.get(f"{BACKEND_URL}/v1/ai/sessions/resume", params={"user_id": f"telegram:{chat_id}"})
+        if response.status_code == 200:
+            persisted = response.json()
+            sessions[chat_id] = {
+                "session_id": persisted["session_id"],
+                "cards": persisted["cards"],
+                "index": min(persisted["current_position"], len(persisted["cards"]) - 1),
+                "ratings": persisted.get("ratings", {}),
+                "awaiting_answer": False,
+            }
+            await send(chat_id, "Продолжаем сохранённую сессию с последней карточки.")
+            await show_card(chat_id)
+        else:
+            await send(chat_id, "Пришлите одну PDF-методичку. Я создам 5 карточек, покажу источники и проверю ответы.")
     elif document := message.get("document"):
         if document.get("mime_type") != "application/pdf":
             await send(chat_id, "Нужен файл PDF.")

@@ -17,21 +17,23 @@
       <label for="material"><b>Текст методички</b></label>
       <textarea id="material">Кэш процессора — быстрая память между процессором и оперативной памятью. Промах кэша происходит, когда нужных данных нет и процессор обращается к оперативной памяти.</textarea>
       <div class="buttons"><button id="generate">Создать карточки</button></div>
-      <div id="status" class="status">Ограничение MVP: текстовый слой PDF вставляется вручную; загрузчик PDF — задача Delivery-14.</div>
+      <div id="status" class="status">В браузере вставьте текст PDF. В Telegram-боте PDF можно отправить файлом.</div>
     </div>
     <div id="result" class="bubble hidden">
       <b id="question"></b>
       <div id="source" class="card-meta"></div>
       <div class="answer"><input id="studentAnswer" maxlength="2000" placeholder="Ответ своими словами"><button id="check">Проверить</button></div>
       <div id="review" class="status"></div>
-      <div class="buttons"><button id="next" class="secondary">Следующая</button></div>
+      <div class="buttons"><button id="useful">👍 Полезно</button><button id="notUseful" class="secondary">👎 Не полезно</button><button id="next" class="secondary">Следующая</button></div>
     </div>
   </section>
 </main>
 <script>
-  const state={cards:[],index:0};
+  const state={cards:[],index:0,sessionId:null,ratings:{}};
   const $=id=>document.getElementById(id);
   const api=location.port==='8080'?'/api':'';
+  const userId=localStorage.getItem('lab3-user-id')||`web_${crypto.randomUUID().replaceAll('-','')}`;
+  localStorage.setItem('lab3-user-id',userId);
   $('generate').onclick=async()=>{
     const text=$('material').value.trim();
     if(text.length<10){showError('Добавь хотя бы 10 символов текста.');return}
@@ -39,19 +41,27 @@
     try{
       const res=await fetch(`${api}/v1/ai/card-sets`,{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID()+crypto.randomUUID()},body:JSON.stringify({document_id:'doc_'+crypto.randomUUID().replaceAll('-','').slice(0,20),language:'ru',pages:[{page:1,text}],requested_card_count:5})});
       const data=await res.json(); if(!res.ok)throw new Error(data.detail?.message||JSON.stringify(data.detail||data));
-      state.cards=data.cards;state.index=0;$('result').classList.remove('hidden');renderCard();
+      const sessionRes=await fetch(`${api}/v1/ai/sessions`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({card_set_id:data.card_set_id,user_id:userId})});
+      const session=await sessionRes.json();if(!sessionRes.ok)throw new Error(JSON.stringify(session.detail||session));
+      applySession(session);localStorage.setItem('lab3-session-id',state.sessionId);
       $('status').textContent=`Готово: ${data.cards.length} карточек · ${data.model} · ${data.latency_ms} ms · результат сохранён в БД`;
     }catch(error){showError(`Не удалось создать карточки: ${error.message}`)}finally{loading(false)}
   };
   $('check').onclick=async()=>{
     const card=state.cards[state.index],answer=$('studentAnswer').value.trim();if(!answer){$('review').textContent='Сначала введи ответ.';return}
     $('check').disabled=true;$('review').textContent='Проверяем ответ…';
-    try{const res=await fetch(`${api}/v1/ai/answer-reviews`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:'session_demo',card,student_answer:answer})});const data=await res.json();if(!res.ok)throw new Error(JSON.stringify(data.detail||data));$('review').textContent=`${data.verdict}: ${data.feedback} Пропущено: ${(data.missing_points||[]).join(', ')||'—'}`;}catch(error){$('review').textContent=`Ошибка: ${error.message}`}finally{$('check').disabled=false}
+    try{const res=await fetch(`${api}/v1/ai/answer-reviews`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:state.sessionId,card,student_answer:answer})});const data=await res.json();if(!res.ok)throw new Error(JSON.stringify(data.detail||data));$('review').textContent=`${data.verdict}: ${data.feedback} Пропущено: ${(data.missing_points||[]).join(', ')||'—'}`;}catch(error){$('review').textContent=`Ошибка: ${error.message}`}finally{$('check').disabled=false}
   };
-  $('next').onclick=()=>{state.index=(state.index+1)%state.cards.length;renderCard()};
-  function renderCard(){const card=state.cards[state.index];$('question').textContent=`${state.index+1}/${state.cards.length}. ${card.question}`;$('source').textContent=`Стр. ${card.source_page} · «${card.source_quote}»`;$('studentAnswer').value='';$('review').textContent=''}
+  $('useful').onclick=()=>rate('useful');$('notUseful').onclick=()=>rate('not_useful');
+  $('next').onclick=async()=>{const next=state.index+1;await saveProgress(next);state.index=next>=state.cards.length?0:next;renderCard()};
+  async function rate(value){const card=state.cards[state.index];const res=await fetch(`${api}/v1/ai/sessions/${state.sessionId}/ratings/${card.card_id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({value})});const data=await res.json();if(!res.ok){$('review').textContent=`Ошибка оценки: ${JSON.stringify(data.detail||data)}`;return}state.ratings[card.card_id]=value;renderRating()}
+  async function saveProgress(position){if(!state.sessionId)return;await fetch(`${api}/v1/ai/sessions/${state.sessionId}/progress`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({current_position:position})})}
+  function applySession(session){state.cards=session.cards;state.index=Math.min(session.current_position,Math.max(0,session.cards.length-1));state.sessionId=session.session_id;state.ratings=session.ratings||{};$('result').classList.remove('hidden');renderCard()}
+  function renderRating(){const value=state.ratings[state.cards[state.index].card_id];$('useful').textContent=value==='useful'?'✓ Полезно':'👍 Полезно';$('notUseful').textContent=value==='not_useful'?'✓ Не полезно':'👎 Не полезно'}
+  function renderCard(){const card=state.cards[state.index];$('question').textContent=`${state.index+1}/${state.cards.length}. ${card.question}`;$('source').textContent=`Стр. ${card.source_page} · «${card.source_quote}»`;$('studentAnswer').value='';$('review').textContent='';renderRating()}
   function loading(on,text){$('generate').disabled=on;$('generate').innerHTML=on?'<span class="loader"></span> Подождите':'Создать карточки';if(text)$('status').textContent=text}
   function showError(text){$('status').textContent=text;$('status').classList.add('error')}
+  (async()=>{const id=localStorage.getItem('lab3-session-id');if(!id)return;try{const res=await fetch(`${api}/v1/ai/sessions/${id}`);if(res.ok){applySession(await res.json());$('status').textContent='Продолжили сохранённую сессию с последней карточки.'}}catch(_){/* New session remains available. */}})();
 </script>
 </body>
 </html>

@@ -42,3 +42,28 @@ CREATE TABLE IF NOT EXISTS answer_reviews (
   latency_ms integer NOT NULL DEFAULT 0,
   created_at timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS study_sessions (
+  id varchar(64) PRIMARY KEY,
+  card_set_id varchar(64) NOT NULL REFERENCES card_sets(id) ON DELETE CASCADE,
+  user_id varchar(64) NOT NULL,
+  current_position integer NOT NULL DEFAULT 0 CHECK (current_position >= 0),
+  completed boolean NOT NULL DEFAULT false,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS ix_study_sessions_card_set_id ON study_sessions(card_set_id);
+CREATE INDEX IF NOT EXISTS ix_study_sessions_user_id ON study_sessions(user_id);
+
+CREATE TABLE IF NOT EXISTS card_ratings (
+  id varchar(64) PRIMARY KEY,
+  session_id varchar(64) NOT NULL REFERENCES study_sessions(id) ON DELETE CASCADE,
+  card_id varchar(64) NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+  value varchar(16) NOT NULL CHECK (value IN ('useful', 'not_useful')),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  CONSTRAINT uq_rating_session_card UNIQUE (session_id, card_id)
+);
+
+CREATE INDEX IF NOT EXISTS ix_card_ratings_session_id ON card_ratings(session_id);
+CREATE INDEX IF NOT EXISTS ix_card_ratings_card_id ON card_ratings(card_id);
