@@ -4,7 +4,8 @@
 
 - каркас FastAPI Application API и AI Service;
 - ORM-модели и SQL-миграция;
-- Telegram-подобный web-прототип с loading/error states;
+- настоящий Telegram Adapter с PDF, карточками, ответами и inline-кнопкой;
+- web-прототип для воспроизводимого E2E с loading/error states;
 - Compose-контур из PostgreSQL, backend, AI, frontend и tracing dashboard;
 - deterministic eval runner и GitHub Actions jobs.
 
@@ -20,8 +21,8 @@
 
 ## Найденные ограничения
 
-1. PDF adapter пока заменён вставкой текстового слоя — задача `DELIVERY-14`.
-2. UC-03 и UC-04 имеют dataset и схему, но не завершены в интерфейсе — `DELIVERY-15/16`.
+1. PDF с текстовым слоем обрабатывается в Telegram Adapter; OCR сканов сознательно оставлен на спринт 4.
+2. Создание карточек и проверка ответов доступны через Telegram и браузерный E2E; прогресс Telegram между перезапусками адаптера пока не восстанавливается.
 3. Local review agreement 69,05% — `AI-18`; это отражено в Product-отчёте.
 
 ## Деплой

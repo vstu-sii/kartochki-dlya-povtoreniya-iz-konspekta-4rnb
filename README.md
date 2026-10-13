@@ -15,6 +15,12 @@ docker compose -f compose.yml up --build --wait
 - трассировка prompt/response: http://localhost:3000;
 - health: `docker compose -f compose.yml ps` — все сервисы `healthy`.
 
+Telegram Adapter входит в тот же Compose. Без токена он запускается в безопасном
+режиме ожидания, чтобы проверка проекта не зависела от секретов. Для настоящего
+бота создайте токен через BotFather и задайте `TELEGRAM_BOT_TOKEN` в локальном
+`.env` или в секретах прод-сервиса. После этого бот принимает PDF до 10 МБ,
+создаёт карточки, показывает источник, проверяет ответы и переключает карточки.
+
 Остановка с сохранением БД: `docker compose -f compose.yml down`. Полная очистка демонстрационных данных: `docker compose -f compose.yml down -v`.
 
 Ключ не обязателен: по умолчанию работает deterministic grounded baseline. Для Gemini скопируйте `.env.example` в `.env`, задайте `MODEL_PROVIDER=gemini` и `GEMINI_API_KEY`. `.env` исключён из git.
@@ -34,7 +40,8 @@ docker compose -f compose.yml config --quiet
 
 | Компонент | Путь | Ответственность |
 |---|---|---|
-| Web/Telegram storyboard | `frontend/prototype/` | ввод, loading/error states, карточка и review |
+| Telegram Adapter | `telegram_bot/` | PDF из Telegram, карточки, ответы и кнопки |
+| Web-клиент | `frontend/prototype/` | браузерный E2E, loading/error states, карточка и review |
 | Application API | `backend/` | валидация, async-вызов AI, идемпотентность, сохранение |
 | Baseline | `ml/models/baseline.py` | structured cards/review, retry и fallback |
 | Trace SDK/dashboard | `ml/tracing/` | prompt, response, model, latency и fallback каждого вызова |
@@ -44,9 +51,9 @@ docker compose -f compose.yml config --quiet
 
 ## Ограничения текущего прототипа
 
-- текстовый слой PDF пока вставляется вручную; это записанная задача `DELIVERY-14`;
-- rating/resume ещё не доведены до UI (`DELIVERY-15/16`);
+- PDF должен содержать текстовый слой; OCR сканов оставлен на следующий спринт;
+- состояние текущей карточки Telegram хранится в памяти адаптера и сбрасывается при его перезапуске, при этом созданные карточки и проверки остаются в БД;
 - локальный baseline имеет 69,05% agreement review и не выдаётся за качество Gemini;
-- `render.yaml` готовит обновление существующего Render-сервиса, но публичный URL считается подтверждённым только после фактического переключения ветки в Render.
+- `render.yaml` обновляет существующий Render-сервис, а не создаёт новый продукт.
 
 Правила работы команды: `CONTRIBUTING.md`. Полный отчёт ограничений: `docs/iteration-notes.md`.
