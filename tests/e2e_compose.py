@@ -20,7 +20,7 @@ def request(path: str, payload: dict | None = None) -> dict:
             return json.load(response)
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"{req.method} {path} returned HTTP {exc.code}: {body}") from exc
+        raise RuntimeError(f"{req.get_method()} {path} returned HTTP {exc.code}: {body}") from exc
 
 
 created = request(

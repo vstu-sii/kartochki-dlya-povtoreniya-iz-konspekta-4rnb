@@ -82,6 +82,10 @@ async def generate_card_set(
     if not document:
         document = Document(id=request.document_id, pages=[page.model_dump() for page in request.pages])
         db.add(document)
+        # The ORM does not expose a CardSet.document relationship, so make the
+        # foreign-key ordering explicit for PostgreSQL (SQLite tests do not
+        # enforce this constraint by default).
+        db.flush()
     card_set = CardSet(
         document_id=request.document_id,
         title=result["title"],
