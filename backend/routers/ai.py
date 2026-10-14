@@ -2,8 +2,9 @@
 
 import hashlib
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from io import BytesIO
+from typing import Annotated
 from uuid import uuid4
 
 import httpx
@@ -14,7 +15,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.database import session_scope
-from backend.models import AnswerReview, Card, CardRating, CardSet, Document, StudySession
+from backend.models import AnswerReview, Card, CardRating, CardRatingEvent, CardSet, Document, StudySession
+from backend.quality_guards import validate_model_card, validate_untrusted_input
 
 
 router = APIRouter(prefix="/v1/ai", tags=["AI"])
@@ -58,7 +60,24 @@ class ProgressRequest(BaseModel):
 
 
 class RatingRequest(BaseModel):
-    value: str = Field(pattern=r"^(useful|not_useful)$")
+    value: str = Field(pattern=r"^(useful|not_useful|off_topic)$")
+
+
+class CompleteRequest(BaseModel):
+    answers: list[dict] = Field(default_factory=list, max_length=100)
+
+
+def ensure_session_access(study_session: StudySession | None, user_id: str | None = None) -> StudySession:
+    if not study_session:
+        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+    if user_id and study_session.user_id != user_id:
+        raise HTTPException(status_code=403, detail={"code": "FORBIDDEN"})
+    updated = study_session.updated_at
+    if updated.tzinfo is None:
+        updated = updated.replace(tzinfo=timezone.utc)
+    if updated < datetime.now(timezone.utc) - timedelta(days=30):
+        raise HTTPException(status_code=410, detail={"code": "SESSION_EXPIRED"})
+    return study_session
 
 
 async def call_model(path: str, payload: dict) -> dict:
@@ -92,6 +111,13 @@ async def generate_card_set(
         return serialize_set(existing)
 
     result = await call_model("/v1/model/card-sets", request.model_dump())
+    page_text = {page.page: page.text for page in request.pages}
+    if len(result.get("cards", [])) != request.requested_card_count:
+        raise HTTPException(status_code=502, detail={"code": "MODEL_OUTPUT_INVALID"})
+    for item in result["cards"]:
+        failure = validate_model_card(item, page_text)
+        if failure:
+            raise HTTPException(status_code=failure.status, detail={"code": failure.code})
     document = db.get(Document, request.document_id)
     if not document:
         document = Document(id=request.document_id, pages=[page.model_dump() for page in request.pages])
@@ -130,8 +156,9 @@ async def generate_card_set_from_pdf(
     db: Session = Depends(session_scope),
 ):
     """Extract the text layer from one PDF and run the normal persisted flow."""
-    if file.content_type not in {"application/pdf", "application/octet-stream"}:
-        raise HTTPException(status_code=415, detail={"code": "PDF_REQUIRED"})
+    failure = validate_untrusted_input({"mime_type": file.content_type})
+    if failure:
+        raise HTTPException(status_code=failure.status, detail={"code": failure.code})
     raw = await file.read(10 * 1024 * 1024 + 1)
     if len(raw) > 10 * 1024 * 1024:
         raise HTTPException(status_code=413, detail={"code": "PDF_TOO_LARGE", "max_bytes": 10 * 1024 * 1024})
@@ -219,18 +246,18 @@ def resume_latest_session(user_id: str, db: Session = Depends(session_scope)):
 
 
 @router.get("/sessions/{session_id}")
-def get_session(session_id: str, db: Session = Depends(session_scope)):
-    study_session = db.get(StudySession, session_id)
-    if not study_session:
-        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+def get_session(
+    session_id: str,
+    db: Session = Depends(session_scope),
+    x_user_id: Annotated[str | None, Header(alias="X-User-ID")] = None,
+):
+    study_session = ensure_session_access(db.get(StudySession, session_id), x_user_id)
     return serialize_session(study_session, db.get(CardSet, study_session.card_set_id), db)
 
 
 @router.patch("/sessions/{session_id}/progress")
 def update_session_progress(session_id: str, request: ProgressRequest, db: Session = Depends(session_scope)):
-    study_session = db.get(StudySession, session_id)
-    if not study_session:
-        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+    study_session = ensure_session_access(db.get(StudySession, session_id))
     card_set = db.get(CardSet, study_session.card_set_id)
     card_count = len(card_set.cards)
     study_session.current_position = min(request.current_position, card_count)
@@ -243,12 +270,12 @@ def update_session_progress(session_id: str, request: ProgressRequest, db: Sessi
 
 @router.put("/sessions/{session_id}/ratings/{card_id}")
 def rate_card(session_id: str, card_id: str, request: RatingRequest, db: Session = Depends(session_scope)):
-    study_session = db.get(StudySession, session_id)
+    study_session = ensure_session_access(db.get(StudySession, session_id))
     card = db.get(Card, card_id)
-    if not study_session:
-        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
-    if not card or card.card_set_id != study_session.card_set_id:
-        raise HTTPException(status_code=404, detail={"code": "CARD_NOT_IN_SESSION"})
+    if not card:
+        raise HTTPException(status_code=404, detail={"code": "CARD_NOT_FOUND"})
+    if card.card_set_id != study_session.card_set_id:
+        raise HTTPException(status_code=403, detail={"code": "FORBIDDEN"})
     rating = db.scalars(
         select(CardRating).where(CardRating.session_id == session_id, CardRating.card_id == card_id)
     ).first()
@@ -258,9 +285,32 @@ def rate_card(session_id: str, card_id: str, request: RatingRequest, db: Session
     else:
         rating.value = request.value
         rating.updated_at = datetime.now(timezone.utc)
+    db.add(CardRatingEvent(session_id=session_id, card_id=card_id, value=request.value))
     study_session.updated_at = datetime.now(timezone.utc)
     db.commit()
-    return {"session_id": session_id, "card_id": card_id, "value": rating.value}
+    event_count = len(
+        db.scalars(
+            select(CardRatingEvent).where(
+                CardRatingEvent.session_id == session_id,
+                CardRatingEvent.card_id == card_id,
+            )
+        ).all()
+    )
+    return {"session_id": session_id, "card_id": card_id, "value": rating.value, "event_count": event_count}
+
+
+@router.post("/sessions/{session_id}/complete")
+def complete_session(session_id: str, request: CompleteRequest, db: Session = Depends(session_scope)):
+    study_session = ensure_session_access(db.get(StudySession, session_id))
+    counts = {name: 0 for name in ("correct", "partially_correct", "incorrect", "skipped")}
+    for answer in request.answers:
+        verdict = answer.get("verdict", "skipped")
+        if verdict in counts:
+            counts[verdict] += 1
+    study_session.completed = True
+    study_session.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    return {"session_id": session_id, "status": "completed", "counts": counts}
 
 
 def serialize_set(card_set: CardSet) -> dict:

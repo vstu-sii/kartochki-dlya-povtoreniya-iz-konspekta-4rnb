@@ -60,10 +60,21 @@ CREATE TABLE IF NOT EXISTS card_ratings (
   id varchar(64) PRIMARY KEY,
   session_id varchar(64) NOT NULL REFERENCES study_sessions(id) ON DELETE CASCADE,
   card_id varchar(64) NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
-  value varchar(16) NOT NULL CHECK (value IN ('useful', 'not_useful')),
+  value varchar(16) NOT NULL CHECK (value IN ('useful', 'not_useful', 'off_topic')),
   updated_at timestamptz NOT NULL DEFAULT now(),
   CONSTRAINT uq_rating_session_card UNIQUE (session_id, card_id)
 );
 
 CREATE INDEX IF NOT EXISTS ix_card_ratings_session_id ON card_ratings(session_id);
 CREATE INDEX IF NOT EXISTS ix_card_ratings_card_id ON card_ratings(card_id);
+
+CREATE TABLE IF NOT EXISTS card_rating_events (
+  id varchar(64) PRIMARY KEY,
+  session_id varchar(64) NOT NULL REFERENCES study_sessions(id) ON DELETE CASCADE,
+  card_id varchar(64) NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+  value varchar(16) NOT NULL CHECK (value IN ('useful', 'not_useful', 'off_topic')),
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS ix_card_rating_events_session_id ON card_rating_events(session_id);
+CREATE INDEX IF NOT EXISTS ix_card_rating_events_card_id ON card_rating_events(card_id);
