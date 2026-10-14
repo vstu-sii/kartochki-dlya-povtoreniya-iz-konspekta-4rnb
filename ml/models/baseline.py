@@ -12,7 +12,7 @@ from uuid import uuid4
 from ml.tracing.client import TraceClient
 
 
-PROMPT_VERSION = "cards-v1.0"
+PROMPT_VERSION = "cards-v1.1"
 SCHEMA_VERSION = "1.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
 STOP_WORDS = {"что", "это", "как", "для", "или", "при", "его", "она", "они", "так", "если", "уже", "был", "быть", "над", "под", "the", "and", "with"}
@@ -106,17 +106,20 @@ class BaselineModel:
     def _deterministic_cards(self, payload: dict) -> dict:
         sources = []
         for page in payload["pages"]:
-            sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+", page["text"]) if len(part.strip()) >= 10]
+            # PDF extractors preserve headings and line breaks. Treating an
+            # entire page as one sentence produced questions about the title
+            # of a laboratory work instead of its subject matter.
+            parts = re.split(r"(?<=[.!?])(?:\s+|$)|[\r\n]+", page["text"])
+            sentences = [part.strip() for part in parts if self._is_learning_fragment(part)]
             sources.extend((page["page"], sentence) for sentence in (sentences or [page["text"].strip()]))
         requested = payload.get("requested_card_count", 5)
         cards = []
         for index in range(requested):
             page, sentence = sources[index % len(sources)]
-            subject = sentence.split("—", 1)[0].split("-", 1)[0].strip(" .,:;")[:80]
             cards.append(
                 {
                     "card_id": f"card_{uuid4().hex}",
-                    "question": f"Что важно знать о «{subject}» по этому фрагменту?",
+                    "question": self._question_for(sentence),
                     "reference_answer": sentence[:1200],
                     "source_page": page,
                     "source_quote": sentence[:500],
@@ -124,6 +127,31 @@ class BaselineModel:
                 }
             )
         return {"title": "Карточки по загруженному материалу", "cards": cards}
+
+    @staticmethod
+    def _is_learning_fragment(value: str) -> bool:
+        text = " ".join(value.split()).strip(" •–—-«»\"“”")
+        if len(text) < 20:
+            return False
+        heading = re.match(r"^(?:\d+[.)]?\s*)?(?:лабораторная\s+работа|работа\s*№|содержание|оглавление)\b", text, re.I)
+        return not (heading and len(text) < 160)
+
+    @staticmethod
+    def _question_for(sentence: str) -> str:
+        clean = " ".join(sentence.split()).strip(" •–—-«»\"“”")
+        clean = re.sub(r"^\d+[.)]?\s*", "", clean)
+        lowered = clean.lower()
+        if lowered.startswith("цель"):
+            return "Какова цель этой работы?"
+        if lowered.startswith(("задача", "задачи")):
+            return "Какие задачи необходимо выполнить?"
+        if lowered.startswith(("результат", "ожидаемый результат")):
+            return "Какой результат должен быть получен?"
+        topic = re.split(r"[:;.!?]", clean, maxsplit=1)[0]
+        words = topic.split()
+        if len(words) > 12:
+            topic = " ".join(words[:12]) + "…"
+        return f"Что говорится в материале о «{topic}»?"
 
     def _call_gemini(self, prompt: str) -> dict:
         key = os.environ["GEMINI_API_KEY"]

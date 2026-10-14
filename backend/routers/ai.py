@@ -153,7 +153,9 @@ async def generate_card_set_from_pdf(
         pages=pages[:40],
         requested_card_count=requested_card_count,
     )
-    return await generate_card_set(request, f"pdf-{digest}-{requested_card_count}-{language}", db)
+    # Include the card-generation revision so the same PDF is regenerated
+    # after question-quality improvements instead of returning stale cards.
+    return await generate_card_set(request, f"pdf-{digest}-{requested_card_count}-{language}-cards-v1.1", db)
 
 
 @router.post("/answer-reviews")

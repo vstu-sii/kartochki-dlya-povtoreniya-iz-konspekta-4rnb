@@ -5,7 +5,9 @@ reviewer. Set TELEGRAM_BOT_TOKEN to enable the real Telegram interface.
 """
 
 import asyncio
+import html
 import os
+import re
 from contextlib import asynccontextmanager, suppress
 from io import BytesIO
 
@@ -30,10 +32,12 @@ async def telegram(method: str, payload: dict | None = None) -> dict:
         return data["result"]
 
 
-async def send(chat_id: int, text: str, reply_markup: dict | None = None) -> None:
-    payload = {"chat_id": chat_id, "text": text}
+async def send(chat_id: int, text: str, reply_markup: dict | None = None, parse_mode: str | None = None) -> None:
+    payload = {"chat_id": chat_id, "text": text, "disable_web_page_preview": True}
     if reply_markup:
         payload["reply_markup"] = reply_markup
+    if parse_mode:
+        payload["parse_mode"] = parse_mode
     await telegram("sendMessage", payload)
 
 
@@ -44,7 +48,7 @@ def keyboard() -> dict:
                 {"text": "👍 Полезно", "callback_data": "rate:useful"},
                 {"text": "👎 Не полезно", "callback_data": "rate:not_useful"},
             ],
-            [{"text": "Следующая карточка", "callback_data": "next"}],
+            [{"text": "➡️ Следующая карточка", "callback_data": "next"}],
         ]
     }
 
@@ -53,17 +57,28 @@ async def show_card(chat_id: int) -> None:
     state = sessions[chat_id]
     card = state["cards"][state["index"]]
     state["awaiting_answer"] = True
+    question = html.escape(_compact(card["question"], 220))
+    quote = html.escape(_compact(card["source_quote"], 260))
     await send(
         chat_id,
-        f"Карточка {state['index'] + 1}/{len(state['cards'])}\n\n{card['question']}\n\n"
-        f"Источник: стр. {card['source_page']} — «{card['source_quote']}»\n\n"
-        "Отправьте ответ текстовым сообщением.",
+        f"📚 <b>Карточка {state['index'] + 1} из {len(state['cards'])}</b>\n\n"
+        f"❓ <b>Вопрос</b>\n{question}\n\n"
+        f"📖 <b>Источник · страница {card['source_page']}</b>\n<i>«{quote}»</i>\n\n"
+        "✍️ Напишите ответ одним сообщением.",
         keyboard(),
+        "HTML",
     )
 
 
+def _compact(value: str, limit: int) -> str:
+    text = re.sub(r"\s+", " ", value).strip(" \n\r\t")
+    if len(text) <= limit:
+        return text
+    return text[: limit - 1].rstrip(" ,;:-") + "…"
+
+
 async def create_from_pdf(chat_id: int, document: dict) -> None:
-    await send(chat_id, "Получил PDF. Извлекаю текст, создаю карточки и сохраняю результат…")
+    await send(chat_id, "📄 PDF получен. Извлекаю текст и готовлю карточки — это займёт несколько секунд…")
     file_info = await telegram("getFile", {"file_id": document["file_id"]})
     async with httpx.AsyncClient(timeout=90.0) as client:
         source = await client.get(f"{TELEGRAM_FILE_API}/{file_info['file_path']}")
@@ -88,7 +103,7 @@ async def create_from_pdf(chat_id: int, document: dict) -> None:
         "ratings": persisted.get("ratings", {}),
         "awaiting_answer": False,
     }
-    await send(chat_id, f"Готово: {len(result['cards'])} карточек. Результат сохранён в БД.")
+    await send(chat_id, f"✅ Готово! Создано карточек: {len(result['cards'])}. Начинаем повторение.")
     await show_card(chat_id)
 
 
@@ -103,8 +118,16 @@ async def review_answer(chat_id: int, text: str) -> None:
         response.raise_for_status()
         result = response.json()
     state["awaiting_answer"] = False
-    missing = ", ".join(result.get("missing_points", [])) or "нет"
-    await send(chat_id, f"{result['verdict']}: {result['feedback']}\nПропущено: {missing}", keyboard())
+    verdicts = {
+        "correct": "✅ <b>Ответ верный</b>",
+        "partially_correct": "🟡 <b>Ответ частично верный</b>",
+        "incorrect": "🔴 <b>Ответ нужно доработать</b>",
+    }
+    missing = ", ".join(result.get("missing_points", []))
+    message = f"{verdicts.get(result['verdict'], '📝 <b>Результат проверки</b>')}\n\n{html.escape(result['feedback'])}"
+    if missing:
+        message += f"\n\n<b>Стоит упомянуть:</b> {html.escape(missing)}"
+    await send(chat_id, message, keyboard(), "HTML")
 
 
 async def process_update(update: dict) -> None:
@@ -134,7 +157,7 @@ async def process_update(update: dict) -> None:
                 )
                 response.raise_for_status()
             state.setdefault("ratings", {})[card["card_id"]] = value
-            await send(chat_id, "Оценка сохранена: полезно." if value == "useful" else "Оценка сохранена: не полезно.", keyboard())
+            await send(chat_id, "👍 Спасибо! Карточка отмечена как полезная." if value == "useful" else "👎 Спасибо! Учтём, что карточку нужно улучшить.", keyboard())
         return
 
     message = update.get("message") or {}
@@ -154,27 +177,27 @@ async def process_update(update: dict) -> None:
                 "ratings": persisted.get("ratings", {}),
                 "awaiting_answer": False,
             }
-            await send(chat_id, "Продолжаем сохранённую сессию с последней карточки.")
+            await send(chat_id, "👋 С возвращением! Продолжаем с карточки, на которой вы остановились.")
             await show_card(chat_id)
         else:
-            await send(chat_id, "Пришлите одну PDF-методичку. Я создам 5 карточек, покажу источники и проверю ответы.")
+            await send(chat_id, "👋 <b>Здравствуйте!</b>\n\nПришлите PDF-методичку с текстовым слоем. Я создам 5 карточек, укажу источник и помогу проверить ответы.\n\nМаксимальный размер файла — 10 МБ.", parse_mode="HTML")
     elif document := message.get("document"):
         if document.get("mime_type") != "application/pdf":
-            await send(chat_id, "Нужен файл PDF.")
+            await send(chat_id, "⚠️ Поддерживается только файл в формате PDF.")
         elif document.get("file_size", 0) > 10 * 1024 * 1024:
-            await send(chat_id, "PDF больше 10 МБ. Для MVP выберите файл поменьше.")
+            await send(chat_id, "⚠️ Этот PDF больше 10 МБ. Пожалуйста, выберите файл поменьше.")
         else:
             try:
                 await create_from_pdf(chat_id, document)
-            except Exception as exc:  # message is intentionally user-safe
-                await send(chat_id, f"Не удалось обработать PDF: {type(exc).__name__}. Попробуйте ещё раз.")
+            except Exception:  # internal details must not leak into the chat
+                await send(chat_id, "⚠️ Не удалось обработать PDF. Проверьте, что в нём есть выделяемый текст, и попробуйте ещё раз.")
     elif chat_id in sessions and sessions[chat_id].get("awaiting_answer") and text:
         try:
             await review_answer(chat_id, text)
-        except Exception as exc:
-            await send(chat_id, f"Не удалось проверить ответ: {type(exc).__name__}. Попробуйте ещё раз.")
+        except Exception:
+            await send(chat_id, "⚠️ Сейчас не удалось проверить ответ. Пожалуйста, попробуйте ещё раз.")
     else:
-        await send(chat_id, "Сначала отправьте PDF или используйте /help.")
+        await send(chat_id, "Сначала отправьте PDF-методичку или используйте команду /help.")
 
 
 async def poll() -> None:
