@@ -15,8 +15,8 @@ python tests/evals/run_evals.py --output artifacts/evals/baseline-results.json
 - grounded-card rate: **100%**;
 - agreement review с эталоном: **69,05%**;
 - формальные safety guards: **100%**;
-- p50/p95 локального вызова: **1/2 мс**;
-- оценка токенов: **5 905 входных / 35 215 выходных**.
+- p50/p95 локального вызова: **1/1 мс**;
+- оценка токенов: **5 905 входных / 35 100 выходных**.
 
 Источник истины: `artifacts/evals/baseline-results.json`. Числа в документе округлены.
 

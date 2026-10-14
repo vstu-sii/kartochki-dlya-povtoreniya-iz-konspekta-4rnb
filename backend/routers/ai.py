@@ -1,16 +1,20 @@
 """Public AI endpoints: validate, call the model service, then persist results."""
 
+import hashlib
 import os
+from datetime import datetime, timezone
+from io import BytesIO
 from uuid import uuid4
 
 import httpx
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
+from pypdf import PdfReader
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.database import session_scope
-from backend.models import AnswerReview, Card, CardSet, Document
+from backend.models import AnswerReview, Card, CardRating, CardSet, Document, StudySession
 
 
 router = APIRouter(prefix="/v1/ai", tags=["AI"])
@@ -42,6 +46,19 @@ class ReviewRequest(BaseModel):
     session_id: str = Field(min_length=8, max_length=64)
     card: CardPayload
     student_answer: str = Field(min_length=1, max_length=2_000)
+
+
+class SessionRequest(BaseModel):
+    card_set_id: str = Field(min_length=8, max_length=64)
+    user_id: str = Field(min_length=1, max_length=64)
+
+
+class ProgressRequest(BaseModel):
+    current_position: int = Field(ge=0)
+
+
+class RatingRequest(BaseModel):
+    value: str = Field(pattern=r"^(useful|not_useful)$")
 
 
 async def call_model(path: str, payload: dict) -> dict:
@@ -79,6 +96,10 @@ async def generate_card_set(
     if not document:
         document = Document(id=request.document_id, pages=[page.model_dump() for page in request.pages])
         db.add(document)
+        # The ORM does not expose a CardSet.document relationship, so make the
+        # foreign-key ordering explicit for PostgreSQL (SQLite tests do not
+        # enforce this constraint by default).
+        db.flush()
     card_set = CardSet(
         document_id=request.document_id,
         title=result["title"],
@@ -99,6 +120,42 @@ async def generate_card_set(
     db.commit()
     db.refresh(card_set)
     return serialize_set(card_set)
+
+
+@router.post("/card-sets/from-pdf", status_code=201)
+async def generate_card_set_from_pdf(
+    file: UploadFile = File(...),
+    requested_card_count: int = Form(default=5, ge=5, le=10),
+    language: str = Form(default="ru", pattern=r"^(ru|en)$"),
+    db: Session = Depends(session_scope),
+):
+    """Extract the text layer from one PDF and run the normal persisted flow."""
+    if file.content_type not in {"application/pdf", "application/octet-stream"}:
+        raise HTTPException(status_code=415, detail={"code": "PDF_REQUIRED"})
+    raw = await file.read(10 * 1024 * 1024 + 1)
+    if len(raw) > 10 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail={"code": "PDF_TOO_LARGE", "max_bytes": 10 * 1024 * 1024})
+    try:
+        reader = PdfReader(BytesIO(raw))
+        pages = [
+            Page(page=number, text=text)
+            for number, page in enumerate(reader.pages, start=1)
+            if len(text := (page.extract_text() or "").strip()) >= 10
+        ]
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail={"code": "PDF_PARSE_FAILED"}) from exc
+    if not pages:
+        raise HTTPException(status_code=422, detail={"code": "PDF_HAS_NO_TEXT_LAYER"})
+    digest = hashlib.sha256(raw).hexdigest()[:24]
+    request = GenerateRequest(
+        document_id=f"pdf_{digest}",
+        language=language,
+        pages=pages[:40],
+        requested_card_count=requested_card_count,
+    )
+    # Include the card-generation revision so the same PDF is regenerated
+    # after question-quality improvements instead of returning stale cards.
+    return await generate_card_set(request, f"pdf-{digest}-{requested_card_count}-{language}-cards-v1.1", db)
 
 
 @router.post("/answer-reviews")
@@ -127,6 +184,85 @@ def latest_card_set(db: Session = Depends(session_scope)):
     return serialize_set(card_set)
 
 
+@router.post("/sessions", status_code=201)
+def create_or_resume_session(request: SessionRequest, db: Session = Depends(session_scope)):
+    card_set = db.get(CardSet, request.card_set_id)
+    if not card_set:
+        raise HTTPException(status_code=404, detail={"code": "CARD_SET_NOT_FOUND"})
+    study_session = db.scalars(
+        select(StudySession)
+        .where(
+            StudySession.user_id == request.user_id,
+            StudySession.card_set_id == request.card_set_id,
+            StudySession.completed.is_(False),
+        )
+        .order_by(StudySession.updated_at.desc())
+    ).first()
+    if not study_session:
+        study_session = StudySession(card_set_id=request.card_set_id, user_id=request.user_id)
+        db.add(study_session)
+        db.commit()
+        db.refresh(study_session)
+    return serialize_session(study_session, card_set, db)
+
+
+@router.get("/sessions/resume")
+def resume_latest_session(user_id: str, db: Session = Depends(session_scope)):
+    study_session = db.scalars(
+        select(StudySession)
+        .where(StudySession.user_id == user_id, StudySession.completed.is_(False))
+        .order_by(StudySession.updated_at.desc())
+    ).first()
+    if not study_session:
+        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+    return serialize_session(study_session, db.get(CardSet, study_session.card_set_id), db)
+
+
+@router.get("/sessions/{session_id}")
+def get_session(session_id: str, db: Session = Depends(session_scope)):
+    study_session = db.get(StudySession, session_id)
+    if not study_session:
+        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+    return serialize_session(study_session, db.get(CardSet, study_session.card_set_id), db)
+
+
+@router.patch("/sessions/{session_id}/progress")
+def update_session_progress(session_id: str, request: ProgressRequest, db: Session = Depends(session_scope)):
+    study_session = db.get(StudySession, session_id)
+    if not study_session:
+        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+    card_set = db.get(CardSet, study_session.card_set_id)
+    card_count = len(card_set.cards)
+    study_session.current_position = min(request.current_position, card_count)
+    study_session.completed = study_session.current_position >= card_count
+    study_session.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(study_session)
+    return serialize_session(study_session, card_set, db)
+
+
+@router.put("/sessions/{session_id}/ratings/{card_id}")
+def rate_card(session_id: str, card_id: str, request: RatingRequest, db: Session = Depends(session_scope)):
+    study_session = db.get(StudySession, session_id)
+    card = db.get(Card, card_id)
+    if not study_session:
+        raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
+    if not card or card.card_set_id != study_session.card_set_id:
+        raise HTTPException(status_code=404, detail={"code": "CARD_NOT_IN_SESSION"})
+    rating = db.scalars(
+        select(CardRating).where(CardRating.session_id == session_id, CardRating.card_id == card_id)
+    ).first()
+    if not rating:
+        rating = CardRating(session_id=session_id, card_id=card_id, value=request.value)
+        db.add(rating)
+    else:
+        rating.value = request.value
+        rating.updated_at = datetime.now(timezone.utc)
+    study_session.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    return {"session_id": session_id, "card_id": card_id, "value": rating.value}
+
+
 def serialize_set(card_set: CardSet) -> dict:
     return {
         "card_set_id": card_set.id,
@@ -148,3 +284,18 @@ def serialize_set(card_set: CardSet) -> dict:
             for card in sorted(card_set.cards, key=lambda value: value.position)
         ],
     }
+
+
+def serialize_session(study_session: StudySession, card_set: CardSet, db: Session) -> dict:
+    ratings = db.scalars(select(CardRating).where(CardRating.session_id == study_session.id)).all()
+    data = serialize_set(card_set)
+    data.update(
+        {
+            "session_id": study_session.id,
+            "user_id": study_session.user_id,
+            "current_position": study_session.current_position,
+            "completed": study_session.completed,
+            "ratings": {rating.card_id: rating.value for rating in ratings},
+        }
+    )
+    return data

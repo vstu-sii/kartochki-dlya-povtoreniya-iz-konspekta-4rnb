@@ -32,6 +32,18 @@ class BaselineTest(unittest.TestCase):
         self.assertEqual("correct", result["verdict"])
         self.assertIn("trace_id", result)
 
+    def test_pdf_heading_is_not_used_as_question_topic(self):
+        text = (
+            "1 Лабораторная работа №3\n"
+            "Цель: освоить установку и настройку PostgreSQL.\n"
+            "Реляционная база данных хранит сведения в связанных таблицах."
+        )
+        result = self.model.generate({"pages": [{"page": 1, "text": text}], "requested_card_count": 5})
+        first = result["cards"][0]
+        self.assertEqual("Какова цель этой работы?", first["question"])
+        self.assertNotIn("Лабораторная работа", first["question"])
+        self.assertIn(first["source_quote"], text)
+
 
 if __name__ == "__main__":
     unittest.main()
