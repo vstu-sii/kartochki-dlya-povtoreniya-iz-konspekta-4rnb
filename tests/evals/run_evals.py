@@ -2,7 +2,7 @@
 
 Usage:
   python tests/evals/run_evals.py
-  python tests/evals/run_evals.py --mini --fail-below 0.90
+  python tests/evals/run_evals.py --mini --min-schema 1 --min-grounding .95 --min-review .85
 """
 
 import argparse
@@ -24,7 +24,7 @@ from ml.tracing.client import TraceClient  # noqa: E402
 BASE_DATASET = ROOT / "docs/quality/golden-dataset/dataset.jsonl"
 ADDITIONS = ROOT / "docs/quality/golden-dataset/dataset-v2-additions.jsonl"
 DEFAULT_OUTPUT = ROOT / "artifacts/evals/baseline-results.json"
-MINI_IDS = {"GEN-001", "GEN-002", "GEN-003", "GEN-004", "REV-004", "REV-005", "SAFE-001", "SAFE-002"}
+MINI_IDS = {"GEN-001", "GEN-002", "GEN-003", "GEN-004", "REV-004", "REV-005"}
 
 
 def load_cases(mini: bool) -> list[dict]:
@@ -42,6 +42,32 @@ def percentile(values: list[int], percent: float) -> float:
     return ordered[min(len(ordered) - 1, round((len(ordered) - 1) * percent))]
 
 
+def validate_generated_cards(response: dict, case: dict) -> tuple[bool, bool]:
+    cards = response.get("cards")
+    requested = case["input"].get("requested_card_count", 5)
+    if not isinstance(cards, list) or len(cards) != requested:
+        return False, False
+    page_text = {page["page"]: page["text"] for page in case["context"]}
+    required_quote = case.get("expected_output", {}).get("required_quote")
+    schema_ok = True
+    grounding_ok = True
+    for card in cards:
+        schema_ok &= (
+            isinstance(card, dict)
+            and isinstance(card.get("card_id"), str)
+            and 1 <= len(card.get("question", "")) <= 500
+            and 1 <= len(card.get("reference_answer", "")) <= 1200
+            and isinstance(card.get("source_page"), int)
+            and isinstance(card.get("source_quote"), str)
+            and 1 <= len(card.get("source_quote", "")) <= 500
+            and card.get("difficulty") in {"basic", "intermediate", "advanced"}
+        )
+        grounding_ok &= card.get("source_quote", "") in page_text.get(card.get("source_page"), "")
+    if required_quote:
+        grounding_ok &= any(required_quote in card.get("source_quote", "") for card in cards)
+    return bool(schema_ok), bool(grounding_ok)
+
+
 def run(mini: bool, output: Path) -> dict:
     cases = load_cases(mini)
     trace_path = ROOT / "artifacts/evals/eval-traces.jsonl"
@@ -55,6 +81,7 @@ def run(mini: bool, output: Path) -> dict:
         started = time.perf_counter()
         operation = case["operation"]
         schema_ok = grounding_ok = verdict_ok = safety_ok = None
+        executed, skip_reason = True, None
         if operation == "generate_card":
             response = model.generate(
                 {
@@ -64,10 +91,7 @@ def run(mini: bool, output: Path) -> dict:
                     "requested_card_count": case["input"].get("requested_card_count", 5),
                 }
             )
-            required = {"card_id", "question", "reference_answer", "source_page", "source_quote", "difficulty"}
-            schema_ok = bool(response.get("cards")) and all(required <= card.keys() for card in response["cards"])
-            page_text = {page["page"]: page["text"] for page in case["context"]}
-            grounding_ok = all(card["source_quote"] in page_text.get(card["source_page"], "") for card in response["cards"])
+            schema_ok, grounding_ok = validate_generated_cards(response, case)
         elif operation == "review_answer":
             source = case["context"][0]
             response = model.review(
@@ -84,16 +108,27 @@ def run(mini: bool, output: Path) -> dict:
                     "student_answer": case["input"]["student_answer"],
                 }
             )
-            schema_ok = all(key in response for key in ("verdict", "feedback", "missing_points", "trace_id"))
+            schema_ok = (
+                response.get("verdict") in {"correct", "partially_correct", "incorrect"}
+                and isinstance(response.get("score"), int)
+                and response["score"] in {0, 1, 2}
+                and isinstance(response.get("feedback"), str)
+                and bool(response["feedback"].strip())
+                and isinstance(response.get("missing_points"), list)
+                and isinstance(response.get("trace_id"), str)
+            )
             verdict_ok = response["verdict"] == case["expected_output"]["verdict"]
-        elif operation in {"reject_input", "validate_model_output"}:
-            response = {"guarded": True, "expected": case["expected_output"]}
-            safety_ok = True
         else:
-            response = {"not_model_operation": True}
+            # These cases belong to API/DB E2E, not to BaselineModel. Do not
+            # fabricate a pass: report them as skipped until that suite calls
+            # the running Compose system.
+            executed = False
+            skip_reason = "requires_api_or_database_e2e"
+            response = {}
 
         latency = round((time.perf_counter() - started) * 1000)
-        latencies.append(latency)
+        if executed:
+            latencies.append(latency)
         usage = response.get("usage", {})
         input_tokens += usage.get("input_tokens", 0)
         output_tokens += usage.get("output_tokens", 0)
@@ -101,6 +136,8 @@ def run(mini: bool, output: Path) -> dict:
             {
                 "id": case["id"],
                 "operation": operation,
+                "executed": executed,
+                "skip_reason": skip_reason,
                 "schema_ok": schema_ok,
                 "grounding_ok": grounding_ok,
                 "verdict_ok": verdict_ok,
@@ -113,21 +150,25 @@ def run(mini: bool, output: Path) -> dict:
         values = [row[field] for row in rows if row[field] is not None]
         return round(sum(values) / len(values), 4) if values else None
 
-    measurable = [value for field in ("schema_ok", "grounding_ok", "verdict_ok", "safety_ok") if (value := rate(field)) is not None]
+    measurable = [value for field in ("schema_ok", "grounding_ok", "verdict_ok") if (value := rate(field)) is not None]
+    executed_count = sum(row["executed"] for row in rows)
     report = {
         "run_at": datetime.now(timezone.utc).isoformat(),
         "mode": "mini" if mini else "full",
         "model": "deterministic-grounded-v1",
         "prompt_version": f"{PROMPT_VERSION}/review-v1.0",
         "dataset_version": "lab3-v2",
-        "case_count": len(cases),
+        "dataset_case_count": len(cases),
+        "executed_case_count": executed_count,
+        "skipped_case_count": len(cases) - executed_count,
+        "execution_coverage_rate": round(executed_count / len(cases), 4) if cases else 0,
         "model_case_count": sum(row["operation"] in {"generate_card", "review_answer"} for row in rows),
         "metrics": {
             "schema_pass_rate": rate("schema_ok"),
             "grounded_card_rate": rate("grounding_ok"),
             "review_agreement_rate": rate("verdict_ok"),
             "safety_guard_rate": rate("safety_ok"),
-            "quality_score": round(statistics.mean(measurable), 4),
+            "model_quality_score": round(statistics.mean(measurable), 4),
             "latency_p50_ms": percentile(latencies, 0.5),
             "latency_p95_ms": percentile(latencies, 0.95),
             "input_tokens": input_tokens,
@@ -145,10 +186,27 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mini", action="store_true")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--fail-below", type=float, default=0.0)
+    parser.add_argument("--min-schema", type=float)
+    parser.add_argument("--min-grounding", type=float)
+    parser.add_argument("--min-review", type=float)
+    parser.add_argument("--min-safety", type=float)
     args = parser.parse_args()
     report = run(args.mini, args.output)
-    return 1 if report["metrics"]["quality_score"] < args.fail_below else 0
+    thresholds = {
+        "schema_pass_rate": args.min_schema,
+        "grounded_card_rate": args.min_grounding,
+        "review_agreement_rate": args.min_review,
+        "safety_guard_rate": args.min_safety,
+    }
+    failed = [
+        name
+        for name, minimum in thresholds.items()
+        if minimum is not None and (report["metrics"].get(name) is None or report["metrics"][name] < minimum)
+    ]
+    if failed:
+        print("Thresholds failed: " + ", ".join(failed), file=sys.stderr)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

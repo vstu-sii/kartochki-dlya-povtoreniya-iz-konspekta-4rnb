@@ -1,19 +1,22 @@
 {
-  "run_at": "2026-10-14T13:10:29.596872+00:00",
+  "run_at": "2026-10-14T13:31:14.257029+00:00",
   "mode": "full",
   "model": "deterministic-grounded-v1",
   "prompt_version": "cards-v1.1/review-v1.0",
   "dataset_version": "lab3-v2",
-  "case_count": 128,
+  "dataset_case_count": 128,
+  "executed_case_count": 95,
+  "skipped_case_count": 33,
+  "execution_coverage_rate": 0.7422,
   "model_case_count": 95,
   "metrics": {
     "schema_pass_rate": 1.0,
     "grounded_card_rate": 1.0,
     "review_agreement_rate": 0.6905,
-    "safety_guard_rate": 1.0,
-    "quality_score": 0.9226,
+    "safety_guard_rate": null,
+    "model_quality_score": 0.8968,
     "latency_p50_ms": 1,
-    "latency_p95_ms": 2,
+    "latency_p95_ms": 1,
     "input_tokens": 5905,
     "output_tokens": 35100
   },
@@ -21,6 +24,8 @@
     {
       "id": "GEN-001",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -30,6 +35,8 @@
     {
       "id": "GEN-002",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -39,15 +46,19 @@
     {
       "id": "GEN-003",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-004",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -57,6 +68,8 @@
     {
       "id": "GEN-005",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -66,6 +79,8 @@
     {
       "id": "GEN-006",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -75,6 +90,8 @@
     {
       "id": "GEN-007",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -84,6 +101,8 @@
     {
       "id": "GEN-008",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -93,6 +112,8 @@
     {
       "id": "GEN-009",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -102,6 +123,8 @@
     {
       "id": "GEN-010",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -111,6 +134,8 @@
     {
       "id": "GEN-011",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -120,33 +145,41 @@
     {
       "id": "GEN-012",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-013",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-014",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-015",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -156,6 +189,8 @@
     {
       "id": "GEN-016",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -165,15 +200,19 @@
     {
       "id": "REV-001",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "REV-002",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -183,6 +222,8 @@
     {
       "id": "REV-003",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -192,6 +233,8 @@
     {
       "id": "REV-004",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -201,6 +244,8 @@
     {
       "id": "REV-005",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -210,6 +255,8 @@
     {
       "id": "REV-006",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -219,6 +266,8 @@
     {
       "id": "REV-007",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -228,6 +277,8 @@
     {
       "id": "REV-008",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -237,15 +288,19 @@
     {
       "id": "REV-009",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-010",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -255,60 +310,74 @@
     {
       "id": "SAFE-001",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-002",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-003",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "SAFE-004",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-005",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-006",
       "operation": "validate_model_output",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "UX-001",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -318,6 +387,8 @@
     {
       "id": "UX-002",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -327,6 +398,8 @@
     {
       "id": "STATE-001",
       "operation": "complete_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -336,6 +409,8 @@
     {
       "id": "STATE-002",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -345,6 +420,8 @@
     {
       "id": "GEN-017",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -354,6 +431,8 @@
     {
       "id": "GEN-018",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -363,6 +442,8 @@
     {
       "id": "GEN-019",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -372,15 +453,19 @@
     {
       "id": "GEN-020",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-021",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -390,6 +475,8 @@
     {
       "id": "GEN-022",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -399,15 +486,19 @@
     {
       "id": "GEN-023",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-024",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -417,6 +508,8 @@
     {
       "id": "GEN-025",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -426,24 +519,30 @@
     {
       "id": "GEN-026",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-027",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-028",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -453,15 +552,19 @@
     {
       "id": "GEN-029",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-030",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -471,6 +574,8 @@
     {
       "id": "GEN-031",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -480,6 +585,8 @@
     {
       "id": "GEN-032",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -489,6 +596,8 @@
     {
       "id": "GEN-033",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -498,6 +607,8 @@
     {
       "id": "GEN-034",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -507,6 +618,8 @@
     {
       "id": "GEN-035",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -516,15 +629,19 @@
     {
       "id": "GEN-036",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-037",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -534,6 +651,8 @@
     {
       "id": "GEN-038",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -543,6 +662,8 @@
     {
       "id": "GEN-039",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -552,6 +673,8 @@
     {
       "id": "GEN-040",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -561,6 +684,8 @@
     {
       "id": "GEN-041",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -570,6 +695,8 @@
     {
       "id": "GEN-042",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -579,6 +706,8 @@
     {
       "id": "GEN-043",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -588,6 +717,8 @@
     {
       "id": "GEN-044",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -597,6 +728,8 @@
     {
       "id": "GEN-045",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -606,6 +739,8 @@
     {
       "id": "GEN-046",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -615,6 +750,8 @@
     {
       "id": "GEN-047",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -624,6 +761,8 @@
     {
       "id": "GEN-048",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -633,6 +772,8 @@
     {
       "id": "GEN-049",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -642,6 +783,8 @@
     {
       "id": "GEN-050",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -651,6 +794,8 @@
     {
       "id": "REV-011",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -660,15 +805,19 @@
     {
       "id": "REV-012",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-013",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -678,6 +827,8 @@
     {
       "id": "REV-014",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -687,6 +838,8 @@
     {
       "id": "REV-015",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -696,6 +849,8 @@
     {
       "id": "REV-016",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -705,6 +860,8 @@
     {
       "id": "REV-017",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -714,15 +871,19 @@
     {
       "id": "REV-018",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-019",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -732,15 +893,19 @@
     {
       "id": "REV-020",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-021",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -750,24 +915,30 @@
     {
       "id": "REV-022",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-023",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-024",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -777,6 +948,8 @@
     {
       "id": "REV-025",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -786,24 +959,30 @@
     {
       "id": "REV-026",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-027",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-028",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -813,33 +992,41 @@
     {
       "id": "REV-029",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-030",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-031",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-032",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -849,6 +1036,8 @@
     {
       "id": "REV-033",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -858,6 +1047,8 @@
     {
       "id": "REV-034",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -867,6 +1058,8 @@
     {
       "id": "REV-035",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -876,6 +1069,8 @@
     {
       "id": "REV-036",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -885,6 +1080,8 @@
     {
       "id": "REV-037",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -894,6 +1091,8 @@
     {
       "id": "REV-038",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -903,6 +1102,8 @@
     {
       "id": "REV-039",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
@@ -912,15 +1113,19 @@
     {
       "id": "REV-040",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "UX-003",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -930,6 +1135,8 @@
     {
       "id": "UX-004",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -939,6 +1146,8 @@
     {
       "id": "UX-005",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -948,6 +1157,8 @@
     {
       "id": "UX-006",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -957,6 +1168,8 @@
     {
       "id": "UX-007",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -966,6 +1179,8 @@
     {
       "id": "UX-008",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -975,6 +1190,8 @@
     {
       "id": "UX-009",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -984,6 +1201,8 @@
     {
       "id": "UX-010",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -993,6 +1212,8 @@
     {
       "id": "STATE-003",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1002,6 +1223,8 @@
     {
       "id": "STATE-004",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1011,6 +1234,8 @@
     {
       "id": "STATE-005",
       "operation": "complete_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1020,6 +1245,8 @@
     {
       "id": "STATE-006",
       "operation": "complete_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1029,6 +1256,8 @@
     {
       "id": "STATE-007",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1038,6 +1267,8 @@
     {
       "id": "STATE-008",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1047,6 +1278,8 @@
     {
       "id": "STATE-009",
       "operation": "complete_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1056,6 +1289,8 @@
     {
       "id": "STATE-010",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1065,42 +1300,52 @@
     {
       "id": "SAFE-007",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-008",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-009",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-010",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "GEN-LIVE-001",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -1110,6 +1355,8 @@
     {
       "id": "GEN-LIVE-002",
       "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": true,
       "verdict_ok": null,
@@ -1119,6 +1366,8 @@
     {
       "id": "REV-LIVE-001",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": true,
@@ -1128,33 +1377,41 @@
     {
       "id": "REV-LIVE-002",
       "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
       "schema_ok": true,
       "grounding_ok": null,
       "verdict_ok": false,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "SAFE-LIVE-001",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "SAFE-LIVE-002",
       "operation": "reject_input",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
-      "safety_ok": true,
+      "safety_ok": null,
       "latency_ms": 0
     },
     {
       "id": "STATE-LIVE-001",
       "operation": "resume_session",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
@@ -1164,6 +1421,8 @@
     {
       "id": "UX-LIVE-001",
       "operation": "rate_card",
+      "executed": false,
+      "skip_reason": "requires_api_or_database_e2e",
       "schema_ok": null,
       "grounding_ok": null,
       "verdict_ok": null,
