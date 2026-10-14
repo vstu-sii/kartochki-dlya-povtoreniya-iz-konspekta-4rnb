@@ -9,8 +9,10 @@
 | Schema pass rate | 100% | UI получает ожидаемые поля |
 | Grounded-card rate | 100% | Цитата действительно находится на указанной странице |
 | Agreement review с эталоном | 69,05% | Недостаточно для доверенной проверки ответа |
-| Safety guard rate | 100% на формальных SAFE-кейсах | Это проверка guard-ветвей, не полноценный red-team |
-| p95 локального прогона | 2 мс | Характеризует только локальный baseline, не облачный API |
+| Safety guard rate | не измерен model runner | SAFE/UX/STATE требуют реального API/БД E2E и не засчитываются автоматически |
+| p95 локального прогона | 1 мс | Характеризует только локальный детерминированный baseline, не облачный API |
+
+Полный набор содержит 128 строк. В сохранённом прогоне выполнены 95 модельных кейсов, 33 API/DB-кейса помечены `executed=false` с причиной `requires_api_or_database_e2e`. Поэтому отчёт не делает вывода «безопасность 100%» без вызова защитного кода. Канонический результат: [baseline-results.json в ветке Quality](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/lab3-quality-prototype/artifacts/evals/baseline-results.json).
 
 ## Типы ошибок с живыми примерами
 
