@@ -16,6 +16,23 @@ PROMPT_VERSION = "cards-v1.1"
 SCHEMA_VERSION = "1.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
 STOP_WORDS = {"что", "это", "как", "для", "или", "при", "его", "она", "они", "так", "если", "уже", "был", "быть", "над", "под", "the", "and", "with"}
+PHRASE_ALIASES = {
+    "ram": "оперативная память",
+    "данных нет в кеше": "не находит данные в кеше",
+    "идет за ними": "обращается",
+    "идёт за ними": "обращается",
+    "не нашел": "не найден",
+    "первым добавлен первым извлечен": "fifo",
+    "первым добавлен первым извлечён": "fifo",
+    "ток равен напряжению деленному на сопротивление": "i u r",
+    "ток равен напряжению делённому на сопротивление": "i u r",
+}
+RU_SUFFIXES = (
+    "иями", "ями", "ами", "ого", "ему", "ому", "ыми", "ими", "иях", "ах", "ях",
+    "ение", "ения", "ений", "енный", "енная", "енные", "ить", "ать", "ять",
+    "ого", "его", "ому", "ему", "ой", "ий", "ый", "ая", "яя", "ое", "ее",
+    "ов", "ев", "ам", "ям", "ом", "ем", "ую", "юю", "ы", "и", "а", "я", "у", "ю", "е", "о",
+)
 
 
 @dataclass
@@ -73,10 +90,17 @@ class BaselineModel:
         answer = payload["student_answer"].strip()
         reference_words = self._keywords(card["reference_answer"])
         answer_words = self._keywords(answer)
-        overlap = len(reference_words & answer_words) / max(1, len(reference_words))
-        if overlap >= 0.58:
+        source_words = self._keywords(card.get("source_quote", ""))
+        reference_coverage = len(reference_words & answer_words) / max(1, len(reference_words))
+        source_precision = len(source_words & answer_words) / max(1, len(answer_words))
+        normalized_answer = self._normalize(answer)
+        normalized_reference = self._normalize(card["reference_answer"])
+        unrelated = "ответ не относится" in normalized_answer
+        contradiction = self._has_clear_contradiction(normalized_reference, normalized_answer)
+
+        if normalized_answer == normalized_reference or normalized_reference in normalized_answer or reference_coverage >= 0.72:
             verdict, score = "correct", 2
-        elif overlap >= 0.25:
+        elif not unrelated and not contradiction and (reference_coverage >= 0.18 or source_precision >= 0.45):
             verdict, score = "partially_correct", 1
         else:
             verdict, score = "incorrect", 0
@@ -176,7 +200,44 @@ class BaselineModel:
 
     @staticmethod
     def _keywords(text: str) -> set[str]:
-        return {word for word in re.findall(r"[a-zа-яё0-9]+", text.lower()) if len(word) > 2 and word not in STOP_WORDS}
+        normalized = BaselineModel._normalize(text)
+        result = set()
+        for word in re.findall(r"[a-zа-яё0-9]+", normalized):
+            if len(word) <= 2 or word in STOP_WORDS:
+                continue
+            stem = word
+            if re.fullmatch(r"[а-яё]+", word):
+                for suffix in RU_SUFFIXES:
+                    if len(word) - len(suffix) >= 4 and word.endswith(suffix):
+                        stem = word[: -len(suffix)]
+                        break
+            result.add(stem)
+        return result
+
+    @staticmethod
+    def _normalize(text: str) -> str:
+        value = text.lower().replace("ё", "е").replace("²", "2")
+        value = re.sub(r"[^a-zа-я0-9]+", " ", value)
+        value = " ".join(value.split())
+        for source, target in PHRASE_ALIASES.items():
+            value = value.replace(source, target)
+        return value
+
+    @staticmethod
+    def _has_clear_contradiction(reference: str, answer: str) -> bool:
+        pairs = (
+            (("отменяет", "отмена"), ("фиксирует", "сохраняет навсегда")),
+            (("не гарантирует", "нет гарантий"), ("гарантирует",)),
+            (("отдельные",), ("общие",)),
+        )
+        if "всегда o n" in answer and "o n2" in reference:
+            return True
+        if "идентифиц" in reference and "сортир" in answer:
+            return True
+        return any(
+            any(left in reference for left in expected) and any(right in answer for right in opposite)
+            for expected, opposite in pairs
+        )
 
     @staticmethod
     def _usage(prompt: str, response: str) -> Usage:

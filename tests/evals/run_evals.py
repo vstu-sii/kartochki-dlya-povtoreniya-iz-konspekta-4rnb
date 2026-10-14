@@ -138,6 +138,8 @@ def run(mini: bool, output: Path) -> dict:
                 "operation": operation,
                 "executed": executed,
                 "skip_reason": skip_reason,
+                "actual_verdict": response.get("verdict"),
+                "expected_verdict": case.get("expected_output", {}).get("verdict"),
                 "schema_ok": schema_ok,
                 "grounding_ok": grounding_ok,
                 "verdict_ok": verdict_ok,
