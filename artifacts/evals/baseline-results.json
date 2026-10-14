@@ -1,8 +1,8 @@
 {
-  "run_at": "2026-10-12T17:26:30.169706+00:00",
+  "run_at": "2026-10-14T13:10:29.596872+00:00",
   "mode": "full",
   "model": "deterministic-grounded-v1",
-  "prompt_version": "cards-v1.0/review-v1.0",
+  "prompt_version": "cards-v1.1/review-v1.0",
   "dataset_version": "lab3-v2",
   "case_count": 128,
   "model_case_count": 95,
@@ -15,7 +15,7 @@
     "latency_p50_ms": 1,
     "latency_p95_ms": 2,
     "input_tokens": 5905,
-    "output_tokens": 35215
+    "output_tokens": 35100
   },
   "cases": [
     {
@@ -25,7 +25,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 3
     },
     {
       "id": "GEN-002",
@@ -34,7 +34,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-003",
@@ -43,7 +43,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-004",
@@ -70,7 +70,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-007",
@@ -124,7 +124,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-013",
@@ -142,7 +142,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-015",
@@ -277,7 +277,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "SAFE-004",
@@ -376,7 +376,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-021",
@@ -394,7 +394,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-023",
@@ -403,7 +403,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-024",
@@ -430,7 +430,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-027",
@@ -439,7 +439,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-028",
@@ -520,7 +520,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-037",
@@ -556,7 +556,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-041",
@@ -583,7 +583,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "GEN-044",
@@ -592,7 +592,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 3
+      "latency_ms": 1
     },
     {
       "id": "GEN-045",
@@ -745,7 +745,7 @@
       "grounding_ok": null,
       "verdict_ok": false,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 0
     },
     {
       "id": "REV-022",
@@ -826,7 +826,7 @@
       "grounding_ok": null,
       "verdict_ok": false,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 1
     },
     {
       "id": "REV-031",

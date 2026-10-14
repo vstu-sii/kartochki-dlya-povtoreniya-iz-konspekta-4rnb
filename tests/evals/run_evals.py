@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from ml.models.baseline import BaselineModel  # noqa: E402
+from ml.models.baseline import BaselineModel, PROMPT_VERSION  # noqa: E402
 from ml.tracing.client import TraceClient  # noqa: E402
 
 
@@ -118,7 +118,7 @@ def run(mini: bool, output: Path) -> dict:
         "run_at": datetime.now(timezone.utc).isoformat(),
         "mode": "mini" if mini else "full",
         "model": "deterministic-grounded-v1",
-        "prompt_version": "cards-v1.0/review-v1.0",
+        "prompt_version": f"{PROMPT_VERSION}/review-v1.0",
         "dataset_version": "lab3-v2",
         "case_count": len(cases),
         "model_case_count": sum(row["operation"] in {"generate_card", "review_answer"} for row in rows),
