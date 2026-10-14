@@ -1,4 +1,4 @@
-# Тест-план лабораторной 2
+# Тест-план лабораторной 3
 
 ## Цели
 
@@ -12,9 +12,10 @@
 | Contract | OpenAPI request/response, коды ошибок, idempotency, совместимость app ↔ AI | OpenAPI validator + generated fixtures | каждый PR |
 | Database | constraints, FK/cascade, миграция с нуля, TTL job, изоляция user_id | временный PostgreSQL | каждый PR |
 | Integration | Telegram Adapter → Application API → mock AI/Data | compose, provider mock | каждый PR |
-| AI eval mini | 8 фиксированных кейсов: 4 generation, 2 review, 2 safety | runner поверх JSONL, замороженные model/prompt | каждый PR после лабы 3 |
-| AI eval full | все 120+ кейсов, метрика по уникальным кейсам и три прогона для проверки вариативности, разрез primary/fallback | выбранный eval tool | nightly и перед релизом |
-| Security | prompt injection, oversized input, output escaping, secret/log leak, IDOR | pytest + attack fixtures | каждый PR (дешёвые), полный в лабе 4 |
+| AI eval mini | 6 фиксированных модельных кейсов: 4 generation и 2 review | `tests/evals/run_evals.py --mini`, замороженные model/prompt | каждый PR |
+| AI eval full | все модельные кейсы `generate_card` и `review_answer` из 128 строк dataset v2 | тот же runner; одна детерминированная реализация baseline | nightly, вручную и перед релизом |
+| API/DB E2E | `reject_input`, `validate_model_output`, `rate_card`, `resume_session`, `complete_session` | compose + HTTP assertions | Delivery CI; расширение security-набора — лаба 4 |
+| Security | prompt injection, oversized input, output escaping, secret/log leak, IDOR | pytest + attack fixtures; модельный runner не подменяет эти проверки | каждый PR (дешёвые), полный в лабе 4 |
 | Performance | p50/p95 generation/review, concurrency, timeout/fallback | k6/Locust | перед релизом |
 | Manual UC | пять сценариев без подсказок | человек не из команды | конец спринта |
 
@@ -32,17 +33,19 @@
 
 - schema pass rate после максимум одного repair: 100%;
 - grounded-card rate: ≥95%;
-- полезность карточек: ≥80%;
-- доля противоречащих эталону review: ≤5%;
+- review agreement rate: ≥85% для merge-gate mini-набора; полный baseline фиксируется без сокрытия провалов;
+- safety guard rate публикуется только после реального вызова API/guard, а не присваивается runner-ом;
 - p95 generation ≤60 секунд, p95 review ≤7 секунд;
 - стоимость полной сессии ≤$0.04;
 - 0 утечек секретов/чужих сессий в security tests.
 
-Порог качества подтверждается baseline, а не объявляется фактом заранее. До реального запуска значения являются критериями приёмки. Для offline-метрик используются соответствующие поднаборы: `GEN` — schema/grounding, `REV` — непротиворечивость разбора, `SAFE` — защитные отказы. Пользовательская полезность подтверждается telemetry реальных оценок, а не десятью UX-фикстурами.
+Порог качества подтверждается baseline, а не объявляется фактом заранее. Для offline-метрик используются соответствующие поднаборы: `GEN` — schema/grounding, `REV` — согласие с эталонным verdict. `SAFE`, `UX` и `STATE` не считаются модельными ответами: runner помечает их `executed=false` и передаёт проверку API/БД. Пользовательская полезность подтверждается telemetry реальных оценок, а не UX-фикстурами.
 
 ## CI с лабораторной 3
 
-На PR: синтаксис, unit, contract, миграция, compose build, mini-eval. Полный eval не запускается на каждый коммит из-за стоимости; он идёт nightly и перед релизом. Результат сохраняется как JSON/JUnit с `model`, `prompt_version`, `dataset_version`, latency и cost.
+На PR запускается mini-eval с отдельными порогами `schema=1.00`, `grounding=0.95`, `review=0.85`: плохую метрику нельзя скрыть средним баллом. По расписанию и вручную запускается полный eval. Результаты и JSONL-трейсы сохраняются как CI-артефакты с `model`, `prompt_version`, `dataset_version`, latency и токенами.
+
+Полный dataset содержит 128 строк. Текущий model runner реально выполняет 95 модельных случаев и явно пропускает 33 API/DB-сценария с причиной `requires_api_or_database_e2e`. Текущий baseline детерминированный и выполняется один раз; три стохастических прогона, сравнение primary/fallback и денежная стоимость появятся после подключения внешнего провайдера и не выдаются за уже выполненные.
 
 ## Тестовые данные
 
