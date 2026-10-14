@@ -24,6 +24,23 @@ def request(path: str, payload: dict | None = None, method: str | None = None) -
         raise RuntimeError(f"{req.get_method()} {path} returned HTTP {exc.code}: {body}") from exc
 
 
+def expect_error(path: str, expected_status: int, payload: dict | None = None, method: str | None = None) -> None:
+    """Assert that an API guard is really executed instead of marking a fixture as passed."""
+    data = json.dumps(payload).encode() if payload is not None else None
+    req = urllib.request.Request(
+        f"{BASE}{path}",
+        data=data,
+        method=method,
+        headers={"Content-Type": "application/json", "Idempotency-Key": "ci-e2e-negative"},
+    )
+    try:
+        urllib.request.urlopen(req, timeout=30)
+    except urllib.error.HTTPError as exc:
+        assert exc.code == expected_status, f"expected HTTP {expected_status}, got {exc.code}"
+        return
+    raise AssertionError(f"{req.get_method()} {path} unexpectedly succeeded")
+
+
 created = request(
     "/api/v1/ai/card-sets",
     {
@@ -57,11 +74,26 @@ request(
     "PUT",
 )
 request(
+    f"/api/v1/ai/sessions/{session['session_id']}/ratings/{card['card_id']}",
+    {"value": "not_useful"},
+    "PUT",
+)
+request(
     f"/api/v1/ai/sessions/{session['session_id']}/progress",
     {"current_position": 1},
     "PATCH",
 )
 restored = request(f"/api/v1/ai/sessions/{session['session_id']}")
 assert restored["current_position"] == 1
-assert restored["ratings"][card["card_id"]] == "useful"
-print("E2E OK: UI -> API -> model -> DB -> review -> rating -> resumed progress")
+assert restored["ratings"][card["card_id"]] == "not_useful"
+
+# These are real API guard checks. They complement model evals; they are not
+# represented as an automatically successful `safety_ok` field in that runner.
+expect_error("/api/v1/ai/sessions/session_missing", 404)
+expect_error(
+    f"/api/v1/ai/sessions/{session['session_id']}/ratings/{card['card_id']}",
+    422,
+    {"value": "unknown"},
+    "PUT",
+)
+print("E2E OK: UI -> API -> model -> DB -> review -> rating replacement -> resumed progress -> API guards")
