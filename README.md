@@ -20,6 +20,8 @@ Mini-набор является merge-gate. Полный прогон выпо�
 
 Операции API и БД (`SAFE`, `UX`, `STATE`) не объявляются успешно выполненными без вызова соответствующего кода. В отчёте они имеют `executed=false` и проверяются интеграционными тестами Delivery.
 
+Полный результат разделён на два доказательства: 95 модельных кейсов в `baseline-results.json` и 33/33 прикладных кейса в `application-results.json`. Review agreement полного модельного прогона — 90,48% при пороге 85%.
+
 ## Связанные ветки
 
 - Product: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/tree/lab3-product-prototype
