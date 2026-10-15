@@ -43,7 +43,7 @@ class SourceLookupTool:
 
     @staticmethod
     def _lookup(request: SourceLookupRequest) -> SourceLookupResult:
-        terms = {term.lower() for term in request.query.split() if len(term) > 2}
+        terms = {term.lower()[:6] for term in request.query.split() if len(term) > 2}
         ranked = []
         for page in request.pages:
             text = str(page.get("text", ""))

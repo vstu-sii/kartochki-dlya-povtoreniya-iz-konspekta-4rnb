@@ -1,0 +1,38 @@
+name: Lab4 full quality gates
+
+on:
+  pull_request:
+  push:
+    branches: ["lab4-*-infrastructure", main]
+
+jobs:
+  full-evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -r backend/requirements.txt
+      - name: Full golden dataset gate
+        env:
+          MODEL_PROVIDER: deterministic
+        run: python tests/evals/run_evals.py --min-schema 1.0 --min-grounding 1.0 --min-review 0.85 --output artifacts/evals/lab4-full-results.json
+      - name: Application and database dataset cases
+        env:
+          MODEL_PROVIDER: deterministic
+        run: python tests/evals/run_application_evals.py
+      - name: Critical-path integration tests
+        env:
+          MODEL_PROVIDER: deterministic
+        run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Security attack gate
+        run: python tests/security/run_attacks.py --mode after --output artifacts/security/lab4-attacks-after.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab4-quality-evidence
+          path: |
+            artifacts/evals/lab4-full-results.json
+            artifacts/evals/application-results.json
+            artifacts/security/lab4-attacks-after.json

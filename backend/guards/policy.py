@@ -1,6 +1,7 @@
 """Security decisions that must never be delegated to an LLM prompt."""
 
 import re
+import unicodedata
 from dataclasses import dataclass
 
 
@@ -11,15 +12,16 @@ class GuardDecision:
 
 
 _INJECTION_PATTERNS = (
-    re.compile(r"ignore\s+(all\s+)?(previous|prior)\s+instructions", re.I),
-    re.compile(r"(забудь|игнорируй)\s+(все\s+)?(предыдущие|системные)\s+инструкции", re.I),
-    re.compile(r"(show|reveal|print|покажи|раскрой)\s+.{0,24}(system\s+prompt|системн\w*\s+промпт)", re.I),
+    re.compile(r"ignore\W+(all\W+)?(previous|prior)\W+instructions", re.I),
+    re.compile(r"(забудь|игнорируй)\W+(все\W+)?(предыдущие|системные)\W+инструкции", re.I),
+    re.compile(r"(show|reveal|print|покажи|раскрой)\W+.{0,24}(system\W+prompt|системн\w*\W+промпт)", re.I),
     re.compile(r"<\s*(system|assistant|tool)\s*>", re.I),
 )
 
 
 def inspect_untrusted_text(text: str) -> GuardDecision:
-    value = str(text or "")
+    value = unicodedata.normalize("NFKC", str(text or ""))
+    value = re.sub(r"[\u200b-\u200f\u2060\ufeff]", "", value)
     if any(pattern.search(value) for pattern in _INJECTION_PATTERNS):
         return GuardDecision(False, "PROMPT_INJECTION_BLOCKED")
     return GuardDecision(True, "OK")
