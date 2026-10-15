@@ -18,7 +18,7 @@ class BaselineTest(unittest.TestCase):
     def test_generation_is_structured_grounded_and_traced(self):
         text = "Кэш ускоряет доступ к часто используемым данным."
         result = self.model.generate({"pages": [{"page": 1, "text": text}], "requested_card_count": 5})
-        self.assertEqual(5, len(result["cards"]))
+        self.assertEqual(1, len(result["cards"]))
         self.assertTrue(all(card["source_quote"] in text for card in result["cards"]))
         self.assertTrue(self.trace_path.exists())
 

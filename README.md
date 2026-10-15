@@ -5,11 +5,11 @@
 ## Как проверить
 
 ```bash
-python tests/evals/run_evals.py --mini --min-schema 1 --min-grounding 0.95 --min-review 0.85 --output artifacts/evals/mini-results.json
+python tests/evals/run_evals.py --mini --min-schema 1 --min-grounding 0.95 --min-review 0.85 --min-safety 1 --output artifacts/evals/mini-results.json
 python tests/evals/run_evals.py --output artifacts/evals/baseline-results.json
 ```
 
-Mini-набор является merge-gate. Полный прогон выполняется по расписанию и вручную workflow `Lab3 evals`. Результаты и трейсы сохраняются в `artifacts/evals/` и как CI-артефакты.
+Mini-набор является merge-gate. Полный прогон запускается второй командой выше. Расписание workflow `Lab3 evals` начнёт работать после попадания workflow в default branch. Результаты и трейсы сохраняются в `artifacts/evals/` и как CI-артефакты.
 
 ## Что измеряется
 
@@ -27,3 +27,7 @@ Mini-набор является merge-gate. Полный прогон выпо�
 - Product: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/tree/lab3-product-prototype
 - AI: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/tree/lab3-ai-prototype
 - Delivery и E2E: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/tree/lab3-delivery-prototype
+
+Mini содержит ровно 8 фиксированных кейсов: 4 generation, 2 review, 2 safety. Safety проверяет настоящую guard-функцию; HTTP-проверки находятся в `tests/test_http_guards.py`. Для HTTP-тестов установите `pip install -r backend/requirements.txt`, затем `python -m unittest discover -s tests`.
+
+Технические результаты и ограничения: `docs/quality/verification-2026-10-15.md`. Генерация cards-v1.2 возвращает от 1 до requested_card_count уникальных фрагментов.
