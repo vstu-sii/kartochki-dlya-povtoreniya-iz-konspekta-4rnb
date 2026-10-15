@@ -47,6 +47,11 @@ class HttpGuardsTest(unittest.TestCase):
             self.assertEqual(401, client.get(url).status_code)
             self.assertEqual(403, client.get(url, headers={'X-User-ID': 'another-user'}).status_code)
             self.assertEqual(200, client.get(url, headers={'X-User-ID': 'http-owner'}).status_code)
+            review_url = '/v1/ai/answer-reviews'
+            review_payload = {'session_id': session['session_id'], 'student_answer': cards[0]['reference_answer'], 'card': cards[0]}
+            self.assertEqual(401, client.post(review_url, json=review_payload).status_code)
+            self.assertEqual(403, client.post(review_url, headers={'X-User-ID': 'another-user'}, json=review_payload).status_code)
+            self.assertEqual(200, client.post(review_url, headers={'X-User-ID': 'http-owner'}, json=review_payload).status_code)
             for suffix, method, body in [('/progress', 'patch', {'current_position': 0}),
                                          ('/ratings/' + cards[0]['card_id'], 'put', {'value': 'useful'}),
                                          ('/complete', 'post', {'answers': []})]:

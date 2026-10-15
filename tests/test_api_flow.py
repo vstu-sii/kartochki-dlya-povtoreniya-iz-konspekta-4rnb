@@ -1,6 +1,7 @@
 import asyncio
 import os
 import unittest
+from uuid import uuid4
 
 
 os.environ["AI_SERVICE_URL"] = "inprocess"
@@ -31,11 +32,11 @@ class ApiFlowTest(unittest.TestCase):
         db = SessionLocal()
         try:
             request = GenerateRequest(
-                document_id="doc_integration_001",
+                document_id=f"doc_{uuid4().hex}",
                 pages=[{"page": 1, "text": "Кэш ускоряет доступ к часто используемым данным."}],
                 requested_card_count=5,
             )
-            card_set = asyncio.run(generate_card_set(request, "integration-key-0001", db))
+            card_set = asyncio.run(generate_card_set(request, f"integration-{uuid4().hex}", db))
             self.assertEqual(1, len(card_set["cards"]))
             study_session = create_or_resume_session(
                 SessionRequest(card_set_id=card_set["card_set_id"], user_id="integration-user"), db
@@ -46,7 +47,7 @@ class ApiFlowTest(unittest.TestCase):
                 card=card_set["cards"][0],
                 student_answer=card_set["cards"][0]["reference_answer"],
             )
-            result = asyncio.run(review_answer(review, db))
+            result = asyncio.run(review_answer(review, db, "integration-user"))
             self.assertEqual("correct", result["verdict"])
             card_id = card_set["cards"][0]["card_id"]
             rate_card(study_session["session_id"], card_id, RatingRequest(value="useful"), db, "integration-user")

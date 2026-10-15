@@ -18,8 +18,10 @@ docker compose -f compose.yml up --build --wait
 Telegram Adapter входит в тот же Compose. Без токена он запускается в безопасном
 режиме ожидания, чтобы проверка проекта не зависела от секретов. Для настоящего
 бота создайте токен через BotFather и задайте `TELEGRAM_BOT_TOKEN` в локальном
-`.env` или в секретах прод-сервиса. После этого бот принимает PDF до 10 МБ,
-создаёт карточки, показывает источник, проверяет ответы и переключает карточки.
+`.env` или в секретах прод-сервиса. После этого бот принимает PDF до 10 МБ и
+40 страниц, извлекает текст (для сканов использует OCR), создаёт карточки,
+показывает подтверждающую цитату и проверяет ответы по смыслу. Синонимы и
+формулировки своими словами разрешены — ответ не обязан совпадать с эталоном дословно.
 Оценки «полезно/не полезно» и текущая позиция сохраняются в БД; после `/start`
 бот продолжает последнюю незавершённую сессию.
 Локально адаптер использует long polling; на Render backend автоматически
@@ -28,18 +30,32 @@ Telegram Adapter входит в тот же Compose. Без токена он �
 
 Остановка с сохранением БД: `docker compose -f compose.yml down`. Полная очистка демонстрационных данных: `docker compose -f compose.yml down -v`.
 
-Ключ не обязателен: по умолчанию работает deterministic grounded baseline. Для Gemini скопируйте `.env.example` в `.env`, задайте `MODEL_PROVIDER=gemini` и `GEMINI_API_KEY`. `.env` исключён из git.
+## Бесплатная модель Gemini
+
+1. Получите API-ключ в [Google AI Studio](https://aistudio.google.com/apikey).
+2. Скопируйте `.env.example` в `.env`.
+3. Заполните `GEMINI_API_KEY` и оставьте `MODEL_PROVIDER=gemini`.
+4. Запустите Compose командой выше.
+
+Используется `gemini-3.8-flash` с JSON Schema. Для каждого запроса есть до трёх
+попыток; при лимите, сетевой ошибке или некорректном ответе включается локальный
+grounded baseline, поэтому бот не перестаёт работать. Ключи и `.env` не попадают
+в Git. Бесплатный тариф подходит для демонстрации и раннего пилота, но имеет
+лимиты. Кроме того, согласно условиям Google, данные бесплатного тарифа могут
+использоваться для улучшения продуктов. Для коммерческой работы с приватными
+учебными материалами нужен оплачиваемый тариф и политика обработки данных.
 
 ## Проверки
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py"
-python tests/evals/run_evals.py --mini --fail-below 0.90
-python tests/evals/run_evals.py
+python tests/evals/run_application_evals.py
 docker compose -f compose.yml config --quiet
 ```
 
-Полный eval пишет `artifacts/evals/baseline-results.json`, включая latency и токены. CI дополнительно собирает Compose, ждёт health checks и запрашивает UI.
+Application eval пишет `artifacts/evals/application-results.json`. CI дополнительно
+запускает unit-тесты, собирает Compose, ждёт health checks и проверяет сквозной
+путь UI → API → модель → БД.
 
 ## Состав системы
 
@@ -49,17 +65,19 @@ docker compose -f compose.yml config --quiet
 | Web-клиент | `frontend/prototype/` | браузерный E2E, loading/error states, карточка и review |
 | Application API | `backend/` | валидация, async-вызов AI, идемпотентность, сохранение |
 | Baseline | `ml/models/baseline.py` | structured cards/review, retry и fallback |
-| Trace SDK/dashboard | `ml/tracing/` | prompt, response, model, latency и fallback каждого вызова |
+| Trace SDK/dashboard | `ml/tracing/` | хеш/размер запроса, model, latency, usage и fallback; текст скрыт по умолчанию |
 | БД | `backend/models/`, `migrations/` | documents, card sets, cards, reviews, study sessions, ratings |
 | Evals | `tests/evals/`, `.github/workflows/evals.yml` | mini/full прогоны и порог CI |
 | Product validation | `docs/use-cases/validation-lab3.md` | E2E, отклонения, задачи и владельцы |
 
-## Ограничения текущего прототипа
+## Границы готовности
 
-- PDF должен содержать текстовый слой; OCR сканов оставлен на следующий спринт;
-- история изменений оценки не хранится: повторная оценка заменяет текущее значение;
-- автоматическое удаление учебных сессий через 30 дней оставлено на следующий спринт;
-- локальный baseline имеет 69,05% agreement review и не выдаётся за качество Gemini;
-- `render.yaml` обновляет существующий Render-сервис, а не создаёт новый продукт.
+- карточки grounded: каждая содержит страницу и дословную цитату из PDF;
+- ответ Gemini проходит строгую JSON-схему и серверную проверку grounding;
+- трассы по умолчанию не содержат текст PDF (`TRACE_CONTENT=false`);
+- прогресс и история оценок сохраняются, незавершённая сессия восстанавливается;
+- сессии старше 30 дней не открываются;
+- `render.yaml` обновляет существующий Render-сервис, а не создаёт новый продукт;
+- перед реальными продажами выполните чек-лист `docs/production-readiness.md`.
 
 Правила работы команды: `CONTRIBUTING.md`. Полный отчёт ограничений: `docs/iteration-notes.md`.

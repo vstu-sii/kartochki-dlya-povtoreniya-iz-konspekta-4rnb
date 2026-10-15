@@ -6,8 +6,16 @@ services:
     healthCheckPath: /health
     envVars:
       - key: MODEL_PROVIDER
-        value: deterministic
+        value: gemini
+      - key: LLM_PRIMARY_MODEL
+        value: gemini-3.8-flash
+      - key: TRACE_CONTENT
+        value: "false"
+      - key: OCR_LANGUAGES
+        value: rus+eng
       - key: GEMINI_API_KEY
         sync: false
       - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
         sync: false
