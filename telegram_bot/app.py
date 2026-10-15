@@ -138,7 +138,7 @@ async def process_update(update: dict) -> None:
         if action == "next" and chat_id in sessions:
             state = sessions[chat_id]
             next_position = state["index"] + 1
-            async with httpx.AsyncClient(timeout=20.0) as client:
+            async with httpx.AsyncClient(timeout=20.0, headers={"X-User-ID": f"telegram:{chat_id}"}) as client:
                 response = await client.patch(
                     f"{BACKEND_URL}/v1/ai/sessions/{state['session_id']}/progress",
                     json={"current_position": next_position},
@@ -150,7 +150,7 @@ async def process_update(update: dict) -> None:
             state = sessions[chat_id]
             card = state["cards"][state["index"]]
             value = action.split(":", 1)[1]
-            async with httpx.AsyncClient(timeout=20.0) as client:
+            async with httpx.AsyncClient(timeout=20.0, headers={"X-User-ID": f"telegram:{chat_id}"}) as client:
                 response = await client.put(
                     f"{BACKEND_URL}/v1/ai/sessions/{state['session_id']}/ratings/{card['card_id']}",
                     json={"value": value},
@@ -166,7 +166,7 @@ async def process_update(update: dict) -> None:
         return
     text = (message.get("text") or "").strip()
     if text in {"/start", "/help"}:
-        async with httpx.AsyncClient(timeout=20.0) as client:
+        async with httpx.AsyncClient(timeout=20.0, headers={"X-User-ID": f"telegram:{chat_id}"}) as client:
             response = await client.get(f"{BACKEND_URL}/v1/ai/sessions/resume", params={"user_id": f"telegram:{chat_id}"})
         if response.status_code == 200:
             persisted = response.json()
@@ -180,7 +180,7 @@ async def process_update(update: dict) -> None:
             await send(chat_id, "👋 С возвращением! Продолжаем с карточки, на которой вы остановились.")
             await show_card(chat_id)
         else:
-            await send(chat_id, "👋 <b>Здравствуйте!</b>\n\nПришлите PDF-методичку с текстовым слоем. Я создам 5 карточек, укажу источник и помогу проверить ответы.\n\nМаксимальный размер файла — 10 МБ.", parse_mode="HTML")
+            await send(chat_id, "👋 <b>Здравствуйте!</b>\n\nПришлите PDF-методичку с текстовым слоем. Я создам до 5 карточек по независимым фрагментам, укажу источник и помогу проверить ответы.\n\nМаксимальный размер файла — 10 МБ.", parse_mode="HTML")
     elif document := message.get("document"):
         if document.get("mime_type") != "application/pdf":
             await send(chat_id, "⚠️ Поддерживается только файл в формате PDF.")

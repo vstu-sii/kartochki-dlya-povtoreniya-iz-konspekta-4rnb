@@ -114,7 +114,7 @@ def evaluate_rating(case: dict) -> tuple[bool, dict]:
                 values = ["not_useful" if value == "useful" else "useful", value]
         result = None
         for value in values:
-            result = rate_card(session_id, card_id, RatingRequest(value=value), db)
+            result = rate_card(session_id, card_id, RatingRequest(value=value), db, "owner")
         rating_count = db.scalar(select(func.count()).select_from(CardRating))
         event_count = db.scalar(select(func.count()).select_from(CardRatingEvent))
         current = result["value"] if result else None
@@ -146,9 +146,9 @@ def evaluate_session(case: dict) -> tuple[bool, dict]:
             ok = result["current_position"] == case["input"].get("current_position", result["current_position"])
             return ok, {"resumed": True, "position": result["current_position"]}
         request = CompleteRequest(answers=case["input"].get("answers", []))
-        result = complete_session(session_id, request, db)
+        result = complete_session(session_id, request, db, "owner")
         if expected.get("idempotent"):
-            result = complete_session(session_id, request, db)
+            result = complete_session(session_id, request, db, "owner")
         ok = result["status"] == expected.get("status")
         if "counts" in expected:
             ok &= result["counts"] == expected["counts"]

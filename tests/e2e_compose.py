@@ -14,7 +14,7 @@ def request(path: str, payload: dict | None = None, method: str | None = None) -
         f"{BASE}{path}",
         data=data,
         method=method,
-        headers={"Content-Type": "application/json", "Idempotency-Key": "ci-e2e-lab3"},
+        headers={"X-User-ID": "ci-e2e-user", "Content-Type": "application/json", "Idempotency-Key": "ci-e2e-lab3"},
     )
     try:
         with urllib.request.urlopen(req, timeout=90) as response:
@@ -31,7 +31,7 @@ def expect_error(path: str, expected_status: int, payload: dict | None = None, m
         f"{BASE}{path}",
         data=data,
         method=method,
-        headers={"Content-Type": "application/json", "Idempotency-Key": "ci-e2e-negative"},
+        headers={"X-User-ID": "ci-e2e-user", "Content-Type": "application/json", "Idempotency-Key": "ci-e2e-negative"},
     )
     try:
         urllib.request.urlopen(req, timeout=30)
@@ -55,7 +55,7 @@ created = request(
         "requested_card_count": 5,
     },
 )
-assert len(created["cards"]) == 5
+assert len(created["cards"]) == 1
 latest = request("/api/v1/ai/card-sets/latest")
 assert latest["card_set_id"] == created["card_set_id"]
 card = created["cards"][0]
