@@ -1,9 +1,9 @@
-name: Lab3 CI
+name: Lab4 CI
 
 on:
   pull_request:
   push:
-    branches: ["lab3-*-prototype"]
+    branches: ["lab4-*-infrastructure"]
 
 jobs:
   test-and-compose:
@@ -14,7 +14,10 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m pip install -r backend/requirements.txt
-      - run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Unit and integration tests
+        env:
+          MODEL_PROVIDER: deterministic
+        run: python -m unittest discover -s tests -p "test_*.py"
       - name: Run all API and database dataset cases
         run: python tests/evals/run_application_evals.py
       - uses: actions/upload-artifact@v4
