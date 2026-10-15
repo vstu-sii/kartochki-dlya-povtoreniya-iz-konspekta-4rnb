@@ -149,7 +149,11 @@ async def generate_card_set(
         db.add(Card(id=item.get("card_id", f"card_{uuid4().hex}"), card_set_id=card_set.id, position=position, **values))
     db.commit()
     db.refresh(card_set)
-    return serialize_set(card_set)
+    response = serialize_set(card_set)
+    # Safe provider diagnostic for a newly generated set. It contains only a
+    # category such as gemini_http_403, never an API key or provider body.
+    response["fallback_reason"] = result.get("fallback_reason")
+    return response
 
 
 @router.post("/card-sets/from-pdf", status_code=201)

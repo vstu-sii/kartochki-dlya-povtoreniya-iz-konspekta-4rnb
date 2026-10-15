@@ -21,6 +21,7 @@ class TraceClient:
             "card_count": len(response.get("cards", [])),
             "prompt_version": response.get("prompt_version"),
             "usage": response.get("usage", {}),
+            "fallback_reason": response.get("fallback_reason"),
         }
         event = {
             "trace_id": trace_id,

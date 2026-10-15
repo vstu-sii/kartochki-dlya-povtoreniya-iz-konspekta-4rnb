@@ -54,6 +54,7 @@ class BaselineModel:
         trace_id = f"tr_{uuid4().hex}"
         prompt = self._generation_prompt(payload)
         fallback_used = False
+        fallback_reason = None
         model_name = "deterministic-grounded-v1"
         result = None
 
@@ -62,9 +63,10 @@ class BaselineModel:
                 result = self._call_gemini(prompt, self._cards_schema(payload.get("requested_card_count", 5)))
                 result = self._normalize_generated_cards(result, payload)
                 model_name = PRIMARY_MODEL
-            except (HTTPError, URLError, TimeoutError, ValueError, KeyError, TypeError):
+            except (HTTPError, URLError, TimeoutError, ValueError, KeyError, TypeError) as exc:
                 result = None
                 fallback_used = True
+                fallback_reason = self._fallback_reason(exc)
 
         if result is None:
             result = self._deterministic_cards(payload)
@@ -74,6 +76,7 @@ class BaselineModel:
             prompt_version=PROMPT_VERSION,
             schema_version=SCHEMA_VERSION,
             fallback_used=fallback_used,
+            fallback_reason=fallback_reason,
             trace_id=trace_id,
             latency_ms=round((time.perf_counter() - started) * 1000),
         )
@@ -89,6 +92,7 @@ class BaselineModel:
         answer = payload["student_answer"].strip()
         prompt = self._review_prompt(card, answer)
         fallback_used = False
+        fallback_reason = None
         model_name = "deterministic-review-v2"
         result = None
 
@@ -97,9 +101,10 @@ class BaselineModel:
                 result = self._call_gemini(prompt, self._review_schema())
                 self._validate_review(result)
                 model_name = PRIMARY_MODEL
-            except (HTTPError, URLError, TimeoutError, ValueError, KeyError, TypeError):
+            except (HTTPError, URLError, TimeoutError, ValueError, KeyError, TypeError) as exc:
                 result = None
                 fallback_used = True
+                fallback_reason = self._fallback_reason(exc)
 
         if result is None:
             result = self._deterministic_review(card, answer)
@@ -110,6 +115,7 @@ class BaselineModel:
             model=model_name,
             prompt_version=REVIEW_PROMPT_VERSION,
             fallback_used=fallback_used,
+            fallback_reason=fallback_reason,
             trace_id=trace_id,
             latency_ms=round((time.perf_counter() - started) * 1000),
         )
@@ -208,7 +214,7 @@ class BaselineModel:
                 "contents": [{"parts": [{"text": prompt}]}],
                 "generationConfig": {
                     "responseMimeType": "application/json",
-                    "responseSchema": response_schema,
+                    "responseJsonSchema": response_schema,
                     "temperature": 0.2,
                     "maxOutputTokens": 6000,
                 },
@@ -243,6 +249,17 @@ class BaselineModel:
                     raise
                 time.sleep(0.75 * (2**attempt))
         raise last_error or RuntimeError("Gemini request failed")
+
+    @staticmethod
+    def _fallback_reason(exc: Exception) -> str:
+        """Return a safe diagnostic without provider body, URL or API key."""
+        if isinstance(exc, HTTPError):
+            return f"gemini_http_{exc.code}"
+        if isinstance(exc, TimeoutError):
+            return "gemini_timeout"
+        if isinstance(exc, URLError):
+            return "gemini_network"
+        return "gemini_invalid_output"
 
     @staticmethod
     def _generation_prompt(payload: dict) -> str:
