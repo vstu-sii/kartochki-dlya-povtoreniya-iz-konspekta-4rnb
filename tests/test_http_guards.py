@@ -21,7 +21,7 @@ class HttpGuardsTest(unittest.TestCase):
                 'card': {'card_id': 'card_test', 'question': 'Question', 'reference_answer': 'Answer', 'source_page': 1, 'source_quote': 'Quote'}})
             self.assertEqual(422, response.status_code)
             self.assertEqual('INVALID_REQUEST', response.json()['detail']['code'])
-            response = client.post('/v1/ai/card-sets', json={
+            response = client.post('/v1/ai/card-sets', headers={'X-User-ID': 'http-owner'}, json={
                 'document_id': 'doc_' + uuid4().hex,
                 'pages': [{'page': i, 'text': 'a' * 130000} for i in (1, 2)]})
             self.assertEqual(413, response.status_code)
@@ -35,7 +35,7 @@ class HttpGuardsTest(unittest.TestCase):
 
     def test_owner_header_and_short_document(self):
         with TestClient(app) as client:
-            response = client.post('/v1/ai/card-sets', json={
+            response = client.post('/v1/ai/card-sets', headers={'X-User-ID': 'http-owner'}, json={
                 'document_id': 'doc_' + uuid4().hex,
                 'pages': [{'page': 1, 'text': 'Кэш ускоряет доступ к часто используемым данным.'}]})
             self.assertEqual(201, response.status_code)
