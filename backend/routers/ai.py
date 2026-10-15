@@ -13,7 +13,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.database import session_scope
+from backend.limits import budget_limiter
 from backend.models import AnswerReview, Card, CardRating, CardRatingEvent, CardSet, Document, StudySession
+from backend.observability import record_budget
 from backend.pdf_extractor import PdfExtractionError, extract_pdf_pages
 from backend.quality_guards import validate_model_card, validate_untrusted_input
 
@@ -105,6 +107,7 @@ async def generate_card_set(
     request: GenerateRequest,
     idempotency_key: str | None = Header(default=None, alias="Idempotency-Key"),
     db: Session = Depends(session_scope),
+    x_user_id: Annotated[str | None, Header(alias="X-User-ID")] = None,
 ):
     failure = validate_untrusted_input({"pages": request.pages, "estimated_tokens": sum(len(page.text) for page in request.pages) // 4})
     if failure:
@@ -114,7 +117,20 @@ async def generate_card_set(
     if existing:
         return serialize_set(existing)
 
-    result = await call_model("/v1/model/card-sets", request.model_dump())
+    estimated_tokens = max(1, sum(len(page.text) for page in request.pages) // 4)
+    decision = budget_limiter.consume(x_user_id or "", estimated_tokens)
+    record_budget(decision)
+    if not decision.allowed:
+        status = 401 if decision.reason == "USER_ID_REQUIRED" else 429
+        raise HTTPException(status_code=status, detail={"code": decision.reason})
+
+    model_payload = request.model_dump()
+    model_payload.update(
+        model_tier=decision.model_tier,
+        user_id=x_user_id,
+        resource_owner_id=x_user_id,
+    )
+    result = await call_model("/v1/model/card-sets", model_payload)
     page_text = {page.page: page.text for page in request.pages}
     if not 1 <= len(result.get("cards", [])) <= request.requested_card_count:
         raise HTTPException(status_code=502, detail={"code": "MODEL_OUTPUT_INVALID"})
@@ -162,6 +178,7 @@ async def generate_card_set_from_pdf(
     requested_card_count: int = Form(default=5, ge=5, le=10),
     language: str = Form(default="ru", pattern=r"^(ru|en)$"),
     db: Session = Depends(session_scope),
+    x_user_id: Annotated[str | None, Header(alias="X-User-ID")] = None,
 ):
     """Extract text (with OCR for scans) and run the persisted generation flow."""
     failure = validate_untrusted_input({"mime_type": file.content_type})
@@ -185,7 +202,12 @@ async def generate_card_set_from_pdf(
     )
     # Include the card-generation revision so the same PDF is regenerated
     # after question-quality improvements instead of returning stale cards.
-    return await generate_card_set(request, f"pdf-{digest}-{requested_card_count}-{language}-cards-v2.0", db)
+    return await generate_card_set(
+        request=request,
+        idempotency_key=f"pdf-{digest}-{requested_card_count}-{language}-cards-v2.0",
+        db=db,
+        x_user_id=x_user_id,
+    )
 
 
 @router.post("/answer-reviews")
@@ -211,9 +233,22 @@ async def review_answer(
         "source_quote": persisted_card.source_quote,
         "difficulty": persisted_card.difficulty,
     }
+    estimated_tokens = max(1, (len(request.student_answer) + len(persisted_card.reference_answer)) // 4)
+    decision = budget_limiter.consume(x_user_id or "", estimated_tokens)
+    record_budget(decision)
+    if not decision.allowed:
+        status = 401 if decision.reason == "USER_ID_REQUIRED" else 429
+        raise HTTPException(status_code=status, detail={"code": decision.reason})
     result = await call_model(
         "/v1/model/answer-reviews",
-        {"session_id": request.session_id, "card": canonical_card, "student_answer": request.student_answer},
+        {
+            "session_id": request.session_id,
+            "card": canonical_card,
+            "student_answer": request.student_answer,
+            "model_tier": decision.model_tier,
+            "user_id": x_user_id,
+            "resource_owner_id": x_user_id,
+        },
     )
     review = AnswerReview(
         card_id=request.card.card_id,

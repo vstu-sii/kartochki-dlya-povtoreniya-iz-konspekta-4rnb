@@ -22,6 +22,8 @@ class TraceClient:
             "prompt_version": response.get("prompt_version"),
             "usage": response.get("usage", {}),
             "fallback_reason": response.get("fallback_reason"),
+            "cache_hit": response.get("cache_hit", False),
+            "tool_status": response.get("tool_status"),
         }
         event = {
             "trace_id": trace_id,
@@ -38,3 +40,6 @@ class TraceClient:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self._lock, self.path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(event, ensure_ascii=False) + "\n")
+        # Promtail collects stdout, so LLM traces are available beside service
+        # logs without granting Grafana access to prompts or uploaded PDFs.
+        print(json.dumps({"event": "llm_trace", **event}, ensure_ascii=False), flush=True)

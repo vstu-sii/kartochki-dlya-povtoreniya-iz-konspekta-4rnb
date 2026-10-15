@@ -36,7 +36,7 @@ class ApiFlowTest(unittest.TestCase):
                 pages=[{"page": 1, "text": "Кэш ускоряет доступ к часто используемым данным."}],
                 requested_card_count=5,
             )
-            card_set = asyncio.run(generate_card_set(request, f"integration-{uuid4().hex}", db))
+            card_set = asyncio.run(generate_card_set(request, f"integration-{uuid4().hex}", db, "integration-user"))
             self.assertEqual(1, len(card_set["cards"]))
             study_session = create_or_resume_session(
                 SessionRequest(card_set_id=card_set["card_set_id"], user_id="integration-user"), db

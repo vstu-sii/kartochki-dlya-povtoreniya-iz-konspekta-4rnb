@@ -109,6 +109,7 @@ async def create_from_pdf(chat_id: int, document: dict) -> None:
         source.raise_for_status()
         response = await client.post(
             f"{BACKEND_URL}/v1/ai/card-sets/from-pdf",
+            headers={"X-User-ID": f"telegram:{chat_id}"},
             files={"file": (document.get("file_name", "material.pdf"), BytesIO(source.content), "application/pdf")},
             data={"requested_card_count": "5", "language": "ru"},
         )

@@ -21,10 +21,14 @@ services:
       MODEL_PROVIDER: ${MODEL_PROVIDER:-gemini}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-gemini-3.8-flash}
+      LLM_CHEAP_MODEL: ${LLM_CHEAP_MODEL:-gemini-2.5-flash-lite}
       GEMINI_TIMEOUT_SECONDS: ${GEMINI_TIMEOUT_SECONDS:-30}
       GEMINI_MAX_ATTEMPTS: ${GEMINI_MAX_ATTEMPTS:-2}
       TRACE_FILE: /data/traces.jsonl
       TRACE_CONTENT: ${TRACE_CONTENT:-false}
+      MODEL_CACHE_TTL_SECONDS: ${MODEL_CACHE_TTL_SECONDS:-900}
+      MODEL_CACHE_MAX_ENTRIES: ${MODEL_CACHE_MAX_ENTRIES:-256}
+      SOURCE_TOOL_TIMEOUT_SECONDS: ${SOURCE_TOOL_TIMEOUT_SECONDS:-1.0}
     volumes:
       - traces:/data
     healthcheck:
@@ -40,6 +44,9 @@ services:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-cards}:${POSTGRES_PASSWORD:-cards}@postgres:5432/${POSTGRES_DB:-cards}
       AI_SERVICE_URL: http://ai-service:8001
       OCR_LANGUAGES: ${OCR_LANGUAGES:-rus+eng}
+      MAX_REQUESTS_PER_USER_DAY: ${MAX_REQUESTS_PER_USER_DAY:-50}
+      MAX_TOKENS_PER_USER_DAY: ${MAX_TOKENS_PER_USER_DAY:-120000}
+      BUDGET_DEGRADE_RATIO: ${BUDGET_DEGRADE_RATIO:-0.80}
     depends_on:
       postgres: {condition: service_healthy}
       ai-service: {condition: service_healthy}

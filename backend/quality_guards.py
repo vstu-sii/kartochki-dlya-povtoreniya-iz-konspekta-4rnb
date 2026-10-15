@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+from backend.guards import inspect_untrusted_text
+
 
 @dataclass(frozen=True)
 class GuardFailure:
@@ -15,6 +17,15 @@ def validate_untrusted_input(payload: dict) -> GuardFailure | None:
         return GuardFailure(422, "INVALID_REQUEST")
     if answer is not None and len(str(answer)) > 2_000:
         return GuardFailure(422, "ANSWER_TOO_LONG")
+    texts = [str(answer or "")]
+    texts.extend(
+        str(page.get("text", "") if isinstance(page, dict) else getattr(page, "text", ""))
+        for page in payload.get("pages", [])
+    )
+    for text in texts:
+        decision = inspect_untrusted_text(text)
+        if not decision.allowed:
+            return GuardFailure(422, decision.code)
 
     mime = payload.get("mime_type", payload.get("mime"))
     if mime is not None and mime not in {"application/pdf", "application/octet-stream"}:

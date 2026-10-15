@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.database import init_db
+from backend.observability import metrics_middleware, metrics_response
 from backend.routers.ai import router as ai_router
 try:
     # The single-container Render image includes the adapter. In local Compose
@@ -43,7 +44,8 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="Карточки для повторения", version="0.3.0", lifespan=lifespan)
+app = FastAPI(title="Карточки для повторения", version="0.4.0", lifespan=lifespan)
+app.middleware("http")(metrics_middleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:8080", "http://127.0.0.1:8080"],
@@ -58,9 +60,14 @@ def health():
     return {
         "service": "application-api",
         "status": "ok",
-        "version": "lab3",
+        "version": "lab4",
         "telegram": "webhook" if TELEGRAM_BOT_TOKEN and os.getenv("RENDER_EXTERNAL_URL") else "local-polling-or-disabled",
     }
+
+
+@app.get("/metrics", include_in_schema=False)
+def metrics():
+    return metrics_response()
 
 
 @app.post("/telegram/webhook", include_in_schema=False)

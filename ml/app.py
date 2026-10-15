@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from ml.models.baseline import BaselineModel
 
 
-app = FastAPI(title="Flashcards AI Service", version="0.3.0")
+app = FastAPI(title="Flashcards AI Service", version="0.4.0")
 model = BaselineModel()
 
 
