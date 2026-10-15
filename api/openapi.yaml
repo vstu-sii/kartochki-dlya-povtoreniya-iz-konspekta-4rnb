@@ -89,7 +89,8 @@ paths:
       - AI
       operationId: reviewAnswer
       summary: Проверить текстовый ответ студента по одной карточке
-      parameters: []
+      parameters:
+      - $ref: '#/components/parameters/UserId'
       requestBody:
         required: true
         content:
@@ -117,6 +118,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AnswerReviewResponse'
+        '401':
+          description: Не передан идентификатор владельца сессии
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '403':
+          description: Сессия или карточка принадлежат другому пользователю
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '400':
           description: Application or request validation error
           content:
@@ -171,6 +184,15 @@ components:
       description: Повтор того же запроса с тем же ключом возвращает прежний результат.
       schema:
         type: string
+    UserId:
+      name: X-User-ID
+      in: header
+      required: true
+      description: Идентификатор владельца учебной сессии (prototype identity assertion).
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 64
   schemas:
     DocumentPage:
       type: object
