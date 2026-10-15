@@ -16,6 +16,8 @@ PROMPT_VERSION = "cards-v2.0"
 REVIEW_PROMPT_VERSION = "review-v2.0"
 SCHEMA_VERSION = "2.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
+GEMINI_TIMEOUT_SECONDS = max(5, min(60, int(os.getenv("GEMINI_TIMEOUT_SECONDS", "30"))))
+GEMINI_MAX_ATTEMPTS = max(1, min(3, int(os.getenv("GEMINI_MAX_ATTEMPTS", "2"))))
 STOP_WORDS = {"что", "это", "как", "для", "или", "при", "его", "она", "они", "так", "если", "уже", "был", "быть", "над", "под", "the", "and", "with"}
 PHRASE_ALIASES = {
     "ram": "оперативная память",
@@ -215,16 +217,19 @@ class BaselineModel:
                 "generationConfig": {
                     "responseMimeType": "application/json",
                     "responseJsonSchema": response_schema,
-                    "temperature": 0.2,
+                    # Gemini 3.x rejects legacy sampling parameters such as
+                    # temperature. Low thinking is enough for extraction and
+                    # keeps interactive generation/review latency bounded.
+                    "thinkingConfig": {"thinkingLevel": "low"},
                     "maxOutputTokens": 6000,
                 },
             }
         ).encode("utf-8")
         last_error: Exception | None = None
-        for attempt in range(3):
+        for attempt in range(GEMINI_MAX_ATTEMPTS):
             request = Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
             try:
-                with urlopen(request, timeout=75) as response:
+                with urlopen(request, timeout=GEMINI_TIMEOUT_SECONDS) as response:
                     data = json.load(response)
                 candidate = data["candidates"][0]
                 if candidate.get("finishReason") not in {None, "STOP"}:
@@ -238,14 +243,14 @@ class BaselineModel:
                 return result
             except HTTPError as exc:
                 last_error = exc
-                if exc.code not in {429, 500, 502, 503, 504} or attempt == 2:
+                if exc.code not in {429, 500, 502, 503, 504} or attempt == GEMINI_MAX_ATTEMPTS - 1:
                     raise
                 retry_after = exc.headers.get("Retry-After") if exc.headers else None
                 delay = float(retry_after) if retry_after and retry_after.isdigit() else 0.75 * (2**attempt)
                 time.sleep(min(delay, 4.0))
             except (URLError, TimeoutError) as exc:
                 last_error = exc
-                if attempt == 2:
+                if attempt == GEMINI_MAX_ATTEMPTS - 1:
                     raise
                 time.sleep(0.75 * (2**attempt))
         raise last_error or RuntimeError("Gemini request failed")

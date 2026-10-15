@@ -9,6 +9,10 @@ services:
         value: gemini
       - key: LLM_PRIMARY_MODEL
         value: gemini-3.8-flash
+      - key: GEMINI_TIMEOUT_SECONDS
+        value: "30"
+      - key: GEMINI_MAX_ATTEMPTS
+        value: "2"
       - key: TRACE_CONTENT
         value: "false"
       - key: OCR_LANGUAGES
