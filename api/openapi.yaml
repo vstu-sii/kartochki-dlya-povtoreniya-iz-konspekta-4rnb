@@ -301,6 +301,11 @@ components:
         prompt_version: *id002
         fallback_used: &id007
           type: boolean
+        fallback_reason: &id009
+          type:
+          - string
+          - 'null'
+          description: Safe category for primary-provider fallback; never contains credentials or provider response bodies.
         latency_ms: *id001
         usage: &id008
           $ref: '#/components/schemas/TokenUsage'
@@ -316,6 +321,7 @@ components:
       - model
       - prompt_version
       - fallback_used
+      - fallback_reason
       - latency_ms
       - usage
       - cards
@@ -408,6 +414,7 @@ components:
         model: *id002
         prompt_version: *id002
         fallback_used: *id007
+        fallback_reason: *id009
         latency_ms: *id001
         usage: *id008
         review_id: *id002
@@ -420,6 +427,7 @@ components:
       - model
       - prompt_version
       - fallback_used
+      - fallback_reason
       - latency_ms
       - usage
       - review_id

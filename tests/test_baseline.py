@@ -85,6 +85,7 @@ class BaselineTest(unittest.TestCase):
                     }
                 )
         self.assertTrue(result["fallback_used"])
+        self.assertEqual("gemini_invalid_output", result["fallback_reason"])
         self.assertEqual("deterministic-review-v2", result["model"])
 
 
