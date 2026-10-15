@@ -1,26 +1,27 @@
 openapi: 3.1.0
 info:
   title: Flashcards AI API
-  version: 0.2.0
-  description: >-
-    Внутренний контракт AI-сервиса: генерация карточек из уже извлечённого
-    текста PDF и проверка ответа студента. PDF извлекается прикладным backend.
+  version: 0.3.1
+  description: Public Application API for Lab3. Internal model service uses /v1/model/*
+    on port 8001. Responses use flat objects; token counts are estimates. X-User-ID
+    is a prototype identity assertion, not authenticated identity.
 servers:
-  - url: http://localhost:8001
-    description: Local development
+- url: http://localhost:8080/api
+  description: Compose frontend gateway
+- url: http://localhost:8000
+  description: Application API
 tags:
-  - name: AI
-    description: Операции модельного пайплайна
-
+- name: AI
+  description: Операции модельного пайплайна
 paths:
   /v1/ai/card-sets:
     post:
-      tags: [AI]
+      tags:
+      - AI
       operationId: generateCardSet
       summary: Сгенерировать карточки из текста одной методички
       parameters:
-        - $ref: '#/components/parameters/RequestId'
-        - $ref: '#/components/parameters/IdempotencyKey'
+      - $ref: '#/components/parameters/IdempotencyKey'
       requestBody:
         required: true
         content:
@@ -33,10 +34,11 @@ paths:
                   document_id: doc_01J9CACHE
                   language: ru
                   pages:
-                    - page: 1
-                      text: Кэш процессора — быстрая память между процессором и оперативной памятью.
-                    - page: 2
-                      text: Промах кэша происходит, когда нужных данных в кэше нет.
+                  - page: 1
+                    text: Кэш процессора — быстрая память между процессором и оперативной
+                      памятью.
+                  - page: 2
+                    text: Промах кэша происходит, когда нужных данных в кэше нет.
                   requested_card_count: 5
       responses:
         '201':
@@ -46,43 +48,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/CardSetResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '413':
-          description: Документ превышает продуктовый лимит контекста
+          description: Application or request validation error
           content:
-            application/problem+json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Problem'
-              examples:
-                tooLarge:
-                  value:
-                    type: https://example.local/problems/document-too-large
-                    title: Document is too large
-                    status: 413
-                    code: DOCUMENT_TOO_LARGE
-                    detail: Извлечённый текст превышает 60000 оценочных токенов.
-                    trace_id: tr_01J9ABC
+                $ref: '#/components/schemas/HttpError'
         '422':
-          description: Текста недостаточно для генерации карточек
+          description: Application or request validation error
           content:
-            application/problem+json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Problem'
+                $ref: '#/components/schemas/HttpError'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '502':
-          $ref: '#/components/responses/InvalidModelOutput'
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '503':
-          $ref: '#/components/responses/ProviderUnavailable'
-
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
   /v1/ai/answer-reviews:
     post:
-      tags: [AI]
+      tags:
+      - AI
       operationId: reviewAnswer
       summary: Проверить текстовый ответ студента по одной карточке
-      parameters:
-        - $ref: '#/components/parameters/RequestId'
-        - $ref: '#/components/parameters/IdempotencyKey'
+      parameters: []
       requestBody:
         required: true
         content:
@@ -96,10 +103,13 @@ paths:
                   card:
                     card_id: card_2
                     question: Что происходит при промахе кэша?
-                    reference_answer: Процессор обращается к более медленной оперативной памяти.
+                    reference_answer: Процессор обращается к более медленной оперативной
+                      памяти.
                     source_page: 2
-                    source_quote: Промах кэша происходит, когда нужных данных в кэше нет.
-                  student_answer: Процессор не находит данные и идёт за ними в оперативную память.
+                    source_quote: Промах кэша происходит, когда нужных данных в кэше
+                      нет.
+                  student_answer: Процессор не находит данные и идёт за ними в оперативную
+                    память.
       responses:
         '200':
           description: Ответ проверен
@@ -108,26 +118,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/AnswerReviewResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '404':
-          description: Карточка или сессия не найдена
+          description: Application or request validation error
           content:
-            application/problem+json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Problem'
+                $ref: '#/components/schemas/HttpError'
         '422':
-          description: Пустой или слишком длинный ответ
+          description: Application or request validation error
           content:
-            application/problem+json:
+            application/json:
               schema:
-                $ref: '#/components/schemas/Problem'
+                $ref: '#/components/schemas/HttpError'
         '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '502':
-          $ref: '#/components/responses/InvalidModelOutput'
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
         '503':
-          $ref: '#/components/responses/ProviderUnavailable'
-
+          description: Application or request validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
 components:
   parameters:
     RequestId:
@@ -142,38 +167,41 @@ components:
     IdempotencyKey:
       name: Idempotency-Key
       in: header
-      required: true
+      required: false
       description: Повтор того же запроса с тем же ключом возвращает прежний результат.
       schema:
         type: string
-        minLength: 16
-        maxLength: 128
-
   schemas:
     DocumentPage:
       type: object
       additionalProperties: false
-      required: [page, text]
+      required:
+      - page
+      - text
       properties:
         page:
           type: integer
           minimum: 1
         text:
           type: string
-          minLength: 1
+          minLength: 10
           maxLength: 200000
-
     GenerateCardSetRequest:
       type: object
       additionalProperties: false
-      required: [document_id, language, pages]
+      required:
+      - document_id
+      - pages
       properties:
         document_id:
           type: string
-          pattern: '^[A-Za-z0-9_-]{8,64}$'
+          pattern: ^[A-Za-z0-9_-]{8,64}$
         language:
           type: string
-          enum: [ru, en]
+          enum:
+          - ru
+          - en
+          default: ru
         pages:
           type: array
           minItems: 1
@@ -184,41 +212,43 @@ components:
           type: integer
           minimum: 5
           maximum: 10
-          default: 8
-
+          default: 5
     Card:
       type: object
       additionalProperties: false
       required:
-        - card_id
-        - question
-        - reference_answer
-        - source_page
-        - source_quote
-        - difficulty
+      - card_id
+      - question
+      - reference_answer
+      - source_page
+      - source_quote
+      - difficulty
       properties:
         card_id:
           type: string
-          pattern: '^card_[A-Za-z0-9_-]{1,48}$'
+          pattern: ^card_[A-Za-z0-9_-]{1,48}$
         question:
           type: string
-          minLength: 10
+          minLength: 1
           maxLength: 500
         reference_answer:
           type: string
-          minLength: 10
+          minLength: 1
           maxLength: 1200
         source_page:
           type: integer
           minimum: 1
         source_quote:
           type: string
-          minLength: 5
+          minLength: 1
           maxLength: 500
           description: Короткая дословная цитата из указанной страницы.
         difficulty:
           type: string
-          enum: [basic, intermediate, advanced]
+          enum:
+          - basic
+          - intermediate
+          - advanced
         tags:
           type: array
           maxItems: 5
@@ -227,223 +257,161 @@ components:
             type: string
             minLength: 1
             maxLength: 40
-
-    CardSet:
-      type: object
-      additionalProperties: false
-      required: [status, document_id, title, cards]
-      properties:
-        status:
-          type: string
-          enum: [ready]
-        document_id:
-          type: string
-        title:
-          type: string
-          minLength: 1
-          maxLength: 200
-        cards:
-          type: array
-          minItems: 5
-          maxItems: 10
-          items:
-            $ref: '#/components/schemas/Card'
-
-    GenerationMeta:
-      type: object
-      additionalProperties: false
-      required:
-        - trace_id
-        - model
-        - prompt_version
-        - schema_version
-        - fallback_used
-        - latency_ms
-        - usage
-      properties:
-        trace_id:
-          type: string
-        model:
-          type: string
-          enum: [gemini-3.8-flash, gemini-3.5-flash-lite]
-        prompt_version:
-          type: string
-          pattern: '^cards-v[0-9]+$|^review-v[0-9]+$'
-        schema_version:
-          type: string
-          const: '1.0'
-        fallback_used:
-          type: boolean
-        latency_ms:
-          type: integer
-          minimum: 0
-        usage:
-          $ref: '#/components/schemas/TokenUsage'
-
     TokenUsage:
       type: object
       additionalProperties: false
-      required: [input_tokens, output_tokens, estimated_cost_usd]
       properties:
-        input_tokens:
+        input_tokens: &id001
           type: integer
           minimum: 0
-        cached_input_tokens:
-          type: integer
-          minimum: 0
-          default: 0
-        output_tokens:
-          type: integer
-          minimum: 0
-        estimated_cost_usd:
-          type: number
-          minimum: 0
-          multipleOf: 0.000001
-
+        output_tokens: *id001
+      required:
+      - input_tokens
+      - output_tokens
     CardSetResponse:
       type: object
       additionalProperties: false
-      required: [data, meta]
       properties:
-        data:
-          $ref: '#/components/schemas/CardSet'
-        meta:
-          $ref: '#/components/schemas/GenerationMeta'
-
+        card_set_id: &id002
+          type: string
+        title: *id002
+        model: *id002
+        prompt_version: *id002
+        fallback_used: &id007
+          type: boolean
+        latency_ms: *id001
+        usage: &id008
+          $ref: '#/components/schemas/TokenUsage'
+        cards:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/Card'
+      required:
+      - card_set_id
+      - title
+      - model
+      - prompt_version
+      - fallback_used
+      - latency_ms
+      - usage
+      - cards
     ReviewCardContext:
       type: object
       additionalProperties: false
-      required: [card_id, question, reference_answer, source_page, source_quote]
+      required:
+      - card_id
+      - question
+      - reference_answer
+      - source_page
+      - source_quote
       properties:
         card_id:
           type: string
         question:
           type: string
-          minLength: 10
+          minLength: 0
           maxLength: 500
         reference_answer:
           type: string
-          minLength: 10
+          minLength: 0
           maxLength: 1200
         source_page:
           type: integer
           minimum: 1
         source_quote:
           type: string
-          minLength: 5
+          minLength: 0
           maxLength: 500
-
+        difficulty:
+          type: string
+          default: basic
     ReviewAnswerRequest:
       type: object
       additionalProperties: false
-      required: [session_id, card, student_answer]
+      required:
+      - session_id
+      - card
+      - student_answer
       properties:
         session_id:
           type: string
-          pattern: '^[A-Za-z0-9_-]{8,64}$'
+          pattern: ^[A-Za-z0-9_-]{8,64}$
         card:
           $ref: '#/components/schemas/ReviewCardContext'
         student_answer:
           type: string
           minLength: 1
           maxLength: 2000
-
     AnswerReview:
       type: object
       additionalProperties: false
-      required: [verdict, score, feedback, missing_points]
+      required:
+      - verdict
+      - score
+      - feedback
+      - missing_points
       properties:
-        verdict:
+        verdict: &id003
           type: string
-          enum: [correct, partially_correct, incorrect]
-        score:
+          enum:
+          - correct
+          - partially_correct
+          - incorrect
+        score: &id004
           type: integer
           minimum: 0
           maximum: 2
           description: 0 — неверно, 1 — частично, 2 — верно.
-        feedback:
+        feedback: &id005
           type: string
           minLength: 1
           maxLength: 600
-        missing_points:
+        missing_points: &id006
           type: array
           maxItems: 5
           items:
             type: string
             minLength: 1
             maxLength: 200
-
     AnswerReviewResponse:
       type: object
       additionalProperties: false
-      required: [data, meta]
       properties:
-        data:
-          $ref: '#/components/schemas/AnswerReview'
-        meta:
-          $ref: '#/components/schemas/GenerationMeta'
-
-    Problem:
+        verdict: *id003
+        score: *id004
+        feedback: *id005
+        missing_points: *id006
+        model: *id002
+        prompt_version: *id002
+        fallback_used: *id007
+        latency_ms: *id001
+        usage: *id008
+        review_id: *id002
+        trace_id: *id002
+      required:
+      - verdict
+      - score
+      - feedback
+      - missing_points
+      - model
+      - prompt_version
+      - fallback_used
+      - latency_ms
+      - usage
+      - review_id
+      - trace_id
+    HttpError:
       type: object
-      additionalProperties: false
-      required: [type, title, status, code, detail, trace_id]
+      required:
+      - detail
       properties:
-        type:
-          type: string
-          format: uri
-        title:
-          type: string
-        status:
-          type: integer
-          minimum: 400
-          maximum: 599
-        code:
-          type: string
-          enum:
-            - INVALID_REQUEST
-            - DOCUMENT_TOO_LARGE
-            - INSUFFICIENT_CONTENT
-            - PDF_TEXT_LAYER_REQUIRED
-            - ANSWER_TOO_LONG
-            - NOT_FOUND
-            - RATE_LIMITED
-            - MODEL_OUTPUT_INVALID
-            - AI_PROVIDER_UNAVAILABLE
         detail:
-          type: string
-        trace_id:
-          type: string
-        retry_after_seconds:
-          type: integer
-          minimum: 1
-
-  responses:
-    BadRequest:
-      description: Нарушен формат запроса
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-    TooManyRequests:
-      description: Исчерпан лимит запросов приложения
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Через сколько секунд можно повторить запрос.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-    InvalidModelOutput:
-      description: Ответ обеих попыток не прошёл schema/grounding validation
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-    ProviderUnavailable:
-      description: Основная и резервная модели недоступны
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
+          oneOf:
+          - type: object
+            additionalProperties: true
+          - type: array
+            items:
+              type: object
+          - type: string

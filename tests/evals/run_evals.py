@@ -18,13 +18,14 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from ml.models.baseline import BaselineModel, PROMPT_VERSION  # noqa: E402
+from backend.quality_guards import validate_untrusted_input
 from ml.tracing.client import TraceClient  # noqa: E402
 
 
 BASE_DATASET = ROOT / "docs/quality/golden-dataset/dataset.jsonl"
 ADDITIONS = ROOT / "docs/quality/golden-dataset/dataset-v2-additions.jsonl"
 DEFAULT_OUTPUT = ROOT / "artifacts/evals/baseline-results.json"
-MINI_IDS = {"GEN-001", "GEN-002", "GEN-003", "GEN-004", "REV-004", "REV-005"}
+MINI_IDS = {"GEN-001", "GEN-002", "GEN-003", "GEN-004", "REV-004", "REV-005", "SAFE-001", "SAFE-002"}
 
 
 def load_cases(mini: bool) -> list[dict]:
@@ -45,7 +46,7 @@ def percentile(values: list[int], percent: float) -> float:
 def validate_generated_cards(response: dict, case: dict) -> tuple[bool, bool]:
     cards = response.get("cards")
     requested = case["input"].get("requested_card_count", 5)
-    if not isinstance(cards, list) or len(cards) != requested:
+    if not isinstance(cards, list) or not 1 <= len(cards) <= requested:
         return False, False
     page_text = {page["page"]: page["text"] for page in case["context"]}
     required_quote = case.get("expected_output", {}).get("required_quote")
@@ -118,6 +119,11 @@ def run(mini: bool, output: Path) -> dict:
                 and isinstance(response.get("trace_id"), str)
             )
             verdict_ok = response["verdict"] == case["expected_output"]["verdict"]
+        elif mini and operation == "reject_input":
+            failure = validate_untrusted_input(case["input"])
+            expected = case["expected_output"]
+            safety_ok = failure is not None and failure.code == expected.get("code", expected.get("error_code")) and ("http_status" not in expected or failure.status == expected["http_status"])
+            response = {}
         else:
             # These cases belong to API/DB E2E, not to BaselineModel. Do not
             # fabricate a pass: report them as skipped until that suite calls

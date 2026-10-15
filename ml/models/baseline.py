@@ -12,7 +12,7 @@ from uuid import uuid4
 from ml.tracing.client import TraceClient
 
 
-PROMPT_VERSION = "cards-v1.1"
+PROMPT_VERSION = "cards-v1.2"
 SCHEMA_VERSION = "1.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
 STOP_WORDS = {"что", "это", "как", "для", "или", "при", "его", "она", "они", "так", "если", "уже", "был", "быть", "над", "под", "the", "and", "with"}
@@ -138,8 +138,11 @@ class BaselineModel:
             sources.extend((page["page"], sentence) for sentence in (sentences or [page["text"].strip()]))
         requested = payload.get("requested_card_count", 5)
         cards = []
-        for index in range(requested):
-            page, sentence = sources[index % len(sources)]
+        unique = {}
+        for page, sentence in sources:
+            unique.setdefault(sentence, page)
+        sources = [(page, sentence) for sentence, page in unique.items()]
+        for index, (page, sentence) in enumerate(sources[:requested]):
             cards.append(
                 {
                     "card_id": f"card_{uuid4().hex}",
