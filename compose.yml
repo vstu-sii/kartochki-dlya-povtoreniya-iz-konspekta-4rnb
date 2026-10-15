@@ -59,7 +59,7 @@ services:
 
   frontend:
     build: ./frontend/prototype
-    ports: ["8080:80"]
+    ports: ["${APP_PORT:-8080}:80"]
     depends_on:
       backend: {condition: service_healthy}
     healthcheck:
@@ -89,13 +89,56 @@ services:
       TRACE_FILE: /data/traces.jsonl
     volumes:
       - traces:/data:ro
-    ports: ["3000:3000"]
+    ports: ["${TRACE_PORT:-3000}:3000"]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/health')"]
       interval: 5s
       timeout: 3s
       retries: 12
     networks: [edge]
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus:ro
+      - prometheus-data:/prometheus
+    ports: ["${PROMETHEUS_PORT:-9090}:9090"]
+    depends_on:
+      backend: {condition: service_healthy}
+    networks: [internal, edge]
+
+  loki:
+    image: grafana/loki:3.2.1
+    command: ["-config.file=/etc/loki/loki-config.yml"]
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    networks: [internal]
+
+  promtail:
+    image: grafana/promtail:3.2.1
+    command: ["-config.file=/etc/promtail/promtail-config.yml"]
+    volumes:
+      - ./monitoring/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on: [loki]
+    networks: [internal]
+
+  grafana:
+    image: grafana/grafana:11.3.1
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports: ["${GRAFANA_PORT:-3001}:3000"]
+    depends_on: [prometheus, loki]
+    networks: [internal, edge]
 
 networks:
   edge:
@@ -106,3 +149,6 @@ networks:
 volumes:
   postgres-data:
   traces:
+  prometheus-data:
+  loki-data:
+  grafana-data:
