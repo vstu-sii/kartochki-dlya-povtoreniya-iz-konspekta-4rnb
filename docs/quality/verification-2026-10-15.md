@@ -21,3 +21,15 @@
 - Evals используют оценку токенов, не фактическую стоимость Gemini.
 - Внешняя приёмка UC, ручное ревью golden v2 и согласование спринта требуют реальных подтверждений. Назначенные участники не считаются подписавшими протокол.
 - Scheduled GitHub Actions начнёт выполняться автоматически только после включения workflow в default branch. Пока доступны push/PR mini; full можно воспроизвести командой из README.
+
+## GitHub Actions после отправки исправлений
+
+Проверено 15.10.2026:
+
+- Delivery, commit `2ea18f7`: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38742025891 — success. Прошли установка зависимостей, unit/HTTP, 33 прикладных кейса, Compose config/up, доступность frontend и tracing, сквозной HTTP smoke-test через gateway с моделью и PostgreSQL.
+- AI, commit `245f1a4`: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38742026317 — success; unit/HTTP и mini с отдельными порогами.
+- Quality, commit `a9cfb89`: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38742025869 — success; unit/HTTP и mini 4 generation + 2 review + 2 safety.
+
+HTTP smoke-test не управляет браузером: проверка frontend — HTTP-доступность страницы, дальнейшие действия выполняются через API gateway. Это автоматическое доказательство интеграции, не внешний ручной проход интерфейса.
+
+Публичный `/health` в дополнительной проверке не ответил за 15 секунд. Это не доказывает поломку сервиса, но актуальную доступность production этим запросом подтвердить не удалось. Более ранняя отметка доступности в протоколе относится к предыдущей проверке.
