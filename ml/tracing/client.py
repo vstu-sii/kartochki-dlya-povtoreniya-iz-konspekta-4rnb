@@ -2,6 +2,7 @@
 
 import json
 import os
+from hashlib import sha256
 from datetime import datetime, timezone
 from pathlib import Path
 from threading import Lock
@@ -14,13 +15,22 @@ class TraceClient:
         self.path = Path(path or os.getenv("TRACE_FILE", "artifacts/traces.jsonl"))
 
     def record(self, trace_id: str, operation: str, model: str, prompt: str, response: dict, latency_ms: int, fallback_used: bool) -> None:
+        keep_content = os.getenv("TRACE_CONTENT", "false").lower() == "true"
+        response_view = response if keep_content else {
+            "verdict": response.get("verdict"),
+            "card_count": len(response.get("cards", [])),
+            "prompt_version": response.get("prompt_version"),
+            "usage": response.get("usage", {}),
+        }
         event = {
             "trace_id": trace_id,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "operation": operation,
             "model": model,
-            "prompt_preview": prompt[:2_000],
-            "response": response,
+            "prompt_sha256": sha256(prompt.encode("utf-8")).hexdigest(),
+            "prompt_chars": len(prompt),
+            "prompt_preview": prompt[:2_000] if keep_content else "[redacted]",
+            "response": response_view,
             "latency_ms": latency_ms,
             "fallback_used": fallback_used,
         }
