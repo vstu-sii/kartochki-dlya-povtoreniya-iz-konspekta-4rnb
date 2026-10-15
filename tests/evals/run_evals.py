@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from ml.models.baseline import BaselineModel, PROMPT_VERSION  # noqa: E402
+from ml.models.baseline import BaselineModel, PROMPT_VERSION, REVIEW_PROMPT_VERSION  # noqa: E402
 from backend.quality_guards import validate_untrusted_input
 from ml.tracing.client import TraceClient  # noqa: E402
 
@@ -164,7 +164,7 @@ def run(mini: bool, output: Path) -> dict:
         "run_at": datetime.now(timezone.utc).isoformat(),
         "mode": "mini" if mini else "full",
         "model": "deterministic-grounded-v1",
-        "prompt_version": f"{PROMPT_VERSION}/review-v1.0",
+        "prompt_version": f"{PROMPT_VERSION}/{REVIEW_PROMPT_VERSION}",
         "dataset_version": "lab3-v2",
         "dataset_case_count": len(cases),
         "executed_case_count": executed_count,

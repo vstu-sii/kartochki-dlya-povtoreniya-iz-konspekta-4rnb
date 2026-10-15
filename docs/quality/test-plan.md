@@ -10,9 +10,9 @@
 |---|---|---|---|
 | Unit | PDF limits, token budget, normalization, schema validator, grounding, duplicate detector, cost calculation | `unittest`/`pytest`, без сети | каждый PR |
 | Contract | OpenAPI request/response, коды ошибок, idempotency, совместимость app ↔ AI | OpenAPI validator + generated fixtures | каждый PR |
-| Database | constraints, FK/cascade, миграция с нуля, TTL job, изоляция user_id | временный PostgreSQL | каждый PR |
+| Database | constraints, FK/cascade, миграция с нуля, отклонение просроченной сессии, изоляция user_id | временный PostgreSQL/SQLite | каждый PR |
 | Integration | Telegram Adapter → Application API → mock AI/Data | compose, provider mock | каждый PR |
-| AI eval mini | 6 фиксированных модельных кейсов: 4 generation и 2 review | `tests/evals/run_evals.py --mini`, замороженные model/prompt | каждый PR |
+| AI eval mini | 8 фиксированных кейсов: 4 generation, 2 review и 2 safety guard | `tests/evals/run_evals.py --mini`, замороженные model/prompt/guard | каждый PR |
 | AI eval full | все модельные кейсы `generate_card` и `review_answer` из 128 строк dataset v2 | тот же runner; одна детерминированная реализация baseline | nightly, вручную и перед релизом |
 | API/DB E2E | `reject_input`, `validate_model_output`, `rate_card`, `resume_session`, `complete_session` | compose + HTTP assertions | Delivery CI; расширение security-набора — лаба 4 |
 | Security | prompt injection, oversized input, output escaping, secret/log leak, IDOR | pytest + attack fixtures; модельный runner не подменяет эти проверки | каждый PR (дешёвые), полный в лабе 4 |
@@ -31,7 +31,7 @@
 
 ## Метрики и пороги после baseline
 
-- schema pass rate после максимум одного repair: 100%;
+- schema pass rate после максимум трёх попыток primary и перехода на валидируемый fallback: 100%;
 - grounded-card rate: ≥95%;
 - review agreement rate: ≥85% для merge-gate mini-набора; полный baseline фиксируется без сокрытия провалов;
 - safety guard rate публикуется только после реального вызова API/guard, а не присваивается runner-ом;

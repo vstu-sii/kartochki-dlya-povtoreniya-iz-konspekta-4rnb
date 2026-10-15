@@ -30,4 +30,4 @@ Mini-набор является merge-gate. Полный прогон запу�
 
 Mini содержит ровно 8 фиксированных кейсов: 4 generation, 2 review, 2 safety. Safety проверяет настоящую guard-функцию; HTTP-проверки находятся в `tests/test_http_guards.py`. Для HTTP-тестов установите `pip install -r backend/requirements.txt`, затем `python -m unittest discover -s tests`.
 
-Технические результаты и ограничения: `docs/quality/verification-2026-10-15.md`. Генерация cards-v1.2 возвращает от 1 до requested_card_count уникальных фрагментов.
+Технические результаты и ограничения: `docs/quality/verification-2026-10-15.md`. Генерация cards-v2.0 возвращает от 1 до requested_card_count независимых grounded-карточек; review-v2.0 использует семантическую проверку primary-модели и воспроизводимый fallback.

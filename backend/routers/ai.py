@@ -3,19 +3,18 @@
 import hashlib
 import os
 from datetime import datetime, timedelta, timezone
-from io import BytesIO
 from typing import Annotated
 from uuid import uuid4
 
 import httpx
 from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
-from pypdf import PdfReader
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.database import session_scope
 from backend.models import AnswerReview, Card, CardRating, CardRatingEvent, CardSet, Document, StudySession
+from backend.pdf_extractor import PdfExtractionError, extract_pdf_pages
 from backend.quality_guards import validate_model_card, validate_untrusted_input
 
 
@@ -160,7 +159,7 @@ async def generate_card_set_from_pdf(
     language: str = Form(default="ru", pattern=r"^(ru|en)$"),
     db: Session = Depends(session_scope),
 ):
-    """Extract the text layer from one PDF and run the normal persisted flow."""
+    """Extract text (with OCR for scans) and run the persisted generation flow."""
     failure = validate_untrusted_input({"mime_type": file.content_type})
     if failure:
         raise HTTPException(status_code=failure.status, detail={"code": failure.code})
@@ -168,20 +167,11 @@ async def generate_card_set_from_pdf(
     if len(raw) > 10 * 1024 * 1024:
         raise HTTPException(status_code=413, detail={"code": "FILE_TOO_LARGE", "max_bytes": 10 * 1024 * 1024})
     try:
-        reader = PdfReader(BytesIO(raw))
-        if len(reader.pages) > 40:
-            raise HTTPException(status_code=413, detail={"code": "DOCUMENT_TOO_LARGE"})
-        pages = [
-            Page(page=number, text=text)
-            for number, page in enumerate(reader.pages, start=1)
-            if len(text := (page.extract_text() or "").strip()) >= 10
-        ]
-    except HTTPException:
-        raise
-    except Exception as exc:
-        raise HTTPException(status_code=422, detail={"code": "PDF_PARSE_FAILED"}) from exc
-    if not pages:
-        raise HTTPException(status_code=422, detail={"code": "PDF_HAS_NO_TEXT_LAYER"})
+        extracted = extract_pdf_pages(raw)
+        pages = [Page(page=page.page, text=page.text) for page in extracted]
+    except PdfExtractionError as exc:
+        status = 413 if exc.code in {"PDF_TOO_MANY_PAGES"} else 422
+        raise HTTPException(status_code=status, detail={"code": exc.code, "message": str(exc)}) from exc
     digest = hashlib.sha256(raw).hexdigest()[:24]
     request = GenerateRequest(
         document_id=f"pdf_{digest}",
@@ -191,15 +181,36 @@ async def generate_card_set_from_pdf(
     )
     # Include the card-generation revision so the same PDF is regenerated
     # after question-quality improvements instead of returning stale cards.
-    return await generate_card_set(request, f"pdf-{digest}-{requested_card_count}-{language}-cards-v1.2", db)
+    return await generate_card_set(request, f"pdf-{digest}-{requested_card_count}-{language}-cards-v2.0", db)
 
 
 @router.post("/answer-reviews")
-async def review_answer(request: ReviewRequest, db: Session = Depends(session_scope)):
+async def review_answer(
+    request: ReviewRequest,
+    db: Session = Depends(session_scope),
+    x_user_id: Annotated[str | None, Header(alias="X-User-ID")] = None,
+):
     failure = validate_untrusted_input({"student_answer": request.student_answer})
     if failure:
         raise HTTPException(status_code=failure.status, detail={"code": failure.code})
-    result = await call_model("/v1/model/answer-reviews", request.model_dump())
+    study_session = ensure_session_access(db.get(StudySession, request.session_id), x_user_id)
+    persisted_card = db.get(Card, request.card.card_id)
+    if not persisted_card or persisted_card.card_set_id != study_session.card_set_id:
+        raise HTTPException(status_code=403, detail={"code": "CARD_SESSION_MISMATCH"})
+    # Never trust reference text supplied by a client. The model reviews the
+    # answer against the canonical card stored for this session.
+    canonical_card = {
+        "card_id": persisted_card.id,
+        "question": persisted_card.question,
+        "reference_answer": persisted_card.reference_answer,
+        "source_page": persisted_card.source_page,
+        "source_quote": persisted_card.source_quote,
+        "difficulty": persisted_card.difficulty,
+    }
+    result = await call_model(
+        "/v1/model/answer-reviews",
+        {"session_id": request.session_id, "card": canonical_card, "student_answer": request.student_answer},
+    )
     review = AnswerReview(
         card_id=request.card.card_id,
         student_answer=request.student_answer,
