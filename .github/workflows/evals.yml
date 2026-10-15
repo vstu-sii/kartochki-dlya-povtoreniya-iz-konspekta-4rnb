@@ -1,0 +1,53 @@
+name: Lab3 evals
+
+on:
+  pull_request:
+  push:
+    branches: ["lab3-*-prototype"]
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  mini-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install HTTP test dependencies
+        run: python -m pip install -r backend/requirements.txt
+      - name: Verify HTTP guards and persistence
+        run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Run application and database evals
+        run: python tests/evals/run_application_evals.py
+      - name: Run deterministic mini eval with per-metric thresholds
+        run: >-
+          python tests/evals/run_evals.py --mini
+          --min-schema 1.0 --min-grounding 0.95 --min-review 0.85 --min-safety 1.0
+          --output artifacts/evals/mini-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab3-mini-eval
+          path: |
+            artifacts/evals/mini-results.json
+            artifacts/evals/application-results.json
+            artifacts/evals/eval-traces.jsonl
+
+  full-eval:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run full deterministic baseline eval
+        run: python tests/evals/run_evals.py --output artifacts/evals/baseline-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab3-full-eval
+          path: |
+            artifacts/evals/baseline-results.json
+            artifacts/evals/eval-traces.jsonl
