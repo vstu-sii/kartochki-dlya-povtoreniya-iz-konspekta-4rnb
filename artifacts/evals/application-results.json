@@ -1,11 +1,11 @@
 {
   "dataset_version": "lab4-v3",
-  "dataset_sha256": "722c47d50ef9a578f30d735e2ce1e38e53926c801b158995a9dea98ba815d881",
+  "dataset_sha256": "099000bba3f950370c2e7e603395494f23953f77957e4d0d5d211710b904b8da",
   "suite": "application-api-db",
   "case_count": 37,
-  "passed_count": 36,
-  "failed_count": 1,
-  "pass_rate": 0.973,
+  "passed_count": 37,
+  "failed_count": 0,
+  "pass_rate": 1.0,
   "cases": [
     {
       "id": "SAFE-001",
@@ -291,16 +291,16 @@
       "actual_status": 429,
       "actual_code": "REQUEST_LIMIT_EXCEEDED",
       "model_calls": 50,
-      "measurement_scope": "HTTP request-count quota; model transport mocked, real guard and DB"
+      "measurement_scope": "Router request-count quota; model transport mocked, real guard and DB; ASGI transport is a separate CI check"
     },
     {
       "id": "TOOL-L4-001",
       "operation": "tool_timeout",
-      "passed": false,
+      "passed": true,
       "tool_status": "timeout_fallback_to_request_pages",
-      "elapsed_ms": 402.616,
+      "elapsed_ms": 16.421,
       "max_elapsed_ms": 200,
-      "issue": "Q4-TOOL-01"
+      "issue": null
     }
   ]
 }

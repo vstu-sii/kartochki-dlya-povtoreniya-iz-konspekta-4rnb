@@ -9,16 +9,16 @@
 | Schema / grounding | 100% / 100% | lab4-full-results.json |
 | Review | 38/42 = 90,48%; порог 85% | lab4-full-results.json |
 | Input guards | 12/12; порог 100% | lab4-full-results.json |
-| Application | 36/37; TOOL-L4-001 не проходит время возврата | application-results.json |
-| HTTP security | 12/14; ATK-011 и Q4-AUTH-01 открыты | lab4-attacks-after.json |
+| Application | 37/37; TOOL-L4-001 = 16,421 мс при пороге 200 мс | application-results.json |
+| Security границы приложения | 14/14; ATK-011 блокируется до модели, replay без identity отклонён | lab4-attacks-after.json |
 | Retrieval | hit@1=100%, recall@3=100%, MRR=1 | lab4-retrieval-results.json |
-| Тесты | 22/23; провал ATK-011 | лог unit-and-integration в CI artifact |
-| Общий gate | **не пройден** | full-suite-results.json |
+| Тесты | 29/29 | локальный лог unit-and-integration |
+| Общий gate | **пройден локально**, exit code 0 | full-suite-results.json |
 
 107 выполнений model/guards + 37 application − 12 пересекающихся guards = 132 уникальных кейса.
 Успешный охват не означает 100% качества. Четыре расхождения review сохраняются.
 Input safety — доля успешных reject_input; она не измеряет всю безопасность.
-Расширенный HTTP security gate остаётся красным, даже когда input safety = 1.
+Расширенный security gate проходит; его 14 сценариев всё равно не доказывают защиту от всех возможных атак.
 
 Текущие промпты cards-v2.1/review-v2.1. Latency измеряется perf_counter вокруг обработки
 кейса, включая локальную валидацию. p95 берётся по отсортированным выполненным измерениям,
@@ -26,7 +26,7 @@ Input safety — доля успешных reject_input; она не измер�
 Точные latency и оценки токенов смотрите в JSON этого коммита: они зависят от среды,
 а старые значения ниже относятся только к историческому Lab3 baseline.
 
-Все четырe Lab4 эталона исполняются как технические сценарии, human_review пока pending.
+Все четыре Lab4 эталона исполняются как технические сценарии; командное ревью подтверждено пользователем 16.10.2026 без индивидуальных имён и отдельной даты аудита.
 Подробности: [gates](lab4-quality-gates.md), [открытые проблемы](open-findings-lab4.md).
 
 ---

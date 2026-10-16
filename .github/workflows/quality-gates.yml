@@ -32,5 +32,7 @@ jobs:
             artifacts/evals/full-suite-results.json
             artifacts/evals/*.log
             artifacts/experiments/lab4-retrieval-results.json
+            artifacts/experiments/lab4-algorithm-results.json
+            artifacts/experiments/lab4-contract-results.json
             artifacts/security/lab4-attacks-before.json
             artifacts/security/lab4-attacks-after.json

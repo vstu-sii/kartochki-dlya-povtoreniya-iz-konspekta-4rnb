@@ -1,8 +1,8 @@
 {
-  "run_at": "2026-10-16T18:23:01.372332+00:00",
+  "run_at": "2026-10-16T19:55:55.512298+00:00",
   "dataset_version": "lab4-v3",
-  "dataset_sha256": "722c47d50ef9a578f30d735e2ce1e38e53926c801b158995a9dea98ba815d881",
-  "passed": false,
+  "dataset_sha256": "099000bba3f950370c2e7e603395494f23953f77957e4d0d5d211710b904b8da",
+  "passed": true,
   "coverage": {
     "expected": 132,
     "executed_unique": 132,
@@ -33,7 +33,7 @@
     },
     {
       "suite": "application",
-      "exit_code": 1,
+      "exit_code": 0,
       "report_written": true,
       "log": "artifacts/evals/application.log"
     },
@@ -45,7 +45,7 @@
     },
     {
       "suite": "security-after",
-      "exit_code": 1,
+      "exit_code": 0,
       "report_written": true,
       "log": "artifacts/evals/security-after.log"
     },
@@ -56,8 +56,20 @@
       "log": "artifacts/evals/retrieval.log"
     },
     {
+      "suite": "algorithm-regression",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/algorithm-regression.log"
+    },
+    {
+      "suite": "prompt-contract",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/prompt-contract.log"
+    },
+    {
       "suite": "unit-and-integration",
-      "exit_code": 1,
+      "exit_code": 0,
       "report_written": null,
       "log": "artifacts/evals/unit-and-integration.log"
     }

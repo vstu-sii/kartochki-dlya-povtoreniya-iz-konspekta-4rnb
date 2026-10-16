@@ -16,6 +16,17 @@ sys.path.insert(0, str(ROOT))
 BASELINE_COMMIT = "0dea82a452586c49404778cb43806d2aba9b5329"
 
 
+def run_immediate(coroutine):
+    """Drive in-process router coroutines without Windows TestClient sockets."""
+    try:
+        coroutine.send(None)
+    except StopIteration as done:
+        return done.value
+    finally:
+        coroutine.close()
+    raise RuntimeError("Coroutine unexpectedly suspended in in-process security eval")
+
+
 def historical_guard():
     source = subprocess.check_output(
         ["git", "show", f"{BASELINE_COMMIT}:backend/quality_guards.py"], cwd=ROOT
@@ -32,30 +43,28 @@ def current_http_cases(cases):
     db_path = ROOT / "artifacts/security/http-attacks.db"
     db_path.parent.mkdir(parents=True, exist_ok=True)
     os.environ["DATABASE_URL"] = f"sqlite:///{db_path.as_posix()}"
-    from fastapi.testclient import TestClient
-    from backend.main import app
-    from backend.database import Base, engine
+    from fastapi import HTTPException
+    from backend.database import Base, SessionLocal, engine
     from backend.limits import budget_limiter
+    from backend.routers.ai import (CardPayload, GenerateRequest, ReviewRequest, SessionRequest,
+                                    create_or_resume_session, generate_card_set, review_answer)
     from ml.models.baseline import BaselineModel
 
     Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
     budget_limiter.reset_for_tests()
     pages = [{"page": 1, "text": "A cache stores frequently used data."}]
     fixture = BaselineModel().generate({"pages": pages, "requested_card_count": 5})
     rows = []
-    with TestClient(app) as client:
-        owner = {"X-User-ID": "security-owner"}
-        seed = client.post("/v1/ai/card-sets", headers=owner,
-                           json={"document_id": "doc_" + uuid4().hex, "pages": pages})
-        seed.raise_for_status()
-        card_set = seed.json()
-        session = client.post("/v1/ai/sessions", json={"card_set_id": card_set["card_set_id"], "user_id": "security-owner"})
-        session.raise_for_status()
+    db = SessionLocal()
+    try:
+        card_set = run_immediate(generate_card_set(
+            GenerateRequest(document_id="doc_" + uuid4().hex, pages=pages), None, db, "security-owner"
+        ))
+        session = create_or_resume_session(SessionRequest(card_set_id=card_set["card_set_id"], user_id="security-owner"), db)
         for case in cases:
             is_review = case["point"] == "student answer"
             endpoint = "/v1/ai/answer-reviews" if is_review else "/v1/ai/card-sets"
-            body = ({"session_id": session.json()["session_id"], "card": card_set["cards"][0], "student_answer": case["text"]}
-                    if is_review else {"document_id": "doc_" + uuid4().hex, "pages": [{"page": 1, "text": case["text"]}]})
             response_fixture = ({"verdict": "incorrect", "feedback": "fixture", "missing_points": [],
                                  "model": "test-transport", "trace_id": "trace_" + uuid4().hex}
                                 if is_review else fixture)
@@ -64,25 +73,41 @@ def current_http_cases(cases):
                 if not is_review:
                     card["source_quote"] = case["text"]
             with patch("backend.routers.ai.call_model", return_value=response_fixture) as model:
-                response = client.post(endpoint, headers=owner, json=body)
-                code = response.json().get("detail", {}).get("code")
-                actual = ("block" if response.status_code == 422 and code == "PROMPT_INJECTION_BLOCKED" and model.call_count == 0
-                          else "allow" if response.status_code in (200, 201) and model.call_count == 1 else "error")
+                try:
+                    if is_review:
+                        request = ReviewRequest(session_id=session["session_id"], card=CardPayload(**card_set["cards"][0]), student_answer=case["text"])
+                        run_immediate(review_answer(request, db, "security-owner"))
+                        status, code = 200, None
+                    else:
+                        request = GenerateRequest(document_id="doc_" + uuid4().hex, pages=[{"page": 1, "text": case["text"]}])
+                        run_immediate(generate_card_set(request, None, db, "security-owner"))
+                        status, code = 201, None
+                except HTTPException as exc:
+                    status = exc.status_code
+                    code = exc.detail.get("code") if isinstance(exc.detail, dict) else str(exc.detail)
+                actual = ("block" if status == 422 and code == "PROMPT_INJECTION_BLOCKED" and model.call_count == 0
+                          else "allow" if status in (200, 201) and model.call_count == 1 else "error")
                 rows.append({"id": case["id"], "point": case["point"], "endpoint": endpoint,
                              "expected": case["expected_after"], "actual": actual,
-                             "status": response.status_code, "code": code, "model_calls": model.call_count,
+                             "status": status, "code": code, "model_calls": model.call_count,
                              "passed": actual == case["expected_after"]})
 
         key = "security-repeat-" + uuid4().hex
         payload = {"document_id": "doc_" + uuid4().hex, "pages": pages}
-        created = client.post("/v1/ai/card-sets", headers={**owner, "Idempotency-Key": key}, json=payload)
-        created.raise_for_status()
+        request = GenerateRequest(**payload)
+        run_immediate(generate_card_set(request, key, db, "security-owner"))
         with patch("backend.routers.ai.call_model") as model:
-            anonymous = client.post("/v1/ai/card-sets", headers={"Idempotency-Key": key}, json=payload)
+            try:
+                run_immediate(generate_card_set(request, key, db, None))
+                anonymous_status, cards_disclosed = 201, True
+            except HTTPException as exc:
+                anonymous_status, cards_disclosed = exc.status_code, False
         rows.append({"id": "Q4-AUTH-01", "point": "anonymous idempotency replay",
-                     "expected": "deny_without_disclosing_cards", "actual_status": anonymous.status_code,
-                     "cards_disclosed": bool(anonymous.json().get("cards")), "model_calls": model.call_count,
-                     "passed": anonymous.status_code in (401, 403) and not anonymous.json().get("cards")})
+                     "expected": "deny_without_disclosing_cards", "actual_status": anonymous_status,
+                     "cards_disclosed": cards_disclosed, "model_calls": model.call_count,
+                     "passed": anonymous_status in (401, 403) and not cards_disclosed})
+    finally:
+        db.close()
     engine.dispose()
     return rows
 

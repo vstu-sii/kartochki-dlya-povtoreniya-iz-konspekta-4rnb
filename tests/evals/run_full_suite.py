@@ -29,6 +29,8 @@ def main():
         ("security-before", ["tests/security/run_attacks.py", "--mode", "before", "--output", "artifacts/security/lab4-attacks-before.json"], ROOT / "artifacts/security/lab4-attacks-before.json"),
         ("security-after", ["tests/security/run_attacks.py", "--mode", "after", "--output", "artifacts/security/lab4-attacks-after.json"], ROOT / "artifacts/security/lab4-attacks-after.json"),
         ("retrieval", ["-m", "ml.experiments.run_retrieval_eval", "--min-hit-at-1", ".90", "--min-recall-at-3", "1", "--output", "artifacts/experiments/lab4-retrieval-results.json"], ROOT / "artifacts/experiments/lab4-retrieval-results.json"),
+        ("algorithm-regression", ["-m", "ml.experiments.run_ab", "--mode", "algorithm", "--min-b-agreement", ".85", "--fail-on-regression", "--output", "artifacts/experiments/lab4-algorithm-results.json"], ROOT / "artifacts/experiments/lab4-algorithm-results.json"),
+        ("prompt-contract", ["-m", "ml.experiments.run_ab", "--mode", "contract", "--output", "artifacts/experiments/lab4-contract-results.json"], ROOT / "artifacts/experiments/lab4-contract-results.json"),
         ("unit-and-integration", ["-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], None),
     ]
     env = {**os.environ, "MODEL_PROVIDER": "deterministic", "PYTHONUTF8": "1"}

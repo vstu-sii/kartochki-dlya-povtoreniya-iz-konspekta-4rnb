@@ -191,6 +191,7 @@ def main() -> int:
         failed = result["variant_b"]["agreement"] < args.min_b_agreement
         if args.fail_on_regression:
             failed = failed or result["variant_b"]["agreement"] < result["variant_a"]["agreement"]
+    result["passed"] = not failed
     result.update({"run_at": datetime.now(timezone.utc).isoformat(),
                    "dataset": str(args.dataset).replace("\\", "/"), "mode": args.mode})
     output = args.output or ROOT / f"artifacts/experiments/lab4-{args.mode}-results.json"

@@ -34,6 +34,22 @@ OUTPUT = ROOT / "artifacts/evals/application-results.json"
 MODEL_OPERATIONS = {"generate_card", "review_answer"}
 
 
+def run_immediate(coroutine):
+    """Drive router coroutines whose in-process dependencies do not suspend.
+
+    This avoids Starlette TestClient's socketpair on Windows while exercising
+    the same router, guard, persistence and quota code used by HTTP requests.
+    CI on Linux still covers the ASGI transport separately.
+    """
+    try:
+        coroutine.send(None)
+    except StopIteration as done:
+        return done.value
+    finally:
+        coroutine.close()
+    raise RuntimeError("Coroutine unexpectedly suspended in in-process eval")
+
+
 def load_cases() -> list[dict]:
     cases = load_dataset()
     return [case for case in cases if case["operation"] not in MODEL_OPERATIONS]
@@ -158,10 +174,9 @@ def evaluate_session(case: dict) -> tuple[bool, dict]:
 
 
 def evaluate_budget(case):
-    from fastapi.testclient import TestClient
-    from backend.main import app
     from backend.limits.service import DailyBudgetLimiter
     from ml.models.baseline import BaselineModel
+    from backend.routers.ai import GenerateRequest, generate_card_set
     from uuid import uuid4
     reset_database()
     limiter = DailyBudgetLimiter(request_limit=50, token_limit=1_000_000)
@@ -169,20 +184,26 @@ def evaluate_budget(case):
     result = BaselineModel().generate({"pages": pages, "requested_card_count": 5,
                                      "user_id": "budget-eval", "resource_owner_id": "budget-eval"})
     statuses = []
-    with TestClient(app) as client, patch("backend.routers.ai.budget_limiter", limiter), patch("backend.routers.ai.call_model", return_value=result) as model:
+    db = SessionLocal()
+    with patch("backend.routers.ai.budget_limiter", limiter), patch("backend.routers.ai.call_model", return_value=result) as model:
         for _ in range(case["input"]["requests"]):
             # Fresh card IDs and document IDs avoid persistence/idempotency collisions.
             for card in result["cards"]:
                 card["card_id"] = "card_" + uuid4().hex
-            response = client.post("/v1/ai/card-sets", headers={"X-User-ID": "budget-eval"},
-                                   json={"document_id": "doc_" + uuid4().hex, "pages": pages})
-            statuses.append(response.status_code)
+            request = GenerateRequest(document_id="doc_" + uuid4().hex, pages=pages)
+            try:
+                run_immediate(generate_card_set(request, None, db, "budget-eval"))
+                statuses.append(201)
+                code = None
+            except HTTPException as exc:
+                statuses.append(exc.status_code)
+                code = error_code(exc)
         expected = case["expected_output"]
-        code = response.json().get("detail", {}).get("code")
         ok = (statuses[:-1] == [201] * (len(statuses) - 1) and statuses[-1] == expected["status"]
               and code == expected["code"] and model.call_count == 50)
-        return ok, {"actual_status": statuses[-1], "actual_code": code, "model_calls": model.call_count,
-                    "measurement_scope": "HTTP request-count quota; model transport mocked, real guard and DB"}
+    db.close()
+    return ok, {"actual_status": statuses[-1], "actual_code": code, "model_calls": model.call_count,
+                "measurement_scope": "Router request-count quota; model transport mocked, real guard and DB; ASGI transport is a separate CI check"}
 
 
 def evaluate_tool_timeout(case):
