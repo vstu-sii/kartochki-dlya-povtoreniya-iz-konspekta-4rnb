@@ -1,3 +1,41 @@
+# Актуальное измерение Lab4 — 16.10.2026
+
+Команда: `python tests/evals/run_full_suite.py`.
+Сводка: `artifacts/evals/full-suite-results.json`.
+Полный каталог: lab4-v3, 132 уникальных кейса; 132 исполняются, пропущенных нет.
+
+| Измерение | Фактический результат | Источник |
+|---|---|---|
+| Schema / grounding | 100% / 100% | lab4-full-results.json |
+| Review | 38/42 = 90,48%; порог 85% | lab4-full-results.json |
+| Input guards | 12/12; порог 100% | lab4-full-results.json |
+| Application | 36/37; TOOL-L4-001 не проходит время возврата | application-results.json |
+| HTTP security | 12/14; ATK-011 и Q4-AUTH-01 открыты | lab4-attacks-after.json |
+| Retrieval | hit@1=100%, recall@3=100%, MRR=1 | lab4-retrieval-results.json |
+| Тесты | 22/23; провал ATK-011 | лог unit-and-integration в CI artifact |
+| Общий gate | **не пройден** | full-suite-results.json |
+
+107 выполнений model/guards + 37 application − 12 пересекающихся guards = 132 уникальных кейса.
+Успешный охват не означает 100% качества. Четыре расхождения review сохраняются.
+Input safety — доля успешных reject_input; она не измеряет всю безопасность.
+Расширенный HTTP security gate остаётся красным, даже когда input safety = 1.
+
+Текущие промпты cards-v2.1/review-v2.1. Latency измеряется perf_counter вокруг обработки
+кейса, включая локальную валидацию. p95 берётся по отсортированным выполненным измерениям,
+индекс round((N−1)×0.95); это не p95 продового HTTP/Telegram и не стоимость Gemini.
+Точные latency и оценки токенов смотрите в JSON этого коммита: они зависят от среды,
+а старые значения ниже относятся только к историческому Lab3 baseline.
+
+Все четырe Lab4 эталона исполняются как технические сценарии, human_review пока pending.
+Подробности: [gates](lab4-quality-gates.md), [открытые проблемы](open-findings-lab4.md).
+
+---
+
+# Исторический отчёт Lab3 (сохранён для сравнения)
+
+Следующий раздел и baseline-results.json не являются текущими измерениями Lab4.
+
+
 # Отчёт первого eval-прогона baseline
 
 Команда воспроизведения:

@@ -1,27 +1,60 @@
-# Фактические quality gates лабораторной 4
+# Quality gates Lab4 — фактический статус 16.10.2026
 
-| Набор | Фактический результат | Порог |
-|---|---:|---:|
-| Model schema | 100% | 100% |
-| Grounding | 100% | 100% |
-| Review agreement | 90,48% | ≥85% |
-| Model cases | 95 выполнено | все применимые |
-| API/DB cases | 33/33 | 100% |
-| Security before | 10/10 атак пропускались политикой Lab3 | диагностика |
-| Security after | 10/10 атак блокируются; 2/2 control разрешены | 100% совпадения |
-| Lab4 limits/guards/tool tests | 6/6 | 100% |
-| Retrieval hit rate@1 | 100% | ≥90% |
-| Retrieval recall@3 | 100% | 100% |
-| Retrieval MRR | 1,0 | наблюдаемая метрика |
+Полная команда: `python tests/evals/run_full_suite.py`.
+Среда: Python 3.11 в CI; локальная перепроверка Python 3.14, MODEL_PROVIDER=deterministic.
+Установка: `python -m pip install -r backend/requirements.txt`.
 
-Команды:
+## Что проверяется
+
+| Набор | Измерение | Порог / результат |
+|---|---|---|
+| Golden v3 | 120 + 8 + 4 = 132 уникальных кейса | 132 исполнены; это охват, а не 132 успешных ответа |
+| Model schema / grounding | 95 модельных кейсов | 100% / 100%, проходят пороги 1.0 / 1.0 |
+| Review agreement | 38/42 | 90,48%, порог 85%; четыре расхождения остаются |
+| Input safety guards | 12 reject_input | 12/12, порог 100%; не равнозначно всей безопасности |
+| Application / DB / budget / timeout | 37 кейсов | 36/37; TOOL-L4-001 провален |
+| Security after | 13 текстовых сценариев + replay | 12/14; ATK-011 и Q4-AUTH-01 провалены |
+| Retrieval | 10 запросов | hit@1=100% (порог 90%), recall@3=100% (порог 100%), MRR=1 |
+| Unit / integration | 23 теста | 22 успешны, ATK-011 вызывает один провал |
+| Общий gate | Все задания + полнота покрытия | **красный**, незакрытые дефекты не исключены |
+
+Источник актуальных чисел — JSON на этом же коммите, а не исторический baseline.
+`full-suite-results.json` объединяет статусы и проверяет ID всех golden-кейсов.
+Модельный runner выполняет 95 модельных и 12 guard-кейсов (107), прикладной — 37.
+12 guard-кейсов пересекаются: 107 + 37 − 12 = 132. Повторения не увеличивают охват.
+Неизвестная операция, отсутствующий файл/ID, провал порога или сбой runner дают ошибку.
+JSON предыдущего прогона удаляется перед соответствующим заданием: старый зелёный файл не подменяет отсутствующий новый.
+
+## Mini и full
+
+Mini сохраняет ровно восемь ID: GEN-001…004, REV-004, REV-005, SAFE-001, SAFE-002.
+`--min-safety 1` — доля 100%, а не число кейсов.
+Формула safety одинакова: успешные reject_input / выполненные reject_input;
+в mini знаменатель 2, в полном модельно-защитном прогоне 12. Метрика больше не null.
+Обход перефразированием и доступ к данным имеют отдельные HTTP security-проверки;
+успешные 12 guards не скрывают их провал.
 
 ```bash
-python tests/evals/run_evals.py --min-schema 1 --min-grounding 1 --min-review .85 --output artifacts/evals/lab4-full-results.json
-python tests/evals/run_application_evals.py
-python tests/security/run_attacks.py --mode after --output artifacts/security/lab4-attacks-after.json
-python -m ml.experiments.run_retrieval_eval --min-hit-at-1 .90 --min-recall-at-3 1.0
-python -m unittest -v tests.test_lab4_limits tests.test_lab4_guards tests.test_lab4_tool
+python tests/evals/run_evals.py --mini --min-schema 1 --min-grounding .95 --min-review .85 --min-safety 1 --output artifacts/evals/mini-results.json
+python tests/evals/run_full_suite.py
 ```
 
-Quality gate не использует `GEMINI_API_KEY`: он воспроизводим и не отправляет учебные материалы наружу. Provider eval остаётся отдельным разрешённым измерением.
+## CI и запрет merge
+
+`.github/workflows/quality-gates.yml` запускается на PR, push Lab4/main и вручную.
+Все наборы исполняются даже при провале предыдущего; общий exit code сохраняет провалы.
+Артефакты и логи загружаются с `if: always()`.
+Отдельного release-триггера нет: перед релизом запускается тот же workflow вручную.
+
+В GitHub требуется назначить job `full-evals` обязательной проверкой защищённой ветки.
+main помечена protected, но точный список required checks не подтверждён доступным API.
+Quality не изменяла настройки репозитория. До проверки настроек нельзя утверждать,
+что красный job технически запрещает merge.
+
+## Границы доказательства
+
+Нет live-вызовов Gemini и измерения production SLA/стоимости.
+p95 относится к локальной обработке кейсов; не сравнивается с пользовательским SLA генерации.
+Четыре эталона Lab4 имеют pending human review: технические сценарии исполняются,
+но это не подпись участников. Ранее подтверждённые восемь Lab3 не изменены.
+Открытые задачи и владельцы: [open-findings-lab4.md](open-findings-lab4.md).

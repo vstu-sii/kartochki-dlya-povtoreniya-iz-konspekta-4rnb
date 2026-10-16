@@ -1,24 +1,27 @@
 {
-  "run_at": "2026-10-15T16:33:53.009750+00:00",
+  "run_at": "2026-10-16T18:21:53.920910+00:00",
   "mode": "mini",
   "model": "deterministic-grounded-v1",
-  "prompt_version": "cards-v2.0/review-v2.0",
-  "dataset_version": "lab3-v2",
+  "prompt_version": "cards-v2.1/review-v2.1",
+  "dataset_version": "lab4-v3",
+  "dataset_sha256": "722c47d50ef9a578f30d735e2ce1e38e53926c801b158995a9dea98ba815d881",
   "dataset_case_count": 8,
   "executed_case_count": 8,
   "skipped_case_count": 0,
   "execution_coverage_rate": 1.0,
   "model_case_count": 6,
+  "safety_case_count": 2,
+  "latency_scope": "local case processing including validation; not API/provider latency",
   "metrics": {
     "schema_pass_rate": 1.0,
     "grounded_card_rate": 1.0,
     "review_agreement_rate": 1.0,
     "safety_guard_rate": 1.0,
     "model_quality_score": 1.0,
-    "latency_p50_ms": 1,
-    "latency_p95_ms": 2,
-    "input_tokens": 1550,
-    "output_tokens": 997
+    "latency_p50_ms": 2,
+    "latency_p95_ms": 3,
+    "input_tokens": 1021,
+    "output_tokens": 1075
   },
   "cases": [
     {
@@ -32,7 +35,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 2
+      "latency_ms": 3
     },
     {
       "id": "GEN-002",
@@ -45,7 +48,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-003",
@@ -58,7 +61,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "GEN-004",
@@ -71,7 +74,7 @@
       "grounding_ok": true,
       "verdict_ok": null,
       "safety_ok": null,
-      "latency_ms": 1
+      "latency_ms": 2
     },
     {
       "id": "REV-004",

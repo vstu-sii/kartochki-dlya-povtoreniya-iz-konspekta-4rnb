@@ -1,3 +1,34 @@
+# Lab4 — Quality & Safety
+
+Актуальная проверка всей роли:
+
+```bash
+python -m pip install -r backend/requirements.txt
+python tests/evals/run_full_suite.py
+```
+
+Нужен Git checkout с историей коммита Lab3 для воспроизводимого security-before.
+В CI используется Python 3.11 и fetch-depth: 0. Все модельные измерения локальные, без ключа Gemini.
+
+**Статус после аудита 16.10.2026: gate красный.** Все 132 golden-кейса исполняются,
+но обнаружены незакрытый таймаут инструмента, обход фильтра и выдача набора при повторе без identity.
+Это реальные результаты, а не сбой установки. Runtime-код коллег в этой правке не менялся.
+
+- [Пороги, команды и результаты](docs/quality/lab4-quality-gates.md)
+- [Актуальный eval-отчёт и исторический baseline](docs/quality/eval-report-1.md)
+- [Открытые дефекты, владельцы и критерии закрытия](docs/quality/open-findings-lab4.md)
+- [Security before](docs/quality/security-report-1.md) / [after](docs/quality/security-report-2.md)
+
+В GitHub Actions можно вручную запустить **Lab4 full quality gates**.
+Даже при провале сохраняются JSON и логи всех наборов. Запрет merge требует назначения
+full-evals обязательной проверкой в настройках GitHub; наличие workflow само по себе этого не гарантирует.
+
+Ниже сохранена общая инструкция запуска прототипа предыдущей версии; она не является
+доказательством production-ready или закрытия перечисленных проблем.
+
+---
+
+
 # Карточки для повторения — Lab 3 MVP
 
 Рабочий прототип подготовки к устной защите: интерфейс отправляет учебный текст в API, AI Service создаёт grounded-карточки, Application API сохраняет их в PostgreSQL, а dashboard показывает каждый модельный вызов.

@@ -8,6 +8,8 @@ from known state and remains reproducible in CI.
 import json
 import os
 import sys
+import time
+from unittest.mock import patch
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -25,20 +27,15 @@ from backend.database import Base, SessionLocal, engine  # noqa: E402
 from backend.models import Card, CardRating, CardRatingEvent, CardSet, Document, StudySession  # noqa: E402
 from backend.quality_guards import validate_model_card, validate_untrusted_input  # noqa: E402
 from backend.routers.ai import CompleteRequest, RatingRequest, complete_session, get_session, rate_card  # noqa: E402
+from dataset_catalog import DATASET_VERSION, dataset_hash, load_dataset
 
 
-DATASETS = (
-    ROOT / "docs/quality/golden-dataset/dataset.jsonl",
-    ROOT / "docs/quality/golden-dataset/dataset-v2-additions.jsonl",
-)
 OUTPUT = ROOT / "artifacts/evals/application-results.json"
 MODEL_OPERATIONS = {"generate_card", "review_answer"}
 
 
 def load_cases() -> list[dict]:
-    cases = []
-    for path in DATASETS:
-        cases.extend(json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+    cases = load_dataset()
     return [case for case in cases if case["operation"] not in MODEL_OPERATIONS]
 
 
@@ -86,7 +83,7 @@ def evaluate_guard(case: dict) -> tuple[bool, dict]:
     expected = case["expected_output"]
     failure = validate_untrusted_input(case["input"])
     expected_code = expected.get("code", expected.get("error_code"))
-    expected_status = expected.get("http_status")
+    expected_status = expected.get("http_status", expected.get("status"))
     ok = failure is not None and failure.code == expected_code and (expected_status is None or failure.status == expected_status)
     return ok, {"actual_code": failure.code if failure else None, "actual_status": failure.status if failure else 200}
 
@@ -160,22 +157,69 @@ def evaluate_session(case: dict) -> tuple[bool, dict]:
         db.close()
 
 
+def evaluate_budget(case):
+    from fastapi.testclient import TestClient
+    from backend.main import app
+    from backend.limits.service import DailyBudgetLimiter
+    from ml.models.baseline import BaselineModel
+    from uuid import uuid4
+    reset_database()
+    limiter = DailyBudgetLimiter(request_limit=50, token_limit=1_000_000)
+    pages = [{"page": 1, "text": "A cache stores frequently used data."}]
+    result = BaselineModel().generate({"pages": pages, "requested_card_count": 5,
+                                     "user_id": "budget-eval", "resource_owner_id": "budget-eval"})
+    statuses = []
+    with TestClient(app) as client, patch("backend.routers.ai.budget_limiter", limiter), patch("backend.routers.ai.call_model", return_value=result) as model:
+        for _ in range(case["input"]["requests"]):
+            # Fresh card IDs and document IDs avoid persistence/idempotency collisions.
+            for card in result["cards"]:
+                card["card_id"] = "card_" + uuid4().hex
+            response = client.post("/v1/ai/card-sets", headers={"X-User-ID": "budget-eval"},
+                                   json={"document_id": "doc_" + uuid4().hex, "pages": pages})
+            statuses.append(response.status_code)
+        expected = case["expected_output"]
+        code = response.json().get("detail", {}).get("code")
+        ok = (statuses[:-1] == [201] * (len(statuses) - 1) and statuses[-1] == expected["status"]
+              and code == expected["code"] and model.call_count == 50)
+        return ok, {"actual_status": statuses[-1], "actual_code": code, "model_calls": model.call_count,
+                    "measurement_scope": "HTTP request-count quota; model transport mocked, real guard and DB"}
+
+
+def evaluate_tool_timeout(case):
+    from ml.models.baseline import BaselineModel
+    from ml.tools import SourceLookupTool
+    model = BaselineModel()
+    model.source_lookup = SourceLookupTool(case["input"]["timeout_ms"] / 1000)
+    payload = {"pages": [{"page": 1, "text": "A cache stores frequently used data."}],
+               "requested_card_count": 5, "user_id": "tool-eval", "resource_owner_id": "tool-eval"}
+    with patch.object(SourceLookupTool, "_lookup", side_effect=lambda _: time.sleep(case["input"]["simulated_work_ms"] / 1000)):
+        started = time.perf_counter()
+        result = model.generate(payload)
+        elapsed_ms = (time.perf_counter() - started) * 1000
+    expected = case["expected_output"]
+    ok = (result.get("tool_status") == expected["tool_status"] and bool(result.get("cards"))
+          and elapsed_ms <= expected["max_elapsed_ms"])
+    return ok, {"tool_status": result.get("tool_status"), "elapsed_ms": round(elapsed_ms, 3),
+                "max_elapsed_ms": expected["max_elapsed_ms"], "issue": None if ok else "Q4-TOOL-01"}
+
+
 def main() -> int:
     rows = []
+    handlers = {"reject_input": evaluate_guard, "validate_model_output": evaluate_model_output,
+                "rate_card": evaluate_rating, "resume_session": evaluate_session,
+                "complete_session": evaluate_session, "budget_limit": evaluate_budget,
+                "tool_timeout": evaluate_tool_timeout}
     for case in load_cases():
-        if case["operation"] == "reject_input":
-            passed, actual = evaluate_guard(case)
-        elif case["operation"] == "validate_model_output":
-            passed, actual = evaluate_model_output(case)
-        elif case["operation"] == "rate_card":
-            passed, actual = evaluate_rating(case)
-        else:
-            passed, actual = evaluate_session(case)
+        try:
+            passed, actual = handlers[case["operation"]](case)
+        except Exception as exc:
+            passed, actual = False, {"error": f"{type(exc).__name__}: {exc}"}
         rows.append({"id": case["id"], "operation": case["operation"], "passed": bool(passed), **actual})
 
     passed_count = sum(row["passed"] for row in rows)
     report = {
-        "dataset_version": "lab3-v2",
+        "dataset_version": DATASET_VERSION,
+        "dataset_sha256": dataset_hash(),
         "suite": "application-api-db",
         "case_count": len(rows),
         "passed_count": passed_count,

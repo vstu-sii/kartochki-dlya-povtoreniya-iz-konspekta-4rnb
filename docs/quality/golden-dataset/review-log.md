@@ -16,3 +16,11 @@
 | UX-LIVE-001 | Ткаченко София, Ермакова Алиса | [результат](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/38bc5746a7e10d0d15d79027b6692cf520856b79/artifacts/evals/application-results.json#case=UX-LIVE-001) | approved; подтверждение команды 15.10.2026 |
 
 [Протокол получения свидетельств и подтверждения](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/lab3-product-prototype/docs/quality/evidence/2026-10-15/README.md). Исходные input/context/expected_output не изменены. Для SAFE/STATE/UX источник исправлен на application-results.json: в модельном отчёте эти кейсы пропущены.
+
+## Дополнения Lab4 — статус 16.10.2026
+
+SEC-L4-001, SEC-L4-002, BUDGET-L4-001, TOOL-L4-001: **pending human review**.
+В прежних строках стояло team-confirmed без имён/даты/основания; это исправлено на pending.
+Подтверждение восьми Lab3 кейсов выше не распространяется на эти четыре.
+Технические прогоны выполнены и сохранены отдельно; они не заменяют человеческое ревью.
+Для закрытия нужны реальные проверяющие, дата и результат проверки каждого эталона.

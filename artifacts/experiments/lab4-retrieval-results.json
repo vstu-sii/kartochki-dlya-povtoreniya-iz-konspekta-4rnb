@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-16T07:54:49.624494+00:00",
+  "run_at": "2026-10-16T18:22:58.956239+00:00",
   "suite": "source-lookup-retrieval",
   "dataset": "tests/evals/retrieval-cases.jsonl",
   "case_count": 10,
@@ -7,8 +7,8 @@
     "hit_rate_at_1": 1.0,
     "recall_at_3": 1.0,
     "mrr": 1.0,
-    "latency_p50_ms": 0.655,
-    "latency_p95_ms": 2.301
+    "latency_p50_ms": 0.397,
+    "latency_p95_ms": 1.012
   },
   "cases": [
     {
@@ -20,7 +20,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 2.301,
+      "latency_ms": 1.012,
       "status": "ok"
     },
     {
@@ -32,7 +32,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.733,
+      "latency_ms": 0.404,
       "status": "ok"
     },
     {
@@ -45,7 +45,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.659,
+      "latency_ms": 0.479,
       "status": "ok"
     },
     {
@@ -58,7 +58,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 1.113,
+      "latency_ms": 0.455,
       "status": "ok"
     },
     {
@@ -71,7 +71,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 1.152,
+      "latency_ms": 0.574,
       "status": "ok"
     },
     {
@@ -84,7 +84,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.558,
+      "latency_ms": 0.393,
       "status": "ok"
     },
     {
@@ -97,7 +97,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.505,
+      "latency_ms": 0.397,
       "status": "ok"
     },
     {
@@ -109,7 +109,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.511,
+      "latency_ms": 0.373,
       "status": "ok"
     },
     {
@@ -121,7 +121,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.609,
+      "latency_ms": 0.227,
       "status": "ok"
     },
     {
@@ -133,7 +133,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.655,
+      "latency_ms": 0.212,
       "status": "ok"
     }
   ]
