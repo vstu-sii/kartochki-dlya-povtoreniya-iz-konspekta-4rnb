@@ -10,6 +10,9 @@
 | Security before | 10/10 атак пропускались политикой Lab3 | диагностика |
 | Security after | 10/10 атак блокируются; 2/2 control разрешены | 100% совпадения |
 | Lab4 limits/guards/tool tests | 6/6 | 100% |
+| Retrieval hit rate@1 | 100% | ≥90% |
+| Retrieval recall@3 | 100% | 100% |
+| Retrieval MRR | 1,0 | наблюдаемая метрика |
 
 Команды:
 
@@ -17,6 +20,7 @@
 python tests/evals/run_evals.py --min-schema 1 --min-grounding 1 --min-review .85 --output artifacts/evals/lab4-full-results.json
 python tests/evals/run_application_evals.py
 python tests/security/run_attacks.py --mode after --output artifacts/security/lab4-attacks-after.json
+python -m ml.experiments.run_retrieval_eval --min-hit-at-1 .90 --min-recall-at-3 1.0
 python -m unittest -v tests.test_lab4_limits tests.test_lab4_guards tests.test_lab4_tool
 ```
 

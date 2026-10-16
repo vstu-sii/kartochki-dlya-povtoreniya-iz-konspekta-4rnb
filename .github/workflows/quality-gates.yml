@@ -23,6 +23,8 @@ jobs:
         env:
           MODEL_PROVIDER: deterministic
         run: python tests/evals/run_application_evals.py
+      - name: Retrieval quality and latency gate
+        run: python -m ml.experiments.run_retrieval_eval --min-hit-at-1 0.90 --min-recall-at-3 1.0 --output artifacts/experiments/lab4-retrieval-results.json
       - name: Critical-path integration tests
         env:
           MODEL_PROVIDER: deterministic
@@ -35,4 +37,5 @@ jobs:
           path: |
             artifacts/evals/lab4-full-results.json
             artifacts/evals/application-results.json
+            artifacts/experiments/lab4-retrieval-results.json
             artifacts/security/lab4-attacks-after.json
