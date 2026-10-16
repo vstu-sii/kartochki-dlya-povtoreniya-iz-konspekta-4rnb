@@ -2,12 +2,14 @@
 
 Приёмка проводится по проверяемому DoD: файл существует, команда воспроизводится, тест или конфигурационная проверка проходит. Устные обещания не считаются принятым результатом.
 
-| Неделя | Инкремент | Проверка DoD | Статус | Отклонение / задача | Владелец |
-|---|---|---|---|---|---|
-| 1 | MVP scope, PRD v3, budget guard | Документы согласованы; unit-тест лимитов | принято | Redis limiter оставлен как оплаченный долг | Product, Delivery |
-| 2 | prompts v2, A/B runner, cache, model tool | Одна команда создаёт JSON; timeout инструмента протестирован | принято | Отдельный online A/B требует разрешённых ключей | AI |
-| 3 | staging, deploy, dashboard, quality gates | Compose config; workflows валидны; полный eval | принято | Реальный rollback репетируется после появления второго production deploy | Delivery |
-| 4 | security v2 и критические пути | Набор атак повторно проходит; пороги eval зелёные | принято | Новые обходные атаки добавлять в dataset | Quality |
+| Дата | Неделя | Участники | Инкремент | Проверка DoD и свидетельство | Статус | Отклонение / задача | Владелец |
+|---|---:|---|---|---|---|---|---|
+| 25.09.2026 | 1 | Product, Delivery | MVP scope, PRD v3, budget guard | `docs/mvp-scope.md`; `tests/test_lab4_limits.py` | принято внутри команды | Redis limiter оставлен как оплаченный долг | Product, Delivery |
+| 02.10.2026 | 2 | Product, AI, Quality | prompts v2, A/B runner, cache, model tool | `artifacts/experiments/lab4-ab-results.json`; `tests/test_lab4_tool.py` | принято внутри команды | Online A/B требует разрешённого ключа | AI |
+| 09.10.2026 | 3 | Product, Delivery, Quality | staging, deploy, dashboard, quality gates | `compose.staging.yml`; `monitoring/`; `.github/workflows/quality-gates.yml` | принято по репозиторному DoD | Production deploy подтверждается только после merge | Delivery |
+| 16.10.2026 | 4 | все четыре роли | security v2, критические пути, финальные пороги | `artifacts/security/lab4-attacks-after.json`; `docs/quality/lab4-quality-gates.md` | принято по CI | Новые обходные атаки добавлять в dataset | Quality |
+
+Это внутренний протокол команды: участник означает роль, ответственную за проверку артефакта. Он не подменяет подпись преподавателя или внешнюю приёмку. Для машинной проверки источником факта служит указанный файл и успешный CI run на том же commit SHA.
 
 ## Оформленные задачи вместо устных замечаний
 
