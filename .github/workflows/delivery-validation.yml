@@ -1,0 +1,44 @@
+name: Lab4 delivery staging and observability
+
+on:
+  pull_request:
+    paths:
+      - "compose*.yml"
+      - "monitoring/**"
+      - ".github/workflows/delivery-validation.yml"
+  push:
+    branches: [lab4-delivery-infrastructure, main]
+  workflow_dispatch:
+
+jobs:
+  staging-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate production and staging configuration
+        run: |
+          docker compose -f compose.yml config --quiet
+          docker compose -f compose.yml -f compose.staging.yml config --quiet
+      - name: Validate Prometheus configuration and alert behavior
+        run: |
+          docker run --rm -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v2.55.1 promtool check config /etc/prometheus/prometheus.yml
+          docker run --rm -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v2.55.1 promtool test rules /etc/prometheus/alert-tests.yml
+      - name: Start staging from the production Compose contour
+        env:
+          STAGING_MODEL_PROVIDER: deterministic
+          STAGING_GRAFANA_ADMIN_PASSWORD: ci-only-password
+        run: docker compose -f compose.yml -f compose.staging.yml up -d --build --wait
+      - name: Verify UI, traces, metrics and dashboard
+        run: |
+          curl --fail --retry 12 --retry-delay 5 http://localhost:8081/
+          curl --fail --retry 12 --retry-delay 5 http://localhost:3010/health
+          curl --fail --retry 12 --retry-delay 5 http://localhost:9091/-/ready
+          curl --fail --retry 12 --retry-delay 5 http://localhost:3002/api/health
+          curl --fail --retry 12 --retry-delay 5 http://localhost:9091/api/v1/rules
+      - name: Show diagnostics after a failure
+        if: failure()
+        run: docker compose -f compose.yml -f compose.staging.yml logs --no-color
+      - name: Stop staging
+        if: always()
+        run: docker compose -f compose.yml -f compose.staging.yml down -v
+
