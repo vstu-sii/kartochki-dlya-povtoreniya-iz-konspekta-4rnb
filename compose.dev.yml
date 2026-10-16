@@ -1,0 +1,98 @@
+services:
+  frontend:
+    build:
+      context: ./frontend/prototype
+    ports:
+      - "8080:80"
+    command: ["nginx", "-g", "daemon off;"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks: [edge]
+
+  telegram-adapter:
+    build: ./backend
+    environment:
+      SERVICE_NAME: telegram-adapter
+      PORT: 8000
+      APP_API_URL: http://app-api:8000
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-dev-placeholder}
+    depends_on:
+      app-api:
+        condition: service_healthy
+    healthcheck: &python-health
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks: [edge, internal]
+
+  app-api:
+    build: ./backend
+    environment:
+      SERVICE_NAME: app-api
+      PORT: 8000
+      DATA_SERVICE_URL: http://data-service:8000
+      AI_SERVICE_URL: http://ai-service:8001
+    depends_on:
+      data-service:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
+    healthcheck: *python-health
+    networks: [internal]
+
+  data-service:
+    build: ./backend
+    environment:
+      SERVICE_NAME: data-service
+      PORT: 8000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-cards}:${POSTGRES_PASSWORD:-cards}@postgres:5432/${POSTGRES_DB:-cards}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck: *python-health
+    networks: [internal]
+
+  ai-service:
+    build: ./ml
+    environment:
+      PORT: 8001
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-gemini-3.8-flash}
+      LLM_FALLBACK_MODEL: ${LLM_FALLBACK_MODEL:-gemini-3.5-flash-lite}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    # edge даёт AI Service исходящий HTTPS-доступ к Gemini API;
+    # internal остаётся каналом для вызова из Application API.
+    networks: [edge, internal]
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cards}
+      POSTGRES_USER: ${POSTGRES_USER:-cards}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cards}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cards} -d ${POSTGRES_DB:-cards}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [internal]
+
+networks:
+  edge:
+  internal:
+    internal: true
+
+volumes:
+  postgres-data:
+

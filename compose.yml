@@ -1,0 +1,154 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cards}
+      POSTGRES_USER: ${POSTGRES_USER:-cards}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cards}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./migrations/001_lab3_prototype.sql:/docker-entrypoint-initdb.d/001_lab3.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cards} -d ${POSTGRES_DB:-cards}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal]
+
+  ai-service:
+    build: ./ml
+    environment:
+      MODEL_PROVIDER: ${MODEL_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-gemini-3.8-flash}
+      LLM_CHEAP_MODEL: ${LLM_CHEAP_MODEL:-gemini-2.5-flash-lite}
+      GEMINI_TIMEOUT_SECONDS: ${GEMINI_TIMEOUT_SECONDS:-30}
+      GEMINI_MAX_ATTEMPTS: ${GEMINI_MAX_ATTEMPTS:-2}
+      TRACE_FILE: /data/traces.jsonl
+      TRACE_CONTENT: ${TRACE_CONTENT:-false}
+      MODEL_CACHE_TTL_SECONDS: ${MODEL_CACHE_TTL_SECONDS:-900}
+      MODEL_CACHE_MAX_ENTRIES: ${MODEL_CACHE_MAX_ENTRIES:-256}
+      SOURCE_TOOL_TIMEOUT_SECONDS: ${SOURCE_TOOL_TIMEOUT_SECONDS:-1.0}
+    volumes:
+      - traces:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal, egress]
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-cards}:${POSTGRES_PASSWORD:-cards}@postgres:5432/${POSTGRES_DB:-cards}
+      AI_SERVICE_URL: http://ai-service:8001
+      OCR_LANGUAGES: ${OCR_LANGUAGES:-rus+eng}
+      MAX_REQUESTS_PER_USER_DAY: ${MAX_REQUESTS_PER_USER_DAY:-50}
+      MAX_TOKENS_PER_USER_DAY: ${MAX_TOKENS_PER_USER_DAY:-120000}
+      BUDGET_DEGRADE_RATIO: ${BUDGET_DEGRADE_RATIO:-0.80}
+    depends_on:
+      postgres: {condition: service_healthy}
+      ai-service: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal, edge]
+
+  frontend:
+    build: ./frontend/prototype
+    ports: ["${APP_PORT:-8080}:80"]
+    depends_on:
+      backend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [edge]
+
+  telegram-bot:
+    build: ./telegram_bot
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      BACKEND_URL: http://backend:8000
+    depends_on:
+      backend: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [internal, egress]
+
+  tracing:
+    build: ./ml/tracing
+    environment:
+      TRACE_FILE: /data/traces.jsonl
+    volumes:
+      - traces:/data:ro
+    ports: ["${TRACE_PORT:-3000}:3000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    networks: [edge]
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus:ro
+      - prometheus-data:/prometheus
+    ports: ["${PROMETHEUS_PORT:-9090}:9090"]
+    depends_on:
+      backend: {condition: service_healthy}
+    networks: [internal, edge]
+
+  loki:
+    image: grafana/loki:3.2.1
+    command: ["-config.file=/etc/loki/loki-config.yml"]
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    networks: [internal]
+
+  promtail:
+    image: grafana/promtail:3.2.1
+    command: ["-config.file=/etc/promtail/promtail-config.yml"]
+    volumes:
+      - ./monitoring/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on: [loki]
+    networks: [internal]
+
+  grafana:
+    image: grafana/grafana:11.3.1
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports: ["${GRAFANA_PORT:-3001}:3000"]
+    depends_on: [prometheus, loki]
+    networks: [internal, edge]
+
+networks:
+  edge:
+  internal:
+    internal: true
+  egress:
+
+volumes:
+  postgres-data:
+  traces:
+  prometheus-data:
+  loki-data:
+  grafana-data:

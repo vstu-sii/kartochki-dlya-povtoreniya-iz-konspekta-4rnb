@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Карточки для повторения</title>
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color:#17212b;background:#d9e6ef}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center}.phone{width:min(440px,100%);min-height:760px;background:#f3f7fa;box-shadow:0 20px 60px #51697a55;display:flex;flex-direction:column}.head{background:#2aabee;color:#fff;padding:18px 20px}.head b{font-size:18px}.head small{display:block;opacity:.85;margin-top:3px}.chat{padding:18px;display:flex;flex:1;flex-direction:column;gap:12px;overflow:auto}.bubble{max-width:92%;background:white;border-radius:14px;padding:14px 16px;box-shadow:0 2px 8px #24374615;line-height:1.45}.bubble.user{align-self:flex-end;background:#d8f7c5}.panel{display:grid;gap:10px}.panel textarea{width:100%;min-height:130px;border:1px solid #b9c9d5;border-radius:10px;padding:12px;resize:vertical;font:inherit}.buttons{display:flex;gap:8px;flex-wrap:wrap}button{border:0;border-radius:10px;padding:11px 14px;background:#2aabee;color:white;font-weight:700;cursor:pointer}button.secondary{background:#607d8b}button:disabled{opacity:.55;cursor:wait}.status{font-size:13px;color:#536b7b}.error{border-left:4px solid #d33;color:#8c2424}.card-meta{font-size:12px;color:#587080;margin-top:8px}.answer{display:flex;gap:8px}.answer input{flex:1;border:1px solid #b9c9d5;border-radius:10px;padding:10px}.hidden{display:none}.loader{width:18px;height:18px;border:3px solid #ffffff77;border-top-color:#fff;border-radius:50%;display:inline-block;vertical-align:middle;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+<main class="phone">
+  <header class="head"><b>Карточки для защиты</b><small>Lab 3 · рабочий MVP</small></header>
+  <section id="chat" class="chat">
+    <div class="bubble">Пришли текст из одной PDF-методички. Прототип создаст до 5 карточек, сохранит их и покажет источник.</div>
+    <div class="bubble panel">
+      <label for="material"><b>Текст методички</b></label>
+      <textarea id="material">Кэш процессора — быстрая память между процессором и оперативной памятью. Промах кэша происходит, когда нужных данных нет и процессор обращается к оперативной памяти.</textarea>
+      <div class="buttons"><button id="generate">Создать карточки</button></div>
+      <div id="status" class="status">В браузере вставьте текст PDF. В Telegram-боте PDF можно отправить файлом.</div>
+    </div>
+    <div id="result" class="bubble hidden">
+      <b id="question"></b>
+      <div id="source" class="card-meta"></div>
+      <div class="answer"><input id="studentAnswer" maxlength="2000" placeholder="Ответ своими словами"><button id="check">Проверить</button></div>
+      <div id="review" class="status"></div>
+      <div class="buttons"><button id="useful">👍 Полезно</button><button id="notUseful" class="secondary">👎 Не полезно</button><button id="next" class="secondary">Следующая</button></div>
+    </div>
+  </section>
+</main>
+<script>
+  const state={cards:[],index:0,sessionId:null,ratings:{}};
+  const $=id=>document.getElementById(id);
+  const api=location.port==='8080'?'/api':'';
+  const userId=localStorage.getItem('lab3-user-id')||`web_${crypto.randomUUID().replaceAll('-','')}`;
+  localStorage.setItem('lab3-user-id',userId);
+  $('generate').onclick=async()=>{
+    const text=$('material').value.trim();
+    if(text.length<10){showError('Добавь хотя бы 10 символов текста.');return}
+    loading(true,'Генерируем и сохраняем карточки…');
+    try{
+      const res=await fetch(`${api}/v1/ai/card-sets`,{method:'POST',headers:{'X-User-ID':userId,'Content-Type':'application/json','Idempotency-Key':crypto.randomUUID()+crypto.randomUUID()},body:JSON.stringify({document_id:'doc_'+crypto.randomUUID().replaceAll('-','').slice(0,20),language:'ru',pages:[{page:1,text}],requested_card_count:5})});
+      const data=await res.json(); if(!res.ok)throw new Error(data.detail?.message||JSON.stringify(data.detail||data));
+      const sessionRes=await fetch(`${api}/v1/ai/sessions`,{method:'POST',headers:{'X-User-ID':userId,'Content-Type':'application/json'},body:JSON.stringify({card_set_id:data.card_set_id,user_id:userId})});
+      const session=await sessionRes.json();if(!sessionRes.ok)throw new Error(JSON.stringify(session.detail||session));
+      applySession(session);localStorage.setItem('lab3-session-id',state.sessionId);
+      $('status').textContent=`Готово: ${data.cards.length} карточек · ${data.model} · ${data.latency_ms} ms · результат сохранён в БД. Если тезисов мало, карточек будет меньше пяти.`;
+    }catch(error){showError(`Не удалось создать карточки: ${error.message}`)}finally{loading(false)}
+  };
+  $('check').onclick=async()=>{
+    const card=state.cards[state.index],answer=$('studentAnswer').value.trim();if(!answer){$('review').textContent='Сначала введи ответ.';return}
+    $('check').disabled=true;$('review').textContent='Проверяем ответ…';
+    try{const res=await fetch(`${api}/v1/ai/answer-reviews`,{method:'POST',headers:{'X-User-ID':userId,'Content-Type':'application/json'},body:JSON.stringify({session_id:state.sessionId,card,student_answer:answer})});const data=await res.json();if(!res.ok)throw new Error(JSON.stringify(data.detail||data));$('review').textContent=`${data.verdict}: ${data.feedback} Пропущено: ${(data.missing_points||[]).join(', ')||'—'}`;}catch(error){$('review').textContent=`Ошибка: ${error.message}`}finally{$('check').disabled=false}
+  };
+  $('useful').onclick=()=>rate('useful');$('notUseful').onclick=()=>rate('not_useful');
+  $('next').onclick=async()=>{const next=state.index+1;await saveProgress(next);state.index=next>=state.cards.length?0:next;renderCard()};
+  async function rate(value){const card=state.cards[state.index];const res=await fetch(`${api}/v1/ai/sessions/${state.sessionId}/ratings/${card.card_id}`,{method:'PUT',headers:{'X-User-ID':userId,'Content-Type':'application/json'},body:JSON.stringify({value})});const data=await res.json();if(!res.ok){$('review').textContent=`Ошибка оценки: ${JSON.stringify(data.detail||data)}`;return}state.ratings[card.card_id]=value;renderRating()}
+  async function saveProgress(position){if(!state.sessionId)return;await fetch(`${api}/v1/ai/sessions/${state.sessionId}/progress`,{method:'PATCH',headers:{'X-User-ID':userId,'Content-Type':'application/json'},body:JSON.stringify({current_position:position})})}
+  function applySession(session){$('status').textContent=`Создано ${session.cards.length} карточек по доступным тезисам; одинаковые фрагменты не повторяются.`;state.cards=session.cards;state.index=Math.min(session.current_position,Math.max(0,session.cards.length-1));state.sessionId=session.session_id;state.ratings=session.ratings||{};$('result').classList.remove('hidden');renderCard()}
+  function renderRating(){const value=state.ratings[state.cards[state.index].card_id];$('useful').textContent=value==='useful'?'✓ Полезно':'👍 Полезно';$('notUseful').textContent=value==='not_useful'?'✓ Не полезно':'👎 Не полезно'}
+  function renderCard(){const card=state.cards[state.index];$('question').textContent=`${state.index+1}/${state.cards.length}. ${card.question}`;$('source').textContent=`Стр. ${card.source_page} · «${card.source_quote}»`;$('studentAnswer').value='';$('review').textContent='';renderRating()}
+  function loading(on,text){$('generate').disabled=on;$('generate').innerHTML=on?'<span class="loader"></span> Подождите':'Создать карточки';if(text)$('status').textContent=text}
+  function showError(text){$('status').textContent=text;$('status').classList.add('error')}
+  (async()=>{const id=localStorage.getItem('lab3-session-id');if(!id)return;try{const res=await fetch(`${api}/v1/ai/sessions/${id}`,{headers:{'X-User-ID':userId}});if(res.ok){applySession(await res.json());$('status').textContent='Продолжили сохранённую сессию с последней карточки.'}}catch(_){/* New session remains available. */}})();
+</script>
+</body>
+</html>

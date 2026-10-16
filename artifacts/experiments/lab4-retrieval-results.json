@@ -1,0 +1,139 @@
+{
+  "run_at": "2026-10-16T07:46:34.133512+00:00",
+  "suite": "source-lookup-retrieval",
+  "dataset": "tests/evals/retrieval-cases.jsonl",
+  "case_count": 10,
+  "metrics": {
+    "hit_rate_at_1": 1.0,
+    "recall_at_3": 1.0,
+    "mrr": 1.0,
+    "latency_p50_ms": 0.548,
+    "latency_p95_ms": 3.04
+  },
+  "cases": [
+    {
+      "id": "RET-001",
+      "expected_page": 3,
+      "returned_pages": [
+        3
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 3.04,
+      "status": "ok"
+    },
+    {
+      "id": "RET-002",
+      "expected_page": 2,
+      "returned_pages": [
+        2
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.864,
+      "status": "ok"
+    },
+    {
+      "id": "RET-003",
+      "expected_page": 4,
+      "returned_pages": [
+        4
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.668,
+      "status": "ok"
+    },
+    {
+      "id": "RET-004",
+      "expected_page": 7,
+      "returned_pages": [
+        7,
+        6
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.882,
+      "status": "ok"
+    },
+    {
+      "id": "RET-005",
+      "expected_page": 9,
+      "returned_pages": [
+        9,
+        8
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.503,
+      "status": "ok"
+    },
+    {
+      "id": "RET-006",
+      "expected_page": 11,
+      "returned_pages": [
+        11,
+        10
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.38,
+      "status": "ok"
+    },
+    {
+      "id": "RET-007",
+      "expected_page": 13,
+      "returned_pages": [
+        13,
+        12
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 1.004,
+      "status": "ok"
+    },
+    {
+      "id": "RET-008",
+      "expected_page": 15,
+      "returned_pages": [
+        15
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.548,
+      "status": "ok"
+    },
+    {
+      "id": "RET-009",
+      "expected_page": 18,
+      "returned_pages": [
+        18
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.491,
+      "status": "ok"
+    },
+    {
+      "id": "RET-010",
+      "expected_page": 21,
+      "returned_pages": [
+        21
+      ],
+      "rank": 1,
+      "hit_at_1": true,
+      "recall_at_3": true,
+      "latency_ms": 0.356,
+      "status": "ok"
+    }
+  ]
+}

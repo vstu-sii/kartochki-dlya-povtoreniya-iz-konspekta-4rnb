@@ -1,0 +1,16 @@
+@startuml C4_Context
+!include <C4/C4_Context>
+
+title C4 Context — Карточки для устной защиты
+
+Person(student, "Студент", "Готовится к устной защите одной лабораторной")
+System(system, "Карточки для устной защиты", "Создаёт вопросы из PDF и разбирает текстовые ответы")
+System_Ext(telegram, "Telegram", "Доставка сообщений, файлов и кнопок")
+System_Ext(gemini, "Gemini API", "Генерация CardSet и AnswerReview")
+
+Rel(student, telegram, "Загружает PDF, отвечает, получает обратную связь", "Telegram client")
+Rel(telegram, system, "Передаёт updates и получает ответы", "HTTPS/Webhook")
+Rel(system, gemini, "Запрашивает структурированную генерацию", "JSON/HTTPS")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,40 @@
+name: Lab4 CI
+
+on:
+  pull_request:
+  push:
+    branches: ["lab4-*-infrastructure"]
+
+jobs:
+  test-and-compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r backend/requirements.txt
+      - name: Unit and integration tests
+        env:
+          MODEL_PROVIDER: deterministic
+        run: python -m unittest discover -s tests -p "test_*.py"
+      - name: Run all API and database dataset cases
+        run: python tests/evals/run_application_evals.py
+      - name: Measure source lookup separately
+        run: python -m ml.experiments.run_retrieval_eval --min-hit-at-1 0.90 --min-recall-at-3 1.0 --output artifacts/experiments/lab4-retrieval-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab4-shared-evidence
+          path: |
+            artifacts/evals/application-results.json
+            artifacts/experiments/lab4-retrieval-results.json
+      - run: docker compose -f compose.yml config --quiet
+      - run: docker compose -f compose.yml up -d --build --wait
+      - run: curl --fail http://localhost:8080/
+      - run: curl --fail http://localhost:3000/health
+      - name: Verify UI gateway, API, model and database
+        run: python tests/e2e_compose.py
+      - if: failure()
+        run: docker compose -f compose.yml logs --no-color
+      - if: always()
+        run: docker compose -f compose.yml down -v
