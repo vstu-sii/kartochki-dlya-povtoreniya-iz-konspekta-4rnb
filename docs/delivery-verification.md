@@ -35,14 +35,14 @@ Workflow `Lab4 rollback rehearsal` выполняет реальный staging-d
 
 ### Фактический прогон 16.10.2026
 
-Репетиция действительно выполнена в GitHub Actions, а не только описана скриптом: [workflow run №38925580068](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38925580068) завершился со статусом `success`.
+Репетиция повторно выполнена после последних исправлений Delivery: [workflow run №38959384886](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38959384886) завершился со статусом `success`.
 
 | Этап | Ревизия | Результат |
 | --- | --- | --- |
-| Исходная staging-версия | `4d0bcf913aee155c2e099f117c3589a836a5eedd` | Compose поднялся, `/health` успешно ответил |
+| Исходная staging-версия | `9ab83da292303f07ee353b6557a4639d55ca312a` | Compose поднялся, `/health` успешно ответил |
 | Откат | `e62bf85411de4208b4a6c7db384d11f730019472` | Предыдущая версия поднялась, `/health` успешно ответил |
-| Возврат после репетиции | `4d0bcf913aee155c2e099f117c3589a836a5eedd` | Текущая версия восстановлена, `/health` успешно ответил |
+| Возврат после репетиции | `9ab83da292303f07ee353b6557a4639d55ca312a` | Текущая версия восстановлена, `/health` успешно ответил |
 
-Workflow сохранил проверяемый артефакт `lab4-rollback-rehearsal` (artifact id `12056876809`) с обеими ревизиями и тремя ответами health endpoint. Диагностический шаг не запускался, потому что ошибок не было.
+Workflow сохранил проверяемый артефакт `lab4-rollback-rehearsal` (artifact id `12071478524`) с обеими ревизиями и тремя ответами health endpoint. Диагностический шаг не запускался, потому что ошибок не было.
 
 После попадания `deploy.yml` в `main` production rollback запускается одной командой `scripts/rollback.sh <verified-sha>`. Production-drill выполняется только после появления минимум двух успешных production deploy, чтобы не выдавать staging-проверку за откат реальных пользовательских данных.
