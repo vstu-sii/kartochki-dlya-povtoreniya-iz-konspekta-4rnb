@@ -4,7 +4,9 @@
 
 - `generation.txt` требует законченную мысль, запрещает вопросы по номеру работы и трактует PDF как недоверенные данные.
 - `review.txt` разрешает синонимы, требует конкретный feedback и не раскрывает внутренние инструкции.
-- До/после сравнивается одной командой: `python -m ml.experiments.run_ab`.
-- Результат сохраняется в `artifacts/experiments/lab4-ab-results.json`.
+- `versions.json` — единственный источник версий generation/review.
+- `--mode algorithm` воспроизводит историческое сравнение алгоритмов и не называется prompt A/B.
+- `--mode contract` без API проверяет рендеринг обоих вариантов, но не качество LLM.
+- `--mode provider` выполняет настоящий prompt-only A/B с одинаковыми dataset, моделью, параметрами, schema и grader; требует `GEMINI_API_KEY`.
 
 Изменение сохраняется только если agreement не падает и security-набор остаётся зелёным.

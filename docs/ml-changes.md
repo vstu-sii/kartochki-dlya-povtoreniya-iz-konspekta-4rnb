@@ -1,20 +1,33 @@
 # Изменения AI-части за спринт 4
 
-## Принятые решения
+## Пайплайн
 
-1. Prompts v2 вынесены в версионированные файлы и проверяются A/B-кодом.
-2. Добавлен read-only tool `lookup_source` с проверкой владельца и таймаутом.
-3. Повторные запросы кэшируются; бюджет выбирает primary или cheap tier до вызова модели.
-4. Trace содержит `cache_hit`, `tool_status`, фактическую модель и fallback без содержимого PDF по умолчанию.
+- Prompt v1 и v2 хранятся файлами в `ml/prompts_v2/`; версии берутся из единственного `versions.json`.
+- `run_ab.py` разделяет локальное A/B алгоритмов, provider-free contract check и настоящий prompt-only provider A/B.
+- TTL-кэш возвращает копию результата без повторного provider call; cache hit виден в trace.
+- Application limiter выбирает cheap tier после 80% и полностью запрещает вызов после дневного лимита.
+- `lookup_source` разрешает только данные владельца, возвращает до трёх фрагментов и имеет статусы `success`, `timeout`, `forbidden`, `error`, `empty`.
 
-## ADR-004: budget-aware grounded pipeline
+## Таймаут и fallback
 
-**Статус:** принято.
+Вызовы идут через общий пул из четырёх потоков и восемь bounded slots. На deadline внешний вызов возвращает `timeout`, а генерация использует исходные страницы. Исключение даёт `error`, чужой владелец — `forbidden`, отсутствие совпадений — `empty`; все четыре состояния безопасно переходят к исходным страницам. Лог содержит только status, elapsed_ms, cache_hit и код — без запроса и PDF.
 
-**Контекст:** лабораторная 3 доказала путь запроса, но не ограничивала суточную стоимость и передавала весь контекст.
+Ограничение: Python не может принудительно остановить уже выполняющийся поток. После timeout операция заканчивается в фоне; bounded pool не даёт создавать неограниченное число таких задач. Для жёсткого уничтожения зависшего native call потребуется отдельный процесс или внешний сервис.
 
-**Решение:** application guard считает бюджет, model tool возвращает только разрешённые фрагменты, а одинаковые запросы обслуживаются кэшем.
+## Фактические метрики
 
-**Цена решения:** process-local состояние годится только для одного экземпляра. Порог пересмотра — больше одной backend/AI replica или расхождение счётчиков в мониторинге. Тогда кэш и limiter переносятся в Redis. Сокращение контекста может пропустить редкую мысль; grounding и agreement поэтому остаются обязательными quality gates.
+- algorithm A/B: 82,5% против 90,0%; это алгоритмы, не prompts;
+- prompt contract: 100% шаблонов рендерятся, provider не вызывался;
+- curated retrieval: hit@1 100%, recall@3 100% на 10 синтетических кейсах;
+- production query builder: метрики записаны отдельно в retrieval artifact;
+- coverage probe показывает потерю страниц 4–5 при фиксированном top-3.
 
-**Тестируемость:** `tests/test_lab4_limits.py`, `tests/test_lab4_tool.py`, полный eval и `python -m ml.experiments.run_ab`.
+## Проверки
+
+- `tests/test_lab4_tool.py`: success/forbidden/empty/error, настоящий timeout, fallback, cache и trace;
+- `tests/test_lab4_limits.py`: 80%, hard limit, reset, usage и TTL;
+- CI: compile/import, unit/integration, retrieval, algorithm regression и prompt contract.
+
+## Оставшиеся ограничения
+
+Provider prompt A/B не выполнен без ключа. Top-3 может потерять важный факт длинного документа. Cache и limiter process-local. Локальные latency не являются production SLA.

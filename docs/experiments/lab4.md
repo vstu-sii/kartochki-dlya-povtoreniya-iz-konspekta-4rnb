@@ -1,27 +1,38 @@
-# A/B-эксперимент лабораторной 4
+# Эксперименты AI Lab4
 
-## Вопрос
+## 1. Историческое A/B алгоритмов проверки
 
-Улучшает ли `review-v2.1` согласие с golden dataset по сравнению с лексическим reviewer лабораторной 3, не выдавая deterministic-цифры за Gemini?
-
-## Метод
-
-Обе версии прогоняются на одном наборе review-кейсов одной командой:
+Команда:
 
 ```bash
-python -m ml.experiments.run_ab
+python -m ml.experiments.run_ab --mode algorithm --min-b-agreement .85 --fail-on-regression
 ```
 
-Результат всегда записывается в `artifacts/experiments/lab4-ab-results.json`. Variant A — простой overlap слов. Variant B — нормализация синонимов, русских форм и явных противоречий из текущего baseline.
+На 40 одинаковых review-кейсах алгоритм A (`lexical-overlap-v1`) получил 82,5%, алгоритм B (`normalized-semantic-rules-v2`) — 90,0%, разница +7,5 п.п. Это **сравнение алгоритмов**, а не доказательство улучшения текста промпта. Оно сохраняется как воспроизводимый regression gate без внешнего API.
 
-## Результат и решение
+## 2. Prompt-only A/B
 
-Фактический прогон 40 review-кейсов: A — 82,5%, B — 90,0%, прирост **+7,5 п.п.** Изменились REV-002, REV-007 и REV-018. Выбран вариант B: он лучше соответствует требованию принимать ответ своими словами. Цена — более подробная инструкция увеличила оценочный input с 1 283 до 6 846 токенов на этот набор; рост принят, а повторная генерация компенсируется кэшем. Schema/grounding проверяются отдельным полным eval.
+Сценарий `--mode provider` меняет только prompt v1/v2. Dataset, модель, JSON Schema, `thinkingLevel=low`, `maxOutputTokens=6000`, обработка ответа и grader одинаковы. Генерация карточек и проверка ответа оцениваются раздельно в строках результата; сохраняются ответ каждого кейса, latency и provider usage.
 
-## Ограничение
+```bash
+GEMINI_API_KEY=... python -m ml.experiments.run_ab --mode provider \
+  --model gemini-3.8-flash --repeats 3 --fail-on-regression
+```
 
-Это офлайн deterministic A/B. Он не доказывает latency, стоимость или качество Gemini. Online A/B допускается только на разрешённых документах и с отдельным provider-артефактом.
+Настоящий provider prompt A/B в этой локальной доработке **не выполнен**, потому что ключ и разрешение на платные вызовы не предоставлены. Поэтому выбора prompt v2 «по цифрам LLM» пока нет. Файл `artifacts/experiments/lab4-provider-results.json` появится только после разрешённого запуска.
 
-## Отдельная оценка поиска
+Без ключа выполняется только контрактная проверка:
 
-Поиск не оценивается метрикой ответа. Команда `python -m ml.experiments.run_retrieval_eval` прогоняет 10 сценариев и сохраняет `artifacts/experiments/lab4-retrieval-results.json`. Зафиксированный результат: hit rate@1 = 100%, recall@3 = 100%, MRR = 1,0; p50/p95 latency записаны в JSON конкретного прогона. Порог CI: hit rate@1 не ниже 90%, recall@3 — 100%. Методика описана в `docs/experiments/retrieval-lab4.md`.
+```bash
+python -m ml.experiments.run_ab --mode contract
+```
+
+Она подтверждает, что оба промпта рендерятся на одном dataset, но намеренно ставит `provider_called=false` и `quality_measured=false`.
+
+## Артефакты
+
+- `lab4-algorithm-results.json` — 40 строк фактического локального сравнения алгоритмов;
+- `lab4-contract-results.json` — provider-free проверка шаблонов;
+- `lab4-provider-results.json` — создаётся только реальным разрешённым запуском.
+
+Решение на текущих доказательствах: алгоритм B оставлен как deterministic fallback. Решение о превосходстве prompt v2 над v1 отложено до provider-прогона.
