@@ -21,8 +21,8 @@ jobs:
           docker compose -f compose.yml -f compose.staging.yml config --quiet
       - name: Validate Prometheus configuration and alert behavior
         run: |
-          docker run --rm -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v2.55.1 promtool check config /etc/prometheus/prometheus.yml
-          docker run --rm -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v2.55.1 promtool test rules /etc/prometheus/alert-tests.yml
+          docker run --rm --entrypoint promtool -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v2.55.1 check config /etc/prometheus/prometheus.yml
+          docker run --rm --entrypoint promtool -v "$PWD/monitoring/prometheus:/etc/prometheus:ro" prom/prometheus:v2.55.1 test rules /etc/prometheus/alert-tests.yml
       - name: Start staging from the production Compose contour
         env:
           STAGING_MODEL_PROVIDER: deterministic
