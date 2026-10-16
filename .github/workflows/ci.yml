@@ -20,10 +20,14 @@ jobs:
         run: python -m unittest discover -s tests -p "test_*.py"
       - name: Run all API and database dataset cases
         run: python tests/evals/run_application_evals.py
+      - name: Measure source lookup separately
+        run: python -m ml.experiments.run_retrieval_eval --min-hit-at-1 0.90 --min-recall-at-3 1.0 --output artifacts/experiments/lab4-retrieval-results.json
       - uses: actions/upload-artifact@v4
         with:
-          name: lab3-application-eval-results
-          path: artifacts/evals/application-results.json
+          name: lab4-shared-evidence
+          path: |
+            artifacts/evals/application-results.json
+            artifacts/experiments/lab4-retrieval-results.json
       - run: docker compose -f compose.yml config --quiet
       - run: docker compose -f compose.yml up -d --build --wait
       - run: curl --fail http://localhost:8080/
