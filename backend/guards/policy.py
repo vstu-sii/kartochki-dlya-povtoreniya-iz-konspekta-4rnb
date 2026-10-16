@@ -11,7 +11,7 @@ class GuardDecision:
 
 
 _INJECTION_PATTERNS = (
-    re.compile(r"ignore\s+(all\s+)?(previous|prior)\s+instructions", re.I),
+    re.compile(r"(ignore|disregard)\s+(all\s+)?(previous|prior)\s+(instructions|rules|directions|commands)", re.I),
     re.compile(r"(забудь|игнорируй)\s+(все\s+)?(предыдущие|системные)\s+инструкции", re.I),
     re.compile(r"(show|reveal|print|покажи|раскрой)\s+.{0,24}(system\s+prompt|системн\w*\s+промпт)", re.I),
     re.compile(r"<\s*(system|assistant|tool)\s*>", re.I),
@@ -19,7 +19,7 @@ _INJECTION_PATTERNS = (
 
 
 def inspect_untrusted_text(text: str) -> GuardDecision:
-    value = str(text or "")
+    value = re.sub(r"[^a-zа-яё0-9]+", " ", str(text or "").casefold()).strip()
     if any(pattern.search(value) for pattern in _INJECTION_PATTERNS):
         return GuardDecision(False, "PROMPT_INJECTION_BLOCKED")
     return GuardDecision(True, "OK")
