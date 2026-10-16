@@ -28,3 +28,9 @@ docker compose -f compose.yml -f compose.staging.yml up -d --build --wait
 ```
 
 После запуска: UI — `http://localhost:8081`, traces — `http://localhost:3010`, Prometheus — `http://localhost:9091`, Grafana — `http://localhost:3002`.
+
+## Репетиция отката
+
+Workflow `Lab4 rollback rehearsal` выполняет реальный staging-drill без воздействия на production: поднимает текущий commit, переключает Compose-контур на предыдущий зелёный commit `e62bf85411de4208b4a6c7db384d11f730019472`, проверяет `/health`, затем восстанавливает текущий commit и повторяет health check. Три ответа и обе ревизии сохраняются в артефакте `lab4-rollback-rehearsal`.
+
+После попадания `deploy.yml` в `main` production rollback запускается одной командой `scripts/rollback.sh <verified-sha>`. Production-drill выполняется только после появления минимум двух успешных production deploy, чтобы не выдавать staging-проверку за откат реальных пользовательских данных.
