@@ -11,8 +11,12 @@ model = BaselineModel()
 
 @app.get("/health")
 def health():
-    return {"service": "ai-service", "status": "ok", "provider": model.provider,
-            "prompt_versions": {"generation": PROMPT_VERSION, "review": REVIEW_PROMPT_VERSION}}
+    return {
+        "service": "ai-service",
+        "status": "ok",
+        "provider": model.provider,
+        "prompt_versions": {"generation": PROMPT_VERSION, "review": REVIEW_PROMPT_VERSION},
+    }
 
 
 @app.get("/v1/model/metadata")
