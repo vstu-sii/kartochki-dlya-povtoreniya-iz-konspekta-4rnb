@@ -7,4 +7,5 @@ test_lab3.db
 .pytest_cache/
 artifacts/traces.jsonl
 artifacts/evals/eval-traces.jsonl
+artifacts/evals/*.log
 artifacts/*.tmp
