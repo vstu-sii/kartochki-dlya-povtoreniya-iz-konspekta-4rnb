@@ -21,3 +21,7 @@ python -m ml.experiments.run_ab
 ## Ограничение
 
 Это офлайн deterministic A/B. Он не доказывает latency, стоимость или качество Gemini. Online A/B допускается только на разрешённых документах и с отдельным provider-артефактом.
+
+## Отдельная оценка поиска
+
+Поиск не оценивается метрикой ответа. Команда `python -m ml.experiments.run_retrieval_eval` прогоняет 10 сценариев и сохраняет `artifacts/experiments/lab4-retrieval-results.json`. Зафиксированный результат: hit rate@1 = 100%, recall@3 = 100%, MRR = 1,0; p50/p95 latency записаны в JSON конкретного прогона. Порог CI: hit rate@1 не ниже 90%, recall@3 — 100%. Методика описана в `docs/experiments/retrieval-lab4.md`.
