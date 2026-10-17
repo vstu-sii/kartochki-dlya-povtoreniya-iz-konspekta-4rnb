@@ -12,12 +12,13 @@ from uuid import uuid4
 
 from ml.tracing.client import TraceClient
 from ml.cache import TTLCache
-from ml.prompts_v2 import load_prompt
-from ml.tools import SourceLookupRequest, SourceLookupTool, ToolTimeout
+from ml.prompts_v2 import load_prompt, prompt_versions
+from ml.tools import SourceLookupRequest, SourceLookupTool, build_retrieval_query
 
 
-PROMPT_VERSION = "cards-v2.1"
-REVIEW_PROMPT_VERSION = "review-v2.1"
+_PROMPT_VERSIONS = prompt_versions()
+PROMPT_VERSION = _PROMPT_VERSIONS["generation"]
+REVIEW_PROMPT_VERSION = _PROMPT_VERSIONS["review"]
 SCHEMA_VERSION = "2.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
 CHEAP_MODEL = os.getenv("LLM_CHEAP_MODEL", "gemini-2.5-flash-lite")
@@ -79,21 +80,20 @@ class BaselineModel:
 
         tool_status = "not_requested"
         prompt_payload = dict(payload)
-        try:
-            lookup = self.source_lookup.run(
-                SourceLookupRequest(
-                    user_id=str(payload.get("user_id", "")),
-                    resource_owner_id=str(payload.get("resource_owner_id", "")),
-                    query=" ".join(str(page.get("text", ""))[:200] for page in payload["pages"]),
-                    pages=payload["pages"],
-                    max_results=3,
-                )
+        lookup = self.source_lookup.run(
+            SourceLookupRequest(
+                user_id=str(payload.get("user_id", "")),
+                resource_owner_id=str(payload.get("resource_owner_id", "")),
+                query=build_retrieval_query(payload["pages"]),
+                pages=payload["pages"],
+                max_results=3,
             )
-            tool_status = lookup.status
-            if lookup.passages:
-                prompt_payload["pages"] = lookup.passages
-        except ToolTimeout:
-            tool_status = "timeout_fallback_to_request_pages"
+        )
+        tool_status = lookup.status
+        if lookup.status == "success" and lookup.passages:
+            prompt_payload["pages"] = lookup.passages
+        elif lookup.status in {"timeout", "error", "forbidden", "empty"}:
+            tool_status = f"{lookup.status}_fallback_to_request_pages"
 
         prompt = self._generation_prompt(prompt_payload)
         fallback_used = False

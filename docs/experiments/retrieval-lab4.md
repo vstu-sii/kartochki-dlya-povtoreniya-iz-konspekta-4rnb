@@ -1,11 +1,19 @@
-# Отдельный замер поиска по документу
+# Retrieval evaluation Lab4
 
-`lookup_source` измеряется отдельно от качества итогового ответа:
+Команда:
 
 ```bash
 python -m ml.experiments.run_retrieval_eval --min-hit-at-1 .90 --min-recall-at-3 1.0
 ```
 
-Набор `tests/evals/retrieval-cases.jsonl` содержит запрос, три конкурирующих фрагмента и ожидаемую страницу. Прогон считает hit rate@1, recall@3, MRR и p50/p95 latency. Машиночитаемый результат сохраняется в `artifacts/experiments/lab4-retrieval-results.json` и проверяется в CI. Это не подменяется метрикой grounding: поиск отвечает на вопрос «нашёл ли правильный фрагмент», grounding — «не выдумал ли ответ поверх найденного».
+Один прогон сохраняет три разных свидетельства:
 
-Источник истины для конкретного прогона — JSON-артефакт на том же commit SHA. Этот offline-набор проверяет текущий лексический поиск; provider latency в него не входит.
+1. `curated_query` — отдельное качество поиска по заданному запросу;
+2. `production_query_builder` — тот же способ формирования запроса из первых 200 символов каждой страницы, который использует `BaselineModel`;
+3. `end_to_end` — путь pages → production query → top-3 → deterministic cards.
+
+На десяти синтетических сценариях curated и production-query получили hit@1=100%, recall@3=100%, MRR=1,0. Это проверка небольшого корпуса и не оценка качества всего продукта.
+
+В отдельном пятистраничном coverage probe top-3 сохранил страницы 1–3 и отбросил 4–5. Следовательно, ограничение в три фрагмента действительно может потерять важную часть длинного документа. До перехода к chunking/coverage-aware retrieval UI и документация не должны обещать полноту по всему PDF.
+
+Latency в JSON — локальное время deterministic lookup, не production SLA.
