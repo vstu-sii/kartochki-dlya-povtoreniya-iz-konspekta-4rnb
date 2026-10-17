@@ -58,8 +58,10 @@
 | Контрольная дата | Остаток | Свидетельство в репо |
 |---|---:|---|
 | 25.09.2026 | 34 SP | `mvp-scope.md`, `prd.md`, тесты limiter |
-| 02.10.2026 | 24 SP | A/B runner, `artifacts/experiments/lab4-ab-results.json` |
+| 02.10.2026 | 24 SP | A/B runner, `artifacts/experiments/lab4-algorithm-results.json`; provider-долг `L4-AI-01` закрыт 17.10 артефактом `lab4-provider-results.json` |
 | 09.10.2026 | 14 SP | staging Compose, `monitoring/`, quality-gates |
 | 16.10.2026 | 0 SP | полный eval, security after-run, зелёный CI |
 
 Промежуточные дни — данные ежедневного синхрона команды; при споре подтверждаются участниками на приёмке (`acceptance.md`), а не временем создания этого файла.
+
+Provider A/B не подменяет исторические значения burndown: это закрытие зафиксированного отклонения после контрольной точки. Фактический результат хранится в ветке `lab4-ai-infrastructure`, коммит `edef5df`: A — 95%, B — 100%, выбран B.
