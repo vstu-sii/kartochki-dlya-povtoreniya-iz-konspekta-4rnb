@@ -1,6 +1,6 @@
 {
   "dataset_version": "lab4-v3",
-  "dataset_sha256": "099000bba3f950370c2e7e603395494f23953f77957e4d0d5d211710b904b8da",
+  "dataset_sha256": "05bb2dee5239dffe3c78b71dd306b84c3af88bc000bfee49fa102bc735d31dc6",
   "suite": "application-api-db",
   "case_count": 37,
   "passed_count": 37,
@@ -298,7 +298,7 @@
       "operation": "tool_timeout",
       "passed": true,
       "tool_status": "timeout_fallback_to_request_pages",
-      "elapsed_ms": 16.421,
+      "elapsed_ms": 5.664,
       "max_elapsed_ms": 200,
       "issue": null
     }
