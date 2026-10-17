@@ -48,10 +48,12 @@ python tests/evals/run_full_suite.py
 
 Успешные проверки коммита `3760914`: [Lab4 full quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38959398688) и [Lab4 CI](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38959398794).
 
-В GitHub требуется назначить job `full-evals` обязательной проверкой защищённой ветки.
-main помечена protected, но точный список required checks не подтверждён доступным API.
-Quality не изменяла настройки репозитория. До проверки настроек нельзя утверждать,
-что красный job технически запрещает merge.
+Обновление 18.10.2026: пользователь подтвердил, что администратор назначил `full-evals`
+обязательной проверкой `main`. [PR #15](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/pull/15)
+объединён; [полный gate на merge-коммите 6f0f3b0](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39073322091)
+завершился успешно. Настройка подтверждена сообщением пользователя; скриншот правила
+и независимая демонстрация запрета merge при красном gate не предоставлены.
+Основания закрытия: [Q4-MERGE-01](open-findings-lab4.md#q4-merge-01).
 
 ## Границы доказательства
 

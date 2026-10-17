@@ -32,9 +32,11 @@
 
 ## Q4-MERGE-01
 
-**Delivery / администратор; не проверено.** main защищена, но обязательность full-evals не подтверждена.
-Закрытие: настройка required status check и доказательство блокировки merge при красном gate.
-Quality не меняет настройки и не создаёт PR.
+**Delivery / администратор; закрыт по подтверждению пользователя 18.10.2026.** Пользователь подтвердил оба действия: администратор назначил `full-evals` обязательной проверкой для `main`, и PR был объединён после успешных проверок.
+
+Независимо проверено через GitHub API: [PR #15](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/pull/15) объединён, merge-коммит `6f0f3b072c11d92ae92d37702b1055cbdbaa1dd7`; на нём успешны [Lab4 full quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39073322091) и [production deploy workflow](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39073322005).
+
+Основание настройки required status check — сообщение пользователя, а не сам факт merge. Скриншот правила и отдельная демонстрация блокировки красного PR не предоставлены; независимая проверка настроек администратором через доступный API не выполнена. При запросе проверяющего администратор предоставляет это дополнительное свидетельство. Настройки репозитория в рамках обновления документации не менялись.
 
 ## Покрытие threat model
 

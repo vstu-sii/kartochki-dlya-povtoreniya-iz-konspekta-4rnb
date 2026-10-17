@@ -1,5 +1,9 @@
 # Lab4 — Quality & Safety
 
+**Статус на 18.10.2026:** [PR #15](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/pull/15) объединён в `main`, merge-коммит `6f0f3b0`. На этом коммите успешно завершились [полный Quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39073322091) и [production deploy workflow](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39073322005).
+
+Назначение `full-evals` обязательной проверкой для `main` подтверждено пользователем 18.10.2026: администратор настроил правило, после успешных проверок PR объединён. Основания статуса и границы проверки записаны в [Q4-MERGE-01](docs/quality/open-findings-lab4.md#q4-merge-01).
+
 Актуальная проверка всей роли:
 
 ```bash
@@ -18,8 +22,8 @@ python tests/evals/run_full_suite.py
 - [Security before](docs/quality/security-report-1.md) / [after](docs/quality/security-report-2.md)
 
 В GitHub Actions можно вручную запустить **Lab4 full quality gates**.
-Даже при провале сохраняются JSON и логи всех наборов. Запрет merge требует назначения
-full-evals обязательной проверкой в настройках GitHub; наличие workflow само по себе этого не гарантирует.
+Даже при провале сохраняются JSON и логи всех наборов. По подтверждению пользователя,
+`full-evals` назначен обязательной проверкой перед merge в `main`; правило GitHub настраивается отдельно от workflow.
 
 Ниже сохранена общая инструкция запуска прототипа предыдущей версии; она не является
 доказательством production-ready или закрытия перечисленных проблем.
