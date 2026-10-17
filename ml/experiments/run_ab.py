@@ -121,14 +121,27 @@ def _grade_generation(case: dict, response: dict) -> bool:
     return False
 
 
-def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int) -> dict:
+def _select_provider_cases(cases: list[dict], case_limit: int | None) -> list[dict]:
+    selected = [case for case in cases if case.get("operation") in {"generate_card", "review_answer"}]
+    if not case_limit or case_limit >= len(selected):
+        return selected
+    generation = [case for case in selected if case["operation"] == "generate_card"]
+    reviews = [case for case in selected if case["operation"] == "review_answer"]
+    generation_count = (case_limit + 1) // 2
+    return generation[:generation_count] + reviews[: case_limit - generation_count]
+
+
+def run_provider_prompt_ab(
+    cases: list[dict], model_name: str, repeats: int, case_limit: int | None
+) -> dict:
     """Run a real prompt-only A/B with identical model, schema and parameters."""
     if not os.getenv("GEMINI_API_KEY"):
         raise RuntimeError("GEMINI_API_KEY is required for --mode provider")
     model = BaselineModel()
-    selected = [case for case in cases if case.get("operation") in {"generate_card", "review_answer"}]
+    selected = _select_provider_cases(cases, case_limit)
     rows = []
     totals = {"a": {"correct": 0, "tokens": 0}, "b": {"correct": 0, "tokens": 0}}
+    actual_models: set[str] = set()
     for repeat in range(repeats):
         for case in selected:
             operation = case["operation"]
@@ -139,6 +152,7 @@ def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int) -> 
                 started = time.perf_counter()
                 response = model._call_gemini(prompt, schema, model_name)
                 usage = response.pop("_usage", {})
+                actual_models.add(response.pop("_provider_model", model_name))
                 if operation == "review_answer":
                     correct = response.get("verdict") == case["expected_output"]["verdict"]
                 else:
@@ -154,15 +168,24 @@ def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int) -> 
     return {
         "experiment": "provider-prompt-only-ab",
         "provider_called": True,
-        "model": model_name,
+        "provider": "google-gemini-api",
+        "requested_model": model_name,
+        "actual_models": sorted(actual_models),
+        "case_count": len(selected),
         "parameters": {"response_mime_type": "application/json", "thinking_level": "low",
-                       "max_output_tokens": 6000, "temperature": "not sent", "repeats": repeats},
+                       "max_output_tokens": 6000, "temperature": "not sent",
+                       "repeats": repeats},
         "controlled_variables": ["dataset", "model", "generation parameters", "schema", "grader"],
         "changed_factor": "prompt_text_only",
         "variant_a": {"prompt": "v1", "agreement": round(totals["a"]["correct"] / denominator, 4),
                       "tokens": totals["a"]["tokens"]},
         "variant_b": {"prompt": "v2", "agreement": round(totals["b"]["correct"] / denominator, 4),
                       "tokens": totals["b"]["tokens"]},
+        "delta_agreement_pp": round(
+            (totals["b"]["correct"] - totals["a"]["correct"]) / denominator * 100, 2
+        ),
+        "decision": "B" if totals["b"]["correct"] >= totals["a"]["correct"] else "A",
+        "selected_case_ids": [case["id"] for case in selected],
         "cases": rows,
     }
 
@@ -173,6 +196,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=("algorithm", "contract", "provider"), default="algorithm")
     parser.add_argument("--model", default=PRIMARY_MODEL)
     parser.add_argument("--repeats", type=int, default=1)
+    parser.add_argument("--case-limit", type=int)
     parser.add_argument("--min-b-agreement", type=float, default=0.85)
     parser.add_argument("--fail-on-regression", action="store_true")
     parser.add_argument("--output", type=Path)
@@ -187,14 +211,19 @@ def main() -> int:
         result = run_contract(cases)
         failed = not result["passed"]
     else:
-        result = run_provider_prompt_ab(cases, args.model, max(1, args.repeats))
+        result = run_provider_prompt_ab(cases, args.model, max(1, args.repeats), args.case_limit)
         failed = result["variant_b"]["agreement"] < args.min_b_agreement
         if args.fail_on_regression:
             failed = failed or result["variant_b"]["agreement"] < result["variant_a"]["agreement"]
     result["passed"] = not failed
+    try:
+        dataset_label = args.dataset.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        dataset_label = args.dataset.as_posix()
     result.update({"run_at": datetime.now(timezone.utc).isoformat(),
-                   "dataset": str(args.dataset).replace("\\", "/"), "mode": args.mode})
-    output = args.output or ROOT / f"artifacts/experiments/lab4-{args.mode}-results.json"
+                   "dataset": dataset_label, "mode": args.mode})
+    output_name = f"lab4-{args.mode}-results.json"
+    output = args.output or ROOT / "artifacts/experiments" / output_name
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: result.get(key) for key in ("experiment", "variant_a", "variant_b", "passed")}, ensure_ascii=False))
