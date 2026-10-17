@@ -1,0 +1,33 @@
+rule_files:
+  - alerts.yml
+
+evaluation_interval: 1m
+
+tests:
+  - name: token budget degradation and rejection produce alerts
+    interval: 1m
+    input_series:
+      - series: 'flashcards_budget_events_total{decision="allow",tier="cheap"}'
+        values: '0 1 2 3 4 5 6 7 8 9 10 11'
+      - series: 'flashcards_budget_events_total{decision="reject",tier="none"}'
+        values: '0 0 0 0 0 0 0 1 1 1 1 1'
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: TokenBudgetAnomaly
+        exp_alerts:
+          - exp_labels:
+              decision: allow
+              severity: warning
+              tier: cheap
+            exp_annotations:
+              summary: Abnormal token use switched users to the cheap model tier
+      - eval_time: 8m
+        alertname: TokenBudgetRejected
+        exp_alerts:
+          - exp_labels:
+              decision: reject
+              severity: critical
+              tier: none
+            exp_annotations:
+              summary: A daily request or token limit was reached
+

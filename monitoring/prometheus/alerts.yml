@@ -1,0 +1,21 @@
+groups:
+  - name: flashcards-budget-and-errors
+    rules:
+      - alert: TokenBudgetAnomaly
+        expr: increase(flashcards_budget_events_total{decision="allow",tier="cheap"}[10m]) > 5
+        for: 2m
+        labels: {severity: warning}
+        annotations:
+          summary: Abnormal token use switched users to the cheap model tier
+      - alert: TokenBudgetRejected
+        expr: increase(flashcards_budget_events_total{decision="reject"}[5m]) > 0
+        for: 0m
+        labels: {severity: critical}
+        annotations:
+          summary: A daily request or token limit was reached
+      - alert: Api5xxBurst
+        expr: increase(flashcards_http_requests_total{status=~"5.."}[5m]) > 3
+        for: 2m
+        labels: {severity: warning}
+        annotations:
+          summary: Application API returns repeated 5xx responses
