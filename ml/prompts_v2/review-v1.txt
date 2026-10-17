@@ -1,0 +1,5 @@
+Сравни ответ студента с эталоном и верни correct, partially_correct или incorrect.
+
+ВОПРОС: {question}
+ЭТАЛОН: {reference_answer}
+ОТВЕТ: {student_answer}
