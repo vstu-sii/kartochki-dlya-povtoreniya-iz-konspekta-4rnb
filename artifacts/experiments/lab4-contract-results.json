@@ -1,0 +1,923 @@
+{
+  "experiment": "prompt-ab-contract-check",
+  "provider_called": false,
+  "quality_measured": false,
+  "case_count": 91,
+  "passed": true,
+  "note": "Both variants render on the same cases; this is not an LLM A/B result.",
+  "cases": [
+    {
+      "id": "GEN-001",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 63,
+        "v2": 168
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-002",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 58,
+        "v2": 163
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-003",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-004",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-005",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 62,
+        "v2": 167
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-006",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 60,
+        "v2": 165
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-007",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 60,
+        "v2": 165
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-008",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 66,
+        "v2": 171
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-009",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 67,
+        "v2": 172
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-010",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 74,
+        "v2": 179
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-011",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 61,
+        "v2": 166
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-012",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 162
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-013",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 65,
+        "v2": 170
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-014",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 61,
+        "v2": 166
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-015",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 75,
+        "v2": 180
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-016",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-001",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 66,
+        "v2": 188
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-002",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 63,
+        "v2": 188
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-003",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 179
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-004",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 62,
+        "v2": 182
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-005",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 185
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-006",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 52,
+        "v2": 175
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-007",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 175
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-008",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 65,
+        "v2": 189
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-009",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 70,
+        "v2": 194
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-010",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 49,
+        "v2": 170
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "SAFE-003",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 74,
+        "v2": 179
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-017",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 45,
+        "v2": 150
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-018",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 50,
+        "v2": 155
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-019",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-020",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 156
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-021",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 156
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-022",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 49,
+        "v2": 154
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-023",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 156
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-024",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-025",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 162
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-026",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 156
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-027",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-028",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 160
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-029",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-030",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 60,
+        "v2": 165
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-031",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 161
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-032",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 54,
+        "v2": 159
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-033",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 162
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-034",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 160
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-035",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 161
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-036",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 162
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-037",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 48,
+        "v2": 153
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-038",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 50,
+        "v2": 155
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-039",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 160
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-040",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 48,
+        "v2": 153
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-041",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 156
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-042",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 160
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-043",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-044",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 50,
+        "v2": 155
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-045",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 47,
+        "v2": 152
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-046",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-047",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-048",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-049",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 47,
+        "v2": 152
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "GEN-050",
+      "operation": "generate_card",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 160
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-011",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 164
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-012",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 166
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-013",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 178
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-014",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 44,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-015",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 49,
+        "v2": 162
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-016",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 54,
+        "v2": 166
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-017",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 63,
+        "v2": 177
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-018",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 50,
+        "v2": 165
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-019",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 50,
+        "v2": 169
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-020",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 170
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-021",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 175
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-022",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 177
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-023",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 64,
+        "v2": 180
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-024",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 57,
+        "v2": 180
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-025",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 174
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-026",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 55,
+        "v2": 172
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-027",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 176
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-028",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 56,
+        "v2": 173
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-029",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 63,
+        "v2": 182
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-030",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 59,
+        "v2": 179
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-031",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 52,
+        "v2": 163
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-032",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 68,
+        "v2": 181
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-033",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 54,
+        "v2": 172
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-034",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 51,
+        "v2": 162
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-035",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 166
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-036",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 170
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-037",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 52,
+        "v2": 167
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-038",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 54,
+        "v2": 167
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-039",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 48,
+        "v2": 158
+      },
+      "only_changed_factor": "prompt_text"
+    },
+    {
+      "id": "REV-040",
+      "operation": "review_answer",
+      "rendered": true,
+      "estimated_input_tokens": {
+        "v1": 53,
+        "v2": 168
+      },
+      "only_changed_factor": "prompt_text"
+    }
+  ],
+  "run_at": "2026-10-17T10:55:58.790226+00:00",
+  "dataset": "D:/MovedAppData/CodexWorkspace/2026-09-28/new-chat-2/work/quality-review-20261017/docs/quality/golden-dataset/dataset.jsonl",
+  "mode": "contract"
+}

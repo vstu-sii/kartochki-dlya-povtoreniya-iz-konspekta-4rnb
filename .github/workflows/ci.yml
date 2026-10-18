@@ -14,6 +14,10 @@ jobs:
         with:
           python-version: "3.11"
       - run: python -m pip install -r backend/requirements.txt
+      - name: Compile and import project modules
+        run: |
+          python -m compileall -q ml backend tests
+          python -c "import ml.app, backend.main, ml.experiments.run_ab, ml.experiments.run_retrieval_eval"
       - name: Unit and integration tests
         env:
           MODEL_PROVIDER: deterministic
@@ -22,12 +26,19 @@ jobs:
         run: python tests/evals/run_application_evals.py
       - name: Measure source lookup separately
         run: python -m ml.experiments.run_retrieval_eval --min-hit-at-1 0.90 --min-recall-at-3 1.0 --output artifacts/experiments/lab4-retrieval-results.json
+      - name: Deterministic reviewer algorithm regression
+        run: python -m ml.experiments.run_ab --mode algorithm --min-b-agreement 0.85 --fail-on-regression --output artifacts/experiments/lab4-algorithm-results.json
+      - name: Prompt A/B contract check without provider calls
+        run: python -m ml.experiments.run_ab --mode contract --output artifacts/experiments/lab4-contract-results.json
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: lab4-shared-evidence
           path: |
             artifacts/evals/application-results.json
             artifacts/experiments/lab4-retrieval-results.json
+            artifacts/experiments/lab4-algorithm-results.json
+            artifacts/experiments/lab4-contract-results.json
       - run: docker compose -f compose.yml config --quiet
       - run: docker compose -f compose.yml up -d --build --wait
       - run: curl --fail http://localhost:8080/

@@ -8,3 +8,4 @@ test_lab3.db
 artifacts/traces.jsonl
 artifacts/evals/eval-traces.jsonl
 artifacts/*.tmp
+artifacts/evals/*.log

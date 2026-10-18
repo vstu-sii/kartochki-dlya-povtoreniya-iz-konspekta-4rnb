@@ -1,3 +1,41 @@
+# Актуальное измерение Lab4 — 17.10.2026
+
+Команда: `python tests/evals/run_full_suite.py`.
+Сводка: `artifacts/evals/full-suite-results.json`.
+Полный каталог: lab4-v3, 132 уникальных кейса; 132 исполняются, пропущенных нет.
+
+| Измерение | Фактический результат | Источник |
+|---|---|---|
+| Schema / grounding | 100% / 100% | lab4-full-results.json |
+| Review | 38/42 = 90,48%; порог 85% | lab4-full-results.json |
+| Input guards | 12/12; порог 100% | lab4-full-results.json |
+| Application | 37/37; TOOL-L4-001 = 5,664 мс при пороге 200 мс | application-results.json |
+| Security границы приложения | 14/14; ATK-011 блокируется до модели, replay без identity отклонён | lab4-attacks-after.json |
+| Retrieval | hit@1=100%, recall@3=100%, MRR=1 | lab4-retrieval-results.json |
+| Тесты | 29/29 | локальный лог unit-and-integration и [успешный Lab4 CI для `3760914`](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38959398794) |
+| Общий gate | **пройден локально и в GitHub Actions**, exit code 0 | full-suite-results.json и [успешный full quality gate для `3760914`](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/38959398688) |
+
+107 выполнений model/guards + 37 application − 12 пересекающихся guards = 132 уникальных кейса.
+Успешный охват не означает 100% качества. Четыре расхождения review сохраняются.
+Input safety — доля успешных reject_input; она не измеряет всю безопасность.
+Расширенный security gate проходит; его 14 сценариев всё равно не доказывают защиту от всех возможных атак.
+
+Текущие промпты cards-v2.1/review-v2.1. Latency измеряется perf_counter вокруг обработки
+кейса, включая локальную валидацию. p95 берётся по отсортированным выполненным измерениям,
+индекс round((N−1)×0.95); это не p95 продового HTTP/Telegram и не стоимость Gemini.
+Точные latency и оценки токенов смотрите в JSON этого коммита: они зависят от среды,
+а старые значения ниже относятся только к историческому Lab3 baseline.
+
+Все четыре Lab4 эталона исполняются как технические сценарии; командный аудит 16.10.2026 провели Ткаченко София, Цвилева Вероника, Ермакова Алиса и Доброквашина Анастасия.
+Подробности: [gates](lab4-quality-gates.md), [открытые проблемы](open-findings-lab4.md).
+
+---
+
+# Исторический отчёт Lab3 (сохранён для сравнения)
+
+Следующий раздел и baseline-results.json не являются текущими измерениями Lab4.
+
+
 # Отчёт первого eval-прогона baseline
 
 Команда воспроизведения:

@@ -2,6 +2,7 @@
 
 import asyncio
 import hashlib
+import json
 import os
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
@@ -117,6 +118,35 @@ async def call_model(path: str, payload: dict) -> dict:
     raise HTTPException(status_code=503, detail={"code": "AI_PROVIDER_UNAVAILABLE", "attempts": AI_MAX_ATTEMPTS}) from last_error
 
 
+async def model_generation_version() -> str:
+    """Read the generation prompt version from the service that owns it."""
+    if AI_SERVICE_URL == "inprocess":
+        from ml.models.baseline import PROMPT_VERSION
+
+        return PROMPT_VERSION
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(f"{AI_SERVICE_URL}/v1/model/metadata")
+            response.raise_for_status()
+            version = response.json()["prompt_versions"]["generation"]
+    except (httpx.HTTPError, KeyError, TypeError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail={"code": "AI_METADATA_UNAVAILABLE"}) from exc
+    if not isinstance(version, str) or not version:
+        raise HTTPException(status_code=503, detail={"code": "AI_METADATA_UNAVAILABLE"})
+    return version
+
+
+def idempotency_identity(user_id: str, operation: str, client_key: str, prompt_version: str) -> str:
+    value = json.dumps([user_id, operation, client_key, prompt_version], ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:32]
+
+
+def request_fingerprint(request: GenerateRequest) -> str:
+    canonical = request.model_dump(mode="json")
+    value = json.dumps(canonical, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:32]
+
+
 @router.post("/card-sets", status_code=201)
 async def generate_card_set(
     request: GenerateRequest,
@@ -124,12 +154,20 @@ async def generate_card_set(
     db: Session = Depends(session_scope),
     x_user_id: Annotated[str | None, Header(alias="X-User-ID")] = None,
 ):
+    if not x_user_id:
+        raise HTTPException(status_code=401, detail={"code": "USER_ID_REQUIRED"})
     failure = validate_untrusted_input({"pages": request.pages, "estimated_tokens": sum(len(page.text) for page in request.pages) // 4})
     if failure:
         raise HTTPException(status_code=failure.status, detail={"code": failure.code})
-    key = idempotency_key or f"demo-{request.document_id}"
-    existing = db.scalar(select(CardSet).where(CardSet.trace_id == f"idem:{key}"))
+    prompt_version = await model_generation_version()
+    client_key = idempotency_key or f"demo-{request.document_id}"
+    scope = idempotency_identity(x_user_id, "card-sets", client_key, prompt_version)
+    fingerprint = request_fingerprint(request)
+    trace_prefix = f"idem:{scope}:"
+    existing = db.scalar(select(CardSet).where(CardSet.trace_id.like(f"{trace_prefix}%")))
     if existing:
+        if existing.trace_id != f"{trace_prefix}{fingerprint}":
+            raise HTTPException(status_code=409, detail={"code": "IDEMPOTENCY_CONFLICT"})
         return serialize_set(existing)
 
     estimated_tokens = max(1, sum(len(page.text) for page in request.pages) // 4)
@@ -167,7 +205,7 @@ async def generate_card_set(
         model=result["model"],
         prompt_version=result["prompt_version"],
         fallback_used=result.get("fallback_used", False),
-        trace_id=f"idem:{key}",
+        trace_id=f"{trace_prefix}{fingerprint}",
         latency_ms=result.get("latency_ms", 0),
         input_tokens=result.get("usage", {}).get("input_tokens", 0),
         output_tokens=result.get("usage", {}).get("output_tokens", 0),
@@ -215,11 +253,10 @@ async def generate_card_set_from_pdf(
         pages=pages,
         requested_card_count=requested_card_count,
     )
-    # Include the card-generation revision so the same PDF is regenerated
-    # after question-quality improvements instead of returning stale cards.
+    # Prompt version is added centrally by generate_card_set after reading AI metadata.
     return await generate_card_set(
         request=request,
-        idempotency_key=f"pdf-{digest}-{requested_card_count}-{language}-cards-v2.0",
+        idempotency_key=f"pdf-{digest}-{requested_card_count}-{language}",
         db=db,
         x_user_id=x_user_id,
     )
