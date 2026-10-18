@@ -1,0 +1,17 @@
+{
+  "metric": "share_of_started_sessions_reaching_at_least_five_cards",
+  "target": 0.7,
+  "period_start": "2026-09-28T00:00:00+03:00",
+  "period_end": "2026-09-28T23:59:59+03:00",
+  "measurement_method": "observed_external_session",
+  "canonical_method": "study_sessions where current_position >= 5 divided by started sessions",
+  "method_changed": true,
+  "change_reason": "No read-only production analytics export; team traffic must not be counted.",
+  "started_sessions": 1,
+  "sessions_reaching_five_cards": 1,
+  "actual": 1.0,
+  "delta_to_target_pp": 30.0,
+  "statistically_confirmed": false,
+  "evidence": "docs/use-cases/validation.md",
+  "limitation": "n=1; collect at least 10 external sessions before Demo Day"
+}

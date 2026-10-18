@@ -10,7 +10,9 @@ rectangle "Карточки для устной защиты" {
   usecase "UC-03\nОценить полезность\nкарточки" as UC03
   usecase "UC-04\nЗавершить /\nвозобновить сессию" as UC04
   usecase "UC-05\nБезопасно отклонить\nнеподдерживаемый PDF" as UC05
-  usecase "Проверить файл" as Validate
+  usecase "UC-06\nДостичь суточного\nлимита" as UC06
+  usecase "UC-07\nНедоступен\nmodel tool" as UC07
+  usecase "Проверить файл\nи бюджет" as Validate
   usecase "Проверить grounding\nи структуру" as Ground
 }
 
@@ -19,10 +21,13 @@ Student --> UC02
 Student --> UC03
 Student --> UC04
 Student --> UC05
+Student --> UC06
+Student --> UC07
 
 UC01 .> Validate : <<include>>
 UC01 .> Ground : <<include>>
 UC05 .> Validate : <<include>>
+UC06 .> Validate : <<include>>
 UC03 .> UC02 : <<extend>>
 UC04 .> UC02 : <<extend>>
 @enduml
