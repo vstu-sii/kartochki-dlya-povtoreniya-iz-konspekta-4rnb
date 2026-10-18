@@ -8,17 +8,17 @@
   },
   "variant_b": {
     "name": "normalized-semantic-rules-v2",
-    "agreement": 0.9
+    "agreement": 0.925
   },
-  "delta_agreement_pp": 7.5,
+  "delta_agreement_pp": 10.0,
   "cases": [
     {
       "id": "REV-001",
       "expected": "correct",
       "a": "partially_correct",
-      "b": "partially_correct",
+      "b": "correct",
       "a_correct": false,
-      "b_correct": false
+      "b_correct": true
     },
     {
       "id": "REV-002",
@@ -335,7 +335,7 @@
   ],
   "decision": "B",
   "passed": true,
-  "run_at": "2026-10-17T10:55:58.542718+00:00",
-  "dataset": "D:/MovedAppData/CodexWorkspace/2026-09-28/new-chat-2/work/quality-review-20261017/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-18T22:55:12.271055+00:00",
+  "dataset": "C:/Users/ermak/.codex/.chatgpt-projects/g-p-6ace3e74607081918c99187109656aa0/lab5-quality/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "algorithm"
 }

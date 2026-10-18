@@ -1,9 +1,9 @@
 {
-  "run_at": "2026-10-17T10:55:57.944531+00:00",
+  "run_at": "2026-10-18T22:55:10.214198+00:00",
   "mode": "after",
-  "attack_set_sha256": "79c51e6c4dabf19f5ab4c37e04ed55a89aa091108c28ea35706438014c8930ff",
-  "case_count": 14,
-  "passed": 14,
+  "attack_set_sha256": "7fcd5dc22acbe1ce8790b6e89b9a5872361fbeae9d4b60254026bd0208da9292",
+  "case_count": 17,
+  "passed": 17,
   "failed": 0,
   "scope": "current HTTP API, extracted PDF text/answer; model transport mocked; no binary PDF parsing",
   "cases": [
@@ -143,6 +143,39 @@
       "id": "ATK-011",
       "point": "student answer",
       "endpoint": "/v1/ai/answer-reviews",
+      "expected": "block",
+      "actual": "block",
+      "status": 422,
+      "code": "PROMPT_INJECTION_BLOCKED",
+      "model_calls": 0,
+      "passed": true
+    },
+    {
+      "id": "DEMO-ATK-001",
+      "point": "PDF text",
+      "endpoint": "/v1/ai/card-sets",
+      "expected": "block",
+      "actual": "block",
+      "status": 422,
+      "code": "PROMPT_INJECTION_BLOCKED",
+      "model_calls": 0,
+      "passed": true
+    },
+    {
+      "id": "DEMO-ATK-002",
+      "point": "student answer",
+      "endpoint": "/v1/ai/answer-reviews",
+      "expected": "block",
+      "actual": "block",
+      "status": 422,
+      "code": "PROMPT_INJECTION_BLOCKED",
+      "model_calls": 0,
+      "passed": true
+    },
+    {
+      "id": "DEMO-ATK-003",
+      "point": "PDF text",
+      "endpoint": "/v1/ai/card-sets",
       "expected": "block",
       "actual": "block",
       "status": 422,

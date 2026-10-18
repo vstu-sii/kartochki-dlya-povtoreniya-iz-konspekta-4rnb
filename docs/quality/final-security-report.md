@@ -1,6 +1,6 @@
 # Финальная повторная проверка безопасности
 
-После исправлений повторно запущен `python tests/security/run_attacks.py --mode after`. Результат `artifacts/security/lab4-attacks-after.json`: **14/14 атак заблокированы**, 0 пробившихся. Проверены prompt injection, подмена source/эталона, tenant/session access, опасные поля, budget/idempotency и права model tool.
+После исправлений повторно запущен `python tests/security/run_attacks.py --mode after`. Результат `artifacts/security/lab4-attacks-after.json`: **17/17 сценариев прошли**, 0 пробившихся. В набор входят три отдельные инъекции Demo Day: скрытая инструкция в PDF, извлечение system prompt через ответ студента и попытка вызвать удаляющий tool. Также проверены подмена source/эталона, tenant/session access, budget/idempotency и права model tool.
 
 | Риск | До контроля | После | Решение |
 |---|---|---|---|
