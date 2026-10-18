@@ -8,6 +8,8 @@ from pathlib import Path
 from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 
 from backend.database import init_db
 from backend.observability import metrics_middleware, metrics_response
@@ -55,12 +57,20 @@ app.add_middleware(
 app.include_router(ai_router)
 
 
+@app.exception_handler(SQLAlchemyError)
+async def database_unavailable(_: Request, __: SQLAlchemyError):
+    """Return a stable degradation contract instead of leaking HTTP 500."""
+    return JSONResponse(status_code=503,
+                        content={"detail": {"code": "DATABASE_UNAVAILABLE", "retryable": True}},
+                        headers={"Retry-After": "5"})
+
+
 @app.get("/health")
 def health():
     return {
         "service": "application-api",
         "status": "ok",
-        "version": "lab4",
+        "version": "lab5",
         "telegram": "webhook" if TELEGRAM_BOT_TOKEN and os.getenv("RENDER_EXTERNAL_URL") else "local-polling-or-disabled",
     }
 
