@@ -32,3 +32,7 @@ xychart-beta
 - Top-3 retrieval теряет четвёртый релевантный фрагмент.
 - Бинарный PDF parser/OCR не входит в 14 HTTP security-сценариев.
 - North Star имеет n=1 и пока не подтверждает продуктовую цель статистически.
+
+## Релизный прогон
+
+Финальный тег `v0.5.0` проверен GitHub Actions на коммите `213ed28`: [полный release quality gate завершился success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400930). Параллельная [воспроизводимая сборка релиза также success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400922). Поэтому статус больше не «только локальный candidate»: quality-gates зелёные именно на неизменяемом релизном теге.

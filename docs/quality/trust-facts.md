@@ -20,3 +20,5 @@
 ## Воспроизведение
 
 Локально: `python tests/evals/run_release_evals.py --release-ref WORKTREE`. На теге CI вызывает ту же команду с именем тега и сохраняет все JSON/логи даже при ошибке.
+
+Фактическое подтверждение тега `v0.5.0`: [quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400930) и [release build](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400922) завершились `success`.
