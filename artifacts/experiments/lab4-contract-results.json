@@ -917,7 +917,7 @@
       "only_changed_factor": "prompt_text"
     }
   ],
-  "run_at": "2026-10-18T22:45:39.652263+00:00",
-  "dataset": "C:/Users/ermak/.codex/.chatgpt-projects/g-p-6ace3e74607081918c99187109656aa0/lab5-ai/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-18T22:55:13.974003+00:00",
+  "dataset": "C:/Users/ermak/.codex/.chatgpt-projects/g-p-6ace3e74607081918c99187109656aa0/lab5-quality/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "contract"
 }
