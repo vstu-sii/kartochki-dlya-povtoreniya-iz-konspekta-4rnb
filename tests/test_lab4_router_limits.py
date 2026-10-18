@@ -1,4 +1,4 @@
-"""Exercise budget decisions through HTTP, plus the actual provider selection branch."""
+"""Exercise budget decisions through the API router and provider selection branch."""
 import os
 import unittest
 from unittest.mock import patch

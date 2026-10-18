@@ -27,8 +27,8 @@ python tests/security/run_attacks.py --mode after --output artifacts/security/la
 - Итого **14/14**, exit code 0.
 
 Полный application runner дополнительно показывает Q4-TOOL-01: при timeout=1 мс и имитации
-работы 400 мс внешний путь вернулся за 16,421 мс с `timeout_fallback_to_request_pages`, порог ≤200 мс выполнен.
-Отдельный unit-тест 300/50 мс прошёл; ручной замер этого прогона — 64,124 мс.
+работы 400 мс внешний путь вернулся за 5,664 мс с `timeout_fallback_to_request_pages`, порог ≤200 мс выполнен.
+Отдельный unit-тест со сценарием 300/50 мс также прошёл.
 
 ## Риски
 
