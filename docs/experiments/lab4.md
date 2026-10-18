@@ -16,22 +16,10 @@ python -m ml.experiments.run_ab --mode algorithm --min-b-agreement .85 --fail-on
 
 ```bash
 GEMINI_API_KEY=... python -m ml.experiments.run_ab --mode provider \
-  --model gemini-3.5-flash-lite --case-limit 20 --repeats 1 \
-  --output artifacts/experiments/lab4-provider-results.json
+  --model gemini-3.8-flash --repeats 3 --fail-on-regression
 ```
 
-17 октября 2026 года выполнен настоящий прогон через официальный Google Gemini API. Взяты 20 фиксированных примеров golden dataset: первые 10 сценариев генерации карточек и первые 10 сценариев проверки ответа. Каждый пример выполнен с вариантами A и B, всего 40 LLM-вызовов. Ключ в репозиторий и артефакт не записывался.
-
-Для прогона использована `gemini-3.5-flash-lite`. Настроенная в прототипе `gemini-3.8-flash` в момент запуска вернула `RESOURCE_EXHAUSTED`: бесплатный дневной лимит 20 запросов был исчерпан. Поэтому вывод ниже относится именно к `gemini-3.5-flash-lite`; провайдер при этом тот же — официальный Google Gemini API.
-
-Результат:
-
-- prompt A (`v1`): 19 из 20, agreement **95%**, 3 843 токена;
-- prompt B (`v2`): 20 из 20, agreement **100%**, 6 380 токенов;
-- изменение качества: **+5 п.п.**;
-- цена выбора B: **+2 537 токенов**, или примерно **+66%** на этой выборке.
-
-Выбран **prompt B (`v2`)**: он устранил единственную ошибку варианта A (`REV-009`, неполный ответ о потоках и процессах). Цена решения — больший расход токенов; для интерактивного MVP команда принимает эту цену ради более точной обратной связи. Перед production-оптимизацией решение следует перепроверить на полном наборе и нескольких повторах.
+Настоящий provider prompt A/B в этой локальной доработке **не выполнен**, потому что ключ и разрешение на платные вызовы не предоставлены. Поэтому выбора prompt v2 «по цифрам LLM» пока нет. Файл `artifacts/experiments/lab4-provider-results.json` появится только после разрешённого запуска.
 
 Без ключа выполняется только контрактная проверка:
 
@@ -45,6 +33,6 @@ python -m ml.experiments.run_ab --mode contract
 
 - `lab4-algorithm-results.json` — 40 строк фактического локального сравнения алгоритмов;
 - `lab4-contract-results.json` — provider-free проверка шаблонов;
-- `lab4-provider-results.json` — фактический Gemini A/B: ответы, latency, provider usage и решение по каждому кейсу.
+- `lab4-provider-results.json` — создаётся только реальным разрешённым запуском.
 
-Решение: prompt v2 выбран для Gemini, алгоритм B оставлен как deterministic fallback.
+Решение на текущих доказательствах: алгоритм B оставлен как deterministic fallback. Решение о превосходстве prompt v2 над v1 отложено до provider-прогона.

@@ -17,9 +17,7 @@
 ## Фактические метрики
 
 - algorithm A/B: 82,5% против 90,0%; это алгоритмы, не prompts;
-- prompt contract: 100% шаблонов рендерятся;
-- Gemini prompt A/B на 20 кейсах: v1 — 95%, v2 — 100%, прирост +5 п.п.; выбран v2;
-- цена v2 на этом прогоне: 6 380 токенов против 3 843 у v1 (+66%);
+- prompt contract: 100% шаблонов рендерятся, provider не вызывался;
 - curated retrieval: hit@1 100%, recall@3 100% на 10 синтетических кейсах;
 - production query builder: метрики записаны отдельно в retrieval artifact;
 - coverage probe показывает потерю страниц 4–5 при фиксированном top-3.
@@ -32,4 +30,4 @@
 
 ## Оставшиеся ограничения
 
-Prompt A/B выполнен на `gemini-3.5-flash-lite`, а не на основной `gemini-3.8-flash`, потому что дневная free-tier квота основной модели была исчерпана. Результат нельзя автоматически переносить на другую модель. Top-3 может потерять важный факт длинного документа. Cache и limiter process-local. Локальные latency не являются production SLA.
+Provider prompt A/B не выполнен без ключа. Top-3 может потерять важный факт длинного документа. Cache и limiter process-local. Локальные latency не являются production SLA.

@@ -1,4 +1,4 @@
-"""Reproducible Lab 3 eval runner.
+"""Model and input-guard component of the Lab4 full suite; fixed Lab2 mini.
 
 Usage:
   python tests/evals/run_evals.py
@@ -20,19 +20,17 @@ sys.path.insert(0, str(ROOT))
 from ml.models.baseline import BaselineModel, PROMPT_VERSION, REVIEW_PROMPT_VERSION  # noqa: E402
 from backend.quality_guards import validate_untrusted_input
 from ml.tracing.client import TraceClient  # noqa: E402
+from dataset_catalog import DATASET_VERSION, dataset_hash, load_dataset
 
 
-BASE_DATASET = ROOT / "docs/quality/golden-dataset/dataset.jsonl"
-ADDITIONS = ROOT / "docs/quality/golden-dataset/dataset-v2-additions.jsonl"
 DEFAULT_OUTPUT = ROOT / "artifacts/evals/baseline-results.json"
 MINI_IDS = {"GEN-001", "GEN-002", "GEN-003", "GEN-004", "REV-004", "REV-005", "SAFE-001", "SAFE-002"}
 
 
 def load_cases(mini: bool) -> list[dict]:
-    records = []
-    for path in (BASE_DATASET, ADDITIONS):
-        if path.exists():
-            records.extend(json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+    records = load_dataset()
+    if not MINI_IDS.issubset({item["id"] for item in records}):
+        raise ValueError("Missing fixed mini case")
     return [item for item in records if item["id"] in MINI_IDS] if mini else records
 
 
@@ -90,6 +88,8 @@ def run(mini: bool, output: Path) -> dict:
                     "language": case["input"].get("language", "ru"),
                     "pages": case["context"],
                     "requested_card_count": case["input"].get("requested_card_count", 5),
+                    "user_id": "eval-owner",
+                    "resource_owner_id": "eval-owner",
                 }
             )
             schema_ok, grounding_ok = validate_generated_cards(response, case)
@@ -119,10 +119,11 @@ def run(mini: bool, output: Path) -> dict:
                 and isinstance(response.get("trace_id"), str)
             )
             verdict_ok = response["verdict"] == case["expected_output"]["verdict"]
-        elif mini and operation == "reject_input":
+        elif operation == "reject_input":
             failure = validate_untrusted_input(case["input"])
             expected = case["expected_output"]
-            safety_ok = failure is not None and failure.code == expected.get("code", expected.get("error_code")) and ("http_status" not in expected or failure.status == expected["http_status"])
+            expected_status = expected.get("http_status", expected.get("status"))
+            safety_ok = failure is not None and failure.code == expected.get("code", expected.get("error_code")) and (expected_status is None or failure.status == expected_status)
             response = {}
         else:
             # These cases belong to API/DB E2E, not to BaselineModel. Do not
@@ -162,15 +163,18 @@ def run(mini: bool, output: Path) -> dict:
     executed_count = sum(row["executed"] for row in rows)
     report = {
         "run_at": datetime.now(timezone.utc).isoformat(),
-        "mode": "mini" if mini else "full",
+        "mode": "mini" if mini else "model-and-input-guards",
         "model": "deterministic-grounded-v1",
         "prompt_version": f"{PROMPT_VERSION}/{REVIEW_PROMPT_VERSION}",
-        "dataset_version": "lab3-v2",
+        "dataset_version": DATASET_VERSION,
+        "dataset_sha256": dataset_hash(),
         "dataset_case_count": len(cases),
         "executed_case_count": executed_count,
         "skipped_case_count": len(cases) - executed_count,
         "execution_coverage_rate": round(executed_count / len(cases), 4) if cases else 0,
         "model_case_count": sum(row["operation"] in {"generate_card", "review_answer"} for row in rows),
+        "safety_case_count": sum(row["safety_ok"] is not None for row in rows),
+        "latency_scope": "local case processing including validation; not API/provider latency",
         "metrics": {
             "schema_pass_rate": rate("schema_ok"),
             "grounded_card_rate": rate("grounding_ok"),
@@ -190,6 +194,11 @@ def run(mini: bool, output: Path) -> dict:
     return report
 
 
+def failed_thresholds(report, thresholds):
+    return [name for name, minimum in thresholds.items()
+            if minimum is not None and (report["metrics"].get(name) is None or report["metrics"][name] < minimum)]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mini", action="store_true")
@@ -206,11 +215,7 @@ def main() -> int:
         "review_agreement_rate": args.min_review,
         "safety_guard_rate": args.min_safety,
     }
-    failed = [
-        name
-        for name, minimum in thresholds.items()
-        if minimum is not None and (report["metrics"].get(name) is None or report["metrics"][name] < minimum)
-    ]
+    failed = failed_thresholds(report, thresholds)
     if failed:
         print("Thresholds failed: " + ", ".join(failed), file=sys.stderr)
         return 1

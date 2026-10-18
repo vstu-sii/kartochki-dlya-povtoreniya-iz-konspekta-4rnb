@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-10-16T19:16:30.642008+00:00",
+  "run_at": "2026-10-17T10:55:58.313289+00:00",
   "suite": "source-lookup-retrieval",
   "dataset": "tests/evals/retrieval-cases.jsonl",
   "case_count": 10,
@@ -7,16 +7,16 @@
     "hit_rate_at_1": 1.0,
     "recall_at_3": 1.0,
     "mrr": 1.0,
-    "latency_p50_ms": 0.188,
-    "latency_p95_ms": 2.087
+    "latency_p50_ms": 0.122,
+    "latency_p95_ms": 0.754
   },
   "curated_query": {
     "metrics": {
       "hit_rate_at_1": 1.0,
       "recall_at_3": 1.0,
       "mrr": 1.0,
-      "latency_p50_ms": 0.188,
-      "latency_p95_ms": 2.087
+      "latency_p50_ms": 0.122,
+      "latency_p95_ms": 0.754
     },
     "cases": [
       {
@@ -29,7 +29,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 2.087,
+        "latency_ms": 0.754,
         "status": "success"
       },
       {
@@ -42,7 +42,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.329,
+        "latency_ms": 0.138,
         "status": "success"
       },
       {
@@ -55,7 +55,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.218,
+        "latency_ms": 0.088,
         "status": "success"
       },
       {
@@ -69,7 +69,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.137,
+        "latency_ms": 0.075,
         "status": "success"
       },
       {
@@ -83,7 +83,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.099,
+        "latency_ms": 0.127,
         "status": "success"
       },
       {
@@ -97,7 +97,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.188,
+        "latency_ms": 0.123,
         "status": "success"
       },
       {
@@ -111,7 +111,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.362,
+        "latency_ms": 0.121,
         "status": "success"
       },
       {
@@ -124,7 +124,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.19,
+        "latency_ms": 0.116,
         "status": "success"
       },
       {
@@ -137,7 +137,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.084,
+        "latency_ms": 0.122,
         "status": "success"
       },
       {
@@ -150,7 +150,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.098,
+        "latency_ms": 0.123,
         "status": "success"
       }
     ]
@@ -160,8 +160,8 @@
       "hit_rate_at_1": 1.0,
       "recall_at_3": 1.0,
       "mrr": 1.0,
-      "latency_p50_ms": 0.148,
-      "latency_p95_ms": 0.21
+      "latency_p50_ms": 0.118,
+      "latency_p95_ms": 0.144
     },
     "cases": [
       {
@@ -176,7 +176,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.132,
+        "latency_ms": 0.118,
         "status": "success"
       },
       {
@@ -191,7 +191,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.116,
+        "latency_ms": 0.144,
         "status": "success"
       },
       {
@@ -206,7 +206,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.175,
+        "latency_ms": 0.129,
         "status": "success"
       },
       {
@@ -221,7 +221,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.21,
+        "latency_ms": 0.114,
         "status": "success"
       },
       {
@@ -236,7 +236,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.152,
+        "latency_ms": 0.128,
         "status": "success"
       },
       {
@@ -251,7 +251,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.165,
+        "latency_ms": 0.118,
         "status": "success"
       },
       {
@@ -266,7 +266,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.148,
+        "latency_ms": 0.118,
         "status": "success"
       },
       {
@@ -281,7 +281,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.131,
+        "latency_ms": 0.107,
         "status": "success"
       },
       {
@@ -296,7 +296,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.149,
+        "latency_ms": 0.095,
         "status": "success"
       },
       {
@@ -311,7 +311,7 @@
         "rank": 1,
         "hit_at_1": true,
         "recall_at_3": true,
-        "latency_ms": 0.114,
+        "latency_ms": 0.115,
         "status": "success"
       }
     ]
@@ -450,7 +450,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 2.087,
+      "latency_ms": 0.754,
       "status": "success"
     },
     {
@@ -463,7 +463,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.329,
+      "latency_ms": 0.138,
       "status": "success"
     },
     {
@@ -476,7 +476,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.218,
+      "latency_ms": 0.088,
       "status": "success"
     },
     {
@@ -490,7 +490,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.137,
+      "latency_ms": 0.075,
       "status": "success"
     },
     {
@@ -504,7 +504,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.099,
+      "latency_ms": 0.127,
       "status": "success"
     },
     {
@@ -518,7 +518,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.188,
+      "latency_ms": 0.123,
       "status": "success"
     },
     {
@@ -532,7 +532,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.362,
+      "latency_ms": 0.121,
       "status": "success"
     },
     {
@@ -545,7 +545,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.19,
+      "latency_ms": 0.116,
       "status": "success"
     },
     {
@@ -558,7 +558,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.084,
+      "latency_ms": 0.122,
       "status": "success"
     },
     {
@@ -571,7 +571,7 @@
       "rank": 1,
       "hit_at_1": true,
       "recall_at_3": true,
-      "latency_ms": 0.098,
+      "latency_ms": 0.123,
       "status": "success"
     }
   ]

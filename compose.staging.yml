@@ -1,0 +1,27 @@
+services:
+  backend:
+    environment:
+      APP_ENV: staging
+      MAX_REQUESTS_PER_USER_DAY: ${STAGING_MAX_REQUESTS_PER_USER_DAY:-20}
+      MAX_TOKENS_PER_USER_DAY: ${STAGING_MAX_TOKENS_PER_USER_DAY:-40000}
+
+  ai-service:
+    environment:
+      APP_ENV: staging
+      MODEL_PROVIDER: ${STAGING_MODEL_PROVIDER:-deterministic}
+
+  frontend:
+    ports: ["${STAGING_APP_PORT:-8081}:80"]
+
+  tracing:
+    ports: ["${STAGING_TRACE_PORT:-3010}:3000"]
+
+  prometheus:
+    ports: ["${STAGING_PROMETHEUS_PORT:-9091}:9090"]
+
+  grafana:
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${STAGING_GRAFANA_ADMIN_PASSWORD:-staging-change-me}
+    ports: ["${STAGING_GRAFANA_PORT:-3002}:3000"]
+
+name: flashcards-staging

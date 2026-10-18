@@ -1,0 +1,92 @@
+name: Lab4 rollback rehearsal
+
+on:
+  push:
+    branches: [lab4-delivery-infrastructure]
+    paths:
+      - ".github/workflows/rollback-rehearsal.yml"
+      - "compose.yml"
+      - "compose.staging.yml"
+      - "Dockerfile"
+      - "backend/**"
+      - "frontend/**"
+      - "ml/**"
+      - "telegram_bot/**"
+  workflow_dispatch:
+    inputs:
+      rollback_ref:
+        description: Previously verified commit to restore
+        required: true
+        default: e62bf85411de4208b4a6c7db384d11f730019472
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  rollback-drill:
+    runs-on: ubuntu-latest
+    env:
+      ROLLBACK_REF: ${{ inputs.rollback_ref || 'e62bf85411de4208b4a6c7db384d11f730019472' }}
+      STAGING_MODEL_PROVIDER: deterministic
+      STAGING_GRAFANA_ADMIN_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remember current release
+        run: |
+          echo "CURRENT_REF=$GITHUB_SHA" >> "$GITHUB_ENV"
+          git cat-file -e "$ROLLBACK_REF^{commit}"
+          mkdir -p /tmp/rollback-evidence
+          printf 'current_ref=%s\nrollback_ref=%s\n' "$GITHUB_SHA" "$ROLLBACK_REF" > /tmp/rollback-evidence/refs.txt
+
+      - name: Deploy current staging release
+        run: |
+          docker compose -f compose.yml -f compose.staging.yml up -d --build --wait
+          curl --fail --retry 12 --retry-delay 5 http://localhost:8081/health | tee /tmp/rollback-evidence/current-before.json
+
+      - name: Roll back to the previous verified commit
+        run: |
+          docker compose -f compose.yml -f compose.staging.yml down -v
+          git checkout --detach "$ROLLBACK_REF"
+          docker compose -f compose.yml -f compose.staging.yml up -d --build --wait
+          curl --fail --retry 12 --retry-delay 5 http://localhost:8081/health | tee /tmp/rollback-evidence/rollback.json
+
+      - name: Restore the current release after the drill
+        run: |
+          docker compose -f compose.yml -f compose.staging.yml down -v
+          git checkout --detach "$CURRENT_REF"
+          docker compose -f compose.yml -f compose.staging.yml up -d --build --wait
+          curl --fail --retry 12 --retry-delay 5 http://localhost:8081/health | tee /tmp/rollback-evidence/current-restored.json
+
+      - name: Prepare auditable result
+        if: always()
+        run: |
+          mkdir -p artifacts/rollback-rehearsal
+          cp -f /tmp/rollback-evidence/* artifacts/rollback-rehearsal/ 2>/dev/null || true
+          {
+            echo '## Lab4 staging rollback rehearsal'
+            echo
+            echo "- current: \`$CURRENT_REF\`"
+            echo "- rollback target: \`$ROLLBACK_REF\`"
+            echo "- result: \`${{ job.status }}\`"
+            echo '- sequence: current → previous verified commit → current'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload rollback evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab4-rollback-rehearsal
+          path: artifacts/rollback-rehearsal/
+
+      - name: Diagnostics
+        if: failure()
+        run: docker compose -f compose.yml -f compose.staging.yml logs --no-color
+
+      - name: Stop rehearsal environment
+        if: always()
+        run: docker compose -f compose.yml -f compose.staging.yml down -v
+

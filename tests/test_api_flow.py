@@ -1,4 +1,3 @@
-import asyncio
 import os
 import unittest
 from uuid import uuid4
@@ -23,6 +22,16 @@ from backend.routers.ai import (  # noqa: E402
 )
 
 
+def run_immediate(coroutine):
+    try:
+        coroutine.send(None)
+    except StopIteration as done:
+        return done.value
+    finally:
+        coroutine.close()
+    raise RuntimeError("In-process router coroutine unexpectedly suspended")
+
+
 class ApiFlowTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -36,7 +45,7 @@ class ApiFlowTest(unittest.TestCase):
                 pages=[{"page": 1, "text": "Кэш ускоряет доступ к часто используемым данным."}],
                 requested_card_count=5,
             )
-            card_set = asyncio.run(generate_card_set(request, f"integration-{uuid4().hex}", db, "integration-user"))
+            card_set = run_immediate(generate_card_set(request, f"integration-{uuid4().hex}", db, "integration-user"))
             self.assertEqual(1, len(card_set["cards"]))
             study_session = create_or_resume_session(
                 SessionRequest(card_set_id=card_set["card_set_id"], user_id="integration-user"), db
@@ -47,7 +56,7 @@ class ApiFlowTest(unittest.TestCase):
                 card=card_set["cards"][0],
                 student_answer=card_set["cards"][0]["reference_answer"],
             )
-            result = asyncio.run(review_answer(review, db, "integration-user"))
+            result = run_immediate(review_answer(review, db, "integration-user"))
             self.assertEqual("correct", result["verdict"])
             card_id = card_set["cards"][0]["card_id"]
             rate_card(study_session["session_id"], card_id, RatingRequest(value="useful"), db, "integration-user")

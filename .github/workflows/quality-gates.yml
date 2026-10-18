@@ -1,0 +1,38 @@
+name: Lab4 full quality gates
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: ["lab4-*-infrastructure", main]
+
+jobs:
+  full-evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -r backend/requirements.txt
+      - name: Complete golden, security, retrieval and integration gates
+        env:
+          MODEL_PROVIDER: deterministic
+        run: python tests/evals/run_full_suite.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab4-quality-evidence
+          path: |
+            artifacts/evals/lab4-full-results.json
+            artifacts/evals/application-results.json
+            artifacts/evals/full-suite-results.json
+            artifacts/evals/*.log
+            artifacts/experiments/lab4-retrieval-results.json
+            artifacts/experiments/lab4-algorithm-results.json
+            artifacts/experiments/lab4-contract-results.json
+            artifacts/security/lab4-attacks-before.json
+            artifacts/security/lab4-attacks-after.json

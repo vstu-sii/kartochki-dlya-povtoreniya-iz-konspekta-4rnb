@@ -1,0 +1,104 @@
+{
+  "run_at": "2026-10-17T10:55:56.427247+00:00",
+  "mode": "before",
+  "attack_set_sha256": "79c51e6c4dabf19f5ab4c37e04ed55a89aa091108c28ea35706438014c8930ff",
+  "case_count": 13,
+  "passed": 13,
+  "failed": 0,
+  "baseline_commit": "0dea82a452586c49404778cb43806d2aba9b5329",
+  "guard_sha256": "c5eb3dfc1839e728de1f9d06ab73e01d92808efb6051ac16e7b5d06187284e1a",
+  "scope": "historical input guard admission, not model exploitation",
+  "cases": [
+    {
+      "id": "ATK-001",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-002",
+      "point": "student answer",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-003",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-004",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-005",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-006",
+      "point": "student answer",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-007",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-008",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-009",
+      "point": "student answer",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-010",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "SAFE-CTRL-01",
+      "point": "PDF text",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "SAFE-CTRL-02",
+      "point": "student answer",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    },
+    {
+      "id": "ATK-011",
+      "point": "student answer",
+      "expected": "allow",
+      "actual": "allow",
+      "passed": true
+    }
+  ]
+}
