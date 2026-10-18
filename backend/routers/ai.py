@@ -1,5 +1,6 @@
 """Public AI endpoints: validate, call the model service, then persist results."""
 
+import asyncio
 import hashlib
 import os
 from datetime import datetime, timedelta, timezone
@@ -22,6 +23,8 @@ from backend.quality_guards import validate_model_card, validate_untrusted_input
 
 router = APIRouter(prefix="/v1/ai", tags=["AI"])
 AI_SERVICE_URL = os.getenv("AI_SERVICE_URL", "http://ai-service:8001")
+AI_TIMEOUT_SECONDS = max(1.0, min(120.0, float(os.getenv("AI_TIMEOUT_SECONDS", "65"))))
+AI_MAX_ATTEMPTS = max(1, min(3, int(os.getenv("AI_MAX_ATTEMPTS", "2"))))
 
 
 class Page(BaseModel):
@@ -68,6 +71,11 @@ class CompleteRequest(BaseModel):
     answers: list[dict] = Field(default_factory=list, max_length=100)
 
 
+def is_retryable_model_status(status_code: int) -> bool:
+    """Retry only throttling and transient provider failures, never client errors."""
+    return status_code == 429 or status_code >= 500
+
+
 def ensure_session_access(study_session: StudySession | None, user_id: str | None = None) -> StudySession:
     if not study_session:
         raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
@@ -90,16 +98,23 @@ async def call_model(path: str, payload: dict) -> dict:
         model = BaselineModel()
         return model.generate(payload) if path.endswith("card-sets") else model.review(payload)
 
-    try:
-        async with httpx.AsyncClient(timeout=65.0) as client:
-            response = await client.post(f"{AI_SERVICE_URL}{path}", json=payload)
-            response.raise_for_status()
-            return response.json()
-    except (httpx.TimeoutException, httpx.NetworkError) as exc:
-        raise HTTPException(status_code=503, detail={"code": "AI_PROVIDER_UNAVAILABLE", "message": str(exc)}) from exc
-    except httpx.HTTPStatusError as exc:
-        detail = exc.response.json() if exc.response.headers.get("content-type", "").startswith("application/json") else exc.response.text
-        raise HTTPException(status_code=exc.response.status_code, detail=detail) from exc
+    last_error: Exception | None = None
+    async with httpx.AsyncClient(timeout=AI_TIMEOUT_SECONDS) as client:
+        for attempt in range(1, AI_MAX_ATTEMPTS + 1):
+            try:
+                response = await client.post(f"{AI_SERVICE_URL}{path}", json=payload)
+                response.raise_for_status()
+                return response.json()
+            except (httpx.TimeoutException, httpx.NetworkError) as exc:
+                last_error = exc
+            except httpx.HTTPStatusError as exc:
+                if not is_retryable_model_status(exc.response.status_code):
+                    detail = exc.response.json() if exc.response.headers.get("content-type", "").startswith("application/json") else exc.response.text
+                    raise HTTPException(status_code=exc.response.status_code, detail=detail) from exc
+                last_error = exc
+            if attempt < AI_MAX_ATTEMPTS:
+                await asyncio.sleep(0.1 * attempt)
+    raise HTTPException(status_code=503, detail={"code": "AI_PROVIDER_UNAVAILABLE", "attempts": AI_MAX_ATTEMPTS}) from last_error
 
 
 @router.post("/card-sets", status_code=201)

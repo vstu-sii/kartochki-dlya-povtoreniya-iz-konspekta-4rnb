@@ -1,0 +1,62 @@
+{
+  "target": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health",
+  "sample_count": 10,
+  "period_start": "2026-10-17T22:34:14.311973+00:00",
+  "period_end": "2026-10-17T22:34:30.229952+00:00",
+  "uptime_percent": 100.0,
+  "latency_p50_ms": 757.5,
+  "latency_p95_ms": 829.81,
+  "method": "active HTTP health sampling",
+  "samples": [
+    {
+      "at": "2026-10-17T22:34:14.311973+00:00",
+      "status": 200,
+      "latency_ms": 718.56
+    },
+    {
+      "at": "2026-10-17T22:34:16.088930+00:00",
+      "status": 200,
+      "latency_ms": 776.28
+    },
+    {
+      "at": "2026-10-17T22:34:17.866886+00:00",
+      "status": 200,
+      "latency_ms": 777.07
+    },
+    {
+      "at": "2026-10-17T22:34:19.633090+00:00",
+      "status": 200,
+      "latency_ms": 763.98
+    },
+    {
+      "at": "2026-10-17T22:34:21.380630+00:00",
+      "status": 200,
+      "latency_ms": 746.58
+    },
+    {
+      "at": "2026-10-17T22:34:23.131843+00:00",
+      "status": 200,
+      "latency_ms": 751.03
+    },
+    {
+      "at": "2026-10-17T22:34:24.871801+00:00",
+      "status": 200,
+      "latency_ms": 739.02
+    },
+    {
+      "at": "2026-10-17T22:34:26.702873+00:00",
+      "status": 200,
+      "latency_ms": 829.81
+    },
+    {
+      "at": "2026-10-17T22:34:28.495599+00:00",
+      "status": 200,
+      "latency_ms": 792.33
+    },
+    {
+      "at": "2026-10-17T22:34:30.229952+00:00",
+      "status": 200,
+      "latency_ms": 732.46
+    }
+  ]
+}

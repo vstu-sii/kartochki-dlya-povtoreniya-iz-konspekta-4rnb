@@ -1,0 +1,11 @@
+{
+  "created_at": "2026-10-17T22:32:20.959608+00:00",
+  "git_commit": "c61822314fe0de3dcf1ba2cd109266c82217e7f2",
+  "files": {
+    "requirements.lock": "b247057fb3a015ecc90340fd1da9dc00850393bd0d8814a674eb96809c292f1f",
+    "Dockerfile": "0b8a4dc9216eeaa2bfd0eddb638babd9e75c3432020e9ea4e2c9d9d226cac2bf",
+    "compose.yml": "231f8b3868c6566f4c757b0fb8d65a3f8fbc9c65a0ae93fcb75af7ec20b36178",
+    "backend/requirements.txt": "f453d1ec11fec18048e0fb9ea5ca8ba6a537ca3ddda5ea9e5a1efa92e7811d0d",
+    "ml/requirements.txt": "13d962b752e5d76ea2fec8c28297c0da02d0ad7feece9aa06f444bd71980812d"
+  }
+}
