@@ -1,0 +1,363 @@
+{
+  "run_at": "2026-10-18T22:45:04.640739+00:00",
+  "dataset": "frozen Lab2+Lab3 review cases",
+  "review_case_count": 42,
+  "ablation": {
+    "full_semantic_rules": 0.9286,
+    "without_normalization": 0.7143,
+    "delta_pp": 21.43
+  },
+  "prompt_provider_evidence": {
+    "provider": "google-gemini-api",
+    "model": "gemini-3.5-flash-lite",
+    "prompt_a": {
+      "prompt": "v1",
+      "agreement": 0.95,
+      "tokens": 3843
+    },
+    "prompt_b": {
+      "prompt": "v2",
+      "agreement": 1.0,
+      "tokens": 6380
+    },
+    "decision": "B"
+  },
+  "cases": [
+    {
+      "id": "REV-001",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "partially_correct",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-002",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-003",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-004",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-005",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-006",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-007",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-008",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-009",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-010",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "partially_correct",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-011",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-012",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-013",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-014",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-015",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-016",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-017",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-018",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-019",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-020",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-021",
+      "expected": "partially_correct",
+      "full": "correct",
+      "without_normalization": "partially_correct",
+      "full_correct": false,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-022",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-023",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-024",
+      "expected": "partially_correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": false,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-025",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-026",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-027",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "partially_correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-028",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-029",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-030",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "partially_correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-031",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-032",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-033",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-034",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-035",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-036",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "partially_correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-037",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-038",
+      "expected": "correct",
+      "full": "correct",
+      "without_normalization": "correct",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-039",
+      "expected": "partially_correct",
+      "full": "correct",
+      "without_normalization": "partially_correct",
+      "full_correct": false,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-040",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": true
+    },
+    {
+      "id": "REV-LIVE-001",
+      "expected": "partially_correct",
+      "full": "partially_correct",
+      "without_normalization": "incorrect",
+      "full_correct": true,
+      "without_normalization_correct": false
+    },
+    {
+      "id": "REV-LIVE-002",
+      "expected": "incorrect",
+      "full": "incorrect",
+      "without_normalization": "partially_correct",
+      "full_correct": true,
+      "without_normalization_correct": false
+    }
+  ]
+}
