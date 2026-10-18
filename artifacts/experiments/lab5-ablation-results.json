@@ -1,11 +1,11 @@
 {
-  "run_at": "2026-10-17T22:28:07.084612+00:00",
+  "run_at": "2026-10-18T22:45:04.640739+00:00",
   "dataset": "frozen Lab2+Lab3 review cases",
   "review_case_count": 42,
   "ablation": {
-    "full_semantic_rules": 0.9048,
+    "full_semantic_rules": 0.9286,
     "without_normalization": 0.7143,
-    "delta_pp": 19.05
+    "delta_pp": 21.43
   },
   "prompt_provider_evidence": {
     "provider": "google-gemini-api",
@@ -26,9 +26,9 @@
     {
       "id": "REV-001",
       "expected": "correct",
-      "full": "partially_correct",
+      "full": "correct",
       "without_normalization": "partially_correct",
-      "full_correct": false,
+      "full_correct": true,
       "without_normalization_correct": false
     },
     {

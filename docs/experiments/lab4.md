@@ -16,10 +16,17 @@ python -m ml.experiments.run_ab --mode algorithm --min-b-agreement .85 --fail-on
 
 ```bash
 GEMINI_API_KEY=... python -m ml.experiments.run_ab --mode provider \
-  --model gemini-3.8-flash --repeats 3 --fail-on-regression
+  --model gemini-3.5-flash-lite --case-limit 20 --repeats 1 \
+  --output artifacts/experiments/lab4-provider-results.json
 ```
 
-Настоящий provider prompt A/B в этой локальной доработке **не выполнен**, потому что ключ и разрешение на платные вызовы не предоставлены. Поэтому выбора prompt v2 «по цифрам LLM» пока нет. Файл `artifacts/experiments/lab4-provider-results.json` появится только после разрешённого запуска.
+17.10.2026 выполнен настоящий прогон через официальный Google Gemini API: 20 фиксированных кейсов, по вариантам A и B, всего 40 вызовов. Фактическая модель — `gemini-3.5-flash-lite`; настроенная `gemini-3.8-flash` вернула `RESOURCE_EXHAUSTED`, поэтому вывод нельзя переносить на неё.
+
+- prompt A: 95%, 3 843 токена;
+- prompt B: 100%, 6 380 токенов;
+- прирост: +5 п.п.; цена: +2 537 токенов (+66%).
+
+Выбран prompt B: он устранил ошибку `REV-009`. Артефакт содержит ответы, latency и provider usage каждого вызова; ключ не сохранялся.
 
 Без ключа выполняется только контрактная проверка:
 
@@ -33,6 +40,6 @@ python -m ml.experiments.run_ab --mode contract
 
 - `lab4-algorithm-results.json` — 40 строк фактического локального сравнения алгоритмов;
 - `lab4-contract-results.json` — provider-free проверка шаблонов;
-- `lab4-provider-results.json` — создаётся только реальным разрешённым запуском.
+- `lab4-provider-results.json` — фактический Gemini A/B.
 
-Решение на текущих доказательствах: алгоритм B оставлен как deterministic fallback. Решение о превосходстве prompt v2 над v1 отложено до provider-прогона.
+Решение: prompt v2 выбран для Gemini, алгоритм B оставлен deterministic fallback.
