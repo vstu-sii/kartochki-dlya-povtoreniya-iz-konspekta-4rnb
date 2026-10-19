@@ -1,6 +1,6 @@
 # Финальный отчёт качества Lab 5
 
-## Релиз `v0.5.0`, 19.10.2026
+## Релиз `v0.5.1`, 19.10.2026
 
 Команда `python tests/evals/run_release_evals.py --release-ref WORKTREE` запускает восемь групп. Объединённое покрытие — **132/132** уникальных golden-кейса, пропусков нет. Двенадцать security-кейсов намеренно проверены и model-, и application-runner; это перекрёстная проверка, а не недостающее покрытие. На теге тот же runner обязан завершиться зелёным.
 
@@ -35,4 +35,4 @@ xychart-beta
 
 ## Релизный прогон
 
-Финальный тег `v0.5.0` проверен GitHub Actions на коммите `213ed28`: [полный release quality gate завершился success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400930). Параллельная [воспроизводимая сборка релиза также success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400922). Поэтому статус больше не «только локальный candidate»: quality-gates зелёные именно на неизменяемом релизном теге.
+Финальный тег `v0.5.1` проверен GitHub Actions на коммите `e0ca9b9`: [полный release quality gate завершился success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651). Параллельная [воспроизводимая сборка релиза также success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842). Поэтому quality-gates зелёные именно на неизменяемом релизном теге с поэлементной ablation и UC-профилем.
