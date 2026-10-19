@@ -9,6 +9,10 @@
 
 ## Фактический релиз
 
+Актуальный исправленный тег `v0.5.1` создан на общем коммите `e0ca9b9`. [Сборка](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842) и [полный quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651) завершились `success`. Он включает поэлементную ablation, синхронизированные финальные документы и профиль UC-01/02/04.
+
+Предыдущий тег `v0.5.0` остаётся в истории и не перемещался:
+
 Тег `v0.5.0` создан на общем коммите `213ed28`. GitHub Actions подтвердил:
 
 - [Lab5 reproducible release — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400922): зависимости, тесты, Compose config/build и manifest;
