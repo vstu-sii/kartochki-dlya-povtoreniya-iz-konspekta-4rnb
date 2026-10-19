@@ -12,14 +12,14 @@
 
 Публичная автоматизированная проверка 19.10.2026 прошла целиком: UC-01…UC-05 дали ожидаемые статусы, включая модельную проверку, рейтинг и реальное восстановление прогресса из БД. Машиночитаемое свидетельство — `artifacts/product/lab5-prod-uc.json`; ручной внешний прогон — `docs/use-cases/validation.md`.
 
-UC-06 и UC-07 проверены на неизменяемом теге `v0.5.0` полным integration gate: бюджет переходит на cheap tier при 80%, возвращает стабильный `429 TOKEN_LIMIT_EXCEEDED` при исчерпании; read-only tool имеет success/forbidden/empty/error/timeout и безопасный fallback. [Tagged quality gate завершился success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400930). Эти две проверки не выдаются за публичный destructive-canary: исчерпывать реальную пользовательскую квоту на prod намеренно не стали.
+UC-06 и UC-07 проверены на неизменяемом теге `v0.5.1` полным integration gate: бюджет переходит на cheap tier при 80%, возвращает стабильный `429 TOKEN_LIMIT_EXCEEDED` при исчерпании; read-only tool имеет success/forbidden/empty/error/timeout и безопасный fallback. [Tagged quality gate завершился success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651). Эти две проверки не выдаются за публичный destructive-canary: исчерпывать реальную пользовательскую квоту на prod намеренно не стали.
 
 ## План до Demo Day
 
 | Приоритет | Работа | Владелец | Проверка | Цена без исправления |
 |---:|---|---|---|---|
 | P0 | 10 внешних сессий и North Star | Product | ≥7 завершают 5 карточек | нет доказательства пользовательской ценности |
-| закрыто | release tag + полный quality gate | Delivery, Quality | `v0.5.0`, оба tag-workflow зелёные | релиз воспроизводим |
+| закрыто | release tag + полный quality gate | Delivery, Quality | `v0.5.1`, оба tag-workflow зелёные | релиз воспроизводим |
 | P1 | повтор Gemini A/B в 3 запуска | AI | среднее и разброс | решение зависит от одного малого прогона |
 | P1 | OCR-набор сложных сканов | Quality | доля успешно извлечённых страниц | часть PDF даст отказ/мусор |
 | P2 | Redis limiter и проверенная auth | Delivery | multi-replica integration test | прототип не готов к массовой продаже |
