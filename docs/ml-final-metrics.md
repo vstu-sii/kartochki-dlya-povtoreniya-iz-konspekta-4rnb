@@ -1,10 +1,12 @@
-# Финальные метрики AI на release candidate Lab 5
+# Финальные метрики AI на релизе `v0.5.0`
 
 | Этап | Набор | Schema | Grounding | Review agreement | Latency | Стоимость/токены |
 |---|---:|---:|---:|---:|---|---|
 | Lab 3 baseline | 95 model cases | 100% | 100% | 90,48% | local p50 1 мс, p95 3 мс | 23 674 in / 13 275 out |
 | Lab 4 Gemini prompt A | 20 cases | по schema | grounded grader | 95% | provider latency сохранена по кейсам | 3 843 tokens |
 | Lab 4/5 Gemini prompt B | 20 cases | по schema | grounded grader | 100% | provider p50 6248,09 мс, p95 6849,14 мс | 6 380 tokens |
-| Lab 5 deterministic release candidate | 95 model + 37 application cases | 100% | 100% | **92,86%** | local p50 3 мс, p95 3 мс | 15 732 in / 14 471 out |
+| Lab 5 deterministic release `v0.5.0` | 95 model + 37 application cases | 100% | 100% | **92,86%** | local p50 3 мс, p95 3 мс | 15 732 in / 14 471 out |
 
 Источник истины — JSON-артефакты, документ только объясняет их. Локальные миллисекунды измеряют код fallback и не заменяют latency Gemini. Выбран B из-за +5 п.п.; цена выбора — +2537 токенов (+66%). На использованном бесплатном Gemini tier денежное списание равно $0, но токены остаются ресурсом квоты. Для продукта это означает более надёжную смысловую оценку ценой большей квоты и примерно 6,85 с p95, поэтому fallback и бюджетный tier сохранены.
+
+Поэлементная ablation подтверждает вклад каждого механизма: aliases −4,76 п.п. при отключении, stemming −2,38 п.п., source precision −2,38 п.п., contradiction guard −4,76 п.п. Полный результат и строки по кейсам: `artifacts/experiments/lab5-ablation-results.json`.
