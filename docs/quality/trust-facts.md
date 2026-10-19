@@ -15,10 +15,10 @@
 - 20 provider-кейсов не доказывают качество на всём домене.
 - 100% на golden dataset не означает отсутствие атак вне набора.
 - North Star 1/1 не является устойчивой пользовательской статистикой.
-- Результат относится только к неизменяемому тегу `v0.5.0`; последующие изменения веток требуют нового тега и повторного gate.
+- Результат относится только к неизменяемому тегу `v0.5.1`; последующие изменения веток требуют нового тега и повторного gate.
 
 ## Воспроизведение
 
 Локально: `python tests/evals/run_release_evals.py --release-ref WORKTREE`. На теге CI вызывает ту же команду с именем тега и сохраняет все JSON/логи даже при ошибке.
 
-Фактическое подтверждение тега `v0.5.0`: [quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400930) и [release build](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400922) завершились `success`.
+Фактическое подтверждение тега `v0.5.1`: [quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651) и [release build](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842) завершились `success`.
