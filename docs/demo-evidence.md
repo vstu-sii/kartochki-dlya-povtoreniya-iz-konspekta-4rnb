@@ -6,6 +6,8 @@
 - [воспроизводимая сборка — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842);
 - [полный quality gate — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651).
 
+Снимок страницы успешного прогона сохранён без редактирования: [`docs/evidence/lab5/v0.5.1-quality-gate.png`](evidence/lab5/v0.5.1-quality-gate.png). На нём видны тег, commit, статус Success, длительность и CI-артефакт.
+
 ## Наблюдаемость
 
 Конфигурация dashboard хранится как код: `monitoring/grafana/dashboards/flashcards-overview.json`. Staging CI поднимает тот же Compose-контур и проверяет UI, trace dashboard, Prometheus, Grafana и alert rules. Метрики production-периода сохранены в `artifacts/reliability/prod-window.json`; трассировка по умолчанию редактирует содержимое prompt/response.
