@@ -2,9 +2,9 @@
 
 ## Tagged release
 
-- тег: `v0.5.0`, commit `213ed28`;
-- [воспроизводимая сборка — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400922);
-- [полный quality gate — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39175400930).
+- тег: `v0.5.1`, commit `e0ca9b9`;
+- [воспроизводимая сборка — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842);
+- [полный quality gate — success](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651).
 
 ## Наблюдаемость
 
@@ -12,7 +12,7 @@
 
 ## Что показать преподавателю
 
-1. Открыть первый CI-run и показать зелёный job сборки по тегу `v0.5.0`.
+1. Открыть первый CI-run и показать зелёный job сборки по тегу `v0.5.1`.
 2. Открыть второй CI-run и показать зелёные model, application, security и retrieval gates.
 3. Поднять staging одной командой и открыть Grafana `http://localhost:3002`; показать request rate, p95, 5xx, budget decisions и алерт.
 4. Показать `artifacts/reliability/prod-window.json`: 30/30, uptime 100%, p50 793,83 мс, p95 2437,77 мс.
