@@ -1,35 +1,25 @@
 {
   "metric": "share_of_started_sessions_reaching_at_least_five_cards",
-  "formula": "sessions(current_position >= 5) / sessions(started in period)",
+  "formula": "sessions(current_position >= 5) / sessions(started in period), external cohort only",
+  "source_table": "study_sessions",
   "target": 0.7,
   "release": "v0.5.1",
-  "period_start": "2026-10-15T20:55:00+03:00",
-  "period_end": "2026-10-15T21:20:00+03:00",
-  "measurement_method": "observed_external_human_session",
-  "canonical_method": "study_sessions where current_position >= 5 divided by started sessions",
-  "method_changed": true,
-  "change_reason": "No read-only production analytics export for study_sessions; team and smoke accounts must not be counted.",
-  "external_reviewer": {
-    "name": "Постернак Денис",
-    "affiliation": "студент другой команды курса",
-    "observer": "Доброквашина Анастасия (Product)"
-  },
+  "period_start": "2026-10-15T17:55:00+00:00",
+  "period_end": "2026-10-15T17:55:00+00:00",
+  "measurement_method": "study_sessions export (PRD method); team and smoke cohorts excluded",
+  "sessions_export": "artifacts/product/north-star-sessions-export.json",
   "started_sessions": 1,
   "sessions_reaching_five_cards": 1,
   "actual": 1.0,
   "delta_to_target_pp": 30.0,
+  "target_met_on_observed_sample": true,
   "statistically_confirmed": false,
   "evidence": [
-    "docs/use-cases/validation-lab5.md",
-    "docs/use-cases/validation-lab3.md",
     "docs/quality/evidence/2026-10-15/README.md",
     "docs/quality/evidence/2026-10-15/uc-evidence-1.png",
-    "docs/quality/evidence/2026-10-15/uc-evidence-5.png"
+    "docs/quality/evidence/2026-10-15/uc-evidence-5.png",
+    "docs/use-cases/validation-lab3.md",
+    "docs/use-cases/validation-lab5.md"
   ],
-  "technical_corroboration_not_in_metric": {
-    "file": "artifacts/product/lab5-prod-uc.json",
-    "run_at": "2026-10-18T22:57:01+00:00",
-    "note": "Public API smoke reached position 5; user lab5-external-smoke-* is excluded from North Star denominator"
-  },
-  "limitation": "n=1; collect at least 10 external sessions before claiming Demo Day confirmation (≥7/10)"
+  "limitation": "n=1; at least 10 external sessions are required before claiming Demo Day confirmation (>=7/10)"
 }

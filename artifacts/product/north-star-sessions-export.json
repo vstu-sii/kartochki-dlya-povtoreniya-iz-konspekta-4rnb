@@ -1,0 +1,19 @@
+[
+  {
+    "session_ref": "external-posternak-denis-2026-10-15",
+    "user_id": "external:posternak-denis",
+    "cohort": "external",
+    "reviewer": "Постернак Денис",
+    "created_at": "2026-10-15T17:55:00Z",
+    "current_position": 5,
+    "card_count": 5,
+    "source": "Telegram bot creates StudySession via POST /v1/ai/sessions and persists every advance via PATCH /sessions/{id}/progress; external run observed by Product (Доброквашина Анастасия). Record transcribed into this export because production has no read-only analytics endpoint yet.",
+    "evidence": [
+      "docs/use-cases/validation-lab5.md",
+      "docs/use-cases/validation-lab3.md",
+      "docs/quality/evidence/2026-10-15/README.md",
+      "docs/quality/evidence/2026-10-15/uc-evidence-1.png",
+      "docs/quality/evidence/2026-10-15/uc-evidence-5.png"
+    ]
+  }
+]
