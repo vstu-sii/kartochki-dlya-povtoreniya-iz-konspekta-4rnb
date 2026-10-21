@@ -13,7 +13,7 @@
 - Локальные 2–3 мс разных deterministic-runner не являются latency Gemini; финальный model runner имеет p95 3 мс.
 - 20 provider-кейсов не доказывают качество на всём домене.
 - 100% на golden dataset не означает отсутствие атак вне набора.
-- North Star 1/1 не является устойчивой пользовательской статистикой.
+- North Star 1/1 не является устойчивой пользовательской статистикой. Product указывает, что запись внешней сессии перенесена из протокола наблюдателя, а не получена прямой аналитической выгрузкой production-БД.
 - Результат относится только к неизменяемому тегу `v0.5.1`; последующие изменения веток требуют нового тега и повторного gate.
 
 ## Воспроизведение
@@ -22,8 +22,10 @@
 
 Фактическое подтверждение тега `v0.5.1`: [quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651) и [release build](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842) завершились `success`.
 
-## Скриншоты для презентации — пока не приложены
+## Скриншоты для презентации — закрыто частично
 
-Пункт остаётся открытым до получения двух реальных снимков: дашборда с данными и успешного release quality gate. [Инструкция и подписи](evidence/lab5/README.md). Старые скриншоты Lab3 не подтверждают Lab5. Нельзя подменять отсутствие снимков ссылкой на конфигурацию Grafana.
+Скриншот успешного CI уже сохранён Delivery: [v0.5.1 quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/9f5e81504f33a18838a062af4a0e5623e63764b7/docs/evidence/lab5/v0.5.1-quality-gate.png). Ссылка закреплена на коммите `9f5e815`; повторно копировать изображение в Quality не требуется. Он подтверждает прежний релиз `v0.5.1`, а не последующие изменения веток.
+
+Остаётся реальный скриншот дашборда с данными, датой, окружением и версией; весь пункт пока не закрыт. [Инструкция и подписи](evidence/lab5/README.md). Старые скриншоты Lab3 не подтверждают Lab5. Нельзя подменять отсутствие снимков ссылкой на конфигурацию Grafana.
 
 Provider A/B: [результат на v0.5.1](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/v0.5.1/artifacts/experiments/lab4-provider-results.json).
