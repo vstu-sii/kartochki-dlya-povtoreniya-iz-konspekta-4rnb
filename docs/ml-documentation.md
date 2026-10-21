@@ -18,8 +18,9 @@ API → token budget → source lookup → prompt/schema → Gemini → quality 
 python tests/evals/run_evals.py --output artifacts/evals/lab5-final-results.json
 python tests/evals/run_application_evals.py
 python -m ml.experiments.run_ablation
+python -m tests.evals.prepare_lab1_quality_evidence
 ```
 
 Первый прогон подтверждает 95 модельных кейсов и 12 input guards, второй — 37 application/DB-кейсов. Полный командный gate одной командой: `python tests/evals/run_full_suite.py`.
 
-Смотреть: `docs/ml-final-metrics.md`, `docs/experiments/lab5.md`, trace-конфиг `ml/tracing/`. Известные ограничения: один PDF, OCR зависит от качества скана, top-3 retrieval теряет четвёртый релевантный фрагмент, provider A/B мал и требует повторов перед коммерческим SLA.
+Смотреть: `docs/ml-final-metrics.md`, `docs/experiments/lab5.md`, `docs/quality/lab1-ai-evidence.md`, trace-конфиг `ml/tracing/`. Известные ограничения: один PDF, OCR зависит от качества скана, top-3 retrieval теряет четвёртый релевантный фрагмент, provider A/B мал и требует повторов перед коммерческим SLA. Критерии Lab 1, требующие исходных PDF, ручной разметки и live-среды, остаются открытыми до совместного замера и не подменяются локальным deterministic-runner.
