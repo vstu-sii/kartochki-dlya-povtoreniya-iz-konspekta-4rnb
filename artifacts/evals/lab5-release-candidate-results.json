@@ -1,7 +1,7 @@
 {
-  "run_at": "2026-10-18T22:55:21.142470+00:00",
+  "run_at": "2026-10-21T20:45:12.143756+00:00",
   "release_ref": "WORKTREE",
-  "commit": "8f44ce6f9cdd67ed5254b38ed8075d8f7a213b2c",
+  "commit": "54959184ec44738e444cbfc2da2db4d7a7fd1dce",
   "candidate_only": true,
   "passed": true,
   "thresholds": {

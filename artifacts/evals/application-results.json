@@ -298,7 +298,7 @@
       "operation": "tool_timeout",
       "passed": true,
       "tool_status": "timeout_fallback_to_request_pages",
-      "elapsed_ms": 3.83,
+      "elapsed_ms": 1.631,
       "max_elapsed_ms": 200,
       "issue": null
     }
