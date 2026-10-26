@@ -13,6 +13,15 @@ from dataset_catalog import ROOT, dataset_hash, load_dataset
 sys.path.insert(0, str(ROOT))
 
 
+def summarize_manual(rows):
+    return {
+        "no_contradiction_rate": sum(row["quality_manual_review"]["no_contradiction"] for row in rows) / 20,
+        "mandatory_points_complete_rate": sum(row["quality_manual_review"]["mandatory_points_complete"] for row in rows) / 20,
+        "critical_tone_violations": sum(row["quality_manual_review"]["critical_tone_violation"] for row in rows),
+        "minor_tone_violation_rate": sum(row["quality_manual_review"]["minor_tone_violation"] for row in rows) / 20,
+    }
+
+
 def validate_snapshot(snapshot):
     cases = {case["id"]: case for case in load_dataset()}
     block = snapshot["answer_review_check"]
@@ -50,6 +59,10 @@ def validate_snapshot(snapshot):
             raise ValueError("Human labels must be booleans or null")
         if all(type(labels.get(key)) is bool for key in fields) and str(labels.get("reviewer") or "").strip():
             completed += 1
+    claimed = block.get("metrics", {})
+    if any(value is not None for value in claimed.values()):
+        if completed != 20 or claimed != summarize_manual(rows):
+            raise ValueError("Stored manual metrics do not match 20 completed reviews")
     return rows, actual, completed
 
 
@@ -81,12 +94,14 @@ def audit(path):
         if changed:
             differences.append({"case_id": row["case_id"], "fields": changed})
     manual_metrics = None
+    manual_targets_met = None
     if completed == 20:
-        manual_metrics = {
-            "no_contradiction_rate": sum(row["quality_manual_review"]["no_contradiction"] for row in rows) / 20,
-            "mandatory_points_complete_rate": sum(row["quality_manual_review"]["mandatory_points_complete"] for row in rows) / 20,
-            "critical_tone_violations": sum(row["quality_manual_review"]["critical_tone_violation"] for row in rows),
-            "minor_tone_violation_rate": sum(row["quality_manual_review"]["minor_tone_violation"] for row in rows) / 20,
+        manual_metrics = summarize_manual(rows)
+        manual_targets_met = {
+            "no_contradiction": manual_metrics["no_contradiction_rate"] >= .90,
+            "mandatory_points_complete": manual_metrics["mandatory_points_complete_rate"] >= .80,
+            "critical_tone": manual_metrics["critical_tone_violations"] == 0,
+            "minor_tone": manual_metrics["minor_tone_violation_rate"] <= .05,
         }
     return {
         "audited_at": datetime.now(timezone.utc).isoformat(),
@@ -107,6 +122,8 @@ def audit(path):
         "human_review_completed_rows": completed,
         "human_review_ready_for_summary": completed == 20,
         "manual_metrics_from_supplied_labels": manual_metrics,
+        "manual_review_targets_met": manual_targets_met,
+        "all_manual_review_targets_met": all(manual_targets_met.values()) if manual_targets_met is not None else None,
         "lab1_acceptance_status": "not_established_by_this_automated_audit",
         "limitations": [
             "The supplied snapshot has no original source revision or generator source.",

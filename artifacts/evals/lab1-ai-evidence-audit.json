@@ -1,11 +1,11 @@
 {
-  "audited_at": "2026-10-26T00:09:23.582864+00:00",
+  "audited_at": "2026-10-26T13:39:42.756781+00:00",
   "audit_kind": "automated_snapshot_audit_not_human_acceptance",
-  "checkout_commit": "c1cc49412e12ebdae86b3f40be5c9c5735075bb4",
-  "source_snapshot_sha256": "b76e714c5cbd1eebc52e4f731ce97b526cc0dae34e4ee02e887b6c81b83eb892",
+  "checkout_commit": "ef3b96abedea12fa8c7169304186690e60a8691d",
+  "source_snapshot_sha256": "cd5d85df2849c22c10678a28bd10dbeeda0ddcbbef7e29b0c2a176287887c11e",
   "dataset_sha256": "05bb2dee5239dffe3c78b71dd306b84c3af88bc000bfee49fa102bc735d31dc6",
   "audit_source_files_sha256": {
-    "tests/evals/audit_lab1_evidence.py": "7493a5ae43ce23cdf6d204e7d5b9fb1258dae53289cf8b4c5588515cf8e86922",
+    "tests/evals/audit_lab1_evidence.py": "82d0d2ba1a9407c9f630948e144cc6acc3a53617128bbe721ad1d511374ec3e2",
     "ml/models/baseline.py": "85dbbb1e0d475d73aae1496540ec8df6bf990e9071ac321321c430e7c1cb2fc1",
     "ml/prompts_v2/generation-v1.txt": "ece784a31388ef47beb155c5583f833bce2d7821bb0e1c210f269f653276fb23",
     "ml/prompts_v2/generation.txt": "40cdea3a6883bc8b9f94439db64a22b8ff8c0a102e548ad04ce215ca8c0f8a2f",
@@ -35,9 +35,21 @@
     "trace_id",
     "review_id"
   ],
-  "human_review_completed_rows": 0,
-  "human_review_ready_for_summary": false,
-  "manual_metrics_from_supplied_labels": null,
+  "human_review_completed_rows": 20,
+  "human_review_ready_for_summary": true,
+  "manual_metrics_from_supplied_labels": {
+    "no_contradiction_rate": 0.8,
+    "mandatory_points_complete_rate": 0.35,
+    "critical_tone_violations": 0,
+    "minor_tone_violation_rate": 0.0
+  },
+  "manual_review_targets_met": {
+    "no_contradiction": false,
+    "mandatory_points_complete": false,
+    "critical_tone": true,
+    "minor_tone": true
+  },
+  "all_manual_review_targets_met": false,
   "lab1_acceptance_status": "not_established_by_this_automated_audit",
   "limitations": [
     "The supplied snapshot has no original source revision or generator source.",
