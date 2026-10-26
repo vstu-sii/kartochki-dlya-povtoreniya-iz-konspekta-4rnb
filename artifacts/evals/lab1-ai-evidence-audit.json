@@ -1,0 +1,48 @@
+{
+  "audited_at": "2026-10-26T00:09:23.582864+00:00",
+  "audit_kind": "automated_snapshot_audit_not_human_acceptance",
+  "checkout_commit": "c1cc49412e12ebdae86b3f40be5c9c5735075bb4",
+  "source_snapshot_sha256": "b76e714c5cbd1eebc52e4f731ce97b526cc0dae34e4ee02e887b6c81b83eb892",
+  "dataset_sha256": "05bb2dee5239dffe3c78b71dd306b84c3af88bc000bfee49fa102bc735d31dc6",
+  "audit_source_files_sha256": {
+    "tests/evals/audit_lab1_evidence.py": "7493a5ae43ce23cdf6d204e7d5b9fb1258dae53289cf8b4c5588515cf8e86922",
+    "ml/models/baseline.py": "85dbbb1e0d475d73aae1496540ec8df6bf990e9071ac321321c430e7c1cb2fc1",
+    "ml/prompts_v2/generation-v1.txt": "ece784a31388ef47beb155c5583f833bce2d7821bb0e1c210f269f653276fb23",
+    "ml/prompts_v2/generation.txt": "40cdea3a6883bc8b9f94439db64a22b8ff8c0a102e548ad04ce215ca8c0f8a2f",
+    "ml/prompts_v2/review-v1.txt": "bed05dc078acd47af32720c4dcbaef7d71cd3b925e1247903066f2aac1bc6ac5",
+    "ml/prompts_v2/review.txt": "214193337943d1211956ca29b47dd5f54edcf893ca7264cabe92dd33c870fb03"
+  },
+  "snapshot_integrity_verified": true,
+  "automatic_verdict_agreement": {
+    "matched": 20,
+    "total": 20,
+    "rate": 1.0
+  },
+  "stable_output_fields": [
+    "verdict",
+    "score",
+    "feedback",
+    "missing_points",
+    "model",
+    "prompt_version",
+    "fallback_used"
+  ],
+  "stable_output_matches": 20,
+  "differences": [],
+  "excluded_from_exact_comparison": [
+    "latency_ms",
+    "usage",
+    "trace_id",
+    "review_id"
+  ],
+  "human_review_completed_rows": 0,
+  "human_review_ready_for_summary": false,
+  "manual_metrics_from_supplied_labels": null,
+  "lab1_acceptance_status": "not_established_by_this_automated_audit",
+  "limitations": [
+    "The supplied snapshot has no original source revision or generator source.",
+    "These are REV-001..REV-020 from a synthetic golden set, not a live PDF cohort.",
+    "Deterministic usage is a local estimate, not provider billing telemetry.",
+    "Verdict agreement does not establish correctness of feedback or golden labels."
+  ]
+}

@@ -1,0 +1,2 @@
+# Preserve the received evidence bytes referenced by the audit SHA-256.
+artifacts/evals/lab1-ai-quality-evidence.json -text whitespace=cr-at-eol
