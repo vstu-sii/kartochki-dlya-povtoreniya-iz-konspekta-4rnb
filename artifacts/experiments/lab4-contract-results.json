@@ -917,7 +917,7 @@
       "only_changed_factor": "prompt_text"
     }
   ],
-  "run_at": "2026-10-26T14:20:05.444652+00:00",
+  "run_at": "2026-10-26T18:09:29.274573+00:00",
   "dataset": "D:/MovedAppData/CodexWorkspace/lab5-ai-review-20261020/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "contract"
 }

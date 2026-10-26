@@ -292,15 +292,24 @@ class BaselineModel:
         answer_words = cls._keywords(answer)
         if not point_words:
             return False
-        coverage = len(point_words & answer_words) / len(point_words)
+        coverage = sum(cls._keyword_covered(word, answer_words) for word in point_words) / len(point_words)
         return coverage >= 0.72
+
+    @staticmethod
+    def _keyword_covered(keyword: str, candidates: set[str]) -> bool:
+        """Match small stemming differences such as `память`/`памят` safely."""
+        return any(
+            keyword == candidate
+            or (min(len(keyword), len(candidate)) >= 4 and (keyword.startswith(candidate) or candidate.startswith(keyword)))
+            for candidate in candidates
+        )
 
     @classmethod
     def _uncovered_point(cls, point: str, answer: str) -> str:
         """Return a readable missing phrase, never internal word stems."""
         point_words = cls._keywords(point)
         answer_words = cls._keywords(answer)
-        missing_stems = point_words - answer_words
+        missing_stems = {word for word in point_words if not cls._keyword_covered(word, answer_words)}
         if not missing_stems:
             return ""
         coverage = len(point_words & answer_words) / max(1, len(point_words))
