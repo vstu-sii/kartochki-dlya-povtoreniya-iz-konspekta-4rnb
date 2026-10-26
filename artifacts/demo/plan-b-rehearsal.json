@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "generated_at": "2026-10-26T23:24:10.589251+00:00",
+  "provider_failure": "simulated URLError before any external request",
+  "degradation": {
+    "fallback_used": true,
+    "fallback_reason": "gemini_network",
+    "cards_returned": 3,
+    "latency_ms": 981.31
+  },
+  "video_backup": {
+    "path": "docs/demo/demo-backup.mp4",
+    "bytes": 917798,
+    "readable": true
+  },
+  "production": {
+    "status": 200,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "telegram": "webhook"
+    }
+  }
+}

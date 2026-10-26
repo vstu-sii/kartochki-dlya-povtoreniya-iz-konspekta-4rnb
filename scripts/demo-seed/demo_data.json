@@ -1,0 +1,86 @@
+{
+  "document": {
+    "id": "demo_lab6_document",
+    "original_filename": "demo_operating_systems.pdf",
+    "pages": [
+      {
+        "page": 1,
+        "text": "Виртуальная память позволяет процессам использовать единое адресное пространство. Страничная организация отображает виртуальные страницы на физические кадры. При отсутствии страницы в памяти возникает page fault, после чего операционная система загружает страницу с диска."
+      },
+      {
+        "page": 2,
+        "text": "Кэш ускоряет повторный доступ к данным. Вытеснение LRU удаляет элемент, к которому дольше всего не обращались. Попадание в кэш называется cache hit, отсутствие данных — cache miss."
+      }
+    ]
+  },
+  "card_set": {
+    "id": "demo_lab6_card_set",
+    "title": "Операционные системы: память и кэш",
+    "model": "curated-demo-fixture",
+    "prompt_version": "demo-v1",
+    "fallback_used": false,
+    "trace_id": "demo_lab6_trace_generation",
+    "latency_ms": 2840,
+    "input_tokens": 486,
+    "output_tokens": 372
+  },
+  "cards": [
+    {
+      "id": "demo_lab6_card_01",
+      "position": 0,
+      "question": "Зачем операционной системе нужна виртуальная память?",
+      "reference_answer": "Она даёт процессам единое адресное пространство и отображает виртуальные страницы на физические кадры.",
+      "source_page": 1,
+      "source_quote": "Виртуальная память позволяет процессам использовать единое адресное пространство.",
+      "difficulty": "basic"
+    },
+    {
+      "id": "demo_lab6_card_02",
+      "position": 1,
+      "question": "Что происходит при page fault?",
+      "reference_answer": "Операционная система загружает отсутствующую страницу с диска в память.",
+      "source_page": 1,
+      "source_quote": "При отсутствии страницы в памяти возникает page fault, после чего операционная система загружает страницу с диска.",
+      "difficulty": "basic"
+    },
+    {
+      "id": "demo_lab6_card_03",
+      "position": 2,
+      "question": "Чем cache hit отличается от cache miss?",
+      "reference_answer": "Cache hit означает, что данные найдены в кэше, а cache miss — что их там нет.",
+      "source_page": 2,
+      "source_quote": "Попадание в кэш называется cache hit, отсутствие данных — cache miss.",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "demo_lab6_card_04",
+      "position": 3,
+      "question": "Как работает вытеснение LRU?",
+      "reference_answer": "LRU удаляет элемент, к которому дольше всего не обращались.",
+      "source_page": 2,
+      "source_quote": "Вытеснение LRU удаляет элемент, к которому дольше всего не обращались.",
+      "difficulty": "intermediate"
+    },
+    {
+      "id": "demo_lab6_card_05",
+      "position": 4,
+      "question": "Почему кэш ускоряет работу системы?",
+      "reference_answer": "Он сокращает время повторного доступа к уже полученным данным.",
+      "source_page": 2,
+      "source_quote": "Кэш ускоряет повторный доступ к данным.",
+      "difficulty": "intermediate"
+    }
+  ],
+  "session": {
+    "id": "demo_lab6_session",
+    "user_id": "demo_lab6_student",
+    "current_position": 1,
+    "completed": false
+  },
+  "rating": {
+    "id": "demo_lab6_rating",
+    "event_id": "demo_lab6_rating_event",
+    "card_id": "demo_lab6_card_01",
+    "value": "useful"
+  }
+}

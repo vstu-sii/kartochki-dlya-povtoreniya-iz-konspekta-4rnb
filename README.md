@@ -1,3 +1,30 @@
+# Lab 6 — Delivery: Demo Day
+
+Публичный интерфейс: https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com
+
+Health: https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health
+
+Неизменяемый тег демонстрируемой версии: `v0.5.2-demo` (`af194ff`).
+
+Основной пользовательский интерфейс — Telegram-бот. Публичный URL Render нужен
+не вместо Telegram, а как публичный production backend: Telegram отправляет туда
+webhook, backend вызывает модель и сохраняет результаты в БД. На показе открываем
+бота и одновременно показываем `/health`, чтобы подтвердить, что сценарий идёт с
+production, а не с localhost.
+
+Подготовка демо одной командой и проверка Plan B:
+
+```bash
+python scripts/demo-seed/reset_demo.py
+python scripts/demo-rehearsal.py --public-url https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com
+```
+
+- [Delivery-артефакты Demo Day](docs/demo/README.md)
+- [План Б](docs/demo/plan-b.md)
+- [Объявление о фризе production](docs/demo/release-freeze.md)
+
+---
+
 # Lab4 — Quality & Safety
 
 Актуальная проверка всей роли:

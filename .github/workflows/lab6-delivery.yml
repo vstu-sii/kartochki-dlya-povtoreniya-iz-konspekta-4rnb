@@ -1,0 +1,34 @@
+name: Lab6 Delivery demo readiness
+
+on:
+  pull_request:
+    paths:
+      - "scripts/demo-seed/**"
+      - "scripts/demo-rehearsal.py"
+      - "docs/demo/**"
+      - "tests/test_lab6_delivery.py"
+      - ".github/workflows/lab6-delivery.yml"
+  push:
+    branches: [lab6-delivery-demo]
+  workflow_dispatch:
+
+jobs:
+  demo-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11", cache: pip}
+      - run: pip install -r requirements.lock
+      - name: Reset demo state twice and rehearse Plan B
+        env:
+          DATABASE_URL: sqlite:///./lab6-demo-ci.db
+          TRACE_CONTENT: "false"
+        run: python -m unittest tests.test_lab6_delivery -v
+      - name: Upload rehearsal evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab6-delivery-plan-b
+          path: artifacts/demo/plan-b-rehearsal.json
+          if-no-files-found: error
