@@ -8,17 +8,17 @@
   },
   "variant_b": {
     "name": "normalized-semantic-rules-v2",
-    "agreement": 0.9
+    "agreement": 0.925
   },
-  "delta_agreement_pp": 7.5,
+  "delta_agreement_pp": 10.0,
   "cases": [
     {
       "id": "REV-001",
       "expected": "correct",
       "a": "partially_correct",
-      "b": "partially_correct",
+      "b": "correct",
       "a_correct": false,
-      "b_correct": false
+      "b_correct": true
     },
     {
       "id": "REV-002",
@@ -335,7 +335,7 @@
   ],
   "decision": "B",
   "passed": true,
-  "run_at": "2026-10-26T18:09:29.021280+00:00",
+  "run_at": "2026-10-26T18:10:34.340250+00:00",
   "dataset": "D:/MovedAppData/CodexWorkspace/lab5-ai-review-20261020/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "algorithm"
 }

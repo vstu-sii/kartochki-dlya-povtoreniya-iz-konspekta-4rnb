@@ -1,0 +1,15 @@
+{"event": "llm_trace", "trace_id": "tr_b6369f49ffeb4f19a97fac6b8d68be3c", "timestamp": "2026-10-26T18:10:31.144139+00:00", "operation": "generate_cards", "model": "deterministic-grounded-v1", "prompt_sha256": "8dbb2d5b28b42d77b896df88bc49bd39ae588889619b9bdbd3f762831e52cc6a", "prompt_chars": 593, "prompt_preview": "[redacted]", "response": {"verdict": null, "card_count": 1, "prompt_version": "cards-v2.1", "usage": {"input_tokens": 148, "output_tokens": 152}, "fallback_reason": null, "cache_hit": false, "tool_status": "success"}, "latency_ms": 2, "fallback_used": false}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 40, "tokens": 360, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 41, "tokens": 369, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 42, "tokens": 378, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 43, "tokens": 387, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 44, "tokens": 396, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 45, "tokens": 405, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 46, "tokens": 414, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 47, "tokens": 423, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 48, "tokens": 432, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 49, "tokens": 441, "model_tier": "cheap", "reason": null}
+{"event": "budget_anomaly", "user_hash": "18b38877eb38", "requests": 50, "tokens": 450, "model_tier": "cheap", "reason": null}
+{"event": "budget_rejected", "user_hash": "18b38877eb38", "requests": 50, "tokens": 450, "model_tier": "none", "reason": "REQUEST_LIMIT_EXCEEDED"}
+{"event": "llm_trace", "trace_id": "tr_7647c271d096469abd1da0c1d4f6be28", "timestamp": "2026-10-26T18:10:31.506604+00:00", "operation": "generate_cards", "model": "deterministic-grounded-v1", "prompt_sha256": "8dbb2d5b28b42d77b896df88bc49bd39ae588889619b9bdbd3f762831e52cc6a", "prompt_chars": 593, "prompt_preview": "[redacted]", "response": {"verdict": null, "card_count": 1, "prompt_version": "cards-v2.1", "usage": {"input_tokens": 148, "output_tokens": 159}, "fallback_reason": null, "cache_hit": false, "tool_status": "timeout_fallback_to_request_pages"}, "latency_ms": 14, "fallback_used": false}
+{"case_count": 37, "passed_count": 37, "failed_count": 0, "pass_rate": 1.0}
