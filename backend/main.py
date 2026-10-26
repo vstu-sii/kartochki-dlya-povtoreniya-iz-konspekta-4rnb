@@ -46,7 +46,9 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="Карточки для повторения", version="0.4.0", lifespan=lifespan)
+APP_VERSION = os.getenv("APP_VERSION", "lab5")
+
+app = FastAPI(title="Карточки для повторения", version="0.5.0", lifespan=lifespan)
 app.middleware("http")(metrics_middleware)
 app.add_middleware(
     CORSMiddleware,
@@ -70,7 +72,7 @@ def health():
     return {
         "service": "application-api",
         "status": "ok",
-        "version": "lab5",
+        "version": APP_VERSION,
         "telegram": "webhook" if TELEGRAM_BOT_TOKEN and os.getenv("RENDER_EXTERNAL_URL") else "local-polling-or-disabled",
     }
 
