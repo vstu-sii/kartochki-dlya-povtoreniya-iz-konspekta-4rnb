@@ -1,22 +1,22 @@
 {
   "target": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health",
   "sample_count": 1,
-  "period_start": "2026-10-26T22:37:00.760219+00:00",
-  "period_end": "2026-10-26T22:37:00.760219+00:00",
+  "period_start": "2026-10-26T22:45:49.900102+00:00",
+  "period_end": "2026-10-26T22:45:49.900102+00:00",
   "observation_duration_seconds": 0.0,
   "successful_samples": 1,
   "uptime_percent": 100.0,
-  "latency_p50_ms": 507.1,
-  "latency_p95_ms": 507.1,
+  "latency_p50_ms": 2220.35,
+  "latency_p95_ms": 2220.35,
   "expected_version": "lab5",
-  "version_match_percent": 0.0,
+  "version_match_percent": 100.0,
   "method": "active HTTP health sampling; latency is calculated from successful responses",
   "samples": [
     {
-      "at": "2026-10-26T22:37:00.760219+00:00",
+      "at": "2026-10-26T22:45:49.900102+00:00",
       "status": 200,
-      "latency_ms": 507.1,
-      "version": "lab4"
+      "latency_ms": 2220.35,
+      "version": "lab5"
     }
   ]
 }

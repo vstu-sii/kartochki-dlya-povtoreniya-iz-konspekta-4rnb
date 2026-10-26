@@ -19,10 +19,9 @@ python tests/reliability/measure_prod.py `
 сохранены. Повышенный p95 остаётся ограничением бесплатного Render-инстанса.
 
 Проверка версии отдельно сохранена в
-`artifacts/reliability/prod-version-check.json`. На момент проверки публичный
-Render отвечал `lab4`, хотя ветка Delivery уже содержит `APP_VERSION=lab5`.
-Проверка ожидаемо завершилась кодом 1. Это честно фиксирует deployment drift:
-доступность подтверждена, но Lab 5 ещё нужно развернуть в Render.
+`artifacts/reliability/prod-version-check.json`. После ручного деплоя коммита
+`af194ff` 27.10.2026 публичный Render ответил HTTP 200 и версией `lab5`;
+`version_match_percent` равен 100%, проверка завершилась кодом 0.
 
 Для недельного наблюдения используется та же команда с `--samples 2016
 --interval 300`. Короткое окно выше не выдаётся за недельный SLA; историю за
