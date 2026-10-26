@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DATASET_VERSION = "lab4-v3"
+DATASET_VERSION = "lab5-v1"
 DATASETS = tuple(ROOT / "docs/quality/golden-dataset" / name for name in (
     "dataset.jsonl", "dataset-v2-additions.jsonl", "dataset-v3-additions.jsonl",
 ))

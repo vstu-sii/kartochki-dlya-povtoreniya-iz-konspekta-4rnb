@@ -14,6 +14,8 @@ class Lab1QualityEvidenceTest(unittest.TestCase):
         self.assertEqual(section["case_count"], 20)
         self.assertEqual(len(section["rows"]), 20)
         self.assertEqual(len({row["case_id"] for row in section["rows"]}), 20)
+        self.assertTrue(all(row["system_result"]["review_id"].startswith("review_") for row in section["rows"]))
+        self.assertTrue(all(row["system_result"]["trace_id"].startswith("tr_") for row in section["rows"]))
 
     def test_human_only_measurements_are_not_fabricated(self):
         self.assertIsNone(self.report["pdf_thesis_check"]["accuracy"])

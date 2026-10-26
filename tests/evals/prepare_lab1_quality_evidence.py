@@ -10,6 +10,7 @@ import argparse
 import json
 import math
 import os
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -30,6 +31,19 @@ class SilentEvidenceTrace:
 
     def record(self, *args, **kwargs) -> None:
         return None
+
+
+def git_metadata() -> dict:
+    try:
+        commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        status = subprocess.run(
+            ["git", "status", "--porcelain"], cwd=ROOT, check=True, capture_output=True, text=True
+        ).stdout.strip()
+        return {"git_sha": commit, "working_tree_clean": not bool(status)}
+    except (OSError, subprocess.CalledProcessError):
+        return {"git_sha": None, "working_tree_clean": None}
 
 
 def nearest_rank(values: list[int | float], quantile: float) -> int | float | None:
@@ -167,6 +181,7 @@ def build_answer_rows(count: int) -> tuple[list[dict], dict]:
                 "mandatory_points": case["expected_output"].get("required_feedback_points", []),
                 "expected_verdict": case["expected_output"]["verdict"],
                 "system_result": {
+                    "review_id": result["review_id"],
                     "verdict": result["verdict"],
                     "score": result["score"],
                     "feedback": result["feedback"],
@@ -174,6 +189,7 @@ def build_answer_rows(count: int) -> tuple[list[dict], dict]:
                     "model": result["model"],
                     "prompt_version": result["prompt_version"],
                     "fallback_used": result["fallback_used"],
+                    "trace_id": result["trace_id"],
                     "latency_ms": result["latency_ms"],
                     "usage": usage,
                 },
@@ -200,6 +216,9 @@ def build_report(count: int) -> dict:
     automatic_matches = sum(row["system_result"]["verdict"] == row["expected_verdict"] for row in rows)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generator": "tests/evals/prepare_lab1_quality_evidence.py",
+        "generation_command": "py -3 -m tests.evals.prepare_lab1_quality_evidence --output artifacts/evals/lab1-ai-quality-evidence-after-fix.json",
+        "source_revision": git_metadata(),
         "dataset_sha256": dataset_hash(),
         "measurement_rules": {
             "thesis_accuracy": "correct_theses / checked_theses; target >= 0.75",

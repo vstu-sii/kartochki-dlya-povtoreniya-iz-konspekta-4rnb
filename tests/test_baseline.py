@@ -86,7 +86,101 @@ class BaselineTest(unittest.TestCase):
                 )
         self.assertTrue(result["fallback_used"])
         self.assertEqual("gemini_invalid_output", result["fallback_reason"])
-        self.assertEqual("deterministic-review-v2", result["model"])
+        self.assertEqual("deterministic-review-v4", result["model"])
+
+    def test_semantic_equivalents_do_not_create_false_missing_points(self):
+        cases = (
+            (
+                "Процессор обращается к оперативной памяти.",
+                "Процессор идёт за данными в RAM.",
+                "correct",
+                [],
+            ),
+            (
+                "Потоки разделяют память процесса; процессы имеют отдельные адресные пространства.",
+                "Потоки одного процесса используют общую память.",
+                "partially_correct",
+                ["Процессы имеют отдельные адресные пространства."],
+            ),
+            (
+                "Вход только одного потока в критическую секцию.",
+                "Только одному потоку.",
+                "partially_correct",
+                ["Вход в критическую секцию."],
+            ),
+        )
+        for reference, answer, verdict, missing in cases:
+            with self.subTest(answer=answer):
+                result = self.model.review(
+                    {"card": {"question": "Q", "reference_answer": reference}, "student_answer": answer}
+                )
+                self.assertEqual(verdict, result["verdict"])
+                self.assertEqual(missing, result["missing_points"])
+
+    def test_complete_mandatory_meaning_is_not_downgraded(self):
+        result = self.model.review(
+            {
+                "card": {"question": "Что добавляет HTTPS?", "reference_answer": "TLS-защиту данных между клиентом и сервером."},
+                "student_answer": "Использует TLS для защиты данных.",
+            }
+        )
+        self.assertEqual("correct", result["verdict"])
+        self.assertEqual([], result["missing_points"])
+
+    def test_explicit_acronym_requirement_is_explained(self):
+        result = self.model.review(
+            {
+                "card": {"question": "Как работает очередь?", "reference_answer": "По принципу FIFO."},
+                "student_answer": "Первым добавлен — первым извлечён.",
+            }
+        )
+        self.assertEqual("partially_correct", result["verdict"])
+        self.assertEqual(["Не назван термин FIFO."], result["missing_points"])
+
+    def test_semantic_aliases_do_not_accept_contradictions(self):
+        cases = (
+            ("Данные загружаются в оперативную память.", "RAM — это жёсткий диск."),
+            ("Потоки разделяют память процесса.", "Потоки не разделяют память процесса."),
+            ("В критическую секцию входит только один поток.", "Одновременно входят несколько потоков."),
+            ("Очередь работает по принципу FIFO.", "Очередь работает по принципу LIFO."),
+        )
+        for reference, answer in cases:
+            with self.subTest(answer=answer):
+                result = self.model.review(
+                    {"card": {"question": "Q", "reference_answer": reference}, "student_answer": answer}
+                )
+                self.assertEqual("incorrect", result["verdict"])
+
+    def test_mixed_cache_answer_corrects_disk_without_confirming_it(self):
+        answer = "Данных нет в кэше, поэтому процессор обращается к жёсткому диску."
+        result = self.model.review(
+            {
+                "card": {
+                    "question": "Что происходит при промахе кэша?",
+                    "reference_answer": "Процессор не находит данные в кэше и обращается к оперативной памяти.",
+                },
+                "student_answer": answer,
+            }
+        )
+        self.assertNotEqual("correct", result["verdict"])
+        self.assertIn("Верно: Процессор не находит данные в кэше.", result["feedback"])
+        self.assertIn("оперативной памяти, а не к жёсткому диску", result["feedback"])
+        self.assertNotIn(f"Верно: {answer}", result["feedback"])
+
+    def test_other_mixed_answer_does_not_repeat_whole_error_as_correct(self):
+        answer = "Потоки разделяют память процесса, и процессы тоже используют общую память."
+        result = self.model.review(
+            {
+                "card": {
+                    "question": "Чем потоки отличаются от процессов?",
+                    "reference_answer": "Потоки разделяют память процесса; процессы имеют отдельные адресные пространства.",
+                },
+                "student_answer": answer,
+            }
+        )
+        self.assertEqual("partially_correct", result["verdict"])
+        self.assertIn("процессы имеют отдельные адресные пространства, а не общую память", result["feedback"])
+        self.assertNotIn(f"Верно: {answer}", result["feedback"])
 
 
 if __name__ == "__main__":

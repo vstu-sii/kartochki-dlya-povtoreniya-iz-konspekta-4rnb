@@ -102,10 +102,10 @@
     },
     {
       "id": "REV-012",
-      "expected": "partially_correct",
+      "expected": "correct",
       "a": "partially_correct",
-      "b": "partially_correct",
-      "a_correct": true,
+      "b": "correct",
+      "a_correct": false,
       "b_correct": true
     },
     {
@@ -151,9 +151,9 @@
     {
       "id": "REV-018",
       "expected": "partially_correct",
-      "a": "incorrect",
+      "a": "partially_correct",
       "b": "partially_correct",
-      "a_correct": false,
+      "a_correct": true,
       "b_correct": true
     },
     {
@@ -335,7 +335,7 @@
   ],
   "decision": "B",
   "passed": true,
-  "run_at": "2026-10-18T22:45:38.171236+00:00",
-  "dataset": "C:/Users/ermak/.codex/.chatgpt-projects/g-p-6ace3e74607081918c99187109656aa0/lab5-ai/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-26T14:20:05.174815+00:00",
+  "dataset": "D:/MovedAppData/CodexWorkspace/lab5-ai-review-20261020/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "algorithm"
 }

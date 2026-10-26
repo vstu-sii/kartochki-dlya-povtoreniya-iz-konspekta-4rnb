@@ -24,3 +24,13 @@ python -m tests.evals.prepare_lab1_quality_evidence
 Первый прогон подтверждает 95 модельных кейсов и 12 input guards, второй — 37 application/DB-кейсов. Полный командный gate одной командой: `python tests/evals/run_full_suite.py`.
 
 Смотреть: `docs/ml-final-metrics.md`, `docs/experiments/lab5.md`, `docs/quality/lab1-ai-evidence.md`, trace-конфиг `ml/tracing/`. Известные ограничения: один PDF, OCR зависит от качества скана, top-3 retrieval теряет четвёртый релевантный фрагмент, provider A/B мал и требует повторов перед коммерческим SLA. Критерии Lab 1, требующие исходных PDF, ручной разметки и live-среды, остаются открытыми до совместного замера и не подменяются локальным deterministic-runner.
+
+## Повторная проверка deterministic-review-v3
+
+После совместного ревью Quality улучшено смысловое сопоставление ответов и формирование `feedback`/`missing_points`. Старые подтверждённые результаты сохранены отдельно, а новый набор тех же `REV-001…REV-020` подготовлен для повторной ручной проверки:
+
+```powershell
+py -3 -m tests.evals.prepare_lab1_quality_evidence --output artifacts/evals/lab1-ai-quality-evidence-after-fix.json
+```
+
+Подробности, команды и автоматические результаты находятся в `docs/quality/lab1-ai-evidence-after-fix.md`. Поля нового ручного ревью намеренно пустые: итоговые продуктовые проценты считает Quality совместно с AI Engineer.
