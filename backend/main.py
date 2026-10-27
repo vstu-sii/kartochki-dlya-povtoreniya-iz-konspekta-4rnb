@@ -73,6 +73,7 @@ def health():
         "service": "application-api",
         "status": "ok",
         "version": APP_VERSION,
+        "commit_sha": os.getenv("RENDER_GIT_COMMIT", os.getenv("COMMIT_SHA", "unknown")),
         "telegram": "webhook" if TELEGRAM_BOT_TOKEN and os.getenv("RENDER_EXTERNAL_URL") else "local-polling-or-disabled",
     }
 

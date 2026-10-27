@@ -102,10 +102,10 @@
     },
     {
       "id": "REV-012",
-      "expected": "partially_correct",
+      "expected": "correct",
       "a": "partially_correct",
-      "b": "partially_correct",
-      "a_correct": true,
+      "b": "correct",
+      "a_correct": false,
       "b_correct": true
     },
     {
@@ -151,9 +151,9 @@
     {
       "id": "REV-018",
       "expected": "partially_correct",
-      "a": "incorrect",
+      "a": "partially_correct",
       "b": "partially_correct",
-      "a_correct": false,
+      "a_correct": true,
       "b_correct": true
     },
     {
@@ -335,7 +335,7 @@
   ],
   "decision": "B",
   "passed": true,
-  "run_at": "2026-10-21T20:45:06.392960+00:00",
-  "dataset": "C:/Users/sftkc/Documents/Codex/2026-10-14/https-github-com-vstu-sii-kartochki/work/fix-lab5-quality/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-27T16:52:28.962306+00:00",
+  "dataset": "C:/Users/ermak/.codex/.chatgpt-projects/g-p-6ace3e74607081918c99187109656aa0/lab5-integrated-quality/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "algorithm"
 }

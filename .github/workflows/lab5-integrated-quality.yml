@@ -1,0 +1,83 @@
+name: Lab5 integrated release quality
+
+on:
+  push:
+    branches: [lab5-integrated-quality]
+    tags: ["v0.5.*"]
+  workflow_dispatch:
+
+jobs:
+  full-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11", cache: pip}
+      - run: pip install -r requirements.lock
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -p "test_*.py" 2>&1 | tee artifacts/quality/integrated-unit-and-integration.log
+        env: {MODEL_PROVIDER: deterministic}
+      - name: Complete eval, security and retrieval suite
+        run: python tests/evals/run_full_suite.py 2>&1 | tee artifacts/quality/integrated-full-suite.log
+        env: {MODEL_PROVIDER: deterministic}
+      - name: Bind final metrics to this revision
+        run: python tests/evals/run_release_evals.py --release-ref "$GITHUB_SHA"
+        env: {MODEL_PROVIDER: deterministic}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab5-integrated-quality-${{ github.ref_name }}
+          path: |
+            artifacts/evals/
+            artifacts/security/
+            artifacts/experiments/
+            artifacts/quality/integrated-*.log
+
+  grafana-evidence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - name: Start the integrated observability contour
+        env:
+          MODEL_PROVIDER: deterministic
+          APP_VERSION: lab5-integrated
+          GRAFANA_ADMIN_PASSWORD: ci-only-password
+        run: docker compose -f compose.yml up -d --build --wait
+      - name: Generate successful, error and model traffic
+        run: |
+          for i in {1..12}; do curl --fail --silent http://localhost:8080/api/health >/dev/null; done
+          for i in {1..4}; do
+            curl --fail --silent -X POST http://localhost:8080/api/v1/ai/card-sets \
+              -H 'Content-Type: application/json' -H "X-User-ID: grafana-evidence-$i" \
+              -H "Idempotency-Key: grafana-evidence-$i" \
+              -d "{\"document_id\":\"grafana_evidence_$i\",\"language\":\"ru\",\"requested_card_count\":5,\"pages\":[{\"page\":1,\"text\":\"Кэш ускоряет повторный доступ к данным. Cache hit означает успешное чтение из кэша. Cache miss требует обращения к основной памяти. LRU вытесняет давно не использованный элемент. Индекс ускоряет чтение, но замедляет запись.\"}]}" >/dev/null
+          done
+          for i in {1..3}; do curl --silent -X POST http://localhost:8080/api/v1/ai/card-sets -H 'Content-Type: application/json' -d '{}' >/dev/null; done
+          sleep 20
+      - name: Capture the real Grafana dashboard
+        run: |
+          pip install playwright==1.48.0
+          python -m playwright install --with-deps chromium
+          python tests/evidence/capture_grafana.py \
+            --url http://localhost:3001 \
+            --output docs/quality/evidence/lab5/grafana-integrated.png \
+            --metadata docs/quality/evidence/lab5/grafana-integrated.json \
+            --environment ci-staging \
+            --version lab5-integrated \
+            --sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab5-real-grafana-${{ github.ref_name }}
+          path: |
+            docs/quality/evidence/lab5/grafana-integrated.png
+            docs/quality/evidence/lab5/grafana-integrated.json
+      - name: Diagnostics
+        if: failure()
+        run: docker compose -f compose.yml logs --no-color
+      - name: Stop staging
+        if: always()
+        run: docker compose -f compose.yml down -v
