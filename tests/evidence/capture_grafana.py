@@ -28,7 +28,7 @@ def main() -> None:
         page = browser.new_page(viewport={"width": 1600, "height": 1000}, device_scale_factor=1)
         page.goto(args.url.rstrip("/") + "/login", wait_until="networkidle")
         page.get_by_label("Email or username").fill(args.user)
-        page.get_by_label("Password").fill(args.password)
+        page.locator('input[name="password"]').fill(args.password)
         page.get_by_role("button", name="Log in").click()
         page.goto(dashboard_url, wait_until="networkidle")
         page.wait_for_timeout(12_000)
@@ -44,7 +44,7 @@ def main() -> None:
         "environment": args.environment,
         "version": args.version,
         "commit_sha": args.sha,
-        "traffic": "12 successful health requests, 4 successful generation requests, 3 intentional 422 requests",
+        "traffic": "12 successful health requests, 1 successful generation request, 3 observed 503 generation responses, 3 intentional 422 requests",
         "panels": ["Requests / 5m", "5xx / 5m", "Average latency / 5m (ms)", "Environment / release", "Service logs", "LLM traces"],
         "note": "Screenshot is captured from a running Grafana 11.3.1 container after real requests; it is not a dashboard config or CI status screenshot."
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

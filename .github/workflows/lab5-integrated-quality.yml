@@ -16,10 +16,14 @@ jobs:
         with: {python-version: "3.11", cache: pip}
       - run: pip install -r requirements.lock
       - name: Unit and integration tests
-        run: python -m unittest discover -s tests -p "test_*.py" 2>&1 | tee artifacts/quality/integrated-unit-and-integration.log
+        run: |
+          set -o pipefail
+          python -m unittest discover -s tests -p "test_*.py" 2>&1 | tee artifacts/quality/integrated-unit-and-integration.log
         env: {MODEL_PROVIDER: deterministic}
       - name: Complete eval, security and retrieval suite
-        run: python tests/evals/run_full_suite.py 2>&1 | tee artifacts/quality/integrated-full-suite.log
+        run: |
+          set -o pipefail
+          python tests/evals/run_full_suite.py 2>&1 | tee artifacts/quality/integrated-full-suite.log
         env: {MODEL_PROVIDER: deterministic}
       - name: Bind candidate metrics to this revision
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}

@@ -6,7 +6,7 @@
     "git_sha": "bf5ebd1e304e502625bf6c9cea1e74de3a9dbdd8",
     "working_tree_clean": false
   },
-  "dataset_sha256": "fa224bcf21c17640c1d5fa1ecd68b686ca313b5bf261c873f0f3f3abebe1f15d",
+  "dataset_sha256": "4ccad6ee986d38a51f1591c338c019dda7957891976b41847e78c50363764ca9",
   "measurement_rules": {
     "thesis_accuracy": "correct_theses / checked_theses; target >= 0.75",
     "no_contradiction_rate": "rows marked no_contradiction=true / 20; target >= 0.90",

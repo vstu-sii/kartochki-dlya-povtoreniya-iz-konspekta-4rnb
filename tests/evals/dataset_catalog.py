@@ -31,4 +31,10 @@ def load_dataset(paths=DATASETS):
 
 
 def dataset_hash():
-    return hashlib.sha256(b"".join(path.read_bytes() for path in DATASETS)).hexdigest()
+    # Hash parsed records instead of platform-specific file bytes. Git may use
+    # CRLF on Windows and LF in CI for the same JSONL dataset.
+    canonical = "\n".join(
+        json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        for record in load_dataset()
+    ) + "\n"
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

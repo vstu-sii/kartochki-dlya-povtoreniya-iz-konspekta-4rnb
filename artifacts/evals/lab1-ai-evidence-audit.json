@@ -1,12 +1,12 @@
 {
-  "audited_at": "2026-10-26T13:39:42.756781+00:00",
+  "audited_at": "2026-10-27T17:30:36.889337+00:00",
   "audit_kind": "automated_snapshot_audit_not_human_acceptance",
-  "checkout_commit": "ef3b96abedea12fa8c7169304186690e60a8691d",
-  "source_snapshot_sha256": "cd5d85df2849c22c10678a28bd10dbeeda0ddcbbef7e29b0c2a176287887c11e",
-  "dataset_sha256": "05bb2dee5239dffe3c78b71dd306b84c3af88bc000bfee49fa102bc735d31dc6",
+  "checkout_commit": "550e0f24643eb61029c32bb8d1e5a91d47c21f39",
+  "source_snapshot_sha256": "520b8507592c745b88cc29d805a247f626480ebde6e0ac0999700f101e814557",
+  "dataset_sha256": "4ccad6ee986d38a51f1591c338c019dda7957891976b41847e78c50363764ca9",
   "audit_source_files_sha256": {
-    "tests/evals/audit_lab1_evidence.py": "82d0d2ba1a9407c9f630948e144cc6acc3a53617128bbe721ad1d511374ec3e2",
-    "ml/models/baseline.py": "85dbbb1e0d475d73aae1496540ec8df6bf990e9071ac321321c430e7c1cb2fc1",
+    "tests/evals/audit_lab1_evidence.py": "0fd77041934aee894319ede5a704df826c39f71ffebbc9606d959e481e682860",
+    "ml/models/baseline.py": "9c6b1abec60c24ba2fc8b3f8b164c3d644048d93499f8175f077c42fe8b60649",
     "ml/prompts_v2/generation-v1.txt": "ece784a31388ef47beb155c5583f833bce2d7821bb0e1c210f269f653276fb23",
     "ml/prompts_v2/generation.txt": "40cdea3a6883bc8b9f94439db64a22b8ff8c0a102e548ad04ce215ca8c0f8a2f",
     "ml/prompts_v2/review-v1.txt": "bed05dc078acd47af32720c4dcbaef7d71cd3b925e1247903066f2aac1bc6ac5",
@@ -35,21 +35,11 @@
     "trace_id",
     "review_id"
   ],
-  "human_review_completed_rows": 20,
-  "human_review_ready_for_summary": true,
-  "manual_metrics_from_supplied_labels": {
-    "no_contradiction_rate": 0.8,
-    "mandatory_points_complete_rate": 0.35,
-    "critical_tone_violations": 0,
-    "minor_tone_violation_rate": 0.0
-  },
-  "manual_review_targets_met": {
-    "no_contradiction": false,
-    "mandatory_points_complete": false,
-    "critical_tone": true,
-    "minor_tone": true
-  },
-  "all_manual_review_targets_met": false,
+  "human_review_completed_rows": 0,
+  "human_review_ready_for_summary": false,
+  "manual_metrics_from_supplied_labels": null,
+  "manual_review_targets_met": null,
+  "all_manual_review_targets_met": null,
   "lab1_acceptance_status": "not_established_by_this_automated_audit",
   "limitations": [
     "The supplied snapshot has no original source revision or generator source.",
