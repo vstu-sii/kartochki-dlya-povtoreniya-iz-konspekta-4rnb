@@ -1,0 +1,59 @@
+{
+  "measured_on": "2026-10-27",
+  "status": "fallback_resource_estimate_complete_provider_cost_unverified",
+  "method": "Sum API usage for one upload/generation and five persisted reviews per scenario. Deterministic usage is estimated, not Gemini billing.",
+  "scenarios": [
+    {
+      "run": 1,
+      "generation_plus_review_calls": 6,
+      "models": [
+        "deterministic-grounded-v1",
+        "deterministic-review-v2"
+      ],
+      "all_fallback": true,
+      "input_tokens_estimated": 1849,
+      "output_tokens_estimated": 982,
+      "successful_provider_model_response_observed": false,
+      "provider_billing_verified": false,
+      "actual_provider_cost_usd": null,
+      "total_tokens_estimated": 2831,
+      "planned_lab1_tokens": 18500,
+      "token_estimate_within_plan": true
+    },
+    {
+      "run": 2,
+      "generation_plus_review_calls": 6,
+      "models": [
+        "deterministic-grounded-v1",
+        "deterministic-review-v2"
+      ],
+      "all_fallback": true,
+      "input_tokens_estimated": 1849,
+      "output_tokens_estimated": 982,
+      "successful_provider_model_response_observed": false,
+      "provider_billing_verified": false,
+      "actual_provider_cost_usd": null,
+      "total_tokens_estimated": 2831,
+      "planned_lab1_tokens": 18500,
+      "token_estimate_within_plan": true
+    },
+    {
+      "run": 3,
+      "generation_plus_review_calls": 6,
+      "models": [
+        "deterministic-grounded-v1",
+        "deterministic-review-v2"
+      ],
+      "all_fallback": true,
+      "input_tokens_estimated": 1849,
+      "output_tokens_estimated": 982,
+      "successful_provider_model_response_observed": false,
+      "provider_billing_verified": false,
+      "actual_provider_cost_usd": null,
+      "total_tokens_estimated": 2831,
+      "planned_lab1_tokens": 18500,
+      "token_estimate_within_plan": true
+    }
+  ],
+  "currency_note": "A nominal local deterministic model has no per-token provider tariff. This does not verify actual account charges or the intended Gemini scenario."
+}
