@@ -86,6 +86,18 @@ class BaselineTest(unittest.TestCase):
         self.assertEqual(result["provider_usage"],{"input_tokens":11,"output_tokens":7})
         self.assertIn("card_count",provider.call_args_list[1].args[0])
 
+    def test_json_formfeed_fraction_is_repaired_only_with_real_source_grounding(self):
+        source = r"$tg α = \frac{sin α}{cos α}$"
+        payload={"pages":[{"page":2,"text":source}],"requested_card_count":1}
+        card={"question":"Как выражается тангенс?","reference_answer":"\x0crac{sin α}{cos α}","source_page":2,"source_quote":"$tg α = \x0crac{sin α}{cos α}$","difficulty":"basic"}
+        result=BaselineModel._normalize_generated_cards({"title":"Формулы","cards":[card]},payload)
+        self.assertEqual(result["cards"][0]["source_quote"],source)
+        self.assertEqual(result["cards"][0]["reference_answer"],r"\frac{sin α}{cos α}")
+        # Correcting JSON escaping must never repair or silently accept math.
+        card["source_quote"]="$tg α = \x0crac{sin α}{sin α}$"
+        with self.assertRaisesRegex(ValueError,"not grounded"):
+            BaselineModel._normalize_generated_cards({"title":"Формулы","cards":[card]},payload)
+
     def test_generation_is_structured_grounded_and_traced(self):
         text = "Кэш ускоряет доступ к часто используемым данным."
         result = self.model.generate({"pages": [{"page": 1, "text": text}], "requested_card_count": 5})

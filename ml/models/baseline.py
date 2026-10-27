@@ -715,6 +715,11 @@ class BaselineModel:
             if card["source_page"] not in pages:
                 raise ValueError("Gemini returned an unknown page")
             for field, limit in (("question", 500), ("reference_answer", 1200), ("source_quote", 500)):
+                if isinstance(card[field], str):
+                    # A model may emit JSON "\\frac" with only one slash:
+                    # JSON then decodes \f to form feed. Repair this transport
+                    # spelling only; source_quote still must match the PDF.
+                    card[field] = card[field].replace("\x0crac{", r"\frac{")
                 if not isinstance(card[field], str) or not card[field].strip() or len(card[field]) > limit:
                     raise ValueError("Gemini card has invalid field lengths")
             page_text = pages[card["source_page"]]
