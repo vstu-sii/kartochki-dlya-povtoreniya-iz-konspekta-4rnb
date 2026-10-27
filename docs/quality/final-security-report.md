@@ -28,3 +28,8 @@
 | Вредоносный бинарный PDF/OCR | не оценён тестами | потенциально высокий, не измерен | Отдельные parser/OCR fuzzing и ограничения ресурсов |
 
 Ограничения остаются открытыми; отчёт не подтверждает безопасность публичной эксплуатации с полноценной изоляцией пользователей.
+
+
+## Повторный релизный прогон 27.10.2026
+
+На теге v0.5.3-quality-candidate / 85b546e проверен успешный release-quality run 40554481097; скачанный артефакт содержит security-after **17/17**: прежний состав 14 block + 2 allow + 1 auth deny. Это inprocess router-атаки с mocked model transport, не security-аудит всего production. [Артефакт](../../artifacts/quality/lab5-delivery-verification-2026-10-27/release-artifact/security/lab4-attacks-after.json). Полные production logs за интервал Gemini-прогона не переданы. [Сверка](delivery-verification-2026-10-27.md).

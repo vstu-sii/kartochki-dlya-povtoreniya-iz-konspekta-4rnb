@@ -1,0 +1,56 @@
+{
+  "source_branch": "lab5-integrated-quality",
+  "source_commit": "4098c5c1672edb99089cb1c3e9800e9383444fc3",
+  "destination_branch": "lab5-quality-testing",
+  "release_tag": "v0.5.3-quality-candidate",
+  "release_sha": "85b546e20f54a97f11dea1ac295e679902fc2b46",
+  "ci_verified": true,
+  "artifact_id": 12755712938,
+  "full_eval_cases": 132,
+  "unit_integration_tests": 62,
+  "grafana_status": "verified_ci_staging_screenshot_not_production",
+  "provider_calls_without_fallback": 6,
+  "provider_model": "gemini-3.5-flash-lite",
+  "scenario_count": 1,
+  "visible_input_tokens": 2208,
+  "visible_output_tokens": 764,
+  "visible_token_cost_usd": 0.0025724,
+  "cost_complete": false,
+  "cost_reason": "Thinking tokens are not exposed; budget 0.10 in received file is not traced to model-candidates.md; actual billing not inferred.",
+  "generation_wall_ms": 5916,
+  "review_wall_ms_sorted": [
+    3387,
+    4371,
+    5429,
+    13057,
+    21496
+  ],
+  "review_p50_ms": 5429,
+  "review_p95_ms": 21496,
+  "p95_method": "nearest rank, n=5",
+  "review_latency_target_met_on_sample": false,
+  "formula_provider_run_success": false,
+  "production_log_audit_complete": false,
+  "files": [
+    {
+      "path": "docs/quality/delivery-quality-handoff.md",
+      "sha256": "acd411ac3c19e1792b38966f1262a66577d6771536c83092a483cfbc4f2c432c"
+    },
+    {
+      "path": "docs/quality/evidence/lab5/grafana-integrated.png",
+      "sha256": "c78146eecc6a1197380e45121471b1f1c32a1ba7678787f23a0533ed52e8e94c"
+    },
+    {
+      "path": "docs/quality/evidence/lab5/grafana-integrated.json",
+      "sha256": "44d45db0c8ed758c11727c8970f4732f1f4015d65ac7b6252dd89868b0f30c2a"
+    },
+    {
+      "path": "artifacts/quality/lab5-production-final/degraded-scenario.json",
+      "sha256": "5a74a8867f7e95f9e9c9a6de6b7446fdf39c8ae83db5401d8f521b01f9c1185a"
+    },
+    {
+      "path": "artifacts/quality/lab5-production-final/gemini-live-20261027.json",
+      "sha256": "e6be726040945d269d3fba00abdfdb049fcca2ca85203adc8825b7664111ddac"
+    }
+  ]
+}
