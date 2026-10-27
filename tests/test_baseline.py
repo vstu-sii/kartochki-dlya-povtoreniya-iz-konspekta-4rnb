@@ -49,6 +49,32 @@ class BaselineTest(unittest.TestCase):
         self.assertNotIn("Лабораторная работа", first["question"])
         self.assertIn(first["source_quote"], text)
 
+    def test_pdf_visual_line_wraps_are_joined_before_card_generation(self):
+        page_text = """1
+
+Лабораторная работа №4 «Виртуализация и контейнеризация в DevOps»
+
+Цель: Освоить основы контейнеризации с помощью Docker и Docker
+Compose, упаковать веб-приложение с ML-моделью в контейнер,
+организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,
+обеспечить воспроизводимость запуска и подготовить приложение к
+дальнейшей автоматизации в CI/CD. Заложить основу для многоконтейнерной
+архитектуры сквозного проекта «ML Prediction Service».
+Задачи:
+1. Создание снапшота ВМ2 перед началом работы.
+2. Установка Docker и Docker Compose на ВМ2.
+3. Написание Flask-приложения, которое загружает обученную ML-модель.
+"""
+        result = self.model.generate({"pages": [{"page": 1, "text": page_text}], "requested_card_count": 5})
+        answers = [card["reference_answer"] for card in result["cards"]]
+        self.assertEqual(5, len(answers))
+        self.assertEqual(
+            "Цель: Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб-приложение с ML-моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+            answers[0],
+        )
+        self.assertTrue(all(not answer.rstrip().endswith(("к", ",")) for answer in answers))
+        self.assertTrue(all("Compose," not in answer[:12] for answer in answers))
+
     def test_gemini_review_accepts_a_semantically_equivalent_answer(self):
         semantic_result = {
             "verdict": "correct",

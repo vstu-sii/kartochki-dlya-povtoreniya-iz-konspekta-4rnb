@@ -34,3 +34,15 @@ py -3 -m tests.evals.prepare_lab1_quality_evidence --output artifacts/evals/lab1
 ```
 
 Подробности, команды и автоматические результаты находятся в `docs/quality/lab1-ai-evidence-after-fix.md`. Поля нового ручного ревью намеренно пустые: итоговые продуктовые проценты считает Quality совместно с AI Engineer.
+
+## Проверка карточек из реального PDF
+
+`deterministic-grounded-v2` сначала объединяет визуальные переносы строк PDF и только затем выделяет законченные предложения и пункты списка. Поэтому перенос строки по ширине страницы больше не создаёт отдельную карточку.
+
+Повторный прогон того же PDF из Quality-ветки:
+
+```powershell
+py -3 tests/evals/run_pdf_card_quality.py --git-object origin/lab5-quality-testing:tests/fixtures/lab5-devops-source.pdf --output artifacts/evals/lab5-devops-pdf-cards-after-reflow.json --count 5
+```
+
+Автоматические проверки подтверждают только привязку цитаты к странице и отсутствие очевидного обрыва. Процент верных тезисов Quality считает вручную по полям `quality_manual_review`, которые генератор намеренно оставляет пустыми.

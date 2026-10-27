@@ -19,6 +19,7 @@ from ml.tools import SourceLookupRequest, SourceLookupTool, build_retrieval_quer
 _PROMPT_VERSIONS = prompt_versions()
 PROMPT_VERSION = _PROMPT_VERSIONS["generation"]
 REVIEW_PROMPT_VERSION = _PROMPT_VERSIONS["review"]
+DETERMINISTIC_GENERATION_MODEL = "deterministic-grounded-v2"
 DETERMINISTIC_REVIEW_MODEL = "deterministic-review-v5"
 SCHEMA_VERSION = "2.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
@@ -112,7 +113,7 @@ class BaselineModel:
         prompt = self._generation_prompt(prompt_payload)
         fallback_used = False
         fallback_reason = None
-        model_name = "deterministic-grounded-v1"
+        model_name = DETERMINISTIC_GENERATION_MODEL
         result = None
 
         if self.provider == "gemini" and os.getenv("GEMINI_API_KEY"):
@@ -411,11 +412,11 @@ class BaselineModel:
     def _deterministic_cards(self, payload: dict) -> dict:
         sources = []
         for page in payload["pages"]:
-            # PDF extractors preserve headings and line breaks. Treating an
-            # entire page as one sentence produced questions about the title
-            # of a laboratory work instead of its subject matter.
-            parts = re.split(r"(?<=[.!?])(?:\s+|$)|[\r\n]+", page["text"])
-            sentences = [part.strip() for part in parts if self._is_learning_fragment(part)]
+            # A PDF line break usually means "the text reached the page edge",
+            # not "the thought ended". Reflow wrapped lines first; only then
+            # split complete sentences and list items into card candidates.
+            parts = self._learning_fragments(page["text"])
+            sentences = [part for part in parts if self._is_learning_fragment(part)]
             sources.extend((page["page"], sentence) for sentence in (sentences or [page["text"].strip()]))
         requested = payload.get("requested_card_count", 5)
         cards = []
@@ -435,6 +436,62 @@ class BaselineModel:
                 }
             )
         return {"title": "Карточки по загруженному материалу", "cards": cards}
+
+    @classmethod
+    def _learning_fragments(cls, value: str) -> list[str]:
+        """Reflow visual PDF lines into complete prose/list statements."""
+        groups: list[str] = []
+        current: list[str] = []
+        current_is_list = False
+
+        def flush() -> None:
+            nonlocal current, current_is_list
+            if not current:
+                return
+            joined = " ".join(current).strip()
+            groups.extend(
+                part.strip()
+                for part in re.split(r"(?<=[.!?])\s+(?=[A-ZА-ЯЁ«])", joined)
+                if part.strip()
+            )
+            current = []
+            current_is_list = False
+
+        for raw_line in value.replace("\r", "\n").split("\n"):
+            line = " ".join(raw_line.split()).strip()
+            if not line:
+                flush()
+                continue
+            if re.fullmatch(r"\d{1,3}", line):
+                flush()
+                continue
+
+            list_item = re.match(r"^(?:\d+[.)]|[•])\s*(.+)$", line)
+            if list_item:
+                flush()
+                current = [list_item.group(1).strip()]
+                current_is_list = True
+                if re.search(r"[.!?;]$", current[0]):
+                    flush()
+                continue
+
+            # Short labels such as "Задачи:" and "Теоретическая справка"
+            # separate sections but are not useful standalone study claims.
+            is_short_heading = len(line) <= 100 and (
+                line.endswith(":")
+                or re.match(r"^(?:теоретическая справка|пошаговая инструкция|оформление отч[её]та)$", line, re.I)
+                or re.match(r"^(?:\d+\s+)?лабораторная\s+работа\b", line, re.I)
+            )
+            if is_short_heading:
+                flush()
+                continue
+
+            current.append(line)
+            if current_is_list and re.search(r"[.!?;]$", line):
+                flush()
+
+        flush()
+        return groups
 
     @staticmethod
     def _is_learning_fragment(value: str) -> bool:

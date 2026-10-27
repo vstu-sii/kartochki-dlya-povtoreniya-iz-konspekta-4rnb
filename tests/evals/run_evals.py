@@ -17,7 +17,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from ml.models.baseline import BaselineModel, PROMPT_VERSION, REVIEW_PROMPT_VERSION  # noqa: E402
+from ml.models.baseline import (  # noqa: E402
+    BaselineModel,
+    DETERMINISTIC_GENERATION_MODEL,
+    PROMPT_VERSION,
+    REVIEW_PROMPT_VERSION,
+)
 from backend.quality_guards import validate_untrusted_input
 from ml.tracing.client import TraceClient  # noqa: E402
 from dataset_catalog import DATASET_VERSION, dataset_hash, load_dataset
@@ -164,7 +169,7 @@ def run(mini: bool, output: Path) -> dict:
     report = {
         "run_at": datetime.now(timezone.utc).isoformat(),
         "mode": "mini" if mini else "model-and-input-guards",
-        "model": "deterministic-grounded-v1",
+        "model": DETERMINISTIC_GENERATION_MODEL,
         "prompt_version": f"{PROMPT_VERSION}/{REVIEW_PROMPT_VERSION}",
         "dataset_version": DATASET_VERSION,
         "dataset_sha256": dataset_hash(),
