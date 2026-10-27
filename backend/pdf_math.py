@@ -85,7 +85,7 @@ def math_page_text(page):
     # Extensible TeX parentheses have an artificial origin at their top;
     # align these encoded glyphs with the adjacent fraction's baseline.
     for token in tokens:
-        if token.extensible:
+        if token.extensible or (token.text in {"(", ")"} and token.bottom-token.top > token.size*1.5):
             adjacent = [r for r in rules if abs(r[2]-token.y)<token.size*1.5 and min(abs(token.x0-r[1]),abs(token.x1-r[0]))<token.size]
             if adjacent:
                 rule = min(adjacent,key=lambda r:abs(r[2]-token.y))
