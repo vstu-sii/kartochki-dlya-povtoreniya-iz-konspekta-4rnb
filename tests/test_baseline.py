@@ -208,6 +208,57 @@ Compose, упаковать веб-приложение с ML-моделью в 
         self.assertEqual("gemini-3.8-flash", result["model"])
         self.assertFalse(result["fallback_used"])
 
+    def test_reference_omissions_are_enforced_for_provider_and_local_review(self):
+        cases = (
+            ("По принципу FIFO.", "Первым добавлен — первым извлечён.", "correct", "Не назван термин FIFO."),
+            ("В направлении, противоположном градиенту потерь.", "противоположном градиенту", "correct", "функции потерь"),
+            ("Долю найденных положительных среди всех действительно положительных.", "среди всех действительно положительных", "incorrect", "найденных положительных"),
+            # Another ratio proves this is not a lookup of recall or a dataset ID.
+            ("Долю успешных запросов среди всех обработанных запросов.", "среди всех обработанных запросов", "incorrect", "успешных запросов"),
+        )
+        for reference, answer, raw_verdict, expected_missing in cases:
+            for provider in ("deterministic", "gemini"):
+                with self.subTest(reference=reference, provider=provider):
+                    raw = {"verdict": raw_verdict, "score": 2 if raw_verdict == "correct" else 0,
+                           "feedback": "Обновление идет в направлении градиента.", "missing_points": []}
+                    with patch.dict("os.environ", {"MODEL_PROVIDER": provider, "GEMINI_API_KEY": "test"}):
+                        model = BaselineModel(TraceClient(str(self.trace_path)))
+                        with patch.object(model, "_call_gemini", return_value=raw):
+                            result = model.review({"card": {"question": "Объясните правило", "reference_answer": reference},
+                                                   "student_answer": answer})
+                    self.assertEqual("partially_correct", result["verdict"])
+                    self.assertEqual(1, result["score"])
+                    self.assertIn(expected_missing.lower(), " ".join(result["missing_points"]).lower())
+                    self.assertNotIn("идет в направлении градиента", result["feedback"])
+                    self.assertFalse(result["fallback_used"])
+                    if provider == "gemini":
+                        self.assertEqual(raw_verdict, result["rubric_adjustment"]["original_verdict"])
+
+    def test_reference_rubric_preserves_complete_and_incorrect_answers(self):
+        cases = (
+            ("По принципу FIFO.", "По принципу FIFO.", "correct"),
+            ("По принципу FIFO.", "По принципу LIFO.", "incorrect"),
+            ("В направлении, противоположном градиенту потерь.", "Противоположно градиенту функции потерь.", "correct"),
+            ("В направлении, противоположном градиенту потерь.", "В направлении градиента функции потерь.", "incorrect"),
+            ("В направлении, противоположном градиенту потерь.", "Не противоположном градиенту.", "incorrect"),
+            ("Долю найденных положительных среди всех действительно положительных.", "Долю найденных положительных среди всех действительно положительных.", "correct"),
+            ("Долю найденных положительных среди всех действительно положительных.", "среди всех отрицательных", "incorrect"),
+            ("Долю найденных положительных среди всех действительно положительных.", "Ответ не относится к вопросу.", "incorrect"),
+            ("Собственное адресное пространство.", "собственное адресное пространство", "correct"),
+            ("Между согласованностью и доступностью.", "между согласованностью и доступностью", "correct"),
+            ("Время хранения записи в кэше.", "время её хранения в кэше", "correct"),
+        )
+        for reference, answer, verdict in cases:
+            with self.subTest(answer=answer):
+                raw = {"verdict": verdict, "score": 2 if verdict == "correct" else 0,
+                       "feedback": "Проверено по эталону.", "missing_points": []}
+                with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
+                    model = BaselineModel(TraceClient(str(self.trace_path)))
+                    with patch.object(model, "_call_gemini", return_value=raw):
+                        result = model.review({"card": {"question": "Q", "reference_answer": reference}, "student_answer": answer})
+                self.assertEqual(verdict, result["verdict"])
+                self.assertNotIn("rubric_adjustment", result)
+
     def test_invalid_gemini_review_falls_back_safely(self):
         with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
             model = BaselineModel(TraceClient(str(self.trace_path)))

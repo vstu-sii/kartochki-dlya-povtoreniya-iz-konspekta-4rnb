@@ -201,6 +201,7 @@ class BaselineModel:
         if result is None:
             result = self._deterministic_review(card, answer)
 
+        result = self._apply_review_rubric(card, answer, result)
         api_usage = result.pop("_usage", None)
         result.update(
             review_id=f"review_{uuid4().hex}",
@@ -305,6 +306,57 @@ class BaselineModel:
             "feedback": feedback,
             "missing_points": missing,
         }
+
+    def _apply_review_rubric(self, card: dict, answer: str, result: dict) -> dict:
+        """Apply explicit reference omissions, without dataset IDs or expected labels.
+
+        Preserve raw provider text when a narrow, auditable rubric changes it.
+        Other semantic judgements remain the provider's responsibility.
+        """
+        reference = card["reference_answer"]
+        raw_answer = " ".join(answer.lower().replace("ё", "е").split()).strip(" .")
+        raw_reference = " ".join(reference.lower().replace("ё", "е").split()).strip(" .")
+        if not raw_answer or "ответ не относится" in raw_answer:
+            return result
+        normalized_answer = self._normalize(answer)
+        if self._has_clear_contradiction(self._normalize(reference), normalized_answer):
+            return result
+        missing = None
+        feedback = None
+        term = self._missing_required_term(reference, answer)
+        if term and result["verdict"] == "correct":
+            # A completely unrelated answer must not gain partial credit here.
+            baseline = self._deterministic_review(card, answer)
+            if baseline["verdict"] == "partially_correct":
+                missing, feedback = baseline["missing_points"], baseline["feedback"]
+        gradient = "градиент" in raw_reference and "потерь" in raw_reference
+        if (gradient and "градиент" in raw_answer and "противополож" in raw_answer
+                and result["verdict"] != "incorrect"
+                and not re.search(r"\bне\s+противополож", raw_answer)):
+            if "потерь" not in raw_answer and "loss" not in raw_answer:
+                missing = ["Не уточнено, что речь о градиенте функции потерь."]
+                feedback = ("Верно указано противоположное направление. Нужно уточнить: "
+                            "параметры обновляются в направлении, противоположном градиенту функции потерь.")
+        # A literal denominator fragment is relevant, but is not the whole ratio.
+        # Require a multiword suffix of the reference, not a loose keyword match.
+        fraction = re.search(r"\b(среди|от)\s+всех\s+(.+)$", raw_reference)
+        if (fraction and raw_reference.startswith("дол")
+                and raw_answer == fraction.group(0) and len(raw_answer.split()) >= 3):
+            missing = [self._sentence(raw_reference[:fraction.start()].strip())]
+            feedback = ("Верно указан знаменатель. Нужно также назвать числитель: "
+                        + self._sentence(raw_reference[:fraction.start()].strip()))
+        if missing is None:
+            return result
+        revised = {**result, "verdict": "partially_correct", "score": 1,
+                   "missing_points": missing, "feedback": feedback}
+        if any(revised[k] != result[k] for k in ("verdict", "score", "feedback", "missing_points")):
+            revised["rubric_adjustment"] = {
+                "version": "reference-omissions-v1",
+                "original_verdict": result["verdict"],
+                "original_feedback": result["feedback"],
+                "original_missing_points": result["missing_points"],
+            }
+        return revised
 
     @staticmethod
     def _sentence(value: str) -> str:
