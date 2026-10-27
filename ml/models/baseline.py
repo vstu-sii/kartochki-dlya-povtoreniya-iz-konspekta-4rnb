@@ -115,12 +115,37 @@ class BaselineModel:
         fallback_reason = None
         model_name = DETERMINISTIC_GENERATION_MODEL
         result = None
+        validation_error = None
+        rejected_usage = {"input_tokens": 0, "output_tokens": 0}
 
         if self.provider == "gemini" and os.getenv("GEMINI_API_KEY"):
             try:
                 selected_model = CHEAP_MODEL if payload.get("model_tier") == "cheap" else PRIMARY_MODEL
-                result = self._call_gemini(prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
-                result = self._normalize_generated_cards(result, payload)
+                rejected_usage = {"input_tokens": 0, "output_tokens": 0}
+                attempt_prompt = prompt
+                validation_error = None
+                for validation_attempt in range(2):
+                    attempt_started = time.perf_counter()
+                    candidate = None
+                    try:
+                        candidate = self._call_gemini(attempt_prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
+                        result = self._normalize_generated_cards(candidate, payload)
+                        break
+                    except (ValueError, KeyError, TypeError) as exc:
+                        validation_error = self._validation_error_code(exc)
+                        usage = candidate.get("_usage", {}) if isinstance(candidate, dict) else getattr(exc, "usage", {})
+                        attempt_prompt = prompt + "\n\nПОВТОРНАЯ ПРОВЕРКА: предыдущий ответ отклонён: " + validation_error + ". Верни валидный JSON по схеме, ровно запрошенное число разных карточек; source_quote копируй дословно из SOURCE, не исправляй формулы и корректно экранируй обратные слеши в JSON."
+                        for key in rejected_usage:
+                            rejected_usage[key] += usage.get(key, 0)
+                        self.trace.record(f"{trace_id}-rejected-{validation_attempt + 1}", "generate_cards_validation_rejected", selected_model, prompt,
+                                          {"usage": usage, "fallback_reason": "gemini_invalid_output",
+                                           "validation_error": self._validation_error_code(exc)},
+                                          round((time.perf_counter() - attempt_started) * 1000), False)
+                        if validation_attempt:
+                            raise
+                if result and result.get("_usage"):
+                    for key in rejected_usage:
+                        result["_usage"][key] = result["_usage"].get(key, 0) + rejected_usage[key]
                 model_name = selected_model
             except (HTTPError, URLError, TimeoutError, ValueError, KeyError, TypeError) as exc:
                 result = None
@@ -136,6 +161,8 @@ class BaselineModel:
             schema_version=SCHEMA_VERSION,
             fallback_used=fallback_used,
             fallback_reason=fallback_reason,
+            validation_error=validation_error if fallback_used else None,
+            provider_usage=rejected_usage if fallback_used else None,
             trace_id=trace_id,
             latency_ms=round((time.perf_counter() - started) * 1000),
             cache_hit=False,
@@ -144,7 +171,9 @@ class BaselineModel:
         api_usage = result.pop("_usage", None)
         result["usage"] = api_usage or self._usage(prompt, json.dumps(result, ensure_ascii=False)).__dict__
         self.trace.record(trace_id, "generate_cards", model_name, prompt, result, result["latency_ms"], fallback_used)
-        self.cache.put(cache_key, result)
+        # A transient provider failure must not pin fallback results for 15 minutes.
+        if not fallback_used:
+            self.cache.put(cache_key, result)
         return result
 
     def review(self, payload: dict) -> dict:
@@ -548,9 +577,8 @@ class BaselineModel:
                 "generationConfig": {
                     "responseMimeType": "application/json",
                     "responseJsonSchema": response_schema,
-                    # Gemini 3.x rejects legacy sampling parameters such as
-                    # temperature. Low thinking is enough for extraction and
-                    # keeps interactive generation/review latency bounded.
+                    # The measured minimal-thinking candidate did not meet
+                    # the latency target; retain the previously tested level.
                     "thinkingConfig": {"thinkingLevel": "low"},
                     "maxOutputTokens": 6000,
                 },
@@ -565,11 +593,20 @@ class BaselineModel:
                 candidate = data["candidates"][0]
                 if candidate.get("finishReason") not in {None, "STOP"}:
                     raise ValueError(f"Gemini stopped with {candidate.get('finishReason')}")
-                result = json.loads(candidate["content"]["parts"][0]["text"])
                 usage = data.get("usageMetadata", {})
+                visible_parts = [part.get("text", "") for part in candidate.get("content", {}).get("parts", []) if not part.get("thought")]
+                try:
+                    result = json.loads("".join(visible_parts))
+                    if not isinstance(result, dict):
+                        raise ValueError("Gemini returned non-object JSON")
+                except (ValueError, TypeError) as exc:
+                    # Preserve token accounting even when paid output is unusable.
+                    exc.usage = {"input_tokens": usage.get("promptTokenCount", 0),
+                                 "output_tokens": usage.get("candidatesTokenCount", 0) + usage.get("thoughtsTokenCount", 0)}
+                    raise
                 result["_usage"] = {
                     "input_tokens": usage.get("promptTokenCount", max(1, len(prompt) // 4)),
-                    "output_tokens": usage.get("candidatesTokenCount", 0),
+                    "output_tokens": usage.get("candidatesTokenCount", 0) + usage.get("thoughtsTokenCount", 0),
                 }
                 return result
             except HTTPError as exc:
@@ -585,6 +622,19 @@ class BaselineModel:
                     raise
                 time.sleep(0.75 * (2**attempt))
         raise last_error or RuntimeError("Gemini request failed")
+
+    @staticmethod
+    def _validation_error_code(exc: Exception) -> str:
+        """Expose only an allowlisted category, never the model output or PDF."""
+        return {
+            "Gemini returned the wrong card count": "card_count",
+            "Gemini card is incomplete": "missing_fields",
+            "Gemini returned an unknown page": "unknown_page",
+            "Gemini card is not grounded in the PDF": "quote_mismatch",
+            "Gemini returned duplicate questions": "duplicate_question",
+            "Gemini card has invalid field lengths": "field_lengths",
+            "Gemini returned non-object JSON": "json_shape",
+        }.get(str(exc), "invalid_schema_or_provider_response")
 
     @staticmethod
     def _fallback_reason(exc: Exception) -> str:
@@ -620,10 +670,10 @@ class BaselineModel:
         card = {
             "type": "object",
             "properties": {
-                "question": {"type": "string"},
-                "reference_answer": {"type": "string"},
+                "question": {"type": "string", "minLength": 1, "maxLength": 500},
+                "reference_answer": {"type": "string", "minLength": 1, "maxLength": 1200},
                 "source_page": {"type": "integer"},
-                "source_quote": {"type": "string"},
+                "source_quote": {"type": "string", "minLength": 1, "maxLength": 500},
                 "difficulty": {"type": "string", "enum": ["basic", "intermediate", "advanced"]},
             },
             "required": ["question", "reference_answer", "source_page", "source_quote", "difficulty"],
@@ -664,6 +714,9 @@ class BaselineModel:
                 raise ValueError("Gemini card is incomplete")
             if card["source_page"] not in pages:
                 raise ValueError("Gemini returned an unknown page")
+            for field, limit in (("question", 500), ("reference_answer", 1200), ("source_quote", 500)):
+                if not isinstance(card[field], str) or not card[field].strip() or len(card[field]) > limit:
+                    raise ValueError("Gemini card has invalid field lengths")
             page_text = pages[card["source_page"]]
             if card["source_quote"] not in page_text:
                 flexible = re.compile(r"\s+".join(re.escape(part) for part in card["source_quote"].split()))

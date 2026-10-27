@@ -17,6 +17,75 @@ class BaselineTest(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def test_gemini_lite_counts_thought_tokens(self):
+        from io import BytesIO
+        response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": "{}"}]}}],
+                    "usageMetadata": {"promptTokenCount": 10, "candidatesTokenCount": 4, "thoughtsTokenCount": 3}}
+        captured = []
+        def respond(request, timeout):
+            captured.append(json.loads(request.data))
+            return BytesIO(json.dumps(response).encode())
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}), patch("ml.models.baseline.urlopen", side_effect=respond):
+            result = self.model._call_gemini("test", {"type": "object"}, "gemini-3.5-flash-lite")
+        self.assertEqual(captured[0]["generationConfig"]["thinkingConfig"]["thinkingLevel"], "low")
+        self.assertEqual(result["_usage"], {"input_tokens": 10, "output_tokens": 7})
+
+    def test_invalid_gemini_card_is_retried_and_never_accepted_without_grounding(self):
+        source = "Сила тока равна напряжению, делённому на сопротивление."
+        card = {"question": "Как найти силу тока?", "reference_answer": source,
+                "source_page": 1, "source_quote": source, "difficulty": "basic"}
+        invalid = {"title": "Формула", "cards": [{**card, "source_quote": "Несуществующая цитата"}],
+                   "_usage": {"input_tokens": 10, "output_tokens": 3}}
+        valid = {"title": "Формула", "cards": [card], "_usage": {"input_tokens": 11, "output_tokens": 4}}
+        with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
+            model = BaselineModel(TraceClient(str(self.trace_path)))
+            with patch.object(model, "_call_gemini", side_effect=[invalid, valid]) as provider:
+                result = model.generate({"pages": [{"page": 1, "text": source}], "requested_card_count": 1})
+        self.assertEqual(provider.call_count, 2)
+        self.assertFalse(result["fallback_used"])
+        self.assertEqual(result["cards"][0]["source_quote"], source)
+        self.assertEqual(result["usage"], {"input_tokens": 21, "output_tokens": 7})
+        events = [json.loads(line) for line in self.trace_path.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual([event["operation"] for event in events], ["generate_cards_validation_rejected", "generate_cards"])
+        self.assertEqual(events[0]["response"]["validation_error"], "quote_mismatch")
+        self.assertNotIn("Несуществующая цитата", json.dumps(events, ensure_ascii=False))
+
+    def test_fallback_is_not_cached_after_provider_recovers(self):
+        source = "Сила тока зависит от напряжения."
+        card = {"question": "От чего зависит ток?", "reference_answer": source,
+                "source_page": 1, "source_quote": source, "difficulty": "basic"}
+        payload = {"pages": [{"page": 1, "text": source}], "requested_card_count": 1}
+        with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
+            model = BaselineModel(TraceClient(str(self.trace_path)))
+            with patch.object(model, "_call_gemini", side_effect=[ValueError("invalid"), ValueError("invalid"),
+                              {"title": "Ток", "cards": [card]}]):
+                failed = model.generate(payload)
+                recovered = model.generate(payload)
+        self.assertTrue(failed["fallback_used"])
+        self.assertFalse(recovered["fallback_used"])
+
+    def test_gemini_ignores_thought_parts_and_joins_json_fragments(self):
+        from io import BytesIO
+        response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [
+            {"thought": True, "text": "private reasoning"}, {"text": '{"cards":'}, {"text": "[]}"}]}}],
+            "usageMetadata": {"promptTokenCount": 3, "candidatesTokenCount": 2, "thoughtsTokenCount": 8}}
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}), patch("ml.models.baseline.urlopen", return_value=BytesIO(json.dumps(response).encode())):
+            result = self.model._call_gemini("test", {"type":"object"})
+        self.assertEqual(result["cards"], [])
+        self.assertEqual(result["_usage"]["output_tokens"],10)
+
+    def test_rejected_output_has_safe_diagnostic_and_paid_usage(self):
+        with patch.dict("os.environ", {"MODEL_PROVIDER":"gemini", "GEMINI_API_KEY":"test"}):
+            model=BaselineModel(TraceClient(str(self.trace_path)))
+            with patch.object(model,"_call_gemini",side_effect=[
+                {"cards":[],"_usage":{"input_tokens":5,"output_tokens":4}},
+                {"cards":[],"_usage":{"input_tokens":6,"output_tokens":3}}]) as provider:
+                result=model.generate({"pages":[{"page":1,"text":"Сила тока зависит от напряжения."}],"requested_card_count":1})
+        self.assertTrue(result["fallback_used"])
+        self.assertEqual(result["validation_error"],"card_count")
+        self.assertEqual(result["provider_usage"],{"input_tokens":11,"output_tokens":7})
+        self.assertIn("card_count",provider.call_args_list[1].args[0])
+
     def test_generation_is_structured_grounded_and_traced(self):
         text = "Кэш ускоряет доступ к часто используемым данным."
         result = self.model.generate({"pages": [{"page": 1, "text": text}], "requested_card_count": 5})
