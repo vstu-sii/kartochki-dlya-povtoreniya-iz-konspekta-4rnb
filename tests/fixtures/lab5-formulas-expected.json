@@ -1,0 +1,197 @@
+[
+  {
+    "id": "FORM-001",
+    "page": 1,
+    "expected_latex": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$"
+  },
+  {
+    "id": "FORM-002",
+    "page": 1,
+    "expected_latex": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$"
+  },
+  {
+    "id": "FORM-003",
+    "page": 1,
+    "expected_latex": "$a^{2} − b^{2} = (a − b)(a + b)$"
+  },
+  {
+    "id": "FORM-004",
+    "page": 1,
+    "expected_latex": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$"
+  },
+  {
+    "id": "FORM-005",
+    "page": 1,
+    "expected_latex": "$a^{n}b^{n} = (ab)^{n}$"
+  },
+  {
+    "id": "FORM-006",
+    "page": 1,
+    "expected_latex": "$(a^{m})^{n} = a^{mn}$"
+  },
+  {
+    "id": "FORM-007",
+    "page": 1,
+    "expected_latex": "$a^{0} = 1$"
+  },
+  {
+    "id": "FORM-008",
+    "page": 1,
+    "expected_latex": "$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$"
+  },
+  {
+    "id": "FORM-009",
+    "page": 1,
+    "expected_latex": "$a^{−n} = \\frac{1}{a^{n}}$"
+  },
+  {
+    "id": "FORM-010",
+    "page": 1,
+    "expected_latex": "$a^{m}a^{n} = a^{m+n}$"
+  },
+  {
+    "id": "FORM-011",
+    "page": 1,
+    "expected_latex": "$a^{n} ÷ a^{m} = a^{n−m}$"
+  },
+  {
+    "id": "FORM-012",
+    "page": 1,
+    "expected_latex": "$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$"
+  },
+  {
+    "id": "FORM-013",
+    "page": 1,
+    "expected_latex": "$a^{log_{a} b} = b$"
+  },
+  {
+    "id": "FORM-014",
+    "page": 1,
+    "expected_latex": "$log_{a} a^{b} = b$"
+  },
+  {
+    "id": "FORM-015",
+    "page": 1,
+    "expected_latex": "$log_{a} b^{c} = c log_{a} b$"
+  },
+  {
+    "id": "FORM-016",
+    "page": 1,
+    "expected_latex": "$log_{a} bc = log_{a} b + log_{a} c$"
+  },
+  {
+    "id": "FORM-017",
+    "page": 1,
+    "expected_latex": "$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$"
+  },
+  {
+    "id": "FORM-018",
+    "page": 1,
+    "expected_latex": "$log_{a} b = \\frac{log_{c} b}{log_{c} a}$"
+  },
+  {
+    "id": "FORM-019",
+    "page": 1,
+    "expected_latex": "$log_{a^{c}} b = \\frac{1}{c} log_{a} b$"
+  },
+  {
+    "id": "FORM-020",
+    "page": 2,
+    "expected_latex": "$sin^{2} α + cos^{2} β = 1$"
+  },
+  {
+    "id": "FORM-021",
+    "page": 2,
+    "expected_latex": "$ctg α = \\frac{cos α}{sin α}$"
+  },
+  {
+    "id": "FORM-022",
+    "page": 2,
+    "expected_latex": "$tg α = \\frac{sin α}{cos α}$"
+  },
+  {
+    "id": "FORM-023",
+    "page": 2,
+    "expected_latex": "$cosec α = \\frac{1}{sin α}$"
+  },
+  {
+    "id": "FORM-024",
+    "page": 2,
+    "expected_latex": "$sec α = \\frac{1}{cos α}$"
+  },
+  {
+    "id": "FORM-025",
+    "page": 2,
+    "expected_latex": "$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$"
+  },
+  {
+    "id": "FORM-026",
+    "page": 2,
+    "expected_latex": "$1 + tg^{2} α = \\frac{1}{cos^{2} α}$"
+  },
+  {
+    "id": "FORM-027",
+    "page": 2,
+    "expected_latex": "$sin 2α = 2 sin α cos α$"
+  },
+  {
+    "id": "FORM-028",
+    "page": 2,
+    "expected_latex": "$cos 2α = cos^{2} α − sin^{2} α$"
+  },
+  {
+    "id": "FORM-029",
+    "page": 2,
+    "expected_latex": "$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$"
+  },
+  {
+    "id": "FORM-030",
+    "page": 2,
+    "expected_latex": "$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$"
+  },
+  {
+    "id": "FORM-031",
+    "page": 2,
+    "expected_latex": "$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$"
+  },
+  {
+    "id": "FORM-032",
+    "page": 2,
+    "expected_latex": "$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$"
+  },
+  {
+    "id": "FORM-033",
+    "page": 2,
+    "expected_latex": "$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$"
+  },
+  {
+    "id": "FORM-034",
+    "page": 2,
+    "expected_latex": "$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$"
+  },
+  {
+    "id": "FORM-035",
+    "page": 2,
+    "expected_latex": "$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$"
+  },
+  {
+    "id": "FORM-036",
+    "page": 2,
+    "expected_latex": "$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$"
+  },
+  {
+    "id": "FORM-037",
+    "page": 2,
+    "expected_latex": "$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$"
+  },
+  {
+    "id": "FORM-038",
+    "page": 2,
+    "expected_latex": "$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$"
+  },
+  {
+    "id": "FORM-039",
+    "page": 2,
+    "expected_latex": "$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$"
+  }
+]

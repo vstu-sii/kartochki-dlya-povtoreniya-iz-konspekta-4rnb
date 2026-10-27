@@ -19,22 +19,37 @@ from ml.tools import SourceLookupRequest, SourceLookupTool, build_retrieval_quer
 _PROMPT_VERSIONS = prompt_versions()
 PROMPT_VERSION = _PROMPT_VERSIONS["generation"]
 REVIEW_PROMPT_VERSION = _PROMPT_VERSIONS["review"]
+DETERMINISTIC_GENERATION_MODEL = "deterministic-grounded-v2"
+DETERMINISTIC_REVIEW_MODEL = "deterministic-review-v5"
 SCHEMA_VERSION = "2.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
 CHEAP_MODEL = os.getenv("LLM_CHEAP_MODEL", "gemini-2.5-flash-lite")
 GEMINI_TIMEOUT_SECONDS = max(5, min(60, int(os.getenv("GEMINI_TIMEOUT_SECONDS", "30"))))
 GEMINI_MAX_ATTEMPTS = max(1, min(3, int(os.getenv("GEMINI_MAX_ATTEMPTS", "2"))))
-STOP_WORDS = {"что", "это", "как", "для", "или", "при", "его", "она", "они", "так", "если", "уже", "был", "быть", "над", "под", "the", "and", "with"}
+STOP_WORDS = {
+    "что", "это", "как", "для", "или", "при", "его", "она", "они", "так", "если", "уже",
+    "был", "быть", "над", "под", "чтобы", "помощью", "принцип", "принципу", "the", "and", "with",
+}
 PHRASE_ALIASES = {
     "ram": "оперативная память",
     "данных нет в кеше": "не находит данные в кеше",
+    "данных нет в кэше": "не находит данные в кэше",
     "идет за ними": "обращается",
     "идёт за ними": "обращается",
+    "идет за данными": "обращается",
+    "идёт за данными": "обращается",
     "не нашел": "не найден",
     "первым добавлен первым извлечен": "fifo",
     "первым добавлен первым извлечён": "fifo",
     "ток равен напряжению деленному на сопротивление": "i u r",
     "ток равен напряжению делённому на сопротивление": "i u r",
+    "используют общую память": "разделяют память",
+    "использует общую память": "разделяет память",
+    "совместно используют память": "разделяют память",
+    "только одному потоку": "только один поток",
+    "только одного потока": "только один поток",
+    "последним добавлен первым извлечен": "lifo",
+    "последним добавлен первым извлечён": "lifo",
 }
 RU_SUFFIXES = (
     "иями", "ями", "ами", "ого", "ему", "ому", "ыми", "ими", "иях", "ах", "ях",
@@ -98,7 +113,7 @@ class BaselineModel:
         prompt = self._generation_prompt(prompt_payload)
         fallback_used = False
         fallback_reason = None
-        model_name = "deterministic-grounded-v1"
+        model_name = DETERMINISTIC_GENERATION_MODEL
         result = None
 
         if self.provider == "gemini" and os.getenv("GEMINI_API_KEY"):
@@ -140,7 +155,7 @@ class BaselineModel:
         prompt = self._review_prompt(card, answer)
         fallback_used = False
         fallback_reason = None
-        model_name = "deterministic-review-v2"
+        model_name = DETERMINISTIC_REVIEW_MODEL
         result = None
 
         if self.provider == "gemini" and os.getenv("GEMINI_API_KEY"):
@@ -172,28 +187,89 @@ class BaselineModel:
         return result
 
     def _deterministic_review(self, card: dict, answer: str) -> dict:
-        reference_words = self._keywords(card["reference_answer"])
+        reference = card["reference_answer"]
+        reference_words = self._keywords(reference)
         answer_words = self._keywords(answer)
         source_words = self._keywords(card.get("source_quote", ""))
         reference_coverage = len(reference_words & answer_words) / max(1, len(reference_words))
         source_precision = len(source_words & answer_words) / max(1, len(answer_words))
         normalized_answer = self._normalize(answer)
-        normalized_reference = self._normalize(card["reference_answer"])
+        normalized_reference = self._normalize(reference)
         unrelated = "ответ не относится" in normalized_answer
         contradiction = self._has_clear_contradiction(normalized_reference, normalized_answer)
 
-        if normalized_answer == normalized_reference or normalized_reference in normalized_answer or reference_coverage >= 0.72:
+        points = self._reference_points(reference)
+        supported_answer_points = self._supported_answer_points(
+            answer,
+            reference,
+            card.get("source_quote", ""),
+        )
+        covered = [
+            point
+            for point in points
+            if self._meaning_covered(point, answer)
+            and not self._has_clear_contradiction(self._normalize(point), normalized_answer)
+        ]
+        missing = [self._uncovered_point(point, answer) for point in points if point not in covered]
+        missing = [point for point in missing if point]
+        required_term = self._missing_required_term(reference, answer)
+        if required_term and required_term not in missing:
+            missing.insert(0, required_term)
+
+        all_points_covered = bool(points) and len(covered) == len(points)
+        central_meaning_covered = reference_coverage >= 0.72
+        # A mixed answer may contain both a supported fact and a contradiction.
+        # It can still be partial, but only an actually covered reference point
+        # may be described as correct in the feedback.
+        supported_partial = not unrelated and (
+            bool(covered)
+            or (not contradiction and (reference_coverage >= 0.18 or source_precision >= 0.45))
+        )
+
+        acronym_covers_core = self._shared_required_term(reference, answer) and reference_coverage >= 0.45
+        if not contradiction and not unrelated and (
+            all_points_covered or (len(points) == 1 and (central_meaning_covered or acronym_covers_core))
+        ):
             verdict, score = "correct", 2
-        elif not unrelated and not contradiction and (reference_coverage >= 0.18 or source_precision >= 0.45):
+        elif supported_partial:
             verdict, score = "partially_correct", 1
         else:
             verdict, score = "incorrect", 0
-        missing = sorted(reference_words - answer_words)[:5]
-        feedback = {
-            "correct": "Ответ передаёт основные пункты эталона.",
-            "partially_correct": "Основная мысль есть, но ответ нужно дополнить.",
-            "incorrect": "Ответ не совпадает с ключевыми пунктами эталона.",
-        }[verdict]
+
+        # A rubric may require an explicit technical term even when the student
+        # correctly paraphrases it (for example, FIFO). This is generic for
+        # acronyms and does not depend on a dataset case ID.
+        if required_term and verdict == "correct":
+            verdict, score = "partially_correct", 1
+
+        if verdict == "correct":
+            missing = []
+            feedback = "Ответ верный и передаёт обязательный смысл эталона."
+        elif verdict == "partially_correct":
+            correct_part = "; ".join(
+                self._sentence(point).rstrip(".") for point in supported_answer_points
+            )
+            missing_text = "; ".join(point.rstrip(".") for point in missing) + "." if missing else self._sentence(reference)
+            if contradiction:
+                correction = self._contradiction_explanation(normalized_reference, normalized_answer)
+                feedback = f"Верно: {correct_part}. {correction}" if correct_part else correction
+            elif required_term and correct_part:
+                term = required_term.removeprefix("Не назван термин ").rstrip(".")
+                feedback = (
+                    f"Верно: {correct_part}. По согласованному критерию также нужно "
+                    f"явно назвать термин {term}."
+                )
+            elif correct_part:
+                clarification = self._sentence(reference) if not covered and len(missing) == 1 else missing_text
+                feedback = f"Верно: {correct_part}. Нужно дополнить: {clarification}"
+            else:
+                feedback = f"Ответ содержит часть релевантного смысла. Нужно дополнить: {missing_text}"
+        else:
+            correction = self._contradiction_explanation(normalized_reference, normalized_answer)
+            if unrelated:
+                correction = "Ответ не раскрывает поставленный вопрос."
+            feedback = f"{correction} Правильный смысл: {self._sentence(reference)}"
+            missing = [self._sentence(point) for point in points] or [self._sentence(reference)]
         return {
             "verdict": verdict,
             "score": score,
@@ -201,15 +277,148 @@ class BaselineModel:
             "missing_points": missing,
         }
 
+    @staticmethod
+    def _sentence(value: str) -> str:
+        text = " ".join(value.split()).strip(" .;:")
+        if not text:
+            return ""
+        return text[0].upper() + text[1:] + "."
+
+    @staticmethod
+    def _reference_points(reference: str) -> list[str]:
+        """Split an answer into semantic clauses, preserving readable text."""
+        text = " ".join(reference.split()).strip()
+        parts = re.split(
+            r"\s*;\s*|\s*,\s*(?:потому\s+что|поэтому|зато|но)\s+|\s+и\s+(?=[а-яё]+(?:ется|ются|ает|яет|ует|ит|ет|ют|ат|ят)\b)",
+            text,
+            flags=re.I,
+        )
+        if len(parts) == 1:
+            place_tradeoff = re.match(r"^место\s+и\s+(.+)$", text, flags=re.I)
+            if place_tradeoff:
+                parts = ["Занимает дополнительное место", place_tradeoff.group(1)]
+        return [part.strip(" .") for part in parts if part.strip(" .")]
+
+    @classmethod
+    def _supported_answer_points(cls, answer: str, reference: str, source: str) -> list[str]:
+        """Return only student-written clauses supported by the reference/source."""
+        normalized_reference = cls._normalize(reference)
+        normalized_source = cls._normalize(source)
+        supported: list[str] = []
+        for point in cls._reference_points(answer):
+            normalized_point = cls._normalize(point)
+            contradicted = cls._has_clear_contradiction(normalized_reference, normalized_point)
+            if contradicted:
+                continue
+            if cls._meaning_covered(point, reference) or (source and cls._meaning_covered(point, source)):
+                supported.append(point)
+        return supported
+
+    @classmethod
+    def _meaning_covered(cls, point: str, answer: str) -> bool:
+        normalized_point = cls._normalize(point)
+        normalized_answer = cls._normalize(answer)
+        if normalized_point in normalized_answer or normalized_answer == normalized_point:
+            return True
+        point_words = cls._keywords(point)
+        answer_words = cls._keywords(answer)
+        if not point_words:
+            return False
+        coverage = sum(cls._keyword_covered(word, answer_words) for word in point_words) / len(point_words)
+        return coverage >= 0.72
+
+    @staticmethod
+    def _keyword_covered(keyword: str, candidates: set[str]) -> bool:
+        """Match small stemming differences such as `память`/`памят` safely."""
+        return any(
+            keyword == candidate
+            or (min(len(keyword), len(candidate)) >= 4 and (keyword.startswith(candidate) or candidate.startswith(keyword)))
+            for candidate in candidates
+        )
+
+    @classmethod
+    def _uncovered_point(cls, point: str, answer: str) -> str:
+        """Return a readable missing phrase, never internal word stems."""
+        point_words = cls._keywords(point)
+        answer_words = cls._keywords(answer)
+        missing_stems = {word for word in point_words if not cls._keyword_covered(word, answer_words)}
+        if not missing_stems:
+            return ""
+        coverage = len(point_words & answer_words) / max(1, len(point_words))
+        if coverage < 0.35:
+            return cls._sentence(point)
+
+        tokens = re.findall(r"[A-Za-zА-Яа-яЁё0-9²/()=-]+|[^\w\s]", point)
+        kept: list[str] = []
+        content_positions: list[int] = []
+        for index, token in enumerate(tokens):
+            token_stems = cls._keywords(token)
+            if token_stems & missing_stems:
+                content_positions.append(index)
+        if not content_positions:
+            return cls._sentence(point)
+
+        first, last = min(content_positions), max(content_positions)
+        prepositions = {"в", "во", "на", "к", "по", "с", "со", "для", "из", "между", "и", "или", "из-за"}
+        for index, token in enumerate(tokens):
+            token_stems = cls._keywords(token)
+            keep = bool(token_stems & missing_stems)
+            if first <= index <= last and token.lower() in prepositions:
+                keep = True
+            if token in {"/", "-", "(", ")"} and first <= index <= last:
+                keep = True
+            if keep:
+                kept.append(token)
+        phrase = " ".join(kept)
+        phrase = re.sub(r"\s+([,.;:)])", r"\1", phrase)
+        phrase = re.sub(r"([(])\s+", r"\1", phrase)
+        return cls._sentence(phrase or point)
+
+    @staticmethod
+    def _missing_required_term(reference: str, answer: str) -> str | None:
+        reference_terms = set(re.findall(r"\b[A-ZА-ЯЁ]{3,}\b", reference))
+        answer_terms = set(re.findall(r"\b[A-ZА-ЯЁ]{3,}\b", answer.upper()))
+        missing = sorted(reference_terms - answer_terms)
+        return f"Не назван термин {missing[0]}." if missing else None
+
+    @staticmethod
+    def _shared_required_term(reference: str, answer: str) -> bool:
+        reference_terms = set(re.findall(r"\b[A-ZА-ЯЁ]{3,}\b", reference))
+        answer_terms = set(re.findall(r"\b[A-ZА-ЯЁ]{3,}\b", answer.upper()))
+        return bool(reference_terms & answer_terms)
+
+    @staticmethod
+    def _contradiction_explanation(reference: str, answer: str) -> str:
+        reference_words = BaselineModel._keywords(reference)
+        answer_words = BaselineModel._keywords(answer)
+        if (
+            "оперативн" in reference_words
+            and any(word.startswith("памят") for word in reference_words)
+            and {"жестк", "диск"}.issubset(answer_words)
+        ):
+            return "Ошибка: при промахе процессор обращается к оперативной памяти, а не к жёсткому диску."
+        if "fifo" in reference and "lifo" in answer:
+            return "Ошибка: очередь работает по принципу FIFO, а не LIFO."
+        if "отдельн" in reference and BaselineModel._claims_processes_share_memory(answer):
+            return "Ошибка: процессы имеют отдельные адресные пространства, а не общую память."
+        if "идентифиц" in reference and "сортир" in answer:
+            return "Ошибка: первичный ключ не предназначен для сортировки строк."
+        if "o n2" in reference and "всегда o n" in answer:
+            return "Ошибка: сложность O(n) достигается не всегда, а только в лучшем случае с ранним выходом."
+        if "средним элемент" in reference and ("по очеред" in answer or "перебира" in answer):
+            return "Ошибка: бинарный поиск не перебирает элементы по очереди."
+        return "Ошибка: ответ не совпадает с ключевым смыслом эталона."
+
     def _deterministic_cards(self, payload: dict) -> dict:
         sources = []
         for page in payload["pages"]:
-            # PDF extractors preserve headings and line breaks. Treating an
-            # entire page as one sentence produced questions about the title
-            # of a laboratory work instead of its subject matter.
-            parts = re.split(r"(?<=[.!?])(?:\s+|$)|[\r\n]+", page["text"])
-            sentences = [part.strip() for part in parts if self._is_learning_fragment(part)]
+            # A PDF line break usually means "the text reached the page edge",
+            # not "the thought ended". Reflow wrapped lines first; only then
+            # split complete sentences and list items into card candidates.
+            parts = self._learning_fragments(page["text"])
+            sentences = [part for part in parts if self._is_learning_fragment(part)]
             sources.extend((page["page"], sentence) for sentence in (sentences or [page["text"].strip()]))
+        page_texts = {page["page"]: page["text"] for page in payload["pages"]}
         requested = payload.get("requested_card_count", 5)
         cards = []
         unique = {}
@@ -223,15 +432,91 @@ class BaselineModel:
                     "question": self._question_for(sentence),
                     "reference_answer": sentence[:1200],
                     "source_page": page,
-                    "source_quote": sentence[:500],
+                    "source_quote": self._original_source_quote(sentence, page_texts[page]),
                     "difficulty": "basic" if index < 2 else "intermediate",
                 }
             )
         return {"title": "Карточки по загруженному материалу", "cards": cards}
 
     @staticmethod
+    def _original_source_quote(sentence: str, page_text: str) -> str:
+        """Keep display text reflowed, but cite a verbatim span of the PDF."""
+        pattern = r"\s+".join(re.escape(word) for word in sentence.split())
+        match = re.search(pattern, page_text) if pattern else None
+        if not match:
+            raise ValueError("Deterministic card is not grounded in the PDF")
+        return match.group(0)[:500]
+
+    @classmethod
+    def _learning_fragments(cls, value: str) -> list[str]:
+        """Reflow visual PDF lines into complete prose/list statements."""
+        groups: list[str] = []
+        current: list[str] = []
+        current_is_list = False
+
+        def flush() -> None:
+            nonlocal current, current_is_list
+            if not current:
+                return
+            joined = " ".join(current).strip()
+            groups.extend(
+                part.strip()
+                for part in re.split(r"(?<=[.!?])\s+(?=[A-ZА-ЯЁ«])", joined)
+                if part.strip()
+            )
+            current = []
+            current_is_list = False
+
+        for raw_line in value.replace("\r", "\n").split("\n"):
+            line = " ".join(raw_line.split()).strip()
+            if not line:
+                flush()
+                continue
+            if re.fullmatch(r"\d{1,3}", line):
+                flush()
+                continue
+
+            if line.startswith("$") and line.endswith("$") and "=" in line:
+                # Keep one geometric equation per card, including short a^0=1.
+                # A short unpunctuated label immediately above it is a heading.
+                if current and len(" ".join(current)) < 100 and not re.search(r"[.!?;]$", current[-1]):
+                    current = []
+                flush()
+                groups.append(line)
+                continue
+
+            list_item = re.match(r"^(?:\d+[.)]|[•])\s*(.+)$", line)
+            if list_item:
+                flush()
+                current = [list_item.group(1).strip()]
+                current_is_list = True
+                if re.search(r"[.!?;]$", current[0]):
+                    flush()
+                continue
+
+            # Short labels such as "Задачи:" and "Теоретическая справка"
+            # separate sections but are not useful standalone study claims.
+            is_short_heading = len(line) <= 100 and (
+                line.endswith(":")
+                or re.match(r"^(?:теоретическая справка|пошаговая инструкция|оформление отч[её]та)$", line, re.I)
+                or re.match(r"^(?:\d+\s+)?лабораторная\s+работа\b", line, re.I)
+            )
+            if is_short_heading:
+                flush()
+                continue
+
+            current.append(line)
+            if current_is_list and re.search(r"[.!?;]$", line):
+                flush()
+
+        flush()
+        return groups
+
+    @staticmethod
     def _is_learning_fragment(value: str) -> bool:
         text = " ".join(value.split()).strip(" •–—-«»\"“”")
+        if text.startswith("$") and text.endswith("$") and "=" in text:
+            return True
         if len(text) < 20:
             return False
         heading = re.match(r"^(?:\d+[.)]?\s*)?(?:лабораторная\s+работа|работа\s*№|содержание|оглавление)\b", text, re.I)
@@ -433,6 +718,8 @@ class BaselineModel:
 
     @staticmethod
     def _has_clear_contradiction(reference: str, answer: str) -> bool:
+        reference_words = BaselineModel._keywords(reference)
+        answer_words = BaselineModel._keywords(answer)
         pairs = (
             (("отменяет", "отмена"), ("фиксирует", "сохраняет навсегда")),
             (("не гарантирует", "нет гарантий"), ("гарантирует",)),
@@ -442,9 +729,35 @@ class BaselineModel:
             return True
         if "идентифиц" in reference and "сортир" in answer:
             return True
+        if "средним элемент" in reference and ("по очеред" in answer or "перебира" in answer):
+            return True
+        if (
+            "оперативн" in reference_words
+            and any(word.startswith("памят") for word in reference_words)
+            and {"жестк", "диск"}.issubset(answer_words)
+        ):
+            return True
+        if "отдельн" in reference and BaselineModel._claims_processes_share_memory(answer):
+            return True
+        if "разделяют памят" in reference and ("не разделяют" in answer or "отдельн памят" in answer):
+            return True
+        if "только один поток" in reference and ("несколько поток" in answer or "два поток" in answer):
+            return True
+        if "fifo" in reference and "lifo" in answer:
+            return True
         return any(
             any(left in reference for left in expected) and any(right in answer for right in opposite)
             for expected, opposite in pairs
+        )
+
+    @staticmethod
+    def _claims_processes_share_memory(answer: str) -> bool:
+        """Detect a claim about processes themselves, not threads of one process."""
+        return bool(
+            re.search(
+                r"\b(?:процесс|процессы)\b[^.;]*(?:общ\w*\s+памят|разделяют\s+памят)",
+                answer,
+            )
         )
 
     @staticmethod

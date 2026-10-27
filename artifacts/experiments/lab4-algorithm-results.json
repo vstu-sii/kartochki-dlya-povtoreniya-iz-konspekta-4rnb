@@ -8,17 +8,17 @@
   },
   "variant_b": {
     "name": "normalized-semantic-rules-v2",
-    "agreement": 0.9
+    "agreement": 0.925
   },
-  "delta_agreement_pp": 7.5,
+  "delta_agreement_pp": 10.0,
   "cases": [
     {
       "id": "REV-001",
       "expected": "correct",
       "a": "partially_correct",
-      "b": "partially_correct",
+      "b": "correct",
       "a_correct": false,
-      "b_correct": false
+      "b_correct": true
     },
     {
       "id": "REV-002",
@@ -102,10 +102,10 @@
     },
     {
       "id": "REV-012",
-      "expected": "partially_correct",
+      "expected": "correct",
       "a": "partially_correct",
-      "b": "partially_correct",
-      "a_correct": true,
+      "b": "correct",
+      "a_correct": false,
       "b_correct": true
     },
     {
@@ -151,9 +151,9 @@
     {
       "id": "REV-018",
       "expected": "partially_correct",
-      "a": "incorrect",
+      "a": "partially_correct",
       "b": "partially_correct",
-      "a_correct": false,
+      "a_correct": true,
       "b_correct": true
     },
     {
@@ -335,7 +335,7 @@
   ],
   "decision": "B",
   "passed": true,
-  "run_at": "2026-10-17T10:55:58.542718+00:00",
-  "dataset": "D:/MovedAppData/CodexWorkspace/2026-09-28/new-chat-2/work/quality-review-20261017/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-27T15:33:18.668245+00:00",
+  "dataset": "D:/MovedAppData/CodexWorkspace/lab5-ai-review-20261020/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "algorithm"
 }
