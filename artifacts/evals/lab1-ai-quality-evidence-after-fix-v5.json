@@ -18,12 +18,63 @@
     "latency_p95": "nearest-rank p95 over separate live end-to-end runs"
   },
   "pdf_thesis_check": {
-    "status": "pending_source_pdfs_and_manual_review",
-    "documents": [],
-    "checked_theses": null,
-    "correct_theses": null,
-    "accuracy": null,
-    "target": 0.75
+    "status": "complete_manual_review",
+    "documents": [
+      {
+        "source_pdf": "tests/fixtures/lab5-devops-source.pdf",
+        "sha256": "6ed2a591d1cce8a16e0600940bb385f393618049b94916d7134d9e8ef2abef22",
+        "reviewer": "Ткаченко С. А.",
+        "review_date": "2026-10-27",
+        "generation_source_sha": "2076016532294192e28a0ea7df6e1a916ad6c307",
+        "theses": [
+          {
+            "card_id": "card_b09f924e344b4d57a777f79ccad11a26",
+            "page": 1,
+            "text": "Цель: Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб -приложение с ML -моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+            "correct": true,
+            "standalone_complete_statement": true,
+            "reviewer": "Ткаченко С. А."
+          },
+          {
+            "card_id": "card_f3d667a2e51841808eea1e2d78eb4825",
+            "page": 1,
+            "text": "Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+            "correct": true,
+            "standalone_complete_statement": true,
+            "reviewer": "Ткаченко С. А."
+          },
+          {
+            "card_id": "card_0c0fe01633834bfc9c4f437d985bb76c",
+            "page": 1,
+            "text": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+            "correct": true,
+            "standalone_complete_statement": true,
+            "reviewer": "Ткаченко С. А."
+          },
+          {
+            "card_id": "card_f0ec3e373fbf41be8efc8c4b466627ba",
+            "page": 1,
+            "text": "Установка Docker и Docker Compose на ВМ2.",
+            "correct": true,
+            "standalone_complete_statement": true,
+            "reviewer": "Ткаченко С. А."
+          },
+          {
+            "card_id": "card_315ee0851f544b1c9566d2e9a6b236fc",
+            "page": 1,
+            "text": "Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict.",
+            "correct": true,
+            "standalone_complete_statement": true,
+            "reviewer": "Ткаченко С. А."
+          }
+        ]
+      }
+    ],
+    "checked_theses": 5,
+    "correct_theses": 5,
+    "accuracy": 1.0,
+    "target": 0.75,
+    "scope_limit": "Five cards from one provided PDF, checked as text; this is not proof that the updated API upload currently succeeds."
   },
   "answer_review_check": {
     "status": "joint_manual_review_completed_targets_met",

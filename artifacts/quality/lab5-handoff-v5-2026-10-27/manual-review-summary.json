@@ -57,5 +57,6 @@
     "working_tree_clean": true
   },
   "scope": "Joint review of supplied deterministic v5 snapshot, not release acceptance or a full provider eval.",
-  "reviewed_snapshot_sha256": "f5061e36a2500a7aecfa7380841d1909dbd7914427dc77637083d2ee6923381e"
+  "reviewed_snapshot_sha256": "0ca5a60c59009a6d629b74fe706f18136ef43f7f42f9d4f8a57f3be6aac300f8",
+  "pdf_thesis_review": "artifacts/quality/lab5-ai-publication-check-2026-10-27/pdf-thesis-human-review.json"
 }
