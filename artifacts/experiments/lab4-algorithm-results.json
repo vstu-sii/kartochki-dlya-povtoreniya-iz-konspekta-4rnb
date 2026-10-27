@@ -102,10 +102,10 @@
     },
     {
       "id": "REV-012",
-      "expected": "correct",
+      "expected": "partially_correct",
       "a": "partially_correct",
-      "b": "correct",
-      "a_correct": false,
+      "b": "partially_correct",
+      "a_correct": true,
       "b_correct": true
     },
     {
@@ -151,9 +151,9 @@
     {
       "id": "REV-018",
       "expected": "partially_correct",
-      "a": "partially_correct",
+      "a": "incorrect",
       "b": "partially_correct",
-      "a_correct": true,
+      "a_correct": false,
       "b_correct": true
     },
     {
@@ -335,7 +335,7 @@
   ],
   "decision": "B",
   "passed": true,
-  "run_at": "2026-10-27T15:33:18.668245+00:00",
-  "dataset": "D:/MovedAppData/CodexWorkspace/lab5-ai-review-20261020/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-21T20:45:06.392960+00:00",
+  "dataset": "C:/Users/sftkc/Documents/Codex/2026-10-14/https-github-com-vstu-sii-kartochki/work/fix-lab5-quality/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "algorithm"
 }

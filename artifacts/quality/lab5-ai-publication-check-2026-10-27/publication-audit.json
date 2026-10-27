@@ -1,0 +1,27 @@
+{
+  "checked_on": "2026-10-27",
+  "published_ai_head": "2076016532294192e28a0ea7df6e1a916ad6c307",
+  "accepted_v5_commit": "57e8ee98c7cf1dac02ff2928ca0fefb0558b2170",
+  "accepted_v5_commit_is_published_ancestor": true,
+  "dataset_sha256": "fa224bcf21c17640c1d5fa1ecd68b686ca313b5bf261c873f0f3f3abebe1f15d",
+  "published_full_suite_passed": true,
+  "published_full_suite_groups": 8,
+  "published_coverage": 132,
+  "published_unit_tests": 41,
+  "manual_v5_outputs_still_match": 20,
+  "direct_pdf_automatic_checks": {
+    "grounded_count": 5,
+    "looks_complete_count": 5
+  },
+  "pdf_http_status": 502,
+  "additional_quality_contract_test": {
+    "test": "tests/test_pdf_generation_contract.py",
+    "test_cases": 1,
+    "failing_card_subtests": 3,
+    "status": "fails_on_published_AI_source; passes_on_current_legacy_Quality_source"
+  },
+  "delivery_head": "d49a42ecfaa216e99ba4f9bbe160af966c4a9c7c",
+  "product_head": "765e2f4db9f613ac28843d063f9c1f28574b701e",
+  "latest_tag": "v0.5.2-demo",
+  "new_integrated_release_verified": false
+}

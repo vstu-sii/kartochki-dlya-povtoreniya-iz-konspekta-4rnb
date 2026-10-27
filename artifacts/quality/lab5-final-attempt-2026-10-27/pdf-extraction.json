@@ -1,0 +1,57 @@
+{
+  "source_name": "Лабораторная_работа_4_Виртуализация_и_контейнеризация_в_DevOps.pdf",
+  "sha256": "6ed2a591d1cce8a16e0600940bb385f393618049b94916d7134d9e8ef2abef22",
+  "page_count": 10,
+  "pages": [
+    {
+      "page": 1,
+      "method": "text_layer",
+      "text": "1\n\nЛабораторная работа №4 «Виртуализация и контейнеризация в DevOps»\n\nЦель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD. Заложить основу для многоконтейнерной\nархитектуры сквозного проекта «ML Prediction Service».\nЗадачи:\n1. Создание снапшота ВМ2 (app-server) перед началом работы.\n2. Установка Docker и Docker Compose на ВМ2.\n3. Написание Flask-приложения, которое загружает обученную ML -\nмодель и обрабатывает POST-запросы /predict.\n4. Создание app/requirements.txt с зависимостями.\n5. Написание docker/Dockerfile для сборки образа приложения.\n6. Сборка Docker -образа, запуск контейнера, проверка работы\nэндпоинта.\n7. Настройка подключения контейнера к PostgreSQL на ВМ1 (SSL,\nпеременные окружения).\n8. Создание docker/docker -compose.yml для управления\nконтейнером.\n9. Проверка записи предсказаний в БД с ВМ1.\n10. Коммит Dockerfile и docker-compose.yml в Git-репозиторий.\n\nКритерии оценивания (на отчёте к каждому критерию может быть задан\nвопрос, ответ на который повлияет на итоговый балл):\n Docker и Docker Compose установлены, сервис работает (1 балл);\n Написано Flask-приложение с ML-моделью, корректно\nобрабатывающее POST-запросы (1 балл);"
+    },
+    {
+      "page": 2,
+      "method": "text_layer",
+      "text": "2\n\n Dockerfile корректен, образ успешно собирается (1 балл);\n Контейнер запускается, отвечает на запросы, подключается к\nPostgreSQL на ВМ1 (1 балл);\n Docker Compose работает, предсказание записано в БД; о тчёт с\nкомандами и скриншотами (1 балл)."
+    },
+    {
+      "page": 3,
+      "method": "text_layer",
+      "text": "3\n\nТеоретическая справка\n\nDocker – платформа контейнеризации, позволяющая упаковать\nприложение со всеми зависимостями в изолированный образ. Контейнеры\nиспользуют ядро хоста, что делает их легче виртуальных машин и\nобеспечивает быстрый запуск.\nDocker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные. Docker-контейнер – запущенный экземпляр образа. Dockerfile –\nтекстовый файл с инструкциями по сборке образа. Docker Compose –\nинструмент для описания и запуска многоконтейнерных приложений через\nYAML-файл.\nКлючевые инструкции Dockerfile:\n FROM – базовый образ;\n WORKDIR – рабочая директория внутри контейнера;\n COPY – копирование файлов;\n RUN – выполнение команд при сборке;\n EXPOSE – объявление порта;\n CMD – команда запуска при старте контейнера.\nПеременные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости."
+    },
+    {
+      "page": 4,
+      "method": "text_layer",
+      "text": "4\n\nПошаговая инструкция\n\nПодготовка и снапшот ВМ2\n\n1. В веб -интерфейсе Proxmox выберите ВМ2 (app-server) – Snapshots –\nTake Snapshot. Имя: before_docker_lab4.\n2. Подключитесь к ВМ2 по SSH.\n3. Обновите систему.\n\nУстановка Docker и Docker Compose\n\n1. Выполните:\nsudo apt install docker.io docker-compose -y\nsudo systemctl status docker\n2. Добавьте пользователя student в группу docker, чтобы работать без\nsudo:\nsudo usermod -aG docker $USER\nnewgrp docker\n3. Проверьте:\ndocker --version\ndocker-compose --version\ndocker run hello-world\n\nНаписание Flask-приложения с ML-моделью\n\n1. Перейдите в репозиторий:\ncd ~/ml-prediction-service\nВажно: перед написанием приложения создайте и обучите простую MLмодель (или возьмите готовую модель ). Н апример, можно взять\nлогистическую регрессию на датасете Iris (у Вас должна быть другая модель и"
+    },
+    {
+      "page": 5,
+      "method": "text_layer",
+      "text": "5\n\nпо необходимости другие файлы обучения и flask-приложения). Сохраните её\nв model/model.pkl.\n2. Пример скрипта обучения (сохраните в model/train.py):\nfrom sklearn.datasets import load_iris\nfrom sklearn.linear_model import LogisticRegression\nimport pickle\nX, y = load_iris(return_X_y=True)\nmodel = LogisticRegression(max_iter=200)\nmodel.fit(X, y)\nwith open(\"model/model.pkl\", \"wb\") as f:\npickle.dump(model, f)\nprint(\"Model trained and saved to model/model.pkl\")\n3. Запустите:\ncd ~/ml-prediction-service\npython3 model/train.py\nУбедитесь, что файл model/model.pkl создан. Не коммитьте его – в\n.gitignore уже есть правило model/*.pkl.\n4. Теперь создайте app/app.py:\nfrom flask import Flask, request, jsonify\nimport psycopg2, json, os, pickle\napp = Flask(__name__)\n# Загрузка модели при старте\nMODEL_PATH = os.getenv(\"MODEL_PATH\", \"model/model.pkl\")\nwith open(MODEL_PATH, \"rb\") as f:\nmodel = pickle.load(f)\ndef get_db():\nreturn psycopg2.connect(\nhost=os.getenv(\"DB_HOST\", \"192.168.1.101\"),\ndbname=os.getenv(\"DB_NAME\", \"ml_predictions\"),\nuser=os.getenv(\"DB_USER\", \"ml_app\"),"
+    },
+    {
+      "page": 6,
+      "method": "text_layer",
+      "text": "6\n\npassword=os.getenv(\"DB_PASSWORD\", \"StrongPassword\"),\nsslmode=os.getenv(\"DB_SSLMODE\", \"require\")\n)\n@app.route(\"/health\", methods=[\"GET\"])\ndef health():\nreturn jsonify({\"status\": \"ok\"})\n@app.route(\"/predict\", methods=[\"POST\"])\ndef predict():\ndata = request.get_json(force=True)\nfeatures = data.get(\"features\", [])\nif not features:\nreturn jsonify({\"error\": \"No features provided\"}), 400\npred = model.predict([features])[0]\nproba = max(model.predict_proba([features])[0])\nresult = {\"class\": int(pred), \"probability\": float(proba)}\n# Запись в БД\nconn = get_db()\ncur = conn.cursor()\ncur.execute(\n\"INSERT INTO predictions (input_data, prediction, model_version) VALUES\n(%s, %s, %s)\",\n(json.dumps({\"features\": features}), json.dumps(result), \"v1.0\")\n)\nconn.commit()\ncur.close()\nconn.close()\nreturn jsonify(result)\n\nif __name__ == \"__main__\":\napp.run(host=\"0.0.0.0\", port=5000)"
+    },
+    {
+      "page": 7,
+      "method": "text_layer",
+      "text": "7\n\n5. Обновите app/requirements.txt:\ncat > app/requirements.txt <<EOF\nflask==2.2.3\npsycopg2-binary==2.9.6\nscikit-learn==1.2.2\nEOF\n\nНаписание Dockerfile\n\nОтредактируйте docker/Dockerfile:\nFROM python:3.9-slim\nWORKDIR /app\n# Установка зависимостей\nCOPY app/requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n# Копирование кода приложения и модели\nCOPY app/ .\nCOPY model/ /model/\nEXPOSE 5000\nCMD [\"python\", \"app.py\"]\nВажно: модель model.pkl копируется внутрь образа. В реальном проекте\nеё мо жно монтировать как volume, но для учебной задачи допустимо\nвстраивание.\n\nСборка и запуск контейнера вручную\n\n1. Соберите образ:\ncd ~/ml-prediction-service\ndocker build -t ml-app:v1 -f docker/Dockerfile .\n2. Проверьте, что образ создан:"
+    },
+    {
+      "page": 8,
+      "method": "text_layer",
+      "text": "8\n\ndocker images | grep ml-app\n3. Запустите контейнер с переменными окружения для подключения к\nБД на ВМ1:\ndocker run -d --name ml-app \\\n-p 5000:5000 \\\n-e DB_HOST=192.168.1.101 \\\n-e DB_NAME=ml_predictions \\\n-e DB_USER=ml_app \\\n-e DB_PASSWORD=StrongPassword \\\n-e DB_SSLMODE=require \\\n-e MODEL_PATH=/model/model.pkl \\\nml-app:v1\n4. Проверьте логи:\ndocker logs ml-app\n5. Проверьте работу эндпоинта:\ncurl http://localhost:5000/health\ncurl -X POST http://localhost:5000/predict \\\n-H \"Content-Type: application/json\" \\\n-d '{\"features\": [5.1, 3.5, 1.4, 0.2]}'\n6. Ожидаемый ответ – JSON с классом и вероятностью, например:\n{\"class\": 0, \"probability\": 0.98}\n7. Подключитесь к ВМ1:\nssh student@192.168.1.101\nsudo -u postgres psql -d ml_predictions -c \"SELECT * FROM predictions ORDER\nBY id DESC LIMIT 5;\"\nВы должны увидеть запись с input_data, prediction и model_version. Если\nзапись есть – интеграция приложения с БД работает.\n\nСоздание docker-compose.yml"
+    },
+    {
+      "page": 9,
+      "method": "text_layer",
+      "text": "9\n\n1. Отредактируйте docker/docker-compose.yml:\nversion: \"3.8\"\nservices:\napp:\nbuild:\ncontext: ..\ndockerfile: docker/Dockerfile\nimage: ml-app:v1\ncontainer_name: ml-app\nports:\n- \"5000:5000\"\nenvironment:\nDB_HOST: 192.168.1.101\nDB_NAME: ml_predictions\nDB_USER: ml_app\nDB_PASSWORD: StrongPassword\nDB_SSLMODE: require\nMODEL_PATH: /model/model.pkl\nrestart: unless-stopped\n2. Остановите и удалите контейнер, запущенный вручную:\ndocker stop ml-app && docker rm ml-app\n3. Запустите через Compose:\ncd ~/ml-prediction-service\ndocker-compose -f docker/docker-compose.yml up -d --build\n4. Проверьте:\ndocker-compose -f docker/docker-compose.yml ps\ncurl -X POST http://localhost:5000/predict \\\n-H \"Content-Type: application/json\" \\\n-d '{\"features\": [6.7, 3.0, 5.2, 2.3]}'\n5. Выполните docker-compose ps."
+    },
+    {
+      "page": 10,
+      "method": "text_layer",
+      "text": "10\n\n6. Добавьте файлы в репозиторий:\ncd ~/ml-prediction-service\ngit add app/app.py app/requirements.txt docker/Dockerfile docker/docker -\ncompose.yml model/train.py\ngit commit -m \"Add Docker setup: Flask app with ML model and Docker Compose\"\ngit push origin main\n\nОформление отчёта\nОтчёт по лабораторной работе должен содержать:\n1. Титульный лист (шапку) с названием работы, ФИО студента,\nгруппой и пр.\n2. Цель и задачи работы.\n3. Используемое оборудование и ПО.\n4. Выбранная модель или датасет для обучения модели.\n5. Ход работы со скриншотами каждого важного шага.\n6. Выводы: что было сделано, какие команды использовались, как\nобеспечена связь контейнера с БД, почему пароль передаётся через\nпеременные окружения."
+    }
+  ]
+}

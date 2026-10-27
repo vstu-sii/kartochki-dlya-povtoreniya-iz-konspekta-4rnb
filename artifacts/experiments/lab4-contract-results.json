@@ -917,7 +917,7 @@
       "only_changed_factor": "prompt_text"
     }
   ],
-  "run_at": "2026-10-27T15:33:18.935669+00:00",
-  "dataset": "D:/MovedAppData/CodexWorkspace/lab5-ai-review-20261020/docs/quality/golden-dataset/dataset.jsonl",
+  "run_at": "2026-10-21T20:45:06.741554+00:00",
+  "dataset": "C:/Users/sftkc/Documents/Codex/2026-10-14/https-github-com-vstu-sii-kartochki/work/fix-lab5-quality/docs/quality/golden-dataset/dataset.jsonl",
   "mode": "contract"
 }
