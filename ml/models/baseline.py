@@ -568,10 +568,9 @@ class BaselineModel:
                 "generationConfig": {
                     "responseMimeType": "application/json",
                     "responseJsonSchema": response_schema,
-                    # Gemini 3.x rejects legacy sampling parameters such as
-                    # temperature. Low thinking is enough for extraction and
-                    # keeps interactive generation/review latency bounded.
-                    "thinkingConfig": {"thinkingLevel": "low"},
+                    # minimal is supported by 3.5 Flash-Lite, but not 3.8 Flash.
+                    # The model-specific choice avoids invalid API requests.
+                    "thinkingConfig": {"thinkingLevel": "minimal" if model_name == "gemini-3.5-flash-lite" else "low"},
                     "maxOutputTokens": 6000,
                 },
             }

@@ -17,6 +17,19 @@ class BaselineTest(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def test_gemini_lite_uses_supported_minimal_thinking_and_counts_thought_tokens(self):
+        from io import BytesIO
+        response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": "{}"}]}}],
+                    "usageMetadata": {"promptTokenCount": 10, "candidatesTokenCount": 4, "thoughtsTokenCount": 3}}
+        captured = []
+        def respond(request, timeout):
+            captured.append(json.loads(request.data))
+            return BytesIO(json.dumps(response).encode())
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}), patch("ml.models.baseline.urlopen", side_effect=respond):
+            result = self.model._call_gemini("test", {"type": "object"}, "gemini-3.5-flash-lite")
+        self.assertEqual(captured[0]["generationConfig"]["thinkingConfig"]["thinkingLevel"], "minimal")
+        self.assertEqual(result["_usage"], {"input_tokens": 10, "output_tokens": 7})
+
     def test_invalid_gemini_card_is_retried_and_never_accepted_without_grounding(self):
         source = "Сила тока равна напряжению, делённому на сопротивление."
         card = {"question": "Как найти силу тока?", "reference_answer": source,
