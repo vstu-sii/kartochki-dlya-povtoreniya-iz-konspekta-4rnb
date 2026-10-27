@@ -1,0 +1,69 @@
+{
+  "audited_at": "2026-10-27T08:50:34.175146+00:00",
+  "scope": "Automated audit of supplied model with current Quality dependencies; not a full source checkout or human acceptance",
+  "input_snapshot_sha256": "02979699258fe3ba17684175b49258ad562fa8be3dc4f2ec294305d12ef94d04",
+  "model_file_sha256": "f8ae5c0c3c5d80eca36b9e1b7b831c4cde33390e69b73555aadcac7d50b69bcb",
+  "source_revision_as_reported": {
+    "git_sha": "ca1ad15e694eec8aea6e825e726d1436c44a416a",
+    "working_tree_clean": true
+  },
+  "reported_source_commit_available_in_fetched_repository": false,
+  "all_20_input_examples_preserved": true,
+  "rubric_changes": [
+    {
+      "id": "REV-012",
+      "field": "expected_verdict",
+      "before": "partially_correct",
+      "after": "correct"
+    },
+    {
+      "id": "REV-015",
+      "field": "mandatory_points",
+      "before": [
+        "первым добавлен — первым извлечён"
+      ],
+      "after": [
+        "первым добавлен — первым извлечён",
+        "явно назван термин FIFO"
+      ]
+    }
+  ],
+  "stable_output_matches": 20,
+  "differences": [],
+  "human_review_completed": 0,
+  "dataset_sha256_as_reported": "fa224bcf21c17640c1d5fa1ecd68b686ca313b5bf261c873f0f3f3abebe1f15d",
+  "dataset_matches_current_quality": false,
+  "disk_probe": {
+    "student_answer": "Данных нет в кэше, поэтому процессор обращается к жёсткому диску.",
+    "verdict": "partially_correct",
+    "feedback": "Верно: Процессор не находит данные в кэше. Ошибка: при промахе процессор обращается к оперативной памяти, а не к жёсткому диску.",
+    "missing_points": [
+      "Обращается к оперативной памяти."
+    ]
+  },
+  "remaining_findings": [
+    {
+      "id": "Q5-AFTER-001",
+      "cases": [
+        "REV-002",
+        "REV-018"
+      ],
+      "finding": "Empty supported-part text produces Верно: ."
+    },
+    {
+      "id": "Q5-AFTER-002",
+      "cases": [
+        "REV-009"
+      ],
+      "finding": "Feedback accuses the answer about threads of shared process address spaces, which the student did not claim."
+    },
+    {
+      "id": "Q5-AFTER-003",
+      "cases": [
+        "REV-015"
+      ],
+      "finding": "Feedback says Верно: По принципу FIFO while also saying FIFO was not named; repeats the reference as if it was present in the student answer."
+    }
+  ],
+  "full_regression_status": "Sender reports 8/8,132/132; not independently rerun because revised dataset/tests and source checkout are not published in fetched AI branch."
+}
