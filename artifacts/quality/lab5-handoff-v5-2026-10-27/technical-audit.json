@@ -1,0 +1,63 @@
+{
+  "input_preserved": true,
+  "stable_matches": 20,
+  "differences": [],
+  "negative_probes": [
+    {
+      "id": "REV-001",
+      "student_answer": "Данных нет в кэше, поэтому процессор обращается к жёсткому диску.",
+      "verdict": "partially_correct",
+      "feedback": "Верно: Данных нет в кэше. Ошибка: при промахе процессор обращается к оперативной памяти, а не к жёсткому диску.",
+      "missing_points": [
+        "Обращается к оперативной памяти."
+      ]
+    },
+    {
+      "id": "REV-009",
+      "student_answer": "Потоки одного процесса не разделяют память.",
+      "verdict": "incorrect",
+      "feedback": "Ошибка: ответ не совпадает с ключевым смыслом эталона. Правильный смысл: Потоки разделяют память процесса; процессы имеют отдельные адресные пространства.",
+      "missing_points": [
+        "Потоки разделяют память процесса.",
+        "Процессы имеют отдельные адресные пространства."
+      ]
+    },
+    {
+      "id": "REV-009",
+      "student_answer": "Разные процессы имеют общую память.",
+      "verdict": "incorrect",
+      "feedback": "Ошибка: процессы имеют отдельные адресные пространства, а не общую память. Правильный смысл: Потоки разделяют память процесса; процессы имеют отдельные адресные пространства.",
+      "missing_points": [
+        "Потоки разделяют память процесса.",
+        "Процессы имеют отдельные адресные пространства."
+      ]
+    },
+    {
+      "id": "REV-018",
+      "student_answer": "В критическую секцию одновременно входят несколько потоков.",
+      "verdict": "incorrect",
+      "feedback": "Ошибка: ответ не совпадает с ключевым смыслом эталона. Правильный смысл: Вход только одного потока в критическую секцию.",
+      "missing_points": [
+        "Вход только одного потока в критическую секцию."
+      ]
+    },
+    {
+      "id": "REV-015",
+      "student_answer": "Очередь работает по принципу LIFO.",
+      "verdict": "incorrect",
+      "feedback": "Ошибка: очередь работает по принципу FIFO, а не LIFO. Правильный смысл: По принципу FIFO.",
+      "missing_points": [
+        "По принципу FIFO."
+      ]
+    }
+  ],
+  "model_sha256": "ed8539600cae7152daf14d989264313a0a17c09d9ff1962dac3945337cbb6cd9",
+  "audited_at": "2026-10-27T13:45:12.986150+00:00",
+  "scope": "Automated supplied-code check with current Quality dependencies; not human acceptance or a full regression rerun",
+  "source_revision_as_reported": {
+    "git_sha": "57e8ee98c7cf1dac02ff2928ca0fefb0558b2170",
+    "working_tree_clean": true
+  },
+  "human_review_completed": 0,
+  "previous_four_findings_resolved_on_original_examples": true
+}

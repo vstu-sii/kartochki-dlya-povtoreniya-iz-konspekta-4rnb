@@ -1,0 +1,77 @@
+{
+  "run_at": "2026-10-27T16:01:13.661395+00:00",
+  "dataset_version": "lab5-v1",
+  "dataset_sha256": "fa224bcf21c17640c1d5fa1ecd68b686ca313b5bf261c873f0f3f3abebe1f15d",
+  "passed": true,
+  "coverage": {
+    "expected": 132,
+    "executed_unique": 132,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "overlap_ids": [
+      "SAFE-001",
+      "SAFE-002",
+      "SAFE-004",
+      "SAFE-005",
+      "SAFE-007",
+      "SAFE-008",
+      "SAFE-009",
+      "SAFE-010",
+      "SAFE-LIVE-001",
+      "SAFE-LIVE-002",
+      "SEC-L4-001",
+      "SEC-L4-002"
+    ]
+  },
+  "note": "Coverage is execution, not correctness. No expected-failure waivers.",
+  "suites": [
+    {
+      "suite": "model-and-guards",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/model-and-guards.log"
+    },
+    {
+      "suite": "application",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/application.log"
+    },
+    {
+      "suite": "security-before",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/security-before.log"
+    },
+    {
+      "suite": "security-after",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/security-after.log"
+    },
+    {
+      "suite": "retrieval",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/retrieval.log"
+    },
+    {
+      "suite": "algorithm-regression",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/algorithm-regression.log"
+    },
+    {
+      "suite": "prompt-contract",
+      "exit_code": 0,
+      "report_written": true,
+      "log": "artifacts/evals/prompt-contract.log"
+    },
+    {
+      "suite": "unit-and-integration",
+      "exit_code": 0,
+      "report_written": null,
+      "log": "artifacts/evals/unit-and-integration.log"
+    }
+  ]
+}

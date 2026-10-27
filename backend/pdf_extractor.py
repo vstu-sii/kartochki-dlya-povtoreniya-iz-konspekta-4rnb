@@ -109,6 +109,22 @@ def extract_pdf_pages(raw: bytes) -> list[ExtractedPage]:
     except Exception as exc:
         raise PdfExtractionError("PDF_PARSE_FAILED", "The PDF text layer could not be read") from exc
 
+    # Preserve vector equation geometry where a page is predominantly math.
+    # Ordinary prose and text-less scans keep the established extraction path.
+    math_pages = set()
+    try:
+        import fitz
+        from backend.pdf_math import math_page_text
+        with fitz.open(stream=raw, filetype="pdf") as layout_document:
+            for index, layout_page in enumerate(layout_document):
+                structured = math_page_text(layout_page)
+                if structured:
+                    texts[index] = clean_text(structured)
+                    math_pages.add(index + 1)
+    except (ImportError, RuntimeError, ValueError):
+        # Optional layout support must not disable readable ordinary PDFs.
+        pass
+
     needs_ocr = [index for index, text in enumerate(texts, start=1) if len(text) < MIN_TEXT_LAYER_CHARS]
     if needs_ocr:
         try:
@@ -134,7 +150,7 @@ def extract_pdf_pages(raw: bytes) -> list[ExtractedPage]:
         if remaining <= 0:
             break
         cleaned = cleaned[:remaining]
-        method = "ocr" if page_number in needs_ocr else "text_layer"
+        method = "ocr" if page_number in needs_ocr else "math_layout" if page_number in math_pages else "text_layer"
         pages.append(ExtractedPage(page=page_number, text=cleaned, method=method))
         total += len(cleaned)
 

@@ -1,0 +1,558 @@
+{
+  "measured_at": "2026-10-27T18:50:29.212903+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "provider-only full scenarios; nearest-rank p95",
+  "scenario_count": 2,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.04,
+  "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 6833,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "bc56b605aaa7a9781fefd1bc576eb0d59bb20301",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-formulas-source.pdf",
+      "user_alias": "quality-final-1793127036-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 3757,
+        "response": {
+          "card_set_id": "set_593200154f8547ae91df93f089ead26a",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": false,
+          "latency_ms": 1714,
+          "usage": {
+            "input_tokens": 1022,
+            "output_tokens": 502
+          },
+          "cards": [
+            {
+              "card_id": "card_608371e84579439fa8d4c28058d98b1d",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения, плюс или минус удвоенное произведение первого на второе, плюс квадрат второго выражения.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_49cd85924542424b973519e336cad1e9",
+              "question": "Как раскрывается разность квадратов двух выражений?",
+              "reference_answer": "Разность квадратов двух выражений равна произведению разности этих выражений на их сумму.",
+              "source_page": 1,
+              "source_quote": "$a^{2} − b^{2} = (a − b)(a + b)$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_45b78233fe0e4cebad7ed483eee1198d",
+              "question": "Чему равна нулевая степень любого числа, отличного от нуля?",
+              "reference_answer": "Нулевая степень любого числа равна единице.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_e67eefc61da44bb290864668b678f046",
+              "question": "Как выражается основное тригонометрическое тождество через синус и косинус?",
+              "reference_answer": "Сумма квадратов синуса и косинуса равна единице.",
+              "source_page": 2,
+              "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_c839aef130a84cbfbace790e2b41653e",
+              "question": "Чему равен синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса угла на косинус этого же угла.",
+              "source_page": 2,
+              "source_quote": "$sin 2α = 2 sin α cos α$",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 908,
+        "response": {
+          "card_set_id": "set_593200154f8547ae91df93f089ead26a",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": false,
+          "latency_ms": 1714,
+          "usage": {
+            "input_tokens": 1022,
+            "output_tokens": 502
+          },
+          "cards": [
+            {
+              "card_id": "card_608371e84579439fa8d4c28058d98b1d",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения, плюс или минус удвоенное произведение первого на второе, плюс квадрат второго выражения.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_49cd85924542424b973519e336cad1e9",
+              "question": "Как раскрывается разность квадратов двух выражений?",
+              "reference_answer": "Разность квадратов двух выражений равна произведению разности этих выражений на их сумму.",
+              "source_page": 1,
+              "source_quote": "$a^{2} − b^{2} = (a − b)(a + b)$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_45b78233fe0e4cebad7ed483eee1198d",
+              "question": "Чему равна нулевая степень любого числа, отличного от нуля?",
+              "reference_answer": "Нулевая степень любого числа равна единице.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_e67eefc61da44bb290864668b678f046",
+              "question": "Как выражается основное тригонометрическое тождество через синус и косинус?",
+              "reference_answer": "Сумма квадратов синуса и косинуса равна единице.",
+              "source_page": 2,
+              "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_c839aef130a84cbfbace790e2b41653e",
+              "question": "Чему равен синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса угла на косинус этого же угла.",
+              "source_page": 2,
+              "source_quote": "$sin 2α = 2 sin α cos α$",
+              "difficulty": "intermediate"
+            }
+          ],
+          "session_id": "session_bfa070e12b1040da8f19658afb6cf36c",
+          "user_id": "quality-final-1793127036-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 6873,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формулировка абсолютно верна и полна. Замечаний нет.",
+            "missing_points": [],
+            "review_id": "review_51e15bdecb59405884d9ff364f983282",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ebb775b0049444fca5b2cfd6783668ca",
+            "latency_ms": 820,
+            "usage": {
+              "input_tokens": 248,
+              "output_tokens": 44
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1407,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно сформулировали правило разности квадратов.",
+            "missing_points": [],
+            "review_id": "review_7a4dbe755dcb469582666ee3ccd68e29",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_49390a97f40f412bbe880d35892fa5b6",
+            "latency_ms": 822,
+            "usage": {
+              "input_tokens": 220,
+              "output_tokens": 51
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 8479,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично получилось, вы абсолютно верно сформулировали правило! Уточнять ничего не нужно.",
+            "missing_points": [],
+            "review_id": "review_21ddc933556b4dd285fcf6b272a3a6c8",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_a1f11040983d421986a6a4b37f4be11c",
+            "latency_ms": 2853,
+            "usage": {
+              "input_tokens": 192,
+              "output_tokens": 43
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1332,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно сформулировали основное тригонометрическое тождество. Уточнений нет.",
+            "missing_points": [],
+            "review_id": "review_15ad42f5c47c4b368052c704866359e6",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_e38d3112c2d948f487e0ad9898c21b37",
+            "latency_ms": 752,
+            "usage": {
+              "input_tokens": 218,
+              "output_tokens": 61
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 3982,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно сформулировали формулу синуса двойного угла. Уточнение не требуется.",
+            "missing_points": [],
+            "review_id": "review_47eed53d12454ebe98eaae72c0bb6677",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_db795ff4dde649d884a598813d8e123e",
+            "latency_ms": 3366,
+            "usage": {
+              "input_tokens": 219,
+              "output_tokens": 58
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 1193,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 2119,
+        "output_tokens": 759,
+        "cost_usd": 0.0025332,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    },
+    {
+      "number": 2,
+      "fixture": "lab5-formulas-source.pdf",
+      "user_alias": "quality-final-1793127100-2",
+      "generation": {
+        "status": 201,
+        "wall_ms": 3463,
+        "response": {
+          "card_set_id": "set_84c09c7df5b447c695bc44fbcc9683a5",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": false,
+          "latency_ms": 2083,
+          "usage": {
+            "input_tokens": 1022,
+            "output_tokens": 473
+          },
+          "cards": [
+            {
+              "card_id": "card_fd34e024882c45928fa18c9e0b2d65be",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения плюс или минус удвоенное произведение первого на второе плюс квадрат второго выражения.",
+              "source_page": 1,
+              "source_quote": "(a ± b)^{2} = a^{2} ± 2ab + b^{2}",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_b890bbb77cbc47048635d9b89b550397",
+              "question": "Как раскрывается разность квадратов двух выражений?",
+              "reference_answer": "Разность квадратов двух выражений равна произведению разности этих выражений и их суммы.",
+              "source_page": 1,
+              "source_quote": "a^{2} − b^{2} = (a − b)(a + b)",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_e04a6d6ff2974966bcead1a92bc2faac",
+              "question": "Чему равна нулевая степень любого числа?",
+              "reference_answer": "Нулевая степень числа равна единице.",
+              "source_page": 1,
+              "source_quote": "a^{0} = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_ff3be3d74c51457f99b72ff64b44f297",
+              "question": "Каково основное тригонометрическое тождество?",
+              "reference_answer": "Сумма квадрата синуса и квадрата косинуса равна единице.",
+              "source_page": 2,
+              "source_quote": "sin^{2} α + cos^{2} β = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_dcb7bd4fab59486082bc1a13c29f625e",
+              "question": "Чему равен котангенс через синус и косинус?",
+              "reference_answer": "Котангенс угла равен отношению косинуса этого угла к синусу.",
+              "source_page": 2,
+              "source_quote": "ctg α = \\frac{cos α}{sin α}",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_ed558eb2d03e4567a5a06b3a7f919167",
+              "question": "Как выражается синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса исходного угла.",
+              "source_page": 2,
+              "source_quote": "sin 2α = 2 sin α cos α",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 681,
+        "response": {
+          "card_set_id": "set_84c09c7df5b447c695bc44fbcc9683a5",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": false,
+          "latency_ms": 2083,
+          "usage": {
+            "input_tokens": 1022,
+            "output_tokens": 473
+          },
+          "cards": [
+            {
+              "card_id": "card_fd34e024882c45928fa18c9e0b2d65be",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения плюс или минус удвоенное произведение первого на второе плюс квадрат второго выражения.",
+              "source_page": 1,
+              "source_quote": "(a ± b)^{2} = a^{2} ± 2ab + b^{2}",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_b890bbb77cbc47048635d9b89b550397",
+              "question": "Как раскрывается разность квадратов двух выражений?",
+              "reference_answer": "Разность квадратов двух выражений равна произведению разности этих выражений и их суммы.",
+              "source_page": 1,
+              "source_quote": "a^{2} − b^{2} = (a − b)(a + b)",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_e04a6d6ff2974966bcead1a92bc2faac",
+              "question": "Чему равна нулевая степень любого числа?",
+              "reference_answer": "Нулевая степень числа равна единице.",
+              "source_page": 1,
+              "source_quote": "a^{0} = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_ff3be3d74c51457f99b72ff64b44f297",
+              "question": "Каково основное тригонометрическое тождество?",
+              "reference_answer": "Сумма квадрата синуса и квадрата косинуса равна единице.",
+              "source_page": 2,
+              "source_quote": "sin^{2} α + cos^{2} β = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_dcb7bd4fab59486082bc1a13c29f625e",
+              "question": "Чему равен котангенс через синус и косинус?",
+              "reference_answer": "Котангенс угла равен отношению косинуса этого угла к синусу.",
+              "source_page": 2,
+              "source_quote": "ctg α = \\frac{cos α}{sin α}",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_ed558eb2d03e4567a5a06b3a7f919167",
+              "question": "Как выражается синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса исходного угла.",
+              "source_page": 2,
+              "source_quote": "sin 2α = 2 sin α cos α",
+              "difficulty": "intermediate"
+            }
+          ],
+          "session_id": "session_15f5a2b866cf48a4bb360c03a826f53e",
+          "user_id": "quality-final-1793127100-2",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 3817,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно сформулировали правило для квадрата суммы и разности.",
+            "missing_points": [],
+            "review_id": "review_c884c5b085c149438cef93ff854efc5c",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_b83d160699834e57a73566703848c704",
+            "latency_ms": 2411,
+            "usage": {
+              "input_tokens": 244,
+              "output_tokens": 54
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 2401,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно передали правило раскрытия разности квадратов через произведение разности и суммы выражений.",
+            "missing_points": [],
+            "review_id": "review_80500b77aadc49b7b3764e2a0a143c46",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_3362d5fd380d4192ad5a0ccb54e500c2",
+            "latency_ms": 875,
+            "usage": {
+              "input_tokens": 219,
+              "output_tokens": 60
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 9414,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично получилось, вы абсолютно верно указали правило для нулевой степени. Единственное уточнение: не забывайте, что это правило работает для любых чисел, кроме нуля.",
+            "missing_points": [],
+            "review_id": "review_e41a1bfbf6bd48698033fc7fa5c998e2",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_b4c4094ad32b4c7295a481b282439cfa",
+            "latency_ms": 2892,
+            "usage": {
+              "input_tokens": 183,
+              "output_tokens": 69
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 2921,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично получилось, вы абсолютно верно сформулировали основное тригонометрическое тождество.",
+            "missing_points": [],
+            "review_id": "review_e475261bfd2541f7a76829f0923fa12b",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_1cc27dcfcc8849ceaf03fd12919176b4",
+            "latency_ms": 874,
+            "usage": {
+              "input_tokens": 212,
+              "output_tokens": 45
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 6641,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно сформулировали определение котангенса через отношение косинуса к синусу. Попробуйте теперь вспомнить, чему равен тангенс.",
+            "missing_points": [],
+            "review_id": "review_b94e76bfffec4c2b9653e668ee832a9c",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_db586ca099ed4824a04ab3e0c6d9bdb9",
+            "latency_ms": 1076,
+            "usage": {
+              "input_tokens": 216,
+              "output_tokens": 64
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 522,
+        "card_count": 6
+      },
+      "totals": {
+        "input_tokens": 2096,
+        "output_tokens": 765,
+        "cost_usd": 0.0025413,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "completed",
+  "summary": {
+    "all_provider_calls_without_fallback": true,
+    "generation_p50_wall_ms": 3610,
+    "generation_p95_wall_ms": 3757,
+    "review_p50_wall_ms": 3900,
+    "review_p95_wall_ms": 9414,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 2,
+    "review_sample_size": 10,
+    "total_input_tokens": 4215,
+    "total_output_tokens": 1524,
+    "total_cost_usd": 0.0050745
+  }
+}

@@ -1,0 +1,1025 @@
+{
+  "experiment": "provider-prompt-only-ab",
+  "provider_called": true,
+  "provider": "google-gemini-api",
+  "requested_model": "gemini-3.5-flash-lite",
+  "actual_models": [
+    "gemini-3.5-flash-lite"
+  ],
+  "case_count": 20,
+  "parameters": {
+    "response_mime_type": "application/json",
+    "thinking_level": "low",
+    "max_output_tokens": 6000,
+    "temperature": "not sent",
+    "repeats": 1
+  },
+  "controlled_variables": [
+    "dataset",
+    "model",
+    "generation parameters",
+    "schema",
+    "grader"
+  ],
+  "changed_factor": "prompt_text_only",
+  "variant_a": {
+    "prompt": "v1",
+    "agreement": 0.95,
+    "tokens": 3843
+  },
+  "variant_b": {
+    "prompt": "v2",
+    "agreement": 1.0,
+    "tokens": 6380
+  },
+  "delta_agreement_pp": 5.0,
+  "decision": "B",
+  "selected_case_ids": [
+    "GEN-001",
+    "GEN-002",
+    "GEN-003",
+    "GEN-004",
+    "GEN-005",
+    "GEN-006",
+    "GEN-007",
+    "GEN-008",
+    "GEN-009",
+    "GEN-010",
+    "REV-001",
+    "REV-002",
+    "REV-003",
+    "REV-004",
+    "REV-005",
+    "REV-006",
+    "REV-007",
+    "REV-008",
+    "REV-009",
+    "REV-010"
+  ],
+  "cases": [
+    {
+      "id": "GEN-001",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 75,
+        "output_tokens": 148
+      },
+      "latency_ms": 6619.42,
+      "response": {
+        "title": "Кэш процессора",
+        "cards": [
+          {
+            "question": "Что такое кэш процессора?",
+            "reference_answer": "Это быстрая память, находящаяся между процессором и оперативной памятью.",
+            "source_page": 1,
+            "source_quote": "Кэш процессора — быстрая память между процессором и оперативной памятью.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Для чего предназначен кэш процессора?",
+            "reference_answer": "Он хранит копии часто используемых данных.",
+            "source_page": 1,
+            "source_quote": "Он хранит копии часто используемых данных.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-001",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 180,
+        "output_tokens": 115
+      },
+      "latency_ms": 6567.26,
+      "response": {
+        "title": "Кэш процессора",
+        "cards": [
+          {
+            "question": "Что представляет собой кэш процессора?",
+            "reference_answer": "Кэш процессора — это быстрая память, расположенная между процессором и оперативной памятью, которая хранит копии часто используемых данных.",
+            "source_page": 1,
+            "source_quote": "Кэш процессора — быстрая память между процессором и оперативной памятью. Он хранит копии часто используемых данных.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-002",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 78,
+        "output_tokens": 167
+      },
+      "latency_ms": 6618.66,
+      "response": {
+        "title": "Уровни кэша",
+        "cards": [
+          {
+            "question": "На какие уровни делится кэш?",
+            "reference_answer": "Кэш делится на уровни L1, L2 и L3.",
+            "source_page": 2,
+            "source_quote": "Кэш делится на уровни L1, L2 и L3.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Каковы характеристики каждого следующего уровня кэша по сравнению с предыдущим?",
+            "reference_answer": "Каждый следующий уровень обычно больше по объёму, но медленнее.",
+            "source_page": 2,
+            "source_quote": "Каждый следующий уровень обычно больше по объёму, но медленнее.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-002",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 183,
+        "output_tokens": 179
+      },
+      "latency_ms": 6337.92,
+      "response": {
+        "title": "Уровни кэш-памяти",
+        "cards": [
+          {
+            "question": "На какие уровни делится кэш?",
+            "reference_answer": "Кэш делится на три основных уровня: L1, L2 и L3.",
+            "source_page": 2,
+            "source_quote": "Кэш делится на уровни L1, L2 и L3.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Каковы основные характеристики каждого последующего уровня кэша по сравнению с предыдущим?",
+            "reference_answer": "Каждый следующий уровень кэша обычно обладает большим объемом, но работает медленнее предыдущего.",
+            "source_page": 2,
+            "source_quote": "Каждый следующий уровень обычно больше по объёму, но медленнее.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-003",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 73,
+        "output_tokens": 138
+      },
+      "latency_ms": 6329.68,
+      "response": {
+        "title": "Кэш-память",
+        "cards": [
+          {
+            "question": "Что такое промах кэша?",
+            "reference_answer": "Промах кэша — это ситуация, когда нужных данных нет в кэше, и процессор вынужден обращаться к оперативной памяти.",
+            "source_page": 3,
+            "source_quote": "Промах кэша происходит, когда нужных данных в кэше нет, и процессор обращается к оперативной памяти.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-003",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 178,
+        "output_tokens": 112
+      },
+      "latency_ms": 6142.96,
+      "response": {
+        "title": "Кэш-память",
+        "cards": [
+          {
+            "question": "Что происходит при промахе кэша?",
+            "reference_answer": "При промахе кэша нужных данных в кэше не оказывается, и процессор вынужден обращаться к оперативной памяти.",
+            "source_page": 3,
+            "source_quote": "Промах кэша происходит, когда нужных данных в кэше нет, и процессор обращается к оперативной памяти.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-004",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 70,
+        "output_tokens": 132
+      },
+      "latency_ms": 6501.23,
+      "response": {
+        "title": "TCP Connection Establishment",
+        "cards": [
+          {
+            "question": "С помощью какого процесса TCP устанавливает соединение перед обменом данными?",
+            "reference_answer": "С помощью трехстороннего рукопожатия (three-way handshake), состоящего из SYN, SYN-ACK и ACK.",
+            "source_page": 1,
+            "source_quote": "TCP перед обменом данными устанавливает соединение с помощью three-way handshake: SYN, SYN-ACK и ACK.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-004",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 175,
+        "output_tokens": 107
+      },
+      "latency_ms": 6248.09,
+      "response": {
+        "title": "TCP Handshake",
+        "cards": [
+          {
+            "question": "Каким образом TCP устанавливает соединение перед началом обмена данными?",
+            "reference_answer": "TCP устанавливает соединение с помощью процедуры three-way handshake, которая включает отправку сообщений SYN, SYN-ACK и ACK.",
+            "source_page": 1,
+            "source_quote": "TCP перед обменом данными устанавливает соединение с помощью three-way handshake: SYN, SYN-ACK и ACK.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-005",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 72,
+        "output_tokens": 306
+      },
+      "latency_ms": 6884.86,
+      "response": {
+        "title": "Протокол UDP",
+        "cards": [
+          {
+            "question": "Устанавливает ли соединение протокол UDP?",
+            "reference_answer": "Нет, UDP не устанавливает соединение.",
+            "source_page": 2,
+            "source_quote": "UDP не устанавливает соединение и не гарантирует доставку или порядок пакетов, но имеет меньшие накладные расходы.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Гарантирует ли UDP доставку или порядок пакетов?",
+            "reference_answer": "Нет, не гарантирует.",
+            "source_page": 2,
+            "source_quote": "UDP не устанавливает соединение и не гарантирует доставку или порядок пакетов, но имеет меньшие накладные расходы.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Какое преимущество имеет UDP по сравнению с протоколами, устанавливающими соединение?",
+            "reference_answer": "UDP имеет меньшие накладные расходы.",
+            "source_page": 2,
+            "source_quote": "UDP не устанавливает соединение и не гарантирует доставку или порядок пакетов, но имеет меньшие накладные расходы.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-005",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 177,
+        "output_tokens": 145
+      },
+      "latency_ms": 6207.6,
+      "response": {
+        "title": "Защита по UDP",
+        "cards": [
+          {
+            "question": "Каковы основные особенности протокола UDP в отношении установления соединения и доставки пакетов?",
+            "reference_answer": "UDP не устанавливает соединение, а также не гарантирует доставку или порядок пакетов, но при этом обладает меньшими накладными расходами.",
+            "source_page": 2,
+            "source_quote": "UDP не устанавливает соединение и не гарантирует доставку или порядок пакетов, но имеет меньшие накладные расходы.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-006",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 69,
+        "output_tokens": 143
+      },
+      "latency_ms": 6348.67,
+      "response": {
+        "title": "Первичные ключи в реляционных БД",
+        "cards": [
+          {
+            "question": "Что делает первичный ключ в таблице?",
+            "reference_answer": "Однозначно идентифицирует строку таблицы.",
+            "source_page": 1,
+            "source_quote": "Первичный ключ однозначно идентифицирует строку таблицы.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Могут ли значения первичного ключа повторяться?",
+            "reference_answer": "Нет, значения первичного ключа не должны повторяться.",
+            "source_page": 1,
+            "source_quote": "Значения первичного ключа не должны повторяться.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-006",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 174,
+        "output_tokens": 201
+      },
+      "latency_ms": 6270.67,
+      "response": {
+        "title": "Первичный ключ в базе данных",
+        "cards": [
+          {
+            "question": "Для чего предназначен первичный ключ в таблице?",
+            "reference_answer": "Первичный ключ служит для однозначной идентификации каждой отдельной строки таблицы.",
+            "source_page": 1,
+            "source_quote": "Первичный ключ однозначно идентифицирует строку таблицы.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Какое ключевое требование предъявляется к значениям первичного ключа?",
+            "reference_answer": "Значения первичного ключа обязательно должны быть уникальными и не должны повторяться.",
+            "source_page": 1,
+            "source_quote": "Значения первичного ключа не должны повторяться.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-007",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 74,
+        "output_tokens": 226
+      },
+      "latency_ms": 6849.14,
+      "response": {
+        "title": "Интексы в базах данных",
+        "cards": [
+          {
+            "question": "Какую главную задачу выполняет индекс?",
+            "reference_answer": "Индекс ускоряет чтение строк по индексируемым полям.",
+            "source_page": 2,
+            "source_quote": "Индекс ускоряет чтение строк по индексируемым полям, но занимает место и замедляет вставки и обновления.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Какие негативные последствия возникают при использовании индексов?",
+            "reference_answer": "Индекс занимает дополнительное место и замедляет операции вставки и обновления.",
+            "source_page": 2,
+            "source_quote": "Индекс ускоряет чтение строк по индексируемым полям, но занимает место и замедляет вставки и обновления.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-007",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 179,
+        "output_tokens": 197
+      },
+      "latency_ms": 6569.36,
+      "response": {
+        "title": "Индексы в базах данных",
+        "cards": [
+          {
+            "question": "Какую главную функцию выполняет индекс в базе данных?",
+            "reference_answer": "Индекс ускоряет чтение строк по тем полям, по которым он был построен.",
+            "source_page": 2,
+            "source_quote": "Индекс ускоряет чтение строк по индексируемым полям, но занимает место и замедляет вставки и обновления.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "К каким негативным последствиям приводит создание индекса?",
+            "reference_answer": "Индекс требует дополнительного места в памяти и приводит к замедлению операций вставки и обновления данных.",
+            "source_page": 2,
+            "source_quote": "Индекс ускоряет чтение строк по индексируемым полям, но занимает место и замедляет вставки и обновления.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-008",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 84,
+        "output_tokens": 89
+      },
+      "latency_ms": 6353.72,
+      "response": {
+        "title": "Сортировка пузырьком",
+        "cards": [
+          {
+            "question": "Какова сложность сортировки пузырьком в худшем и среднем случае?",
+            "reference_answer": "O(n²) сравнений",
+            "source_page": 1,
+            "source_quote": "В худшем и среднем случае сортировка пузырьком выполняет O(n²) сравнений.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-008",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 189,
+        "output_tokens": 241
+      },
+      "latency_ms": 6498.69,
+      "response": {
+        "title": "Сортировка пузырьком",
+        "cards": [
+          {
+            "question": "Какова сложность сортировки пузырьком в худшем и среднем случае по количеству сравнений?",
+            "reference_answer": "В худшем и среднем случае сортировка пузырьком выполняет O(n²) сравнений.",
+            "source_page": 1,
+            "source_quote": "В худшем и среднем случае сортировка пузырьком выполняет O(n²) сравнений.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "При каком условии сортировка пузырьком завершается за O(n) в лучшем случае?",
+            "reference_answer": "В лучшем случае с флагом обмена сортировка пузырьком завершается за O(n).",
+            "source_page": 1,
+            "source_quote": "В лучшем случае с флагом обмена она завершается за O(n).",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-009",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 81,
+        "output_tokens": 206
+      },
+      "latency_ms": 7118.02,
+      "response": {
+        "title": "Бинарный поиск",
+        "cards": [
+          {
+            "question": "Какова временная сложность бинарного поиска?",
+            "reference_answer": "Сложность бинарного поиска составляет O(log n).",
+            "source_page": 2,
+            "source_quote": "Сложность — O(log n).",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Как бинарный поиск выбирает элемент для сравнения с целью?",
+            "reference_answer": "Он сравнивает цель со средним элементом отсортированного массива.",
+            "source_page": 2,
+            "source_quote": "Бинарный поиск сравнивает цель со средним элементом отсортированного массива и отбрасывает половину диапазона.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-009",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 186,
+        "output_tokens": 223
+      },
+      "latency_ms": 6545.45,
+      "response": {
+        "title": "Бинарный поиск",
+        "cards": [
+          {
+            "question": "Как работает бинарный поиск и какое требование предъявляется к массиву?",
+            "reference_answer": "Бинарный поиск сравнивает цель со средним элементом отсортированного массива и отбрасывает половину диапазона.",
+            "source_page": 2,
+            "source_quote": "Бинарный поиск сравнивает цель со средним элементом отсортированного массива и отбрасывает половину диапазона.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Какова временная сложность алгоритма бинарного поиска?",
+            "reference_answer": "Сложность бинарного поиска составляет O(log n).",
+            "source_page": 2,
+            "source_quote": "Сложность — O(log n).",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-010",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 76,
+        "output_tokens": 72
+      },
+      "latency_ms": 6302.76,
+      "response": {
+        "title": "Виртуальная память",
+        "cards": [
+          {
+            "question": "Что предоставляет виртуальная память процессу?",
+            "reference_answer": "Собственное адресное пространство.",
+            "source_page": 1,
+            "source_quote": "Виртуальная память даёт процессу собственное адресное пространство.",
+            "difficulty": "basic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "GEN-010",
+      "repeat": 1,
+      "operation": "generate_card",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 181,
+        "output_tokens": 201
+      },
+      "latency_ms": 6574.7,
+      "response": {
+        "title": "Виртуальная память",
+        "cards": [
+          {
+            "question": "Что предоставляет виртуальная память процессу?",
+            "reference_answer": "Виртуальная память предоставляет процессу его собственное адресное пространство.",
+            "source_page": 1,
+            "source_quote": "Виртуальная память даёт процессу собственное адресное пространство.",
+            "difficulty": "basic"
+          },
+          {
+            "question": "Каким образом операционная система работает с виртуальной памятью?",
+            "reference_answer": "Операционная система отображает виртуальные страницы на физическую память и при необходимости задействует диск.",
+            "source_page": 1,
+            "source_quote": "ОС отображает виртуальные страницы на физическую память и при необходимости использует диск.",
+            "difficulty": "intermediate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "REV-001",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 85,
+        "output_tokens": 49
+      },
+      "latency_ms": 5971.28,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Ответ студента полностью совпадает с эталоном по смыслу.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-001",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 222,
+        "output_tokens": 57
+      },
+      "latency_ms": 6161.83,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, суть передана верно! Уточните, как RAM расшифровывается в данном контексте.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-002",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 72,
+        "output_tokens": 85
+      },
+      "latency_ms": 6479.34,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Студент верно указал на отсутствие установления соединения и скорость, но упустил ключевые моменты про отсутствие гарантий доставки и порядка, а также накладные расходы.",
+        "missing_points": [
+          "Нет гарантий доставки",
+          "Нет гарантий порядка пакетов",
+          "Меньше накладных расходов"
+        ]
+      }
+    },
+    {
+      "id": "REV-002",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 208,
+        "output_tokens": 97
+      },
+      "latency_ms": 6407.23,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Вы отлично отметили скорость и отсутствие соединения, но уточните, пожалуйста, за счет чего достигается этот выигрыш (какие накладные расходы снижаются и чем приходится жертвовать в плане гарантий).",
+        "missing_points": [
+          "Нет гарантий доставки и порядка пакетов"
+        ]
+      }
+    },
+    {
+      "id": "REV-003",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 68,
+        "output_tokens": 85
+      },
+      "latency_ms": 5941.22,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Ответ неверный. Первичный ключ предназначен для однозначной идентификации строк и обеспечения их уникальности, а не для сортировки.",
+        "missing_points": [
+          "Однозначно идентифицирует строку",
+          "Значения уникальны"
+        ]
+      }
+    },
+    {
+      "id": "REV-003",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 201,
+        "output_tokens": 69
+      },
+      "latency_ms": 6146.77,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "К сожалению, это неверно. Первичный ключ нужен для однозначной идентификации строк и обеспечения уникальности их значений, а не для сортировки.",
+        "missing_points": [
+          "Однозначно идентифицирует строку",
+          "Значения уникальны"
+        ]
+      }
+    },
+    {
+      "id": "REV-004",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 77,
+        "output_tokens": 53
+      },
+      "latency_ms": 6179.57,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Ответ студента полностью совпадает с эталоном и перечисляет все четыре свойства ACID.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-004",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 211,
+        "output_tokens": 38
+      },
+      "latency_ms": 5939.67,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ, все свойства ACID названы правильно и точно.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-005",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 79,
+        "output_tokens": 124
+      },
+      "latency_ms": 6152.39,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Студент указал неверную сложность O(n), в то время как правильная сложность пузырьковой сортировки составляет O(n²) в среднем и худшем случае, и O(n) только в лучшем случае.",
+        "missing_points": [
+          "Сложность O(n²) в среднем и худшем случае",
+          "Сложность O(n) в лучшем случае с ранним выходом"
+        ]
+      }
+    },
+    {
+      "id": "REV-005",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 227,
+        "output_tokens": 90
+      },
+      "latency_ms": 5985.04,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Вы назвали только лучший случай для одной из модификаций, но не учли общую сложность. Уточните, какова сложность алгоритма в среднем и худшем случае.",
+        "missing_points": [
+          "O(n²) в худшем и среднем случае"
+        ]
+      }
+    },
+    {
+      "id": "REV-006",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 65,
+        "output_tokens": 81
+      },
+      "latency_ms": 5992.06,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Студент верно указал, что индекс занимает дополнительное место, но упустил из виду влияние на скорость вставки и обновления данных.",
+        "missing_points": [
+          "Более медленные вставки и обновления"
+        ]
+      }
+    },
+    {
+      "id": "REV-006",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 203,
+        "output_tokens": 88
+      },
+      "latency_ms": 6153.47,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Вы отлично заметили, что индекс требует дополнительного места для хранения. Уточните, как именно использование индекса влияет на скорость операций записи, таких как вставки и обновления.",
+        "missing_points": [
+          "Замедление вставок и обновлений"
+        ]
+      }
+    },
+    {
+      "id": "REV-007",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 71,
+        "output_tokens": 44
+      },
+      "latency_ms": 6051.55,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Ответ полностью совпадает с эталоном.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-007",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 213,
+        "output_tokens": 54
+      },
+      "latency_ms": 6076.86,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ, формула и её словесное описание указаны абсолютно верно. Так держать!",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-008",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 74,
+        "output_tokens": 116
+      },
+      "latency_ms": 6222.01,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Ответ студента неверен. Бинарный поиск не перебирает элементы по очереди (это линейный поиск), а делит отсортированный диапазон пополам.",
+        "missing_points": [
+          "Упорядоченность нужна для сравнения со средним элементом",
+          "Упорядоченность нужна для отбрасывания половины диапазона на каждом шаге"
+        ]
+      }
+    },
+    {
+      "id": "REV-008",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 211,
+        "output_tokens": 124
+      },
+      "latency_ms": 6427.89,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Вы верно указали на перебор элементов, но бинарный поиск не перебирает их по очереди. Уточните, как знание порядка элементов и сравнение со средним элементом помогает быстрее находить нужное значение, отбрасывая целые части диапазона.",
+        "missing_points": [
+          "Не упомянуто сравнение со средним элементом",
+          "Не указано отбрасывание половины диапазона"
+        ]
+      }
+    },
+    {
+      "id": "REV-009",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": false,
+      "usage": {
+        "input_tokens": 72,
+        "output_tokens": 52
+      },
+      "latency_ms": 6080.03,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Студент верно указал ключевое отличие: потоки используют общую память процесса.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-009",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 204,
+        "output_tokens": 81
+      },
+      "latency_ms": 5947.95,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Вы верно отметили, что потоки используют общую память. Уточните, пожалуйста, чем в этом отношении отличаются процессы друг от друга.",
+        "missing_points": [
+          "Процессы имеют отдельные адресные пространства"
+        ]
+      }
+    },
+    {
+      "id": "REV-010",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "A",
+      "correct": true,
+      "usage": {
+        "input_tokens": 63,
+        "output_tokens": 49
+      },
+      "latency_ms": 6089.57,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Ответ студента полностью совпадает по смыслу с эталоном.",
+        "missing_points": []
+      }
+    },
+    {
+      "id": "REV-010",
+      "repeat": 1,
+      "operation": "review_answer",
+      "variant": "B",
+      "correct": true,
+      "usage": {
+        "input_tokens": 205,
+        "output_tokens": 54
+      },
+      "latency_ms": 6076.95,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы абсолютно верно указали, что сервер не смог найти запрошенный ресурс.",
+        "missing_points": []
+      }
+    }
+  ],
+  "passed": true,
+  "run_at": "2026-10-17T14:24:09.664408+00:00",
+  "dataset": "docs/quality/golden-dataset/dataset.jsonl",
+  "mode": "provider"
+}

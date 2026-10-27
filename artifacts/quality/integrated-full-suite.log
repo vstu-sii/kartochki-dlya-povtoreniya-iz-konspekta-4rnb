@@ -1,0 +1,9 @@
+model-and-guards: exit 0
+application: exit 0
+security-before: exit 0
+security-after: exit 0
+retrieval: exit 0
+algorithm-regression: exit 0
+prompt-contract: exit 0
+unit-and-integration: exit 0
+{"passed": true, "coverage": {"expected": 132, "executed_unique": 132, "missing_ids": [], "unexpected_ids": [], "overlap_ids": ["SAFE-001", "SAFE-002", "SAFE-004", "SAFE-005", "SAFE-007", "SAFE-008", "SAFE-009", "SAFE-010", "SAFE-LIVE-001", "SAFE-LIVE-002", "SEC-L4-001", "SEC-L4-002"]}}

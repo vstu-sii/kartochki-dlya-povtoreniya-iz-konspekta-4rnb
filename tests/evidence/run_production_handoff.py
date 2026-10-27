@@ -90,7 +90,7 @@ def main() -> int:
             report["health"] = {"status": status, "elapsed_ms": elapsed, "body": health}
             if status != 200:
                 raise RuntimeError(f"health returned HTTP {status}")
-    
+
             for index in range(args.scenarios):
                 fixture = fixtures[index % len(fixtures)]
                 user_id = f"quality-final-{int(time.time())}-{index + 1}"
@@ -114,7 +114,7 @@ def main() -> int:
                     raise RuntimeError(f"scenario {index + 1}: PDF generation HTTP {status}: {generated}")
                 if not args.allow_fallback:
                     assert_provider_call(generated, f"scenario {index + 1} generation")
-    
+
                 status_session, elapsed_session, session = request_json(
                     client,
                     "POST",
@@ -123,7 +123,7 @@ def main() -> int:
                 )
                 if status_session != 201:
                     raise RuntimeError(f"scenario {index + 1}: session HTTP {status_session}: {session}")
-    
+
                 reviews = current["reviews"]
                 if not generated.get("cards"):
                     raise RuntimeError(f"scenario {index + 1}: no cards generated")
@@ -152,8 +152,8 @@ def main() -> int:
                         assert_provider_call(review, f"scenario {index + 1} review {card_index}")
                     if review.get("persisted") is not True or not review.get("review_id"):
                         raise RuntimeError(f"scenario {index + 1} review {card_index}: persistence not acknowledged")
-    
-    
+
+
                 reopen_status, reopen_elapsed, reopened = request_json(
                     client,
                     "GET",
@@ -162,7 +162,7 @@ def main() -> int:
                 )
                 if reopen_status != 200 or len(reopened.get("cards", [])) != len(generated["cards"]):
                     raise RuntimeError(f"scenario {index + 1}: persisted cards did not reopen: {reopened}")
-    
+
                 calls = [generated, *(item["response"] for item in reviews)]
                 input_tokens = sum(int(item.get("usage", {}).get("input_tokens", 0)) for item in calls)
                 output_tokens = sum(int(item.get("usage", {}).get("output_tokens", 0)) for item in calls)
