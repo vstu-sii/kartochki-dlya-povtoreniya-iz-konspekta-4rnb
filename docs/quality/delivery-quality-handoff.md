@@ -1,5 +1,11 @@
 # Delivery → Quality: Lab 5 handoff
 
+## Новый кандидат с повторной проверкой формул
+
+Релизный тег `v0.5.5-integrated-candidate` указывает на SHA `bc56b605aaa7a9781fefd1bc576eb0d59bb20301`; [deployment workflow](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563347798) прошёл, `/health` подтвердил тот же SHA. На этом теге прошли [release CI](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748214), [полный deterministic quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748484) и [integrated quality с Grafana](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748147). Данные и логи размещены в артефактах соответствующих запусков.
+
+Два последовательных формульных PDF-сценария с `gemini-3.5-flash-lite` прошли без fallback: всего две генерации и десять проверок ответов, результаты сохранены. [Сырые ответы, время, usage и расчёт](../../artifacts/quality/lab5-production-final/gemini-formula-bc56.json). Генерация p95 3,757 с (n=2); разбор p95 9,414 с (n=10), nearest-rank: порог ≤7 с не достигнут, выборка мала. Исторические ошибки и один успешный вызов прежней версии сохранены в разделах ниже. Эти два удачных сценария не гарантируют отсутствие ошибок на других документах.
+
 ## Интегрированный кандидат 27.10.2026
 
 - Общий SHA: `7e19d89a8dcf198d2f62de1f051c9e8038a8c5a4`; новый тег `v0.5.4-integrated-candidate` включает AI `597a245` и Quality `9685b3e`.

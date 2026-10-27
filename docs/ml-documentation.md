@@ -1,5 +1,9 @@
 # Передача AI-части
 
+## Текущее проверенное окружение
+
+Production-кандидат: `v0.5.5-integrated-candidate`, SHA `bc56b605aaa7a9781fefd1bc576eb0d59bb20301`. В Render `MODEL_PROVIDER=gemini`, основная и экономичная модель — `gemini-3.5-flash-lite`; ключ задаётся только секретом окружения. После смены модели повторите quality evals: предыдущий deterministic gate не измеряет Gemini. При некорректном выводе генерации предусмотрена одна повторная попытка, отклонённая цитата не принимается, fallback не кэшируется. Сценарий проверки и исходные результаты: `tests/evidence/run_production_handoff.py`, `artifacts/quality/lab5-production-final/gemini-formula-bc56.json`; для повторения потребуется доступный ключ в среде приложения. Сравните модель, SHA, fallback и usage в ответе; текущее приложение не раскрывает текст промпта в trace по умолчанию.
+
 ## Контракт
 
 `BaselineModel.generate(payload)` возвращает CardSet со ссылкой на страницу/цитату; `review(payload)` возвращает `correct|partially_correct|incorrect`, score, feedback и missing points. Публичные маршруты описаны в `api/openapi.yaml`.

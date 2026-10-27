@@ -1,5 +1,11 @@
 # Финальный отчёт качества Lab 5
 
+## Актуальное объединение AI, Quality и Delivery — 27.10.2026
+
+На интегрированном теге `v0.5.5-integrated-candidate` и SHA `bc56b605aaa7a9781fefd1bc576eb0d59bb20301` [полный release quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748484) и [сборка](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748214) прошли; JSON и логи находятся в артефактах запусков. Автоматический gate использует deterministic-модель. Результаты прежнего тега ниже сохранены как история.
+
+Дополнительно на публичном стенде этого SHA выполнены два сценария с формульным PDF и десять разборов через `gemini-3.5-flash-lite` без fallback: p95 загрузки и генерации 3,757 с (n=2), p95 разбора 9,414 с (n=10); nearest-rank. Цель разбора ≤7 с в этом небольшом замере не достигнута, устойчивость p95 на такой выборке ограничена. [Сырые данные](../../artifacts/quality/lab5-production-final/gemini-formula-bc56.json). Эти данные не заменяют полную ручную оценку качества Gemini и не подтверждают устойчивую работу на любых PDF.
+
 ## Релиз `v0.5.1`, 19.10.2026
 
 Команда `python tests/evals/run_release_evals.py --release-ref WORKTREE` запускает восемь групп. Объединённое покрытие — **132/132** уникальных golden-кейса, пропусков нет. Двенадцать security-кейсов намеренно проверены и model-, и application-runner; это перекрёстная проверка, а не недостающее покрытие. На теге тот же runner обязан завершиться зелёным.
