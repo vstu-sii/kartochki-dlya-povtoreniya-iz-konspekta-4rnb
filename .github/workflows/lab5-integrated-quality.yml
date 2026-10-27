@@ -2,7 +2,7 @@ name: Lab5 integrated release quality
 
 on:
   push:
-    branches: [lab5-integrated-quality]
+    branches: [lab5-integrated-quality, lab5-delivery-testing, lab5-ai-testing, lab5-quality-testing]
     tags: ["v0.5.*"]
   workflow_dispatch:
 
