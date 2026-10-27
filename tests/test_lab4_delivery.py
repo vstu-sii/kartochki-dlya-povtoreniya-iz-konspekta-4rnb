@@ -41,6 +41,8 @@ class Lab4DeliverySecurityTest(unittest.TestCase):
             created = run_immediate(generate_card_set(payload, key, db, "owner"))
             repeated = run_immediate(generate_card_set(payload, key, db, "owner"))
             self.assertEqual(created["card_set_id"], repeated["card_set_id"])
+            self.assertTrue(created["trace_id"].startswith("tr_"))
+            self.assertEqual(created["trace_id"], repeated["trace_id"])
 
             with self.assertRaises(HTTPException) as missing:
                 run_immediate(generate_card_set(payload, key, db, None))

@@ -82,6 +82,33 @@ class BaselineTest(unittest.TestCase):
         self.assertEqual("correct", result["verdict"])
         self.assertIn("trace_id", result)
 
+    def test_gemini_generation_contract_requires_exact_requested_count(self):
+        schema = self.model._cards_schema(5)
+        self.assertEqual(5, schema["properties"]["cards"]["minItems"])
+        self.assertEqual(5, schema["properties"]["cards"]["maxItems"])
+
+        result = {
+            "title": "Недостаточный набор",
+            "cards": [
+                {
+                    "question": f"Вопрос {index}?",
+                    "reference_answer": "Кэш ускоряет доступ к данным.",
+                    "source_page": 1,
+                    "source_quote": "Кэш ускоряет доступ к данным.",
+                    "difficulty": "basic",
+                }
+                for index in range(4)
+            ],
+        }
+        with self.assertRaisesRegex(ValueError, "wrong card count"):
+            self.model._normalize_generated_cards(
+                result,
+                {
+                    "pages": [{"page": 1, "text": "Кэш ускоряет доступ к данным."}],
+                    "requested_card_count": 5,
+                },
+            )
+
     def test_pdf_heading_is_not_used_as_question_topic(self):
         text = (
             "1 Лабораторная работа №3\n"

@@ -147,6 +147,22 @@ def request_fingerprint(request: GenerateRequest) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:32]
 
 
+def stored_trace_id(idempotency_trace: str, model_trace: object) -> str:
+    """Persist idempotency identity and the provider trace without a migration."""
+    if isinstance(model_trace, str) and model_trace.startswith("tr_"):
+        return f"{idempotency_trace}|{model_trace}"
+    return idempotency_trace
+
+
+def idempotency_trace_id(value: str) -> str:
+    return value.partition("|")[0]
+
+
+def model_trace_id(value: str) -> str | None:
+    _identity, separator, trace_id = value.partition("|")
+    return trace_id if separator and trace_id.startswith("tr_") else None
+
+
 @router.post("/card-sets", status_code=201)
 async def generate_card_set(
     request: GenerateRequest,
@@ -166,7 +182,7 @@ async def generate_card_set(
     trace_prefix = f"idem:{scope}:"
     existing = db.scalar(select(CardSet).where(CardSet.trace_id.like(f"{trace_prefix}%")))
     if existing:
-        if existing.trace_id != f"{trace_prefix}{fingerprint}":
+        if idempotency_trace_id(existing.trace_id) != f"{trace_prefix}{fingerprint}":
             raise HTTPException(status_code=409, detail={"code": "IDEMPOTENCY_CONFLICT"})
         return serialize_set(existing)
 
@@ -205,7 +221,7 @@ async def generate_card_set(
         model=result["model"],
         prompt_version=result["prompt_version"],
         fallback_used=result.get("fallback_used", False),
-        trace_id=f"{trace_prefix}{fingerprint}",
+        trace_id=stored_trace_id(f"{trace_prefix}{fingerprint}", result.get("trace_id")),
         latency_ms=result.get("latency_ms", 0),
         input_tokens=result.get("usage", {}).get("input_tokens", 0),
         output_tokens=result.get("usage", {}).get("output_tokens", 0),
@@ -444,6 +460,7 @@ def serialize_set(card_set: CardSet) -> dict:
         "model": card_set.model,
         "prompt_version": card_set.prompt_version,
         "fallback_used": card_set.fallback_used,
+        "trace_id": model_trace_id(card_set.trace_id),
         "latency_ms": card_set.latency_ms,
         "usage": {"input_tokens": card_set.input_tokens, "output_tokens": card_set.output_tokens},
         "cards": [
