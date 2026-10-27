@@ -320,7 +320,11 @@ async def review_answer(
     )
     db.add(review)
     db.commit()
-    return result
+    db.refresh(review)
+    response = dict(result)
+    response["review_id"] = review.id
+    response["persisted"] = True
+    return response
 
 
 @router.get("/card-sets/latest")
