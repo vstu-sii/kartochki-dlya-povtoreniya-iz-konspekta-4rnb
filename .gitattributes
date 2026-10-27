@@ -3,3 +3,5 @@ artifacts/evals/lab1-ai-quality-evidence.json -text whitespace=cr-at-eol
 artifacts/evals/lab1-ai-quality-evidence-after-fix.json -text whitespace=cr-at-eol
 artifacts/quality/lab5-handoff-2026-10-27/** -text whitespace=cr-at-eol
 docs/quality/lab1-ai-evidence-after-fix.md -text whitespace=cr-at-eol
+artifacts/evals/lab1-ai-quality-evidence-after-fix-v5.json -text whitespace=cr-at-eol
+artifacts/quality/lab5-handoff-v5-2026-10-27/** -text whitespace=cr-at-eol

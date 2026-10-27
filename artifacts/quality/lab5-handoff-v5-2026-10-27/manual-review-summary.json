@@ -1,0 +1,61 @@
+{
+  "review_date": "2026-10-27",
+  "case_ids": [
+    "REV-001",
+    "REV-002",
+    "REV-003",
+    "REV-004",
+    "REV-005",
+    "REV-006",
+    "REV-007",
+    "REV-008",
+    "REV-009",
+    "REV-010",
+    "REV-011",
+    "REV-012",
+    "REV-013",
+    "REV-014",
+    "REV-015",
+    "REV-016",
+    "REV-017",
+    "REV-018",
+    "REV-019",
+    "REV-020"
+  ],
+  "reviewers": [
+    "Ткаченко С. А.",
+    "Цвилева В. А."
+  ],
+  "reviewed": 20,
+  "counts": {
+    "no_contradiction": 20,
+    "mandatory_points_complete": 20,
+    "critical_tone_violation": 0,
+    "minor_tone_violation": 0
+  },
+  "metrics": {
+    "no_contradiction_rate": 1.0,
+    "mandatory_points_complete_rate": 1.0,
+    "critical_tone_violations": 0,
+    "minor_tone_violation_rate": 0.0
+  },
+  "targets_met": {
+    "no_contradiction": true,
+    "mandatory_points_complete": true,
+    "critical_tone": true,
+    "minor_tone": true
+  },
+  "all_review_targets_met": true,
+  "before_metrics": {
+    "no_contradiction_rate": 0.8,
+    "mandatory_points_complete_rate": 0.35,
+    "critical_tone_violations": 0,
+    "minor_tone_violation_rate": 0.0
+  },
+  "source_revision_as_reported": {
+    "git_sha": "57e8ee98c7cf1dac02ff2928ca0fefb0558b2170",
+    "working_tree_clean": true
+  },
+  "scope": "Joint review of supplied deterministic v5 snapshot, not release acceptance or a full provider eval.",
+  "reviewed_snapshot_sha256": "f5061e36a2500a7aecfa7380841d1909dbd7914427dc77637083d2ee6923381e"
+}
