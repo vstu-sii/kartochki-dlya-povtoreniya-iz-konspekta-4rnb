@@ -418,6 +418,7 @@ class BaselineModel:
             parts = self._learning_fragments(page["text"])
             sentences = [part for part in parts if self._is_learning_fragment(part)]
             sources.extend((page["page"], sentence) for sentence in (sentences or [page["text"].strip()]))
+        page_texts = {page["page"]: page["text"] for page in payload["pages"]}
         requested = payload.get("requested_card_count", 5)
         cards = []
         unique = {}
@@ -431,11 +432,20 @@ class BaselineModel:
                     "question": self._question_for(sentence),
                     "reference_answer": sentence[:1200],
                     "source_page": page,
-                    "source_quote": sentence[:500],
+                    "source_quote": self._original_source_quote(sentence, page_texts[page]),
                     "difficulty": "basic" if index < 2 else "intermediate",
                 }
             )
         return {"title": "Карточки по загруженному материалу", "cards": cards}
+
+    @staticmethod
+    def _original_source_quote(sentence: str, page_text: str) -> str:
+        """Keep display text reflowed, but cite a verbatim span of the PDF."""
+        pattern = r"\s+".join(re.escape(word) for word in sentence.split())
+        match = re.search(pattern, page_text) if pattern else None
+        if not match:
+            raise ValueError("Deterministic card is not grounded in the PDF")
+        return match.group(0)[:500]
 
     @classmethod
     def _learning_fragments(cls, value: str) -> list[str]:
