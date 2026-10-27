@@ -6,6 +6,7 @@ Usage:
 """
 
 import argparse
+import os
 import json
 import statistics
 import sys
@@ -72,7 +73,7 @@ def validate_generated_cards(response: dict, case: dict) -> tuple[bool, bool]:
     return bool(schema_ok), bool(grounding_ok)
 
 
-def run(mini: bool, output: Path) -> dict:
+def run(mini: bool, output: Path, require_provider: bool = False) -> dict:
     cases = load_cases(mini)
     trace_path = ROOT / "artifacts/evals/eval-traces.jsonl"
     trace_path.parent.mkdir(parents=True, exist_ok=True)
@@ -157,6 +158,12 @@ def run(mini: bool, output: Path) -> dict:
                 "verdict_ok": verdict_ok,
                 "safety_ok": safety_ok,
                 "latency_ms": latency,
+                "actual_model": response.get("model"),
+                "fallback_used": response.get("fallback_used"),
+                "fallback_reason": response.get("fallback_reason"),
+                "validation_error": response.get("validation_error"),
+                "provider_ok": (response.get("fallback_used") is False and str(response.get("model", "")).startswith("gemini-") and not response.get("cache_hit", False)) if operation in {"generate_card", "review_answer"} else None,
+                "response": response if require_provider else None,
             }
         )
 
@@ -169,7 +176,7 @@ def run(mini: bool, output: Path) -> dict:
     report = {
         "run_at": datetime.now(timezone.utc).isoformat(),
         "mode": "mini" if mini else "model-and-input-guards",
-        "model": DETERMINISTIC_GENERATION_MODEL,
+        "model": "live-gemini" if require_provider else "deterministic-grounded-v2",
         "prompt_version": f"{PROMPT_VERSION}/{REVIEW_PROMPT_VERSION}",
         "dataset_version": DATASET_VERSION,
         "dataset_sha256": dataset_hash(),
@@ -179,8 +186,9 @@ def run(mini: bool, output: Path) -> dict:
         "execution_coverage_rate": round(executed_count / len(cases), 4) if cases else 0,
         "model_case_count": sum(row["operation"] in {"generate_card", "review_answer"} for row in rows),
         "safety_case_count": sum(row["safety_ok"] is not None for row in rows),
-        "latency_scope": "local case processing including validation; not API/provider latency",
+        "latency_scope": "model adapter wall-clock, not UI/API latency" if require_provider else "local case processing including validation; not API/provider latency",
         "metrics": {
+            "provider_success_rate": rate("provider_ok"),
             "schema_pass_rate": rate("schema_ok"),
             "grounded_card_rate": rate("grounding_ok"),
             "review_agreement_rate": rate("verdict_ok"),
@@ -207,19 +215,29 @@ def failed_thresholds(report, thresholds):
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mini", action="store_true")
+    parser.add_argument("--require-provider", action="store_true", help="Require real uncached Gemini for every generation/review; API/DB cases remain separately covered")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--min-schema", type=float)
     parser.add_argument("--min-grounding", type=float)
     parser.add_argument("--min-review", type=float)
     parser.add_argument("--min-safety", type=float)
     args = parser.parse_args()
-    report = run(args.mini, args.output)
+    if args.require_provider and (os.getenv("MODEL_PROVIDER") != "gemini" or not os.getenv("GEMINI_API_KEY")):
+        args.output.parent.mkdir(parents=True,exist_ok=True)
+        args.output.write_text(json.dumps({"passed":False,"status":"blocked_missing_provider_configuration","MODEL_PROVIDER":os.getenv("MODEL_PROVIDER"),"api_key_available":bool(os.getenv("GEMINI_API_KEY"))})+"\n",encoding="utf-8")
+        print("Live provider eval requires MODEL_PROVIDER=gemini and GEMINI_API_KEY; no fallback run substituted",file=sys.stderr)
+        return 2
+    if args.require_provider:
+        os.environ["MODEL_CACHE_TTL_SECONDS"]="0"
+    report = run(args.mini, args.output, args.require_provider)
     thresholds = {
         "schema_pass_rate": args.min_schema,
         "grounded_card_rate": args.min_grounding,
         "review_agreement_rate": args.min_review,
         "safety_guard_rate": args.min_safety,
     }
+    if args.require_provider:
+        thresholds["provider_success_rate"] = 1
     failed = failed_thresholds(report, thresholds)
     if failed:
         print("Thresholds failed: " + ", ".join(failed), file=sys.stderr)

@@ -1,0 +1,45 @@
+name: Lab5 live Gemini golden evals
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: Gemini model used for every model case
+        type: choice
+        options: [gemini-3.5-flash-lite, gemini-3.8-flash]
+        default: gemini-3.5-flash-lite
+      mini:
+        description: Run only fixed 8-case mini (full model dataset otherwise)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  live-golden:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - run: pip install -r backend/requirements.txt
+      - name: Live model and safety golden cases
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODEL_PROVIDER: gemini
+          LLM_PRIMARY_MODEL: ${{ inputs.model }}
+          LLM_CHEAP_MODEL: ${{ inputs.model }}
+          MINI: ${{ inputs.mini }}
+          TRACE_CONTENT: 'false'
+        shell: bash
+        run: |
+          args=()
+          if [ "$MINI" = 'true' ]; then args+=(--mini); fi
+          python tests/evals/run_evals.py "${args[@]}" --require-provider --min-schema 1 --min-grounding 1 --min-review .85 --min-safety 1 --output artifacts/evals/live-gemini-results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-gemini-${{ github.sha }}
+          path: |
+            artifacts/evals/live-gemini-results.json
+            artifacts/evals/eval-traces.jsonl
