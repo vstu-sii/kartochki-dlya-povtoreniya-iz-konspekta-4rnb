@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "reviewer_identity": "not_reconfirmed_in_current_review",
+  "decisions": [
+    {
+      "id": "REV-015",
+      "agreed_verdict": "partially_correct",
+      "keep_existing_golden": true,
+      "classification": "model_disagrees_with_explicit_rubric",
+      "reason": "Смысл FIFO передан, но обязательное название FIFO не указано.",
+      "confirmation": "согласны, оставляем частично правильно, давай следующий",
+      "confirmed_date_moscow": "2026-10-28"
+    },
+    {
+      "id": "REV-021",
+      "agreed_verdict": "correct",
+      "agreed_score": 2,
+      "agreed_missing_points": [],
+      "keep_existing_golden": false,
+      "classification": "golden_label_issue",
+      "reason": "Ответ полностью совпадает с эталоном и отвечает на вопрос; обязательные недостающие сведения в рубрике не определены.",
+      "confirmation": "согласны",
+      "confirmed_date_moscow": "2026-10-28"
+    },
+    {
+      "id": "REV-024",
+      "agreed_verdict": "correct",
+      "agreed_score": 2,
+      "agreed_missing_points": [],
+      "keep_existing_golden": false,
+      "classification": "golden_label_issue",
+      "reason": "Ответ полностью совпадает с эталоном: при сетевом разделении выбор между согласованностью и доступностью.",
+      "confirmation": "согласны, давай следующий",
+      "confirmed_date_moscow": "2026-10-28"
+    },
+    {
+      "id": "REV-027",
+      "agreed_verdict": "partially_correct",
+      "agreed_score": 1,
+      "agreed_missing_points": [
+        "Не уточнено, что речь о градиенте функции потерь."
+      ],
+      "keep_existing_golden": true,
+      "classification": "model_disagrees_with_team_rubric",
+      "reason": "Команда считает уточнение о функции потерь обязательным для полного ответа.",
+      "feedback_issue": "В пояснении модели сказано о направлении градиента вместо противоположного направления.",
+      "confirmation": "нет, тут частично правильно",
+      "confirmed_date_moscow": "2026-10-28"
+    },
+    {
+      "id": "REV-030",
+      "agreed_verdict": "partially_correct",
+      "agreed_score": 1,
+      "agreed_missing_points": [
+        "Не указана доля найденных истинно положительных объектов."
+      ],
+      "keep_existing_golden": true,
+      "classification": "model_disagrees_with_team_rubric",
+      "reason": "Верно назван знаменатель recall, но отсутствует числитель: найденные истинно положительные объекты.",
+      "confirmation": "согласны, оставляем частично правильно, давай следующий",
+      "confirmed_date_moscow": "2026-10-28"
+    },
+    {
+      "id": "REV-039",
+      "agreed_verdict": "correct",
+      "agreed_score": 2,
+      "agreed_missing_points": [],
+      "keep_existing_golden": false,
+      "classification": "golden_label_issue",
+      "reason": "Ответ полностью передаёт эталон; местоимение относится к DNS-записи.",
+      "confirmation": "согласны, правильно. собирай итоги и залей в мою ветку без PR пока",
+      "confirmed_date_moscow": "2026-10-28"
+    }
+  ],
+  "confirmation_scope": "Six decisions explicitly confirmed by the user in chat; no new named reviewer signatures asserted."
+}

@@ -7,12 +7,17 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).parent / "evals"))
 from audit_lab1_evidence import ROOT, validate_snapshot
+from dataset_catalog import dataset_hash
 
 
 class Lab1EvidenceTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.snapshot = json.loads((ROOT / "artifacts/evals/lab1-ai-quality-evidence.json").read_text(encoding="utf-8-sig"))
+
+        # This in-memory fixture tests current validation, not historical provenance.
+        # The reviewed first 20 rows are unchanged; keep the frozen file untouched.
+        cls.snapshot["dataset_sha256"] = dataset_hash()
 
     def test_automatic_agreement_does_not_complete_human_review(self):
         pending = copy.deepcopy(self.snapshot)
