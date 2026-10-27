@@ -1,5 +1,11 @@
 # Delivery → Quality: Lab 5 handoff
 
+## Текущая совместная версия
+
+Тег `v0.5.7-integrated-candidate`, SHA `e88d97206ce6e0f073e70affff99c63582bebfc4`; production `/health` подтвердил SHA. Объединены AI `042ec47` и Quality `7b0d3ce`. На этом теге успешны [release CI](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40570209575), [quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40570209570) и [integrated quality + Grafana](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40570209650). Автоматические evals используют deterministic-модель. Дальнейшие обновления этого отчёта сохраняются отдельным коммитом после тега.
+
+Живой Gemini: один обычный PDF и пять разборов без fallback; следующий PDF с формулами вернул fallback `gemini_invalid_output`. p95 пяти проверок 12,582 с при цели ≤7 с; выборка мала. [Измерение](../../artifacts/quality/lab5-production-final/gemini-live-e88.json). Требуются диагностика формульного ответа, повторный provider eval и независимая серия замеров. На приёмке AI-инженер лично объясняет, какие решения дали прирост и какие не сработали.
+
 ## Новый кандидат с повторной проверкой формул
 
 Релизный тег `v0.5.5-integrated-candidate` указывает на SHA `bc56b605aaa7a9781fefd1bc576eb0d59bb20301`; [deployment workflow](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563347798) прошёл, `/health` подтвердил тот же SHA. На этом теге прошли [release CI](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748214), [полный deterministic quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748484) и [integrated quality с Grafana](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748147). Данные и логи размещены в артефактах соответствующих запусков.

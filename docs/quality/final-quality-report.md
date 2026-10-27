@@ -1,5 +1,11 @@
 # Финальный отчёт качества Lab 5
 
+## Общий кандидат после объединения ролей
+
+Тег `v0.5.7-integrated-candidate`, SHA `e88d97206ce6e0f073e70affff99c63582bebfc4`, включает AI `042ec47` и Quality `7b0d3ce`. На теге прошли [release quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40570209570), [сборка](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40570209575) и [integrated quality](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40570209650). Gate deterministic, а не полный live eval Gemini.
+
+В живой проверке этого SHA обычный PDF и пять разборов прошли на Gemini без fallback; generation trace_id присутствует. На формульном PDF следующий сценарий перешёл на fallback `gemini_invalid_output`, поэтому серия из трёх сценариев прервана после одного успешного. Пять разборов дали p95 nearest-rank 12,582 с, что выше целевых 7 с; n=5 не даёт устойчивой оценки. [Сырые измерения и статус](../../artifacts/quality/lab5-production-final/gemini-live-e88.json). Формулы, стабильность Gemini, качество свободных ответов и p95 остаются открытыми для дальнейшей проверки; зелёный deterministic gate их не закрывает.
+
 ## Новые данные интеграции
 
 Quality `7b0d3ce` и AI `042ec47` объединены в общую ветку, включая `cards-v2.2` и trace_id генерации. Локальный полный gate после объединения: 8/8 групп, 132/132 уникальных кейса; это deterministic, не live Gemini. На предыдущем live кандидате `b959a4a` трёх полных сценариев и 15 разборов было недостаточно для выполнения цели p95 ≤7 с: измерено 29,070 с, четвёртая генерация завершилась fallback. Измерение [сохранено](../../artifacts/quality/lab5-production-final/gemini-minimal-b959.json). Новые AI-изменения и промпт требуют отдельного релизного тега, CI и живого замера на том же SHA; достижение цели пока не подтверждено.

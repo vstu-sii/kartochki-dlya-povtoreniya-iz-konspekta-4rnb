@@ -1,0 +1,281 @@
+{
+  "measured_at": "2026-10-27T19:36:04.035046+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "provider-only full scenarios; nearest-rank p95",
+  "scenario_count": 3,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.04,
+  "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 1460,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "e88d97206ce6e0f073e70affff99c63582bebfc4",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793129765-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 6879,
+        "response": {
+          "card_set_id": "set_077c32b8374f49198f9474e24c266242",
+          "title": "Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_7d4285f702ab45bfa4e06d89560272db",
+          "latency_ms": 2346,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 655
+          },
+          "cards": [
+            {
+              "card_id": "card_af37248a9a9445cd8eda142fe00e1ff3",
+              "question": "Какова главная цель лабораторной работы №4?",
+              "reference_answer": "Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб-приложение с ML-моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_fd13ae28a9434f06928e40aa49d1bfe9",
+              "question": "Что представляет собой Docker-образ и чем он отличается от контейнера?",
+              "reference_answer": "Docker-образ — это неизменяемый шаблон, содержащий файловую систему и метаданные, а Docker-контейнер является запущенным экземпляром этого образа.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные. Docker-контейнер – запущенный экземпляр образа.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_9fb1bb7eeeaf490ea19c3f1a86b9a991",
+              "question": "Для чего используются переменные окружения при работе с Docker?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что обеспечивает безопасность и переносимость приложения.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_4ac539ace2c546119b4d85307b2f91fc",
+              "question": "Какие команды используются для установки Docker и Docker Compose на ВМ2?",
+              "reference_answer": "Для установки используется команда sudo apt install docker.io docker-compose -y, а для проверки статуса сервиса — sudo systemctl status docker.",
+              "source_page": 4,
+              "source_quote": "sudo apt install docker.io docker-compose -y\nsudo systemctl status docker",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_dcb674fb8c8241c4a832c927f0ffc05b",
+              "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR используется для задания рабочей директории внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "advanced"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 402,
+        "response": {
+          "card_set_id": "set_077c32b8374f49198f9474e24c266242",
+          "title": "Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_7d4285f702ab45bfa4e06d89560272db",
+          "latency_ms": 2346,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 655
+          },
+          "cards": [
+            {
+              "card_id": "card_af37248a9a9445cd8eda142fe00e1ff3",
+              "question": "Какова главная цель лабораторной работы №4?",
+              "reference_answer": "Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб-приложение с ML-моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_fd13ae28a9434f06928e40aa49d1bfe9",
+              "question": "Что представляет собой Docker-образ и чем он отличается от контейнера?",
+              "reference_answer": "Docker-образ — это неизменяемый шаблон, содержащий файловую систему и метаданные, а Docker-контейнер является запущенным экземпляром этого образа.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные. Docker-контейнер – запущенный экземпляр образа.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_9fb1bb7eeeaf490ea19c3f1a86b9a991",
+              "question": "Для чего используются переменные окружения при работе с Docker?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что обеспечивает безопасность и переносимость приложения.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_4ac539ace2c546119b4d85307b2f91fc",
+              "question": "Какие команды используются для установки Docker и Docker Compose на ВМ2?",
+              "reference_answer": "Для установки используется команда sudo apt install docker.io docker-compose -y, а для проверки статуса сервиса — sudo systemctl status docker.",
+              "source_page": 4,
+              "source_quote": "sudo apt install docker.io docker-compose -y\nsudo systemctl status docker",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_dcb674fb8c8241c4a832c927f0ffc05b",
+              "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR используется для задания рабочей директории внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "advanced"
+            }
+          ],
+          "session_id": "session_2a58f151ce344314b5729f5d3a0be36c",
+          "user_id": "quality-final-1793129765-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 1654,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы полностью и точно перечислили все ключевые цели лабораторной работы.",
+            "missing_points": [],
+            "review_id": "review_771c825ae15f40aa9d76e1db251503fb",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_4d4153a25cb24604bf6887c6bcf0a0f9",
+            "latency_ms": 1161,
+            "usage": {
+              "input_tokens": 367,
+              "output_tokens": 54
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1870,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы очень точно и полно описали как сам Docker-образ, так и его отличие от контейнера. Подскажите, можете ли вы назвать основную команду для создания образа из Dockerfile?",
+            "missing_points": [],
+            "review_id": "review_197597153f844649b6a761f600b3dc23",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_fcc7e00ebc194f62bbf4997ea0f722fb",
+            "latency_ms": 1013,
+            "usage": {
+              "input_tokens": 270,
+              "output_tokens": 78
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 12582,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали, что переменные окружения позволяют передавать параметры подключения к базе данных без изменения образа, обеспечивая тем самым безопасность и переносимость.",
+            "missing_points": [],
+            "review_id": "review_6b255cde30f34536ae70f696655e30de",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_791c2984e2f042b7bbb880271d50ce39",
+            "latency_ms": 1126,
+            "usage": {
+              "input_tokens": 241,
+              "output_tokens": 72
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 4809,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали как команду для установки Docker и Docker Compose, так и команду для проверки статуса сервиса.",
+            "missing_points": [],
+            "review_id": "review_f34fefbee0f248c1bf16d23c4a19d950",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_0f61b8e4161c4ec894c2e474fa1714e5",
+            "latency_ms": 1140,
+            "usage": {
+              "input_tokens": 240,
+              "output_tokens": 63
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 4291,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали назначение инструкции WORKDIR. Уточнять ничего не нужно, всё написано правильно.",
+            "missing_points": [],
+            "review_id": "review_6bf4bfbe58544e5a84a528d986d059f2",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_1ce01d3d1da14accaa590e353f99b8e2",
+            "latency_ms": 1471,
+            "usage": {
+              "input_tokens": 205,
+              "output_tokens": 61
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 805,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 2405,
+        "output_tokens": 983,
+        "cost_usd": 0.003179,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "interrupted_on_scenario_2",
+  "interruption": "Scenario 2 (formula PDF) generation returned fallback_used=true and gemini_invalid_output; no second scenario was recorded. Scenario 3 was not attempted."
+}
