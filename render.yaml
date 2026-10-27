@@ -6,11 +6,11 @@ services:
     healthCheckPath: /health
     envVars:
       - key: APP_VERSION
-        value: lab5
+        value: lab5-integrated
       - key: MODEL_PROVIDER
         value: gemini
       - key: LLM_PRIMARY_MODEL
-        value: gemini-3.8-flash
+        value: gemini-2.5-flash
       - key: LLM_CHEAP_MODEL
         value: gemini-2.5-flash-lite
       - key: GEMINI_TIMEOUT_SECONDS
