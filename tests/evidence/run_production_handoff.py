@@ -45,6 +45,8 @@ def main() -> int:
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--scenarios", type=int, default=5)
+    parser.add_argument("--fixture", choices=("alternating", "ordinary", "formula"), default="alternating")
+    parser.add_argument("--card-count", type=int, choices=range(5, 11), help="Set requested count for each scenario")
     parser.add_argument("--input-usd-per-million", type=float, default=0.30)
     parser.add_argument("--output-usd-per-million", type=float, default=2.50)
     parser.add_argument("--budget-usd", type=float, default=0.10)
@@ -59,6 +61,10 @@ def main() -> int:
         ROOT / "tests/fixtures/lab5-devops-source.pdf",
         ROOT / "tests/fixtures/lab5-formulas-source.pdf",
     ]
+    if args.fixture == "ordinary":
+        fixtures = fixtures[:1]
+    elif args.fixture == "formula":
+        fixtures = fixtures[1:]
     if any(not path.exists() for path in fixtures):
         raise SystemExit("Lab5 PDF fixtures are missing")
 
@@ -87,7 +93,7 @@ def main() -> int:
         for index in range(args.scenarios):
             fixture = fixtures[index % len(fixtures)]
             user_id = f"quality-final-{int(time.time())}-{index + 1}"
-            requested_count = 5 + (index % 5)
+            requested_count = args.card_count or 5 + (index % 5)
             with fixture.open("rb") as source:
                 status, elapsed, generated = request_json(
                     client,
