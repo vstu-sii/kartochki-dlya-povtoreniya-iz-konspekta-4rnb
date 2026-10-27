@@ -231,7 +231,13 @@ async def generate_card_set_from_pdf(
     except PdfExtractionError as exc:
         status = 413 if exc.code in {"PDF_TOO_MANY_PAGES"} else 422
         raise HTTPException(status_code=status, detail={"code": exc.code, "message": str(exc)}) from exc
-    digest = hashlib.sha256(raw).hexdigest()[:24]
+    digest_input = raw
+    if any(page.method == "math_layout" for page in extracted):
+        # Re-upload after the extractor upgrade must not collide with a set
+        # cached from the old flattened math text (or return stale formulas).
+        structured = "\n".join(page.text for page in extracted).encode("utf-8")
+        digest_input += b"\x00math-layout-v1\x00" + structured
+    digest = hashlib.sha256(digest_input).hexdigest()[:24]
     request = GenerateRequest(
         document_id=f"pdf_{digest}",
         language=language,

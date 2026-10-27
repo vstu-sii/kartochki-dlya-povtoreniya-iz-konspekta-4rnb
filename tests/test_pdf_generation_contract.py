@@ -50,7 +50,13 @@ class PdfGenerationContractTests(unittest.TestCase):
         self.assertLessEqual(len(quote), 500)
         self.assertIn(quote, long_source)
 
+    def test_formula_pdf_upload_returns_201_and_persists_cards(self):
+        self._assert_pdf_upload("lab5-formulas-source.pdf")
+
     def test_pdf_upload_returns_201_and_persists_cards(self):
+        self._assert_pdf_upload("lab5-devops-source.pdf")
+
+    def _assert_pdf_upload(self, filename):
         from fastapi import FastAPI
         from fastapi.testclient import TestClient
         from sqlalchemy import create_engine
@@ -69,7 +75,7 @@ class PdfGenerationContractTests(unittest.TestCase):
         app = FastAPI()
         app.include_router(router)
         app.dependency_overrides[session_scope] = isolated_session
-        fixture = Path(__file__).parent / "fixtures/lab5-devops-source.pdf"
+        fixture = Path(__file__).parent / "fixtures" / filename
         try:
             with patch.dict(os.environ, {"MODEL_PROVIDER": "deterministic", "AI_SERVICE_URL": "inprocess"}), patch("backend.routers.ai.AI_SERVICE_URL", "inprocess"):
                 with TestClient(app) as client:
@@ -81,6 +87,19 @@ class PdfGenerationContractTests(unittest.TestCase):
                     )
                     self.assertEqual(response.status_code, 201, response.text)
                     result = response.json()
+                    if filename == "lab5-formulas-source.pdf":
+                        import hashlib
+                        old_id = "pdf_"+hashlib.sha256(fixture.read_bytes()).hexdigest()[:24]
+                        with sessions() as db:
+                            self.assertNotEqual(db.get(CardSet,result["card_set_id"]).document_id,old_id)
+                        repeated = client.post(
+                            "/v1/ai/card-sets/from-pdf",
+                            headers={"X-User-ID": "pdf-contract-owner"},
+                            files={"file": (fixture.name, fixture.read_bytes(), "application/pdf")},
+                            data={"requested_card_count": "5", "language": "ru"},
+                        )
+                        self.assertEqual(repeated.status_code,201,repeated.text)
+                        self.assertEqual(repeated.json()["card_set_id"],result["card_set_id"])
                     self.assertEqual(len(result["cards"]), 5)
                     with sessions() as db:
                         persisted = db.get(CardSet, result["card_set_id"])

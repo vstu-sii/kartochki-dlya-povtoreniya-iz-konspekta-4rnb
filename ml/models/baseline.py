@@ -476,6 +476,15 @@ class BaselineModel:
                 flush()
                 continue
 
+            if line.startswith("$") and line.endswith("$") and "=" in line:
+                # Keep one geometric equation per card, including short a^0=1.
+                # A short unpunctuated label immediately above it is a heading.
+                if current and len(" ".join(current)) < 100 and not re.search(r"[.!?;]$", current[-1]):
+                    current = []
+                flush()
+                groups.append(line)
+                continue
+
             list_item = re.match(r"^(?:\d+[.)]|[•])\s*(.+)$", line)
             if list_item:
                 flush()
@@ -506,6 +515,8 @@ class BaselineModel:
     @staticmethod
     def _is_learning_fragment(value: str) -> bool:
         text = " ".join(value.split()).strip(" •–—-«»\"“”")
+        if text.startswith("$") and text.endswith("$") and "=" in text:
+            return True
         if len(text) < 20:
             return False
         heading = re.match(r"^(?:\d+[.)]?\s*)?(?:лабораторная\s+работа|работа\s*№|содержание|оглавление)\b", text, re.I)
