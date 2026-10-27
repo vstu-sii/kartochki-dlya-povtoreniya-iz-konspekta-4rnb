@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-27T10:55:47.868401+00:00",
+  "generated_at": "2026-10-27T15:33:09.845170+00:00",
   "generator": "tests/evals/prepare_lab1_quality_evidence.py",
   "generation_command": "py -3 -m tests.evals.prepare_lab1_quality_evidence --output artifacts/evals/lab1-ai-quality-evidence-after-fix.json",
   "source_revision": {
-    "git_sha": "57e8ee98c7cf1dac02ff2928ca0fefb0558b2170",
-    "working_tree_clean": true
+    "git_sha": "e0c9755a34a8d8ac4bf3a2409416a7747a8b85ee",
+    "working_tree_clean": false
   },
   "dataset_sha256": "fa224bcf21c17640c1d5fa1ecd68b686ca313b5bf261c873f0f3f3abebe1f15d",
   "measurement_rules": {
@@ -53,7 +53,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_eae4281e207f4200b5aa06947dc5f22e",
+          "review_id": "review_90fcfd0810c84c59826e68a04782b093",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -61,8 +61,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_d29f5da47d2c4cf483a8dc0acadcabac",
-          "latency_ms": 4,
+          "trace_id": "tr_2c3421bee0134986bff2ca7201bc4558",
+          "latency_ms": 3,
           "usage": {
             "input_tokens": 186,
             "output_tokens": 91
@@ -93,7 +93,7 @@
         ],
         "expected_verdict": "partially_correct",
         "system_result": {
-          "review_id": "review_f153435c1e4747dc9604ca2356336ed8",
+          "review_id": "review_9933f1c56669408ea0f4c6c68bcf5994",
           "verdict": "partially_correct",
           "score": 1,
           "feedback": "Верно: Не устанавливает соединение. Нужно дополнить: Нет гарантий доставки и порядка; Меньше накладных расходов.",
@@ -104,7 +104,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_4c8f4ce5d6aa4b2faf42aaf1d07f2683",
+          "trace_id": "tr_8dd8263f3d564dc29e491bb52d20fc14",
           "latency_ms": 2,
           "usage": {
             "input_tokens": 186,
@@ -137,7 +137,7 @@
         ],
         "expected_verdict": "incorrect",
         "system_result": {
-          "review_id": "review_b2cdc47f689a4e8d9f85c163c12cdfdf",
+          "review_id": "review_5f20e05967ff4751a23f7e2b9e8e97b6",
           "verdict": "incorrect",
           "score": 0,
           "feedback": "Ошибка: первичный ключ не предназначен для сортировки строк. Правильный смысл: Однозначно идентифицирует строку; значения уникальны.",
@@ -148,8 +148,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_aec0792d69bf4885bd6183c8ca1fbd6c",
-          "latency_ms": 2,
+          "trace_id": "tr_b7b818a6396e4469a4e5c84844ab2080",
+          "latency_ms": 1,
           "usage": {
             "input_tokens": 176,
             "output_tokens": 126
@@ -180,7 +180,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_24118b8d29b14ff3a685cb26f25dbb44",
+          "review_id": "review_e80ddbc8d7d14b74861709ed66fa26ad",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -188,8 +188,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_165c88e7e5ce4265bb643b6f63692557",
-          "latency_ms": 2,
+          "trace_id": "tr_cb745acc4bdc4c61851bb078049288c8",
+          "latency_ms": 1,
           "usage": {
             "input_tokens": 179,
             "output_tokens": 91
@@ -221,7 +221,7 @@
         ],
         "expected_verdict": "incorrect",
         "system_result": {
-          "review_id": "review_76bf00d56657498c91c9727496fc710a",
+          "review_id": "review_b5a63b695eec4fcf985ed085fdaf2d4b",
           "verdict": "incorrect",
           "score": 0,
           "feedback": "Ошибка: сложность O(n) достигается не всегда, а только в лучшем случае с ранним выходом. Правильный смысл: O(n²) в среднем и худшем случае; O(n) в лучшем с ранним выходом.",
@@ -232,8 +232,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_a2e756d6e0fc4933a1a421b11392105b",
-          "latency_ms": 2,
+          "trace_id": "tr_2966a33a04a84713a06ca859375c89d0",
+          "latency_ms": 1,
           "usage": {
             "input_tokens": 183,
             "output_tokens": 139
@@ -264,7 +264,7 @@
         ],
         "expected_verdict": "partially_correct",
         "system_result": {
-          "review_id": "review_48b22c206dbe4ec8abfebe431dc772bb",
+          "review_id": "review_04a0e6f94aa048808b3c10aadfc207c6",
           "verdict": "partially_correct",
           "score": 1,
           "feedback": "Верно: Индекс занимает дополнительное место. Нужно дополнить: Более медленные вставки/обновления.",
@@ -274,8 +274,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_fd42638334004b51bc30b053be418f4b",
-          "latency_ms": 2,
+          "trace_id": "tr_518eeb016eea45b197ba1c721ff6de57",
+          "latency_ms": 1,
           "usage": {
             "input_tokens": 172,
             "output_tokens": 114
@@ -306,7 +306,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_b17ef086f1ef43de82012b3649cb0aa8",
+          "review_id": "review_d318cc5d68f442059c551490e9de96b2",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -314,7 +314,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_7dadc221c81e4fb8805cd564c5f4c889",
+          "trace_id": "tr_6f9dac61ad254930a572b8e670440910",
           "latency_ms": 1,
           "usage": {
             "input_tokens": 173,
@@ -347,7 +347,7 @@
         ],
         "expected_verdict": "incorrect",
         "system_result": {
-          "review_id": "review_b14078ff826b4129aee615b3d7f3e6dc",
+          "review_id": "review_c6fde97171144674b1f5a28dab99fb56",
           "verdict": "incorrect",
           "score": 0,
           "feedback": "Ошибка: бинарный поиск не перебирает элементы по очереди. Правильный смысл: Чтобы по сравнению со средним элементом отбросить половину диапазона.",
@@ -357,8 +357,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_2e6b45ea614a4a5e8d902ff774be406c",
-          "latency_ms": 1,
+          "trace_id": "tr_8fffcc9142694024bda213e415f56ab0",
+          "latency_ms": 2,
           "usage": {
             "input_tokens": 187,
             "output_tokens": 133
@@ -389,7 +389,7 @@
         ],
         "expected_verdict": "partially_correct",
         "system_result": {
-          "review_id": "review_1c4623b4e33e4366ae999b45db07a59c",
+          "review_id": "review_ed84441a285f4a4eb0d186811e76cca7",
           "verdict": "partially_correct",
           "score": 1,
           "feedback": "Верно: Потоки одного процесса используют общую память. Нужно дополнить: Процессы имеют отдельные адресные пространства.",
@@ -399,7 +399,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_fadacc609d0040878650683d611e6bcf",
+          "trace_id": "tr_079ea1ae42ad48ffa5fc430c3aa4fc96",
           "latency_ms": 2,
           "usage": {
             "input_tokens": 192,
@@ -431,7 +431,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_f3e0a474df94403dad56862e052a1426",
+          "review_id": "review_1e566b0380234ee783be1592d542810d",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -439,7 +439,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_837a7eba0ef84ea6b3e329dd944846e9",
+          "trace_id": "tr_85e65c162d2449f094cbc0852caf4e7f",
           "latency_ms": 1,
           "usage": {
             "input_tokens": 168,
@@ -471,7 +471,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_46aa3af3d3b34124958ed18743c7fc70",
+          "review_id": "review_6567b3c1a97d4de39599015b9f4af8f7",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -479,7 +479,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_785cfaffa56e4a6dbadb5d28a63b3095",
+          "trace_id": "tr_b60b349ad5aa469ea5e29b9b992a48f9",
           "latency_ms": 1,
           "usage": {
             "input_tokens": 162,
@@ -511,7 +511,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_c93da91264e84fe785aa2a31a59e329a",
+          "review_id": "review_ffe0e2fbeb2f4175bb4555f5e26459bf",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -519,7 +519,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_25ac7e6702f34ee0bf508729d9dc8fe5",
+          "trace_id": "tr_166432bc10784086bc2fe5040bac50fb",
           "latency_ms": 2,
           "usage": {
             "input_tokens": 163,
@@ -551,7 +551,7 @@
         ],
         "expected_verdict": "incorrect",
         "system_result": {
-          "review_id": "review_86ba1d6abc1c4db6b0e80181d655f4f8",
+          "review_id": "review_65982e2b2eae432092dd4f1e805148d3",
           "verdict": "incorrect",
           "score": 0,
           "feedback": "Ответ не раскрывает поставленный вопрос. Правильный смысл: Чтобы связывать таблицы и поддерживать ссылочную целостность.",
@@ -561,7 +561,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_1b0f0c377b00430f97c2fefef05e1a2c",
+          "trace_id": "tr_f576a81a76d94e2aaa3d4f151b813dc9",
           "latency_ms": 1,
           "usage": {
             "input_tokens": 176,
@@ -593,7 +593,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_cb6a6d6863094f88ada72e44d94536ba",
+          "review_id": "review_ba315346cf014ba6a5a52fb11ca3bef5",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -601,7 +601,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_582ca3142f064fb9aff52653a60c05c7",
+          "trace_id": "tr_c11e327349e8421a90cd246ff3860282",
           "latency_ms": 0,
           "usage": {
             "input_tokens": 155,
@@ -634,7 +634,7 @@
         ],
         "expected_verdict": "partially_correct",
         "system_result": {
-          "review_id": "review_679a80470671498f808b5bc1e0363d81",
+          "review_id": "review_58442b4844334553950115697c1d9f25",
           "verdict": "partially_correct",
           "score": 1,
           "feedback": "Верно: Первым добавлен — первым извлечён. По согласованному критерию также нужно явно назвать термин FIFO.",
@@ -644,7 +644,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_6249351d3a964bcc926858790d4585f7",
+          "trace_id": "tr_b8dac6a219e94221a737c44611734f21",
           "latency_ms": 0,
           "usage": {
             "input_tokens": 160,
@@ -676,7 +676,7 @@
         ],
         "expected_verdict": "incorrect",
         "system_result": {
-          "review_id": "review_e7467104e8c34db08942478a860edcbd",
+          "review_id": "review_dc799311849d47ca8ffb7b0aa9074580",
           "verdict": "incorrect",
           "score": 0,
           "feedback": "Ответ не раскрывает поставленный вопрос. Правильный смысл: Очередь; вершины обходятся по уровням.",
@@ -687,8 +687,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_2aa5b62da76041399275856587694010",
-          "latency_ms": 2,
+          "trace_id": "tr_8ddf072b58654ff886d07e17d39cf616",
+          "latency_ms": 1,
           "usage": {
             "input_tokens": 164,
             "output_tokens": 114
@@ -719,7 +719,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_e7c8f25a69c74c149e805a4b917e8d05",
+          "review_id": "review_870be7e08a57415ea01c74c66c450fba",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -727,7 +727,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_9db629cd642649238a829cb05453c6a8",
+          "trace_id": "tr_1797041e248b49a8aa485f0cfbd3d19b",
           "latency_ms": 1,
           "usage": {
             "input_tokens": 174,
@@ -759,7 +759,7 @@
         ],
         "expected_verdict": "partially_correct",
         "system_result": {
-          "review_id": "review_b3d0ab9f7dc14abca01815cadfa2dd2c",
+          "review_id": "review_5716d1a399ce430db62e4d0450991f27",
           "verdict": "partially_correct",
           "score": 1,
           "feedback": "Верно: Только одному потоку. Нужно дополнить: Вход только одного потока в критическую секцию.",
@@ -769,8 +769,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_db6c5f823146453f91ebdd6c44c08c00",
-          "latency_ms": 1,
+          "trace_id": "tr_0c4f45e7a5df435a811e0ff3e58c44e5",
+          "latency_ms": 2,
           "usage": {
             "input_tokens": 163,
             "output_tokens": 111
@@ -801,7 +801,7 @@
         ],
         "expected_verdict": "incorrect",
         "system_result": {
-          "review_id": "review_573a728e5473433487c7047b8802ebab",
+          "review_id": "review_db1963f666b0401d8f1f90bfe64f65de",
           "verdict": "incorrect",
           "score": 0,
           "feedback": "Ответ не раскрывает поставленный вопрос. Правильный смысл: С помощью счётчика разрешений.",
@@ -811,8 +811,8 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_6541015c97224b5e9290cc3e0fd790f8",
-          "latency_ms": 1,
+          "trace_id": "tr_e551c84c4d804dff9b729d6a500dc3c1",
+          "latency_ms": 2,
           "usage": {
             "input_tokens": 167,
             "output_tokens": 109
@@ -843,7 +843,7 @@
         ],
         "expected_verdict": "correct",
         "system_result": {
-          "review_id": "review_02cde22e6ec4422a853b9950d4f031d4",
+          "review_id": "review_8dcdfd72fdcd4216b5b9f2c7d9b8b916",
           "verdict": "correct",
           "score": 2,
           "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
@@ -851,7 +851,7 @@
           "model": "deterministic-review-v5",
           "prompt_version": "review-v2.1",
           "fallback_used": false,
-          "trace_id": "tr_343958d9c71b473382e8b1222237a0db",
+          "trace_id": "tr_f8027955de4f45929023bfc8af470a5b",
           "latency_ms": 1,
           "usage": {
             "input_tokens": 167,
