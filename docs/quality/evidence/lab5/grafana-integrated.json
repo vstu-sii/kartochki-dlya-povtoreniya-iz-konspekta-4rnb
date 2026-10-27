@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-10-27T17:47:50.761627+00:00",
+  "dashboard_url": "http://localhost:3001/d/flashcards-prod/flashcards-production-overview?orgId=1&from=now-15m&to=now&refresh=off",
+  "dashboard_title": "Flashcards production overview - Flashcards - Dashboards - Grafana",
+  "time_range": "now-15m to now",
+  "environment": "ci-staging",
+  "version": "lab5-integrated",
+  "commit_sha": "85b546e20f54a97f11dea1ac295e679902fc2b46",
+  "traffic": "12 successful health requests, 1 successful generation request, 3 observed 503 generation responses, 3 intentional 422 requests",
+  "panels": [
+    "Requests / 5m",
+    "5xx / 5m",
+    "Average latency / 5m (ms)",
+    "Environment / release",
+    "Service logs",
+    "LLM traces"
+  ],
+  "note": "Screenshot is captured from a running Grafana 11.3.1 container after real requests; it is not a dashboard config or CI status screenshot."
+}

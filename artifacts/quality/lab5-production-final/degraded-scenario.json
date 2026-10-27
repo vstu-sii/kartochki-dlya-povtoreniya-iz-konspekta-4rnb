@@ -1,0 +1,288 @@
+{
+  "measured_at": "2026-10-27T17:52:06.442143+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "fallback-enabled diagnostic; nearest-rank timings; not a Gemini provider run",
+  "scenario_count": 1,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.1,
+  "health": {
+    "status": 200,
+    "elapsed_ms": 1087,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "85b546e20f54a97f11dea1ac295e679902fc2b46",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793123527-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 16950,
+        "response": {
+          "card_set_id": "set_a97a977ed3134cfca472259a8278621b",
+          "title": "Карточки по загруженному материалу",
+          "model": "deterministic-grounded-v2",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": true,
+          "latency_ms": 13006,
+          "usage": {
+            "input_tokens": 929,
+            "output_tokens": 688
+          },
+          "cards": [
+            {
+              "card_id": "card_986552954d174ab9b5abe3b2184f52af",
+              "question": "Какова цель этой работы?",
+              "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб -приложение с ML -моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_33c045d2fe6043f9b70973e22d1f1d0e",
+              "question": "Что говорится в материале о «Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service»»?",
+              "reference_answer": "Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+              "source_page": 1,
+              "source_quote": "Заложить основу для многоконтейнерной\nархитектуры сквозного проекта «ML Prediction Service».",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_9329e3ca8f6b403cb158a1364ec0728e",
+              "question": "Что говорится в материале о «Создание снапшота ВМ2 (app-server) перед началом работы»?",
+              "reference_answer": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+              "source_page": 1,
+              "source_quote": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_1a18a3b1780f4c9faf4140ff22421757",
+              "question": "Что говорится в материале о «Установка Docker и Docker Compose на ВМ2»?",
+              "reference_answer": "Установка Docker и Docker Compose на ВМ2.",
+              "source_page": 1,
+              "source_quote": "Установка Docker и Docker Compose на ВМ2.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_a66d39f67a56497490969aba6769cc0d",
+              "question": "Что говорится в материале о «Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict»?",
+              "reference_answer": "Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict.",
+              "source_page": 1,
+              "source_quote": "Написание Flask-приложения, которое загружает обученную ML -\nмодель и обрабатывает POST-запросы /predict.",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": "gemini_http_503"
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 505,
+        "response": {
+          "card_set_id": "set_a97a977ed3134cfca472259a8278621b",
+          "title": "Карточки по загруженному материалу",
+          "model": "deterministic-grounded-v2",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": true,
+          "latency_ms": 13006,
+          "usage": {
+            "input_tokens": 929,
+            "output_tokens": 688
+          },
+          "cards": [
+            {
+              "card_id": "card_986552954d174ab9b5abe3b2184f52af",
+              "question": "Какова цель этой работы?",
+              "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб -приложение с ML -моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_33c045d2fe6043f9b70973e22d1f1d0e",
+              "question": "Что говорится в материале о «Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service»»?",
+              "reference_answer": "Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+              "source_page": 1,
+              "source_quote": "Заложить основу для многоконтейнерной\nархитектуры сквозного проекта «ML Prediction Service».",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_9329e3ca8f6b403cb158a1364ec0728e",
+              "question": "Что говорится в материале о «Создание снапшота ВМ2 (app-server) перед началом работы»?",
+              "reference_answer": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+              "source_page": 1,
+              "source_quote": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_1a18a3b1780f4c9faf4140ff22421757",
+              "question": "Что говорится в материале о «Установка Docker и Docker Compose на ВМ2»?",
+              "reference_answer": "Установка Docker и Docker Compose на ВМ2.",
+              "source_page": 1,
+              "source_quote": "Установка Docker и Docker Compose на ВМ2.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_a66d39f67a56497490969aba6769cc0d",
+              "question": "Что говорится в материале о «Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict»?",
+              "reference_answer": "Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict.",
+              "source_page": 1,
+              "source_quote": "Написание Flask-приложения, которое загружает обученную ML -\nмодель и обрабатывает POST-запросы /predict.",
+              "difficulty": "intermediate"
+            }
+          ],
+          "session_id": "session_b9701818b1224c29bb09cbbf3e3227f8",
+          "user_id": "quality-final-1793123527-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 2683,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
+            "missing_points": [],
+            "review_id": "review_f6cbc562077240b79788c24d731eda9f",
+            "model": "deterministic-review-v5",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_dabd36d0be6c47688968d3c1374a9e49",
+            "latency_ms": 2323,
+            "usage": {
+              "input_tokens": 353,
+              "output_tokens": 95
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1789,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
+            "missing_points": [],
+            "review_id": "review_01f19d736f00431f9758fae5c17a9d79",
+            "model": "deterministic-review-v5",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_71fe673022b149069a7bcf13c1d09c19",
+            "latency_ms": 1416,
+            "usage": {
+              "input_tokens": 225,
+              "output_tokens": 95
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1528,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
+            "missing_points": [],
+            "review_id": "review_b971cc0c44ae4dc7b16ac89d0756fff2",
+            "model": "deterministic-review-v5",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_fca5204463c941f99a95dc7f79541aca",
+            "latency_ms": 1074,
+            "usage": {
+              "input_tokens": 189,
+              "output_tokens": 95
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 10594,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
+            "missing_points": [],
+            "review_id": "review_cae80f908f274df1bc61090c3914f490",
+            "model": "deterministic-review-v5",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_9185f3088abd449a877c5c99c1bb861d",
+            "latency_ms": 10241,
+            "usage": {
+              "input_tokens": 174,
+              "output_tokens": 95
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1536,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
+            "missing_points": [],
+            "review_id": "review_235741e61a114023a69ede6360255518",
+            "model": "deterministic-review-v5",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_6a85b944be944af6a2f0fb29d7d7f878",
+            "latency_ms": 1152,
+            "usage": {
+              "input_tokens": 238,
+              "output_tokens": 95
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 414,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 2108,
+        "output_tokens": 1163,
+        "cost_usd": null,
+        "within_budget": null,
+        "usage_note": "mixed/fallback usage; not provider billing evidence"
+      }
+    }
+  ],
+  "summary": {
+    "all_provider_calls_without_fallback": false,
+    "generation_p50_wall_ms": 16950,
+    "generation_p95_wall_ms": 16950,
+    "review_p50_wall_ms": 1789,
+    "review_p95_wall_ms": 10594,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 1,
+    "review_sample_size": 5,
+    "total_input_tokens": 2108,
+    "total_output_tokens": 1163,
+    "total_cost_usd": null
+  }
+}

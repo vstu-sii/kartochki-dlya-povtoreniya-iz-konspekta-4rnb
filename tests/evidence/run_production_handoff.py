@@ -48,6 +48,7 @@ def main() -> int:
     parser.add_argument("--input-usd-per-million", type=float, default=0.30)
     parser.add_argument("--output-usd-per-million", type=float, default=2.50)
     parser.add_argument("--budget-usd", type=float, default=0.10)
+    parser.add_argument("--allow-fallback", action="store_true", help="Record degraded-path diagnostics; never report these as a provider-only run")
     args = parser.parse_args()
 
     base = args.base_url.rstrip("/")
@@ -61,7 +62,7 @@ def main() -> int:
     report: dict = {
         "measured_at": datetime.now(timezone.utc).isoformat(),
         "base_url": base,
-        "method": "provider-only full scenarios; nearest-rank p95",
+        "method": "fallback-enabled diagnostic; nearest-rank timings" if args.allow_fallback else "provider-only full scenarios; nearest-rank p95",
         "scenario_count": args.scenarios,
         "prices_usd_per_million_tokens": {
             "input": args.input_usd_per_million,
@@ -93,7 +94,8 @@ def main() -> int:
                 )
             if status != 201:
                 raise RuntimeError(f"scenario {index + 1}: PDF generation HTTP {status}: {generated}")
-            assert_provider_call(generated, f"scenario {index + 1} generation")
+            if not args.allow_fallback:
+                assert_provider_call(generated, f"scenario {index + 1} generation")
 
             status_session, elapsed_session, session = request_json(
                 client,
@@ -120,7 +122,8 @@ def main() -> int:
                 )
                 if review_status != 200:
                     raise RuntimeError(f"scenario {index + 1} review {card_index}: HTTP {review_status}: {review}")
-                assert_provider_call(review, f"scenario {index + 1} review {card_index}")
+                if not args.allow_fallback:
+                    assert_provider_call(review, f"scenario {index + 1} review {card_index}")
                 if review.get("persisted") is not True or not review.get("review_id"):
                     raise RuntimeError(f"scenario {index + 1} review {card_index}: persistence not acknowledged")
                 reviews.append({"status": review_status, "wall_ms": review_elapsed, "response": review})
@@ -137,7 +140,8 @@ def main() -> int:
             calls = [generated, *(item["response"] for item in reviews)]
             input_tokens = sum(int(item.get("usage", {}).get("input_tokens", 0)) for item in calls)
             output_tokens = sum(int(item.get("usage", {}).get("output_tokens", 0)) for item in calls)
-            cost = input_tokens * args.input_usd_per_million / 1_000_000 + output_tokens * args.output_usd_per_million / 1_000_000
+            provider_only = all(call.get("fallback_used") is False and "gemini" in str(call.get("model", "")).lower() for call in calls)
+            cost = (input_tokens * args.input_usd_per_million / 1_000_000 + output_tokens * args.output_usd_per_million / 1_000_000) if provider_only else None
             report["scenarios"].append(
                 {
                     "number": index + 1,
@@ -150,8 +154,9 @@ def main() -> int:
                     "totals": {
                         "input_tokens": input_tokens,
                         "output_tokens": output_tokens,
-                        "cost_usd": round(cost, 8),
-                        "within_budget": cost <= args.budget_usd,
+                        "cost_usd": round(cost, 8) if cost is not None else None,
+                        "within_budget": cost <= args.budget_usd if cost is not None else None,
+                        "usage_note": "provider usage" if provider_only else "mixed/fallback usage; not provider billing evidence",
                     },
                 }
             )
@@ -159,7 +164,11 @@ def main() -> int:
     generation_latencies = [item["generation"]["wall_ms"] for item in report["scenarios"]]
     review_latencies = [review["wall_ms"] for item in report["scenarios"] for review in item["reviews"]]
     report["summary"] = {
-        "all_provider_calls_without_fallback": True,
+        "all_provider_calls_without_fallback": all(
+            call.get("fallback_used") is False and "gemini" in str(call.get("model", "")).lower()
+            for item in report["scenarios"]
+            for call in [item["generation"]["response"], *(review["response"] for review in item["reviews"])]
+        ),
         "generation_p50_wall_ms": round(statistics.median(generation_latencies)),
         "generation_p95_wall_ms": percentile_nearest_rank(generation_latencies, 0.95),
         "review_p50_wall_ms": round(statistics.median(review_latencies)),
@@ -169,7 +178,7 @@ def main() -> int:
         "review_sample_size": len(review_latencies),
         "total_input_tokens": sum(item["totals"]["input_tokens"] for item in report["scenarios"]),
         "total_output_tokens": sum(item["totals"]["output_tokens"] for item in report["scenarios"]),
-        "total_cost_usd": round(sum(item["totals"]["cost_usd"] for item in report["scenarios"]), 8),
+        "total_cost_usd": round(sum(item["totals"]["cost_usd"] for item in report["scenarios"]), 8) if all(item["totals"]["cost_usd"] is not None for item in report["scenarios"]) else None,
     }
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
