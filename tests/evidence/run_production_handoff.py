@@ -33,7 +33,7 @@ def request_json(client: httpx.Client, method: str, url: str, **kwargs) -> tuple
 
 def assert_provider_call(body: dict, label: str) -> None:
     if body.get("fallback_used") is not False:
-        raise RuntimeError(f"{label}: fallback_used={body.get('fallback_used')!r}")
+        raise RuntimeError(f"{label}: fallback_used={body.get('fallback_used')!r}, reason={body.get('fallback_reason')!r}")
     if body.get("fallback_reason") not in (None, ""):
         raise RuntimeError(f"{label}: fallback_reason={body.get('fallback_reason')!r}")
     if "gemini" not in str(body.get("model", "")).lower():
@@ -48,8 +48,11 @@ def main() -> int:
     parser.add_argument("--input-usd-per-million", type=float, default=0.30)
     parser.add_argument("--output-usd-per-million", type=float, default=2.50)
     parser.add_argument("--budget-usd", type=float, default=0.10)
+    parser.add_argument("--delay-seconds", type=float, default=0.0, help="Delay between provider calls to respect rate limits")
     parser.add_argument("--allow-fallback", action="store_true", help="Record degraded-path diagnostics; never report these as a provider-only run")
     args = parser.parse_args()
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
 
     base = args.base_url.rstrip("/")
     fixtures = [
@@ -69,6 +72,8 @@ def main() -> int:
             "output": args.output_usd_per_million,
         },
         "budget_usd_per_scenario": args.budget_usd,
+        "cost_note": "Paid-tier estimate from exposed input and output counts; thinking tokens may be omitted. Actual free-tier charges and provider billing are not inferred.",
+        "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
         "health": {},
         "scenarios": [],
     }
@@ -107,7 +112,12 @@ def main() -> int:
                 raise RuntimeError(f"scenario {index + 1}: session HTTP {status_session}: {session}")
 
             reviews = []
-            for card_index, card in enumerate(generated["cards"][:5], start=1):
+            if not generated.get("cards"):
+                raise RuntimeError(f"scenario {index + 1}: no cards generated")
+            for card_index in range(1, 6):
+                card = generated["cards"][(card_index - 1) % len(generated["cards"])]
+                if args.delay_seconds:
+                    time.sleep(args.delay_seconds)
                 student_answer = f"Своими словами: {card['reference_answer']}"
                 review_status, review_elapsed, review = request_json(
                     client,
@@ -134,7 +144,7 @@ def main() -> int:
                 f"{base}/v1/ai/sessions/{session['session_id']}",
                 headers={"X-User-ID": user_id},
             )
-            if reopen_status != 200 or len(reopened.get("cards", [])) < 5:
+            if reopen_status != 200 or len(reopened.get("cards", [])) != len(generated["cards"]):
                 raise RuntimeError(f"scenario {index + 1}: persisted cards did not reopen: {reopened}")
 
             calls = [generated, *(item["response"] for item in reviews)]
@@ -160,6 +170,11 @@ def main() -> int:
                     },
                 }
             )
+            # Preserve completed real scenarios if a later request fails.
+            report["status"] = "in_progress"
+            output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            if args.delay_seconds and index + 1 < args.scenarios:
+                time.sleep(args.delay_seconds)
 
     generation_latencies = [item["generation"]["wall_ms"] for item in report["scenarios"]]
     review_latencies = [review["wall_ms"] for item in report["scenarios"] for review in item["reviews"]]
@@ -180,8 +195,7 @@ def main() -> int:
         "total_output_tokens": sum(item["totals"]["output_tokens"] for item in report["scenarios"]),
         "total_cost_usd": round(sum(item["totals"]["cost_usd"] for item in report["scenarios"]), 8) if all(item["totals"]["cost_usd"] is not None for item in report["scenarios"]) else None,
     }
-    output = Path(args.output)
-    output.parent.mkdir(parents=True, exist_ok=True)
+    report["status"] = "completed"
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report["summary"], ensure_ascii=False, indent=2))
     return 0
