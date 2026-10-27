@@ -127,15 +127,16 @@ class BaselineModel:
                         candidate = self._call_gemini(prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
                         result = self._normalize_generated_cards(candidate, payload)
                         break
-                    except (ValueError, KeyError, TypeError):
-                        if validation_attempt:
-                            raise
+                    except (ValueError, KeyError, TypeError) as exc:
                         usage = candidate.get("_usage", {}) if isinstance(candidate, dict) else {}
                         for key in rejected_usage:
                             rejected_usage[key] += usage.get(key, 0)
-                        self.trace.record(f"{trace_id}-rejected", "generate_cards_validation_rejected", selected_model, prompt,
-                                          {"usage": usage, "fallback_reason": "gemini_invalid_output"},
+                        self.trace.record(f"{trace_id}-rejected-{validation_attempt + 1}", "generate_cards_validation_rejected", selected_model, prompt,
+                                          {"usage": usage, "fallback_reason": "gemini_invalid_output",
+                                           "validation_error": self._validation_error_code(exc)},
                                           round((time.perf_counter() - attempt_started) * 1000), False)
+                        if validation_attempt:
+                            raise
                 if result and result.get("_usage"):
                     for key in rejected_usage:
                         result["_usage"][key] = result["_usage"].get(key, 0) + rejected_usage[key]
@@ -604,6 +605,17 @@ class BaselineModel:
                     raise
                 time.sleep(0.75 * (2**attempt))
         raise last_error or RuntimeError("Gemini request failed")
+
+    @staticmethod
+    def _validation_error_code(exc: Exception) -> str:
+        """Expose only an allowlisted category, never the model output or PDF."""
+        return {
+            "Gemini returned the wrong card count": "card_count",
+            "Gemini card is incomplete": "missing_fields",
+            "Gemini returned an unknown page": "unknown_page",
+            "Gemini card is not grounded in the PDF": "quote_mismatch",
+            "Gemini returned duplicate questions": "duplicate_question",
+        }.get(str(exc), "invalid_schema_or_provider_response")
 
     @staticmethod
     def _fallback_reason(exc: Exception) -> str:

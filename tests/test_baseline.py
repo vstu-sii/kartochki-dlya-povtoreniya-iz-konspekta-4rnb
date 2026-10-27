@@ -47,6 +47,8 @@ class BaselineTest(unittest.TestCase):
         self.assertEqual(result["usage"], {"input_tokens": 21, "output_tokens": 7})
         events = [json.loads(line) for line in self.trace_path.read_text(encoding="utf-8").splitlines()]
         self.assertEqual([event["operation"] for event in events], ["generate_cards_validation_rejected", "generate_cards"])
+        self.assertEqual(events[0]["response"]["validation_error"], "quote_mismatch")
+        self.assertNotIn("Несуществующая цитата", json.dumps(events, ensure_ascii=False))
 
     def test_fallback_is_not_cached_after_provider_recovers(self):
         source = "Сила тока зависит от напряжения."
