@@ -115,20 +115,26 @@ class BaselineModel:
         fallback_reason = None
         model_name = DETERMINISTIC_GENERATION_MODEL
         result = None
+        validation_error = None
+        rejected_usage = {"input_tokens": 0, "output_tokens": 0}
 
         if self.provider == "gemini" and os.getenv("GEMINI_API_KEY"):
             try:
                 selected_model = CHEAP_MODEL if payload.get("model_tier") == "cheap" else PRIMARY_MODEL
                 rejected_usage = {"input_tokens": 0, "output_tokens": 0}
+                attempt_prompt = prompt
+                validation_error = None
                 for validation_attempt in range(2):
                     attempt_started = time.perf_counter()
                     candidate = None
                     try:
-                        candidate = self._call_gemini(prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
+                        candidate = self._call_gemini(attempt_prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
                         result = self._normalize_generated_cards(candidate, payload)
                         break
                     except (ValueError, KeyError, TypeError) as exc:
-                        usage = candidate.get("_usage", {}) if isinstance(candidate, dict) else {}
+                        validation_error = self._validation_error_code(exc)
+                        usage = candidate.get("_usage", {}) if isinstance(candidate, dict) else getattr(exc, "usage", {})
+                        attempt_prompt = prompt + "\n\nПОВТОРНАЯ ПРОВЕРКА: предыдущий ответ отклонён: " + validation_error + ". Верни валидный JSON по схеме, ровно запрошенное число разных карточек; source_quote копируй дословно из SOURCE, не исправляй формулы и корректно экранируй обратные слеши в JSON."
                         for key in rejected_usage:
                             rejected_usage[key] += usage.get(key, 0)
                         self.trace.record(f"{trace_id}-rejected-{validation_attempt + 1}", "generate_cards_validation_rejected", selected_model, prompt,
@@ -155,6 +161,8 @@ class BaselineModel:
             schema_version=SCHEMA_VERSION,
             fallback_used=fallback_used,
             fallback_reason=fallback_reason,
+            validation_error=validation_error if fallback_used else None,
+            provider_usage=rejected_usage if fallback_used else None,
             trace_id=trace_id,
             latency_ms=round((time.perf_counter() - started) * 1000),
             cache_hit=False,
@@ -193,6 +201,7 @@ class BaselineModel:
         if result is None:
             result = self._deterministic_review(card, answer)
 
+        result = self._apply_review_rubric(card, answer, result)
         api_usage = result.pop("_usage", None)
         result.update(
             review_id=f"review_{uuid4().hex}",
@@ -297,6 +306,57 @@ class BaselineModel:
             "feedback": feedback,
             "missing_points": missing,
         }
+
+    def _apply_review_rubric(self, card: dict, answer: str, result: dict) -> dict:
+        """Apply explicit reference omissions, without dataset IDs or expected labels.
+
+        Preserve raw provider text when a narrow, auditable rubric changes it.
+        Other semantic judgements remain the provider's responsibility.
+        """
+        reference = card["reference_answer"]
+        raw_answer = " ".join(answer.lower().replace("ё", "е").split()).strip(" .")
+        raw_reference = " ".join(reference.lower().replace("ё", "е").split()).strip(" .")
+        if not raw_answer or "ответ не относится" in raw_answer:
+            return result
+        normalized_answer = self._normalize(answer)
+        if self._has_clear_contradiction(self._normalize(reference), normalized_answer):
+            return result
+        missing = None
+        feedback = None
+        term = self._missing_required_term(reference, answer)
+        if term and result["verdict"] == "correct":
+            # A completely unrelated answer must not gain partial credit here.
+            baseline = self._deterministic_review(card, answer)
+            if baseline["verdict"] == "partially_correct":
+                missing, feedback = baseline["missing_points"], baseline["feedback"]
+        gradient = "градиент" in raw_reference and "потерь" in raw_reference
+        if (gradient and "градиент" in raw_answer and "противополож" in raw_answer
+                and result["verdict"] != "incorrect"
+                and not re.search(r"\bне\s+противополож", raw_answer)):
+            if "потерь" not in raw_answer and "loss" not in raw_answer:
+                missing = ["Не уточнено, что речь о градиенте функции потерь."]
+                feedback = ("Верно указано противоположное направление. Нужно уточнить: "
+                            "параметры обновляются в направлении, противоположном градиенту функции потерь.")
+        # A literal denominator fragment is relevant, but is not the whole ratio.
+        # Require a multiword suffix of the reference, not a loose keyword match.
+        fraction = re.search(r"\b(среди|от)\s+всех\s+(.+)$", raw_reference)
+        if (fraction and raw_reference.startswith("дол")
+                and raw_answer == fraction.group(0) and len(raw_answer.split()) >= 3):
+            missing = [self._sentence(raw_reference[:fraction.start()].strip())]
+            feedback = ("Верно указан знаменатель. Нужно также назвать числитель: "
+                        + self._sentence(raw_reference[:fraction.start()].strip()))
+        if missing is None:
+            return result
+        revised = {**result, "verdict": "partially_correct", "score": 1,
+                   "missing_points": missing, "feedback": feedback}
+        if any(revised[k] != result[k] for k in ("verdict", "score", "feedback", "missing_points")):
+            revised["rubric_adjustment"] = {
+                "version": "reference-omissions-v1",
+                "original_verdict": result["verdict"],
+                "original_feedback": result["feedback"],
+                "original_missing_points": result["missing_points"],
+            }
+        return revised
 
     @staticmethod
     def _sentence(value: str) -> str:
@@ -585,8 +645,17 @@ class BaselineModel:
                 candidate = data["candidates"][0]
                 if candidate.get("finishReason") not in {None, "STOP"}:
                     raise ValueError(f"Gemini stopped with {candidate.get('finishReason')}")
-                result = json.loads(candidate["content"]["parts"][0]["text"])
                 usage = data.get("usageMetadata", {})
+                visible_parts = [part.get("text", "") for part in candidate.get("content", {}).get("parts", []) if not part.get("thought")]
+                try:
+                    result = json.loads("".join(visible_parts))
+                    if not isinstance(result, dict):
+                        raise ValueError("Gemini returned non-object JSON")
+                except (ValueError, TypeError) as exc:
+                    # Preserve token accounting even when paid output is unusable.
+                    exc.usage = {"input_tokens": usage.get("promptTokenCount", 0),
+                                 "output_tokens": usage.get("candidatesTokenCount", 0) + usage.get("thoughtsTokenCount", 0)}
+                    raise
                 result["_usage"] = {
                     "input_tokens": usage.get("promptTokenCount", max(1, len(prompt) // 4)),
                     "output_tokens": usage.get("candidatesTokenCount", 0) + usage.get("thoughtsTokenCount", 0),
@@ -615,6 +684,8 @@ class BaselineModel:
             "Gemini returned an unknown page": "unknown_page",
             "Gemini card is not grounded in the PDF": "quote_mismatch",
             "Gemini returned duplicate questions": "duplicate_question",
+            "Gemini card has invalid field lengths": "field_lengths",
+            "Gemini returned non-object JSON": "json_shape",
         }.get(str(exc), "invalid_schema_or_provider_response")
 
     @staticmethod
@@ -651,10 +722,10 @@ class BaselineModel:
         card = {
             "type": "object",
             "properties": {
-                "question": {"type": "string"},
-                "reference_answer": {"type": "string"},
+                "question": {"type": "string", "minLength": 1, "maxLength": 500},
+                "reference_answer": {"type": "string", "minLength": 1, "maxLength": 1200},
                 "source_page": {"type": "integer"},
-                "source_quote": {"type": "string"},
+                "source_quote": {"type": "string", "minLength": 1, "maxLength": 500},
                 "difficulty": {"type": "string", "enum": ["basic", "intermediate", "advanced"]},
             },
             "required": ["question", "reference_answer", "source_page", "source_quote", "difficulty"],
@@ -695,6 +766,14 @@ class BaselineModel:
                 raise ValueError("Gemini card is incomplete")
             if card["source_page"] not in pages:
                 raise ValueError("Gemini returned an unknown page")
+            for field, limit in (("question", 500), ("reference_answer", 1200), ("source_quote", 500)):
+                if isinstance(card[field], str):
+                    # A model may emit JSON "\\frac" with only one slash:
+                    # JSON then decodes \f to form feed. Repair this transport
+                    # spelling only; source_quote still must match the PDF.
+                    card[field] = card[field].replace("\x0crac{", r"\frac{")
+                if not isinstance(card[field], str) or not card[field].strip() or len(card[field]) > limit:
+                    raise ValueError("Gemini card has invalid field lengths")
             page_text = pages[card["source_page"]]
             if card["source_quote"] not in page_text:
                 flexible = re.compile(r"\s+".join(re.escape(part) for part in card["source_quote"].split()))

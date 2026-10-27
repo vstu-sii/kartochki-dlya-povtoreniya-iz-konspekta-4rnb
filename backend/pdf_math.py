@@ -16,6 +16,7 @@ class Token:
     size: float
     top: float
     bottom: float
+    extensible: bool = False
 
 
 def _render(tokens, baseline=None):
@@ -63,7 +64,7 @@ def math_page_text(page):
                     # Legacy TeX extensible-parenthesis glyph encoding.
                     text = {"\x12": "(", "\x13": ")"}.get(text, text)
                     box = char["bbox"]
-                    tokens.append(Token(text, box[0], box[2], char["origin"][1], span["size"], box[1], box[3]))
+                    tokens.append(Token(text, box[0], box[2], char["origin"][1], span["size"], box[1], box[3], char["c"] in {"\x12", "\x13"}))
     equals = [t for t in tokens if t.text == "="]
     # Avoid changing ordinary prose/pages and tables with occasional '='.
     if len(equals) < 3 or len(equals) > 200 or len(tokens) > 10000:
@@ -84,7 +85,7 @@ def math_page_text(page):
     # Extensible TeX parentheses have an artificial origin at their top;
     # align these encoded glyphs with the adjacent fraction's baseline.
     for token in tokens:
-        if token.text in {"(", ")"} and token.bottom-token.top > token.size*1.5:
+        if token.extensible or (token.text in {"(", ")"} and token.bottom-token.top > token.size*1.5):
             adjacent = [r for r in rules if abs(r[2]-token.y)<token.size*1.5 and min(abs(token.x0-r[1]),abs(token.x1-r[0]))<token.size]
             if adjacent:
                 rule = min(adjacent,key=lambda r:abs(r[2]-token.y))

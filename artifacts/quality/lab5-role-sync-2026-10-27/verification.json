@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-27",
+  "working_role_branches": [
+    "lab5-ai-testing",
+    "lab5-delivery-testing",
+    "lab5-quality-testing"
+  ],
+  "common_code_commit": "8c7fca68c53cd62db2c0b6537965560dd06c0427",
+  "local_full_suite": {
+    "groups_passed": 8,
+    "unique_cases": 132,
+    "unit_integration_tests": 70,
+    "model_provider": "deterministic"
+  },
+  "latest_verified_release": {
+    "tag": "v0.5.8-integrated-candidate",
+    "sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+    "quality_ci": 40573059363,
+    "release_ci": 40573059216,
+    "integrated_ci": 40573059355
+  },
+  "provider_e88": {
+    "generation_ms": 6879,
+    "review_sample_size": 5,
+    "review_p95_ms": 12582,
+    "input_tokens": 2405,
+    "output_tokens_including_thinking": 983,
+    "cost_usd": 0.003179,
+    "budget_usd": 0.04,
+    "within_budget": true,
+    "actual_billing_not_required_or_claimed": true
+  },
+  "paraphrase_smoke": {
+    "count": 3,
+    "all_expected_verdicts_match": true,
+    "all_without_fallback": true,
+    "scope": "3 additional rewrites on deployed 5504ef5; not full golden or cards-v2.3"
+  },
+  "live_full_model_golden": "not_run_missing_local_key_and_repository_secret",
+  "new_code_deployed": false,
+  "pr_created": false
+}

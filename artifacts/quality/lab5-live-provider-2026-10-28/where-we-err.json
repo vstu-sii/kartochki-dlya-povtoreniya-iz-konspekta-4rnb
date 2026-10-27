@@ -1,0 +1,70 @@
+[
+  {
+    "id": "REV-015",
+    "question": "По какому принципу работает очередь?",
+    "reference_answer": "По принципу FIFO.",
+    "student_answer": "первым добавлен — первым извлечён",
+    "expected_verdict": "partially_correct",
+    "actual_verdict": "correct",
+    "feedback": "Отлично, вы верно указали главный принцип работы очереди! Теперь попробуйте назвать аббревиатуру этого принципа для полноты картины.",
+    "missing_points": [],
+    "scope": "automated model verdict mismatch against pre-existing golden label; no human signature added"
+  },
+  {
+    "id": "REV-021",
+    "question": "Что даёт процессу виртуальная память?",
+    "reference_answer": "Собственное адресное пространство.",
+    "student_answer": "собственное адресное пространство",
+    "expected_verdict": "partially_correct",
+    "actual_verdict": "correct",
+    "feedback": "Отлично, вы верно указали, что виртуальная память предоставляет процессу собственное адресное пространство. Хотели бы вы уточнить, как именно оно отображается на физическую память?",
+    "missing_points": [],
+    "scope": "automated model verdict mismatch against pre-existing golden label; no human signature added"
+  },
+  {
+    "id": "REV-024",
+    "question": "Какой выбор описывает CAP при разделении сети?",
+    "reference_answer": "Между согласованностью и доступностью.",
+    "student_answer": "между согласованностью и доступностью",
+    "expected_verdict": "partially_correct",
+    "actual_verdict": "correct",
+    "feedback": "Отличный ответ! Вы абсолютно верно указали, что при разделении сети выбор делается между согласованностью и доступностью.",
+    "missing_points": [],
+    "scope": "automated model verdict mismatch against pre-existing golden label; no human signature added"
+  },
+  {
+    "id": "REV-027",
+    "question": "Как градиентный спуск обновляет параметры?",
+    "reference_answer": "В направлении, противоположном градиенту потерь.",
+    "student_answer": "противоположном градиенту",
+    "expected_verdict": "partially_correct",
+    "actual_verdict": "correct",
+    "feedback": "Отлично, основная суть передана верно! Для полной точности можно добавить, что обновление идет в направлении градиента именно функции потерь.",
+    "missing_points": [],
+    "scope": "automated model verdict mismatch against pre-existing golden label; no human signature added"
+  },
+  {
+    "id": "REV-030",
+    "question": "Что измеряет recall?",
+    "reference_answer": "Долю найденных положительных среди всех действительно положительных.",
+    "student_answer": "среди всех действительно положительных",
+    "expected_verdict": "partially_correct",
+    "actual_verdict": "incorrect",
+    "feedback": "Вы верно указали знаменатель формулы, но пропустили саму суть метрики — что именно измеряется (долю найденных положительных объектов). Подумайте, отношение какого количества элементов к чему именно показывает полнота (recall)?",
+    "missing_points": [
+      "Доля найденных истинно положительных объектов"
+    ],
+    "scope": "automated model verdict mismatch against pre-existing golden label; no human signature added"
+  },
+  {
+    "id": "REV-039",
+    "question": "Что ограничивает TTL DNS-записи?",
+    "reference_answer": "Время хранения записи в кэше.",
+    "student_answer": "время её хранения в кэше",
+    "expected_verdict": "partially_correct",
+    "actual_verdict": "correct",
+    "feedback": "Отличный ответ, вы абсолютно верно указали назначение TTL. Уточнять ничего не требуется.",
+    "missing_points": [],
+    "scope": "automated model verdict mismatch against pre-existing golden label; no human signature added"
+  }
+]

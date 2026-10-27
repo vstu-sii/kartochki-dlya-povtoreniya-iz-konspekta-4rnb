@@ -1,0 +1,38 @@
+[
+  {
+    "id": 40573059363,
+    "name": "Lab5 release quality gates",
+    "head_sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+    "head_branch": "v0.5.8-integrated-candidate",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40573059363"
+  },
+  {
+    "id": 40573059216,
+    "name": "Lab5 reproducible release",
+    "head_sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+    "head_branch": "v0.5.8-integrated-candidate",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40573059216"
+  },
+  {
+    "id": 40573059355,
+    "name": "Lab5 integrated release quality",
+    "head_sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+    "head_branch": "v0.5.8-integrated-candidate",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40573059355"
+  },
+  {
+    "id": 40571941652,
+    "name": "Lab5 integrated release quality",
+    "head_sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+    "head_branch": "lab5-integrated-quality",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40571941652"
+  }
+]

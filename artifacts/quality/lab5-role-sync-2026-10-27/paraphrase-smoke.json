@@ -1,0 +1,106 @@
+{
+  "scope": "additional small paraphrase smoke on currently deployed version, not new cards-v2.3 or full golden",
+  "rows": [
+    {
+      "card": {
+        "card_id": "card_fd13ae28a9434f06928e40aa49d1bfe9",
+        "question": "Что представляет собой Docker-образ и чем он отличается от контейнера?",
+        "reference_answer": "Docker-образ — это неизменяемый шаблон, содержащий файловую систему и метаданные, а Docker-контейнер является запущенным экземпляром этого образа.",
+        "source_page": 3,
+        "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные. Docker-контейнер – запущенный экземпляр образа.",
+        "difficulty": "intermediate"
+      },
+      "student_answer": "Образ — фиксированный шаблон с файлами и служебной информацией; контейнер — уже работающий экземпляр такого шаблона.",
+      "expected_verdict": "correct",
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы отлично передали суть понятий и их разницу, используя верные синонимы.",
+        "missing_points": [],
+        "review_id": "review_82816b34605941c689db006901f58d1a",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_bbc042d932414877a90e299ea996825a",
+        "latency_ms": 1062,
+        "usage": {
+          "input_tokens": 257,
+          "output_tokens": 59
+        },
+        "persisted": true
+      },
+      "wall_ms": 1683
+    },
+    {
+      "card": {
+        "card_id": "card_9fb1bb7eeeaf490ea19c3f1a86b9a991",
+        "question": "Для чего используются переменные окружения при работе с Docker?",
+        "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что обеспечивает безопасность и переносимость приложения.",
+        "source_page": 3,
+        "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+        "difficulty": "intermediate"
+      },
+      "student_answer": "Настройки соединения с БД выносят в окружение: пересобирать или менять образ не нужно, так приложение безопаснее и его проще переносить.",
+      "expected_verdict": "correct",
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно указали, что переменные окружения избавляют от необходимости пересобирать образ для настройки подключения к БД, а также обеспечивают безопасность и переносимость. Уточните, как именно это влияет на безопасность (например, почему секреты не попадают в код образа)?",
+        "missing_points": [],
+        "review_id": "review_21dd506f7477442b868699d54d1c9e82",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_e03bca29f54c45eab9823a702a234716",
+        "latency_ms": 1501,
+        "usage": {
+          "input_tokens": 241,
+          "output_tokens": 87
+        },
+        "persisted": true
+      },
+      "wall_ms": 2531
+    },
+    {
+      "card": {
+        "card_id": "card_dcb674fb8c8241c4a832c927f0ffc05b",
+        "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+        "reference_answer": "Инструкция WORKDIR используется для задания рабочей директории внутри контейнера.",
+        "source_page": 3,
+        "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+        "difficulty": "advanced"
+      },
+      "student_answer": "WORKDIR задаёт папку внутри контейнера, относительно которой затем выполняются команды.",
+      "expected_verdict": "correct",
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы абсолютно верно указали, что WORKDIR задает рабочую папку в контейнере, уточнив также ее роль для последующих команд. Уточнение не требуется.",
+        "missing_points": [],
+        "review_id": "review_4a2d6e3a900c4974b89fe595f90ef53c",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_8c4137414dc14d7da57a55bc01ab5c6e",
+        "latency_ms": 938,
+        "usage": {
+          "input_tokens": 201,
+          "output_tokens": 77
+        },
+        "persisted": true
+      },
+      "wall_ms": 1536
+    }
+  ],
+  "health": {
+    "service": "application-api",
+    "status": "ok",
+    "version": "lab5",
+    "commit_sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+    "telegram": "webhook"
+  },
+  "status": "completed"
+}

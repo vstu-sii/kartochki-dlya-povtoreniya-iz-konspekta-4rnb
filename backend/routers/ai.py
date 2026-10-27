@@ -238,6 +238,8 @@ async def generate_card_set(
     # Safe provider diagnostic for a newly generated set. It contains only a
     # category such as gemini_http_403, never an API key or provider body.
     response["fallback_reason"] = result.get("fallback_reason")
+    response["validation_error"] = result.get("validation_error")
+    response["provider_usage"] = result.get("provider_usage")
     return response
 
 

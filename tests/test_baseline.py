@@ -64,6 +64,40 @@ class BaselineTest(unittest.TestCase):
         self.assertTrue(failed["fallback_used"])
         self.assertFalse(recovered["fallback_used"])
 
+    def test_gemini_ignores_thought_parts_and_joins_json_fragments(self):
+        from io import BytesIO
+        response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [
+            {"thought": True, "text": "private reasoning"}, {"text": '{"cards":'}, {"text": "[]}"}]}}],
+            "usageMetadata": {"promptTokenCount": 3, "candidatesTokenCount": 2, "thoughtsTokenCount": 8}}
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}), patch("ml.models.baseline.urlopen", return_value=BytesIO(json.dumps(response).encode())):
+            result = self.model._call_gemini("test", {"type":"object"})
+        self.assertEqual(result["cards"], [])
+        self.assertEqual(result["_usage"]["output_tokens"],10)
+
+    def test_rejected_output_has_safe_diagnostic_and_paid_usage(self):
+        with patch.dict("os.environ", {"MODEL_PROVIDER":"gemini", "GEMINI_API_KEY":"test"}):
+            model=BaselineModel(TraceClient(str(self.trace_path)))
+            with patch.object(model,"_call_gemini",side_effect=[
+                {"cards":[],"_usage":{"input_tokens":5,"output_tokens":4}},
+                {"cards":[],"_usage":{"input_tokens":6,"output_tokens":3}}]) as provider:
+                result=model.generate({"pages":[{"page":1,"text":"Сила тока зависит от напряжения."}],"requested_card_count":1})
+        self.assertTrue(result["fallback_used"])
+        self.assertEqual(result["validation_error"],"card_count")
+        self.assertEqual(result["provider_usage"],{"input_tokens":11,"output_tokens":7})
+        self.assertIn("card_count",provider.call_args_list[1].args[0])
+
+    def test_json_formfeed_fraction_is_repaired_only_with_real_source_grounding(self):
+        source = r"$tg α = \frac{sin α}{cos α}$"
+        payload={"pages":[{"page":2,"text":source}],"requested_card_count":1}
+        card={"question":"Как выражается тангенс?","reference_answer":"\x0crac{sin α}{cos α}","source_page":2,"source_quote":"$tg α = \x0crac{sin α}{cos α}$","difficulty":"basic"}
+        result=BaselineModel._normalize_generated_cards({"title":"Формулы","cards":[card]},payload)
+        self.assertEqual(result["cards"][0]["source_quote"],source)
+        self.assertEqual(result["cards"][0]["reference_answer"],r"\frac{sin α}{cos α}")
+        # Correcting JSON escaping must never repair or silently accept math.
+        card["source_quote"]="$tg α = \x0crac{sin α}{sin α}$"
+        with self.assertRaisesRegex(ValueError,"not grounded"):
+            BaselineModel._normalize_generated_cards({"title":"Формулы","cards":[card]},payload)
+
     def test_generation_is_structured_grounded_and_traced(self):
         text = "Кэш ускоряет доступ к часто используемым данным."
         result = self.model.generate({"pages": [{"page": 1, "text": text}], "requested_card_count": 5})
@@ -173,6 +207,57 @@ Compose, упаковать веб-приложение с ML-моделью в 
         self.assertEqual("correct", result["verdict"])
         self.assertEqual("gemini-3.8-flash", result["model"])
         self.assertFalse(result["fallback_used"])
+
+    def test_reference_omissions_are_enforced_for_provider_and_local_review(self):
+        cases = (
+            ("По принципу FIFO.", "Первым добавлен — первым извлечён.", "correct", "Не назван термин FIFO."),
+            ("В направлении, противоположном градиенту потерь.", "противоположном градиенту", "correct", "функции потерь"),
+            ("Долю найденных положительных среди всех действительно положительных.", "среди всех действительно положительных", "incorrect", "найденных положительных"),
+            # Another ratio proves this is not a lookup of recall or a dataset ID.
+            ("Долю успешных запросов среди всех обработанных запросов.", "среди всех обработанных запросов", "incorrect", "успешных запросов"),
+        )
+        for reference, answer, raw_verdict, expected_missing in cases:
+            for provider in ("deterministic", "gemini"):
+                with self.subTest(reference=reference, provider=provider):
+                    raw = {"verdict": raw_verdict, "score": 2 if raw_verdict == "correct" else 0,
+                           "feedback": "Обновление идет в направлении градиента.", "missing_points": []}
+                    with patch.dict("os.environ", {"MODEL_PROVIDER": provider, "GEMINI_API_KEY": "test"}):
+                        model = BaselineModel(TraceClient(str(self.trace_path)))
+                        with patch.object(model, "_call_gemini", return_value=raw):
+                            result = model.review({"card": {"question": "Объясните правило", "reference_answer": reference},
+                                                   "student_answer": answer})
+                    self.assertEqual("partially_correct", result["verdict"])
+                    self.assertEqual(1, result["score"])
+                    self.assertIn(expected_missing.lower(), " ".join(result["missing_points"]).lower())
+                    self.assertNotIn("идет в направлении градиента", result["feedback"])
+                    self.assertFalse(result["fallback_used"])
+                    if provider == "gemini":
+                        self.assertEqual(raw_verdict, result["rubric_adjustment"]["original_verdict"])
+
+    def test_reference_rubric_preserves_complete_and_incorrect_answers(self):
+        cases = (
+            ("По принципу FIFO.", "По принципу FIFO.", "correct"),
+            ("По принципу FIFO.", "По принципу LIFO.", "incorrect"),
+            ("В направлении, противоположном градиенту потерь.", "Противоположно градиенту функции потерь.", "correct"),
+            ("В направлении, противоположном градиенту потерь.", "В направлении градиента функции потерь.", "incorrect"),
+            ("В направлении, противоположном градиенту потерь.", "Не противоположном градиенту.", "incorrect"),
+            ("Долю найденных положительных среди всех действительно положительных.", "Долю найденных положительных среди всех действительно положительных.", "correct"),
+            ("Долю найденных положительных среди всех действительно положительных.", "среди всех отрицательных", "incorrect"),
+            ("Долю найденных положительных среди всех действительно положительных.", "Ответ не относится к вопросу.", "incorrect"),
+            ("Собственное адресное пространство.", "собственное адресное пространство", "correct"),
+            ("Между согласованностью и доступностью.", "между согласованностью и доступностью", "correct"),
+            ("Время хранения записи в кэше.", "время её хранения в кэше", "correct"),
+        )
+        for reference, answer, verdict in cases:
+            with self.subTest(answer=answer):
+                raw = {"verdict": verdict, "score": 2 if verdict == "correct" else 0,
+                       "feedback": "Проверено по эталону.", "missing_points": []}
+                with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
+                    model = BaselineModel(TraceClient(str(self.trace_path)))
+                    with patch.object(model, "_call_gemini", return_value=raw):
+                        result = model.review({"card": {"question": "Q", "reference_answer": reference}, "student_answer": answer})
+                self.assertEqual(verdict, result["verdict"])
+                self.assertNotIn("rubric_adjustment", result)
 
     def test_invalid_gemini_review_falls_back_safely(self):
         with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):

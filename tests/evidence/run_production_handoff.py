@@ -84,103 +84,120 @@ def main() -> int:
         "scenarios": [],
     }
 
-    with httpx.Client(timeout=150.0, follow_redirects=True) as client:
-        status, elapsed, health = request_json(client, "GET", f"{base}/health")
-        report["health"] = {"status": status, "elapsed_ms": elapsed, "body": health}
-        if status != 200:
-            raise RuntimeError(f"health returned HTTP {status}")
+    try:
+        with httpx.Client(timeout=150.0, follow_redirects=True) as client:
+            status, elapsed, health = request_json(client, "GET", f"{base}/health")
+            report["health"] = {"status": status, "elapsed_ms": elapsed, "body": health}
+            if status != 200:
+                raise RuntimeError(f"health returned HTTP {status}")
 
-        for index in range(args.scenarios):
-            fixture = fixtures[index % len(fixtures)]
-            user_id = f"quality-final-{int(time.time())}-{index + 1}"
-            requested_count = args.card_count or 5 + (index % 5)
-            with fixture.open("rb") as source:
-                status, elapsed, generated = request_json(
-                    client,
-                    "POST",
-                    f"{base}/v1/ai/card-sets/from-pdf",
-                    headers={"X-User-ID": user_id},
-                    files={"file": (fixture.name, source, "application/pdf")},
-                    data={"requested_card_count": str(requested_count), "language": "ru"},
-                )
-            if status != 201:
-                raise RuntimeError(f"scenario {index + 1}: PDF generation HTTP {status}: {generated}")
-            if not args.allow_fallback:
-                assert_provider_call(generated, f"scenario {index + 1} generation")
-
-            status_session, elapsed_session, session = request_json(
-                client,
-                "POST",
-                f"{base}/v1/ai/sessions",
-                json={"card_set_id": generated["card_set_id"], "user_id": user_id},
-            )
-            if status_session != 201:
-                raise RuntimeError(f"scenario {index + 1}: session HTTP {status_session}: {session}")
-
-            reviews = []
-            if not generated.get("cards"):
-                raise RuntimeError(f"scenario {index + 1}: no cards generated")
-            for card_index in range(1, 6):
-                card = generated["cards"][(card_index - 1) % len(generated["cards"])]
-                if args.delay_seconds:
-                    time.sleep(args.delay_seconds)
-                student_answer = f"Своими словами: {card['reference_answer']}"
-                review_status, review_elapsed, review = request_json(
-                    client,
-                    "POST",
-                    f"{base}/v1/ai/answer-reviews",
-                    headers={"X-User-ID": user_id},
-                    json={
-                        "session_id": session["session_id"],
-                        "card": card,
-                        "student_answer": student_answer,
-                    },
-                )
-                if review_status != 200:
-                    raise RuntimeError(f"scenario {index + 1} review {card_index}: HTTP {review_status}: {review}")
+            for index in range(args.scenarios):
+                fixture = fixtures[index % len(fixtures)]
+                user_id = f"quality-final-{int(time.time())}-{index + 1}"
+                requested_count = args.card_count or 5 + (index % 5)
+                with fixture.open("rb") as source:
+                    status, elapsed, generated = request_json(
+                        client,
+                        "POST",
+                        f"{base}/v1/ai/card-sets/from-pdf",
+                        headers={"X-User-ID": user_id},
+                        files={"file": (fixture.name, source, "application/pdf")},
+                        data={"requested_card_count": str(requested_count), "language": "ru"},
+                    )
+                current = {"number":index+1,"fixture":fixture.name,"user_alias":user_id,
+                           "generation":{"status":status,"wall_ms":elapsed,"response":generated},
+                           "reviews":[],"status":"generation_received","answer_mode":"reference_copy_not_paraphrase"}
+                report["scenarios"].append(current)
+                report["status"]="in_progress"
+                output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+                if status != 201:
+                    raise RuntimeError(f"scenario {index + 1}: PDF generation HTTP {status}: {generated}")
                 if not args.allow_fallback:
-                    assert_provider_call(review, f"scenario {index + 1} review {card_index}")
-                if review.get("persisted") is not True or not review.get("review_id"):
-                    raise RuntimeError(f"scenario {index + 1} review {card_index}: persistence not acknowledged")
-                reviews.append({"status": review_status, "wall_ms": review_elapsed, "response": review})
+                    assert_provider_call(generated, f"scenario {index + 1} generation")
 
-            reopen_status, reopen_elapsed, reopened = request_json(
-                client,
-                "GET",
-                f"{base}/v1/ai/sessions/{session['session_id']}",
-                headers={"X-User-ID": user_id},
-            )
-            if reopen_status != 200 or len(reopened.get("cards", [])) != len(generated["cards"]):
-                raise RuntimeError(f"scenario {index + 1}: persisted cards did not reopen: {reopened}")
+                status_session, elapsed_session, session = request_json(
+                    client,
+                    "POST",
+                    f"{base}/v1/ai/sessions",
+                    json={"card_set_id": generated["card_set_id"], "user_id": user_id},
+                )
+                if status_session != 201:
+                    raise RuntimeError(f"scenario {index + 1}: session HTTP {status_session}: {session}")
 
-            calls = [generated, *(item["response"] for item in reviews)]
-            input_tokens = sum(int(item.get("usage", {}).get("input_tokens", 0)) for item in calls)
-            output_tokens = sum(int(item.get("usage", {}).get("output_tokens", 0)) for item in calls)
-            provider_only = all(call.get("fallback_used") is False and "gemini" in str(call.get("model", "")).lower() for call in calls)
-            cost = (input_tokens * args.input_usd_per_million / 1_000_000 + output_tokens * args.output_usd_per_million / 1_000_000) if provider_only else None
-            report["scenarios"].append(
-                {
-                    "number": index + 1,
-                    "fixture": fixture.name,
-                    "user_alias": user_id,
-                    "generation": {"status": status, "wall_ms": elapsed, "response": generated},
-                    "session": {"status": status_session, "wall_ms": elapsed_session, "response": session},
-                    "reviews": reviews,
-                    "reopen": {"status": reopen_status, "wall_ms": reopen_elapsed, "card_count": len(reopened.get("cards", []))},
-                    "totals": {
-                        "input_tokens": input_tokens,
-                        "output_tokens": output_tokens,
-                        "cost_usd": round(cost, 8) if cost is not None else None,
-                        "within_budget": cost <= args.budget_usd if cost is not None else None,
-                        "usage_note": "provider usage" if provider_only else "mixed/fallback usage; not provider billing evidence",
-                    },
-                }
-            )
-            # Preserve completed real scenarios if a later request fails.
-            report["status"] = "in_progress"
-            output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            if args.delay_seconds and index + 1 < args.scenarios:
-                time.sleep(args.delay_seconds)
+                reviews = current["reviews"]
+                if not generated.get("cards"):
+                    raise RuntimeError(f"scenario {index + 1}: no cards generated")
+                for card_index in range(1, 6):
+                    card = generated["cards"][(card_index - 1) % len(generated["cards"])]
+                    if args.delay_seconds:
+                        time.sleep(args.delay_seconds)
+                    student_answer = card["reference_answer"]
+                    review_status, review_elapsed, review = request_json(
+                        client,
+                        "POST",
+                        f"{base}/v1/ai/answer-reviews",
+                        headers={"X-User-ID": user_id},
+                        json={
+                            "session_id": session["session_id"],
+                            "card": card,
+                            "student_answer": student_answer,
+                        },
+                    )
+                    reviews.append({"status": review_status, "wall_ms": review_elapsed, "response": review,
+                                    "student_answer":student_answer,"answer_mode":"reference_copy_not_paraphrase"})
+                    output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+                    if review_status != 200:
+                        raise RuntimeError(f"scenario {index + 1} review {card_index}: HTTP {review_status}: {review}")
+                    if not args.allow_fallback:
+                        assert_provider_call(review, f"scenario {index + 1} review {card_index}")
+                    if review.get("persisted") is not True or not review.get("review_id"):
+                        raise RuntimeError(f"scenario {index + 1} review {card_index}: persistence not acknowledged")
+
+
+                reopen_status, reopen_elapsed, reopened = request_json(
+                    client,
+                    "GET",
+                    f"{base}/v1/ai/sessions/{session['session_id']}",
+                    headers={"X-User-ID": user_id},
+                )
+                if reopen_status != 200 or len(reopened.get("cards", [])) != len(generated["cards"]):
+                    raise RuntimeError(f"scenario {index + 1}: persisted cards did not reopen: {reopened}")
+
+                calls = [generated, *(item["response"] for item in reviews)]
+                input_tokens = sum(int(item.get("usage", {}).get("input_tokens", 0)) for item in calls)
+                output_tokens = sum(int(item.get("usage", {}).get("output_tokens", 0)) for item in calls)
+                provider_only = all(call.get("fallback_used") is False and "gemini" in str(call.get("model", "")).lower() for call in calls)
+                cost = (input_tokens * args.input_usd_per_million / 1_000_000 + output_tokens * args.output_usd_per_million / 1_000_000) if provider_only else None
+                current.update(
+                    {
+                        "status":"completed",
+                        "number": index + 1,
+                        "fixture": fixture.name,
+                        "user_alias": user_id,
+                        "generation": {"status": status, "wall_ms": elapsed, "response": generated},
+                        "session": {"status": status_session, "wall_ms": elapsed_session, "response": session},
+                        "reviews": reviews,
+                        "reopen": {"status": reopen_status, "wall_ms": reopen_elapsed, "card_count": len(reopened.get("cards", []))},
+                        "totals": {
+                            "input_tokens": input_tokens,
+                            "output_tokens": output_tokens,
+                            "cost_usd": round(cost, 8) if cost is not None else None,
+                            "within_budget": cost <= args.budget_usd if cost is not None else None,
+                            "usage_note": "provider usage" if provider_only else "mixed/fallback usage; not provider billing evidence",
+                        },
+                    }
+                )
+                # Preserve completed real scenarios if a later request fails.
+                report["status"] = "in_progress"
+                output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                if args.delay_seconds and index + 1 < args.scenarios:
+                    time.sleep(args.delay_seconds)
+    except (RuntimeError, httpx.HTTPError) as exc:
+        report["status"]="failed"
+        report["failure"]={"type":type(exc).__name__,"message":str(exc)[:500]}
+        output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        print("Measurement failed; raw partial responses preserved at "+str(output))
+        return 1
 
     generation_latencies = [item["generation"]["wall_ms"] for item in report["scenarios"]]
     review_latencies = [review["wall_ms"] for item in report["scenarios"] for review in item["reviews"]]
