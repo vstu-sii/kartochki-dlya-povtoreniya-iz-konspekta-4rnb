@@ -17,6 +17,38 @@ class BaselineTest(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
+    def test_invalid_gemini_card_is_retried_and_never_accepted_without_grounding(self):
+        source = "Сила тока равна напряжению, делённому на сопротивление."
+        card = {"question": "Как найти силу тока?", "reference_answer": source,
+                "source_page": 1, "source_quote": source, "difficulty": "basic"}
+        invalid = {"title": "Формула", "cards": [{**card, "source_quote": "Несуществующая цитата"}],
+                   "_usage": {"input_tokens": 10, "output_tokens": 3}}
+        valid = {"title": "Формула", "cards": [card], "_usage": {"input_tokens": 11, "output_tokens": 4}}
+        with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
+            model = BaselineModel(TraceClient(str(self.trace_path)))
+            with patch.object(model, "_call_gemini", side_effect=[invalid, valid]) as provider:
+                result = model.generate({"pages": [{"page": 1, "text": source}], "requested_card_count": 5})
+        self.assertEqual(provider.call_count, 2)
+        self.assertFalse(result["fallback_used"])
+        self.assertEqual(result["cards"][0]["source_quote"], source)
+        self.assertEqual(result["usage"], {"input_tokens": 21, "output_tokens": 7})
+        events = [json.loads(line) for line in self.trace_path.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual([event["operation"] for event in events], ["generate_cards_validation_rejected", "generate_cards"])
+
+    def test_fallback_is_not_cached_after_provider_recovers(self):
+        source = "Сила тока зависит от напряжения."
+        card = {"question": "От чего зависит ток?", "reference_answer": source,
+                "source_page": 1, "source_quote": source, "difficulty": "basic"}
+        payload = {"pages": [{"page": 1, "text": source}], "requested_card_count": 5}
+        with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
+            model = BaselineModel(TraceClient(str(self.trace_path)))
+            with patch.object(model, "_call_gemini", side_effect=[ValueError("invalid"), ValueError("invalid"),
+                              {"title": "Ток", "cards": [card]}]):
+                failed = model.generate(payload)
+                recovered = model.generate(payload)
+        self.assertTrue(failed["fallback_used"])
+        self.assertFalse(recovered["fallback_used"])
+
     def test_generation_is_structured_grounded_and_traced(self):
         text = "Кэш ускоряет доступ к часто используемым данным."
         result = self.model.generate({"pages": [{"page": 1, "text": text}], "requested_card_count": 5})

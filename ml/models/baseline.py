@@ -119,8 +119,26 @@ class BaselineModel:
         if self.provider == "gemini" and os.getenv("GEMINI_API_KEY"):
             try:
                 selected_model = CHEAP_MODEL if payload.get("model_tier") == "cheap" else PRIMARY_MODEL
-                result = self._call_gemini(prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
-                result = self._normalize_generated_cards(result, payload)
+                rejected_usage = {"input_tokens": 0, "output_tokens": 0}
+                for validation_attempt in range(2):
+                    attempt_started = time.perf_counter()
+                    candidate = None
+                    try:
+                        candidate = self._call_gemini(prompt, self._cards_schema(payload.get("requested_card_count", 5)), selected_model)
+                        result = self._normalize_generated_cards(candidate, payload)
+                        break
+                    except (ValueError, KeyError, TypeError):
+                        if validation_attempt:
+                            raise
+                        usage = candidate.get("_usage", {}) if isinstance(candidate, dict) else {}
+                        for key in rejected_usage:
+                            rejected_usage[key] += usage.get(key, 0)
+                        self.trace.record(f"{trace_id}-rejected", "generate_cards_validation_rejected", selected_model, prompt,
+                                          {"usage": usage, "fallback_reason": "gemini_invalid_output"},
+                                          round((time.perf_counter() - attempt_started) * 1000), False)
+                if result and result.get("_usage"):
+                    for key in rejected_usage:
+                        result["_usage"][key] = result["_usage"].get(key, 0) + rejected_usage[key]
                 model_name = selected_model
             except (HTTPError, URLError, TimeoutError, ValueError, KeyError, TypeError) as exc:
                 result = None
@@ -144,7 +162,9 @@ class BaselineModel:
         api_usage = result.pop("_usage", None)
         result["usage"] = api_usage or self._usage(prompt, json.dumps(result, ensure_ascii=False)).__dict__
         self.trace.record(trace_id, "generate_cards", model_name, prompt, result, result["latency_ms"], fallback_used)
-        self.cache.put(cache_key, result)
+        # A transient provider failure must not pin fallback results for 15 minutes.
+        if not fallback_used:
+            self.cache.put(cache_key, result)
         return result
 
     def review(self, payload: dict) -> dict:
@@ -569,7 +589,7 @@ class BaselineModel:
                 usage = data.get("usageMetadata", {})
                 result["_usage"] = {
                     "input_tokens": usage.get("promptTokenCount", max(1, len(prompt) // 4)),
-                    "output_tokens": usage.get("candidatesTokenCount", 0),
+                    "output_tokens": usage.get("candidatesTokenCount", 0) + usage.get("thoughtsTokenCount", 0),
                 }
                 return result
             except HTTPError as exc:

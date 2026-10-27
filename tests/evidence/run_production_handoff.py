@@ -49,7 +49,7 @@ def main() -> int:
     parser.add_argument("--card-count", type=int, choices=range(5, 11), help="Set requested count for each scenario")
     parser.add_argument("--input-usd-per-million", type=float, default=0.30)
     parser.add_argument("--output-usd-per-million", type=float, default=2.50)
-    parser.add_argument("--budget-usd", type=float, default=0.10)
+    parser.add_argument("--budget-usd", type=float, default=0.04)
     parser.add_argument("--delay-seconds", type=float, default=0.0, help="Delay between provider calls to respect rate limits")
     parser.add_argument("--allow-fallback", action="store_true", help="Record degraded-path diagnostics; never report these as a provider-only run")
     args = parser.parse_args()
@@ -78,7 +78,7 @@ def main() -> int:
             "output": args.output_usd_per_million,
         },
         "budget_usd_per_scenario": args.budget_usd,
-        "cost_note": "Paid-tier estimate from exposed input and output counts; thinking tokens may be omitted. Actual free-tier charges and provider billing are not inferred.",
+        "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
         "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
         "health": {},
         "scenarios": [],
