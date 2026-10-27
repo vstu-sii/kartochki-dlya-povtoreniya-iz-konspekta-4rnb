@@ -1,0 +1,586 @@
+{
+  "started_at": "2026-10-27T14:55:18.598761+00:00",
+  "scope": "HTTP PDF upload through extraction, generation and persistence; review HTTP through persistence. No Telegram/browser rendering.",
+  "source_pdf_name": "Лабораторная_работа_4_Виртуализация_и_контейнеризация_в_DevOps.pdf",
+  "source_pdf_sha256": "6ed2a591d1cce8a16e0600940bb385f393618049b94916d7134d9e8ef2abef22",
+  "execution_sha": null,
+  "identity_scope": "Fresh isolated smoke accounts; excluded from usefulness and North Star",
+  "runs": [
+    {
+      "index": 1,
+      "user_id": "quality-lab5-49c8344d67d447749cfc",
+      "started_at": "2026-10-27T14:55:20.429729+00:00",
+      "reviews": [
+        {
+          "position": 1,
+          "student_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+          "answer_to_saved_review_ms": 8786.52,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_a2e7af671bbd447dbbbb5d35fd5fda48",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_503",
+            "trace_id": "tr_3ed840114ff34b2da9dfdc3ce766e1c0",
+            "latency_ms": 8456,
+            "usage": {
+              "input_tokens": 174,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 2,
+          "student_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+          "answer_to_saved_review_ms": 2007.56,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_0d45420ebaeb4cf0aaa2b370310c92d2",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_503",
+            "trace_id": "tr_5b40f9569a154713acfc694449fd52ca",
+            "latency_ms": 1695,
+            "usage": {
+              "input_tokens": 190,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 3,
+          "student_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+          "answer_to_saved_review_ms": 1626.46,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_3e181998c3234bb2aed9f03fadfb35da",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_b2496022cf3f4fda9a7e6e8ae6b095cd",
+            "latency_ms": 1301,
+            "usage": {
+              "input_tokens": 202,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 4,
+          "student_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+          "answer_to_saved_review_ms": 1626.9,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_c106f1b764b44c958162e81927027f9d",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_724da132be4147d186ba92f1da047c43",
+            "latency_ms": 1361,
+            "usage": {
+              "input_tokens": 192,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 5,
+          "student_answer": "дальнейшей автоматизации в CI/CD.",
+          "answer_to_saved_review_ms": 1328.92,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_f28af2a35a8b4abb871c797098b964c9",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_25c16f9996404359a9f4d0dee292877b",
+            "latency_ms": 1066,
+            "usage": {
+              "input_tokens": 162,
+              "output_tokens": 92
+            }
+          }
+        }
+      ],
+      "uploaded_pdf_sha256": "969731295661cf37067e5b3f0bf2ba004938a26950b7041fa447c98a816d4e48",
+      "cache_control": "Distinct PDF metadata per run; text unchanged, no reuse of idempotency result.",
+      "pdf_to_saved_cards_ms": 12405.9,
+      "card_set": {
+        "card_set_id": "set_f0020230b75449f2816070584b509869",
+        "title": "Карточки по загруженному материалу",
+        "model": "deterministic-grounded-v1",
+        "prompt_version": "cards-v2.1",
+        "fallback_used": true,
+        "latency_ms": 9965,
+        "usage": {
+          "input_tokens": 929,
+          "output_tokens": 522
+        },
+        "cards": [
+          {
+            "card_id": "card_02169c5e14fa4ef793816664eb776306",
+            "question": "Какова цель этой работы?",
+            "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+            "source_page": 1,
+            "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_f0bfed530b48451cb04e4357e6ee88ff",
+            "question": "Что говорится в материале о «Compose, упаковать веб -приложение с ML -моделью в контейнер,»?",
+            "reference_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+            "source_page": 1,
+            "source_quote": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_a09d7cc99dd44abbabbb6f65918f36bf",
+            "question": "Что говорится в материале о «организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,»?",
+            "reference_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+            "source_page": 1,
+            "source_quote": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_74c4dd7afd0e4b36bf3ad084be0e16a4",
+            "question": "Что говорится в материале о «обеспечить воспроизводимость запуска и подготовить приложение к»?",
+            "reference_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+            "source_page": 1,
+            "source_quote": "обеспечить воспроизводимость запуска и подготовить приложение к",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_c03c1fd949bd4dfdad8302c8a760bde7",
+            "question": "Что говорится в материале о «дальнейшей автоматизации в CI/CD»?",
+            "reference_answer": "дальнейшей автоматизации в CI/CD.",
+            "source_page": 1,
+            "source_quote": "дальнейшей автоматизации в CI/CD.",
+            "difficulty": "intermediate"
+          }
+        ],
+        "fallback_reason": "gemini_http_503"
+      },
+      "session_id": "session_c06d484aa93e4bcca4d517f0b5b1f4b3",
+      "persistence_verified": true,
+      "completed": true
+    },
+    {
+      "index": 2,
+      "user_id": "quality-lab5-a4de32f547a0437587f9",
+      "started_at": "2026-10-27T14:55:50.419841+00:00",
+      "reviews": [
+        {
+          "position": 1,
+          "student_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+          "answer_to_saved_review_ms": 1327.43,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_6a6641bb665548328aae996124b0f73e",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_8815f62fbdd74bfa9ebc7d3fbdf7d232",
+            "latency_ms": 1052,
+            "usage": {
+              "input_tokens": 174,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 2,
+          "student_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+          "answer_to_saved_review_ms": 1368.42,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_669eb52d069744e4be0249d861ee6a14",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_601bd9fd83044207a10a912466a08240",
+            "latency_ms": 1096,
+            "usage": {
+              "input_tokens": 190,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 3,
+          "student_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+          "answer_to_saved_review_ms": 1295.34,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_1456615be8aa44d5bc117d5e9ef679cb",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_12e3a5450bd04c748aca80b4085f54bc",
+            "latency_ms": 1038,
+            "usage": {
+              "input_tokens": 202,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 4,
+          "student_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+          "answer_to_saved_review_ms": 1286.74,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_2411c0568ea245d59fe29629b18ae35b",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_70eb9844ab604dd4b40c022f860ce621",
+            "latency_ms": 1034,
+            "usage": {
+              "input_tokens": 192,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 5,
+          "student_answer": "дальнейшей автоматизации в CI/CD.",
+          "answer_to_saved_review_ms": 1464.08,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_125b254df71b47a0ab08ab0986a64184",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_a37f11b110bf4043ac65fe59065e7f1a",
+            "latency_ms": 1168,
+            "usage": {
+              "input_tokens": 162,
+              "output_tokens": 92
+            }
+          }
+        }
+      ],
+      "uploaded_pdf_sha256": "bc3a22793c709ac6e57334351a1d6f79b0e153660c5f4f12ba707e05e1b0bb94",
+      "cache_control": "Distinct PDF metadata per run; text unchanged, no reuse of idempotency result.",
+      "pdf_to_saved_cards_ms": 3383.84,
+      "card_set": {
+        "card_set_id": "set_740525948afe4ce98c0a34d1a4cca802",
+        "title": "Карточки по загруженному материалу",
+        "model": "deterministic-grounded-v1",
+        "prompt_version": "cards-v2.1",
+        "fallback_used": true,
+        "latency_ms": 1248,
+        "usage": {
+          "input_tokens": 929,
+          "output_tokens": 522
+        },
+        "cards": [
+          {
+            "card_id": "card_6295bd793cca4a7a9c3742aa0c724aee",
+            "question": "Какова цель этой работы?",
+            "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+            "source_page": 1,
+            "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_d5cb28fac1e6489a855c660084cba35f",
+            "question": "Что говорится в материале о «Compose, упаковать веб -приложение с ML -моделью в контейнер,»?",
+            "reference_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+            "source_page": 1,
+            "source_quote": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_4be7a7e6d98344ebaf9ddee6f6e7b8e7",
+            "question": "Что говорится в материале о «организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,»?",
+            "reference_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+            "source_page": 1,
+            "source_quote": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_1e0c598416e349bf8add50704d845795",
+            "question": "Что говорится в материале о «обеспечить воспроизводимость запуска и подготовить приложение к»?",
+            "reference_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+            "source_page": 1,
+            "source_quote": "обеспечить воспроизводимость запуска и подготовить приложение к",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_efaa8220a3aa4f799face5648f2435e7",
+            "question": "Что говорится в материале о «дальнейшей автоматизации в CI/CD»?",
+            "reference_answer": "дальнейшей автоматизации в CI/CD.",
+            "source_page": 1,
+            "source_quote": "дальнейшей автоматизации в CI/CD.",
+            "difficulty": "intermediate"
+          }
+        ],
+        "fallback_reason": "gemini_http_429"
+      },
+      "session_id": "session_d58619ebbc0444c3aecfc215259ee5c8",
+      "persistence_verified": true,
+      "completed": true
+    },
+    {
+      "index": 3,
+      "user_id": "quality-lab5-d471b713f99b4c25aaf9",
+      "started_at": "2026-10-27T14:56:03.188129+00:00",
+      "reviews": [
+        {
+          "position": 1,
+          "student_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+          "answer_to_saved_review_ms": 1285.71,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_ded0feee39d24358b20ca35aa536ce75",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_21fec413a8bb43d385affe16ec2f5a7c",
+            "latency_ms": 1018,
+            "usage": {
+              "input_tokens": 174,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 2,
+          "student_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+          "answer_to_saved_review_ms": 1435.32,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_0aad8b58b5ce4105a6de760904a92f9a",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_9a97f5754d6843cc9dbbefd18c55d65b",
+            "latency_ms": 1081,
+            "usage": {
+              "input_tokens": 190,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 3,
+          "student_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+          "answer_to_saved_review_ms": 1350.5,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_77547b629e1e49bca9a34f22498c7dd4",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_625f357c8518404d9507bc924916ec75",
+            "latency_ms": 1077,
+            "usage": {
+              "input_tokens": 202,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 4,
+          "student_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+          "answer_to_saved_review_ms": 1297.27,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_36f3d79da67546a18a5ea52357fa99af",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_154538a6173847579a58449b4a98da8b",
+            "latency_ms": 1023,
+            "usage": {
+              "input_tokens": 192,
+              "output_tokens": 92
+            }
+          }
+        },
+        {
+          "position": 5,
+          "student_answer": "дальнейшей автоматизации в CI/CD.",
+          "answer_to_saved_review_ms": 1373.97,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Ответ передаёт основные пункты эталона.",
+            "missing_points": [],
+            "review_id": "review_6f45caa823024e38b845b92f8c3dc2dd",
+            "model": "deterministic-review-v2",
+            "prompt_version": "review-v2.1",
+            "fallback_used": true,
+            "fallback_reason": "gemini_http_429",
+            "trace_id": "tr_3fb0e72d7d3e4db3a4b8f572ae6b57b2",
+            "latency_ms": 1060,
+            "usage": {
+              "input_tokens": 162,
+              "output_tokens": 92
+            }
+          }
+        }
+      ],
+      "uploaded_pdf_sha256": "06bfb3d55b985eeefa6e4269628c7d56123244692edfddf9a99c024206290ec2",
+      "cache_control": "Distinct PDF metadata per run; text unchanged, no reuse of idempotency result.",
+      "pdf_to_saved_cards_ms": 3793.16,
+      "card_set": {
+        "card_set_id": "set_59c9ecbd808d4e869acea2266cd9a401",
+        "title": "Карточки по загруженному материалу",
+        "model": "deterministic-grounded-v1",
+        "prompt_version": "cards-v2.1",
+        "fallback_used": true,
+        "latency_ms": 1215,
+        "usage": {
+          "input_tokens": 929,
+          "output_tokens": 522
+        },
+        "cards": [
+          {
+            "card_id": "card_7c1657a001a34fd3b444676107290dc6",
+            "question": "Какова цель этой работы?",
+            "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+            "source_page": 1,
+            "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_150f5567f87f42728eea132d86cf177f",
+            "question": "Что говорится в материале о «Compose, упаковать веб -приложение с ML -моделью в контейнер,»?",
+            "reference_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+            "source_page": 1,
+            "source_quote": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_e42aff109fff476daa0eadbe5f926ee0",
+            "question": "Что говорится в материале о «организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,»?",
+            "reference_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+            "source_page": 1,
+            "source_quote": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_889947cf2ecf482e9ca0e94b79637fa9",
+            "question": "Что говорится в материале о «обеспечить воспроизводимость запуска и подготовить приложение к»?",
+            "reference_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+            "source_page": 1,
+            "source_quote": "обеспечить воспроизводимость запуска и подготовить приложение к",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_5c0a029b0ded4d0fa85d9d640d5ca841",
+            "question": "Что говорится в материале о «дальнейшей автоматизации в CI/CD»?",
+            "reference_answer": "дальнейшей автоматизации в CI/CD.",
+            "source_page": 1,
+            "source_quote": "дальнейшей автоматизации в CI/CD.",
+            "difficulty": "intermediate"
+          }
+        ],
+        "fallback_reason": "gemini_http_429"
+      },
+      "session_id": "session_ded4746c0594450b84e5f43bd82f583f",
+      "persistence_verified": true,
+      "completed": true
+    }
+  ],
+  "health_before": {
+    "service": "application-api",
+    "status": "ok",
+    "version": "lab5",
+    "telegram": "webhook"
+  },
+  "ended_at": "2026-10-27T14:56:15.880988+00:00",
+  "pdf_to_cards": {
+    "n": 3,
+    "raw_ms": [
+      3383.84,
+      3793.16,
+      12405.9
+    ],
+    "p50_ms": 3793.16,
+    "p95_ms": 12405.9,
+    "method": "median / nearest-rank p95"
+  },
+  "answer_to_review": {
+    "n": 15,
+    "raw_ms": [
+      1285.71,
+      1286.74,
+      1295.34,
+      1297.27,
+      1327.43,
+      1328.92,
+      1350.5,
+      1368.42,
+      1373.97,
+      1435.32,
+      1464.08,
+      1626.46,
+      1626.9,
+      2007.56,
+      8786.52
+    ],
+    "p50_ms": 1368.42,
+    "p95_ms": 8786.52,
+    "method": "median / nearest-rank p95"
+  },
+  "completed_scenarios": 3
+}

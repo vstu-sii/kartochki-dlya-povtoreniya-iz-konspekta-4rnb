@@ -1,0 +1,19 @@
+{
+  "finding": "Q5-FORMULA-01",
+  "status": "fixed_on_tested_vector_pdf",
+  "ai_commit": "9d29cf2e7ebd922f720c318691d3ee4e05f49a3b",
+  "date": "2026-10-27",
+  "formulas_extracted_intact": 39,
+  "formulas_in_batched_theses_intact": 39,
+  "total": 39,
+  "loss_rate": 0,
+  "http_status": 201,
+  "cards_persisted": 5,
+  "unit_integration_tests": 47,
+  "eval_groups": 8,
+  "unique_eval_cases": 132,
+  "human_review": null,
+  "method": "automated matching to agent visual transcription of original pages",
+  "production_verified": false,
+  "scope": "one vector PDF; exhaustive generation batches, not recall of all formulas in a single five-card set"
+}

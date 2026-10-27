@@ -1,0 +1,397 @@
+{
+  "run_at": "2026-10-27T21:16:26.095089+00:00",
+  "code_sha": "d0a3999371cddc3105695965515fe62ab10873b1",
+  "source_sha256": "d93b49360a7cf1441c17c9bcd806de3562ea5b6fa6370c15d5ca8c8694b7bcac",
+  "scope": "local real Gemini -> TestClient API -> isolated SQLite; not production",
+  "answer_mode": "reference_copy_not_paraphrase",
+  "inter_call_delay_seconds": 6.0,
+  "scenarios": [
+    {
+      "number": 1,
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 1531,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формула и ее назначение указаны абсолютно верно. Попробуйте теперь привести пример применения этой формулы для закрепления.",
+            "missing_points": [],
+            "review_id": "review_6f9e89e51d4b42b28750167b0a757fbb",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_2cbde1e8a9af4759b2333778b21fc4c8",
+            "latency_ms": 1505,
+            "usage": {
+              "input_tokens": 261,
+              "output_tokens": 63
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 2030,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали значение нулевой степени и привели математическую формулу.",
+            "missing_points": [],
+            "review_id": "review_8c5bb719c55b40c096c7332ecb720b2e",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_9b0d966bb5f1499685e11be2263e6c85",
+            "latency_ms": 2016,
+            "usage": {
+              "input_tokens": 213,
+              "output_tokens": 56
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1216,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали основное логарифмическое тождество и его формулу.",
+            "missing_points": [],
+            "review_id": "review_b8917c4191eb48099e1556799e0ac529",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_d9ca63df496b421586177999bdca86f8",
+            "latency_ms": 1210,
+            "usage": {
+              "input_tokens": 236,
+              "output_tokens": 49
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1445,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формулировка и математическая запись полностью верны. Уточнять здесь нечего!",
+            "missing_points": [],
+            "review_id": "review_090b0a73b7ee49c7829fa63625650f67",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_aa39cbff93f145299c5a4a3088fa62e4",
+            "latency_ms": 1437,
+            "usage": {
+              "input_tokens": 238,
+              "output_tokens": 57
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1341,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формула синуса двойного угла названа абсолютно верно и полно. Пожалуйста, помните её для дальнейших тригонометрических преобразований.",
+            "missing_points": [],
+            "review_id": "review_04a0315e8b5c4f8986e4065a9beda0c2",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ad07201e93434d17b90dccda065fa43b",
+            "latency_ms": 1332,
+            "usage": {
+              "input_tokens": 242,
+              "output_tokens": 70
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        }
+      ],
+      "generation": {
+        "status": 201,
+        "wall_ms": 4834,
+        "response": {
+          "card_set_id": "set_f27168187ac64846aeeda3dc5fdb84f8",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_55913076836849adad5b629caa665a0d",
+          "latency_ms": 2610,
+          "usage": {
+            "input_tokens": 1115,
+            "output_tokens": 560
+          },
+          "cards": [
+            {
+              "card_id": "card_95b76b4b72cb4fa1944db89d57efac54",
+              "question": "Как выглядит формула квадрата суммы и разности?",
+              "reference_answer": "Формула квадрата суммы и разности записывается как $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$. Она позволяет быстро возвести двучлен в квадрат.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_f6f4e97b6d17443f90d98980d9ad715f",
+              "question": "Чему равна нулевая степень числа по свойствам степени?",
+              "reference_answer": "Любое число в нулевой степени равно единице, что записывается как $a^{0} = 1$.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_f201fc81247a46039fb1702350824d8e",
+              "question": "Каково основное свойство логарифма в виде $a^{log_{a} b}$?",
+              "reference_answer": "Это основное логарифмическое тождество, которое выражается формулой $a^{log_{a} b} = b$.",
+              "source_page": 1,
+              "source_quote": "$a^{log_{a} b} = b$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_2ac715399e3042e7901f47a9f9aa1a01",
+              "question": "Чему равен тангенс через синус и косинус?",
+              "reference_answer": "Тангенс угла альфа равен отношению синуса этого угла к косинусу: $tg α = \\frac{sin α}{cos α}$.",
+              "source_page": 2,
+              "source_quote": "$tg α = \\frac{sin α}{cos α}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_4ba52d4f055d4971ae303e07e83b309a",
+              "question": "Как выражается формула синуса двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса исходного угла: $sin 2α = 2 sin α cos α$.",
+              "source_page": 2,
+              "source_quote": "$sin 2α = 2 sin α cos α$",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "persisted_cards": 5,
+      "session_status": 201,
+      "reopen_status": 200,
+      "reopened_cards": 5,
+      "passed": true,
+      "input_tokens": 2305,
+      "output_tokens_including_thinking": 855,
+      "cost_usd": 0.002829
+    },
+    {
+      "number": 2,
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 1259,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формула написана абсолютно верно. Уточнение не требуется.",
+            "missing_points": [],
+            "review_id": "review_ef352a057d3948568c76bdacebf126cd",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ba57c70ee0ef4462a456496cd20329e5",
+            "latency_ms": 1252,
+            "usage": {
+              "input_tokens": 237,
+              "output_tokens": 41
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1366,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали значение нулевой степени для числа.",
+            "missing_points": [],
+            "review_id": "review_9ede882a8033411fb2b80bcde817bdd6",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_61bfe5c9286f4a57b3ad5a5041c9d55e",
+            "latency_ms": 1355,
+            "usage": {
+              "input_tokens": 201,
+              "output_tokens": 41
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1455,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, все ключевые моменты переданы верно. Дополнительных уточнений не требуется.",
+            "missing_points": [],
+            "review_id": "review_7039fdef4c5f44a580b6861ba3bfff5d",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_de5f64fbbe584c11a07a815012d40cf5",
+            "latency_ms": 1449,
+            "usage": {
+              "input_tokens": 219,
+              "output_tokens": 48
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1383,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно выразили тангенс через синус и косинус.",
+            "missing_points": [],
+            "review_id": "review_bd3994cb5f21411d8940f66f367b3df1",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_792c8137b3e74ee5a8cf4852a1f7919c",
+            "latency_ms": 1373,
+            "usage": {
+              "input_tokens": 238,
+              "output_tokens": 56
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1185,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, ответ полностью совпадает с эталоном и верно передает основное свойство степени с логарифмом.",
+            "missing_points": [],
+            "review_id": "review_647d64057974477eaea675fccad38b6b",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_d282d333185d44b98fd94e0095c574aa",
+            "latency_ms": 1168,
+            "usage": {
+              "input_tokens": 232,
+              "output_tokens": 60
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        }
+      ],
+      "generation": {
+        "status": 201,
+        "wall_ms": 2354,
+        "response": {
+          "card_set_id": "set_c0501b862ab94203bd96e5b47d55ea91",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_f62ebe46afaa4d999be27ea2538d2d5e",
+          "latency_ms": 2279,
+          "usage": {
+            "input_tokens": 1115,
+            "output_tokens": 534
+          },
+          "cards": [
+            {
+              "card_id": "card_496cbacd8346417ea887a45537e90270",
+              "question": "Как выглядит формула квадрата суммы и разности?",
+              "reference_answer": "Формула квадрата суммы и разности записывается как (a ± b)^2 = a^2 ± 2ab + b^2.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_c4b44617960543ca8e84c1f0a1c8a6af",
+              "question": " Чему равен нулевой показатель степени для числа a?",
+              "reference_answer": "Любое число в нулевой степени равно единице: a^0 = 1.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_161a1acfddc04b628f9ea9e116671752",
+              "question": "Каково основное тригонометрическое тождество согласно источнику?",
+              "reference_answer": "В источнике приведено соотношение sin^2 α + cos^2 β = 1.",
+              "source_page": 2,
+              "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_17dbb8f8a27b4354a44e0f715113881c",
+              "question": "Как выражается тангенс через синус и косинус?",
+              "reference_answer": "Тангенс угла альфа равен отношению синуса этого угла к его косинусу: tg α = (sin α) / (cos α).",
+              "source_page": 2,
+              "source_quote": "$tg α = \\frac{sin α}{cos α}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_0899320997ba468897dd7818a1e25351",
+              "question": "Чему равен логарифм единицы по основанию или основное свойство степени с логарифмом a^(log_a b)?",
+              "reference_answer": "Логарифмическое тождество a в степени логарифм b по основанию a равно b.",
+              "source_page": 1,
+              "source_quote": "$a^{log_{a} b} = b$",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "persisted_cards": 5,
+      "session_status": 201,
+      "reopen_status": 200,
+      "reopened_cards": 5,
+      "passed": true,
+      "input_tokens": 2242,
+      "output_tokens_including_thinking": 780,
+      "cost_usd": 0.0026226
+    }
+  ],
+  "status": "completed",
+  "passed": true,
+  "review_sample_size": 10,
+  "review_p50_ms": 1374.5,
+  "review_p95_ms": 2030,
+  "p95_method": "nearest rank",
+  "sample_scope": "small local sample, not stable production p95"
+}

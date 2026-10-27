@@ -1,0 +1,60 @@
+{
+  "date_moscow": "2026-10-28",
+  "model": "gemini-3.5-flash-lite",
+  "prompt_versions": "cards-v2.3/review-v2.1",
+  "key_validated": true,
+  "key_value_saved_or_pushed": false,
+  "full_model_golden": {
+    "passed": true,
+    "provider_cases": 95,
+    "generation_cases": 53,
+    "review_cases": 42,
+    "review_agreement": 0.8571428571428571,
+    "schema": 1,
+    "grounding": 1,
+    "guard_safety": 1,
+    "quota_retries": 13,
+    "generation_latency": {
+      "n": 53,
+      "p50_ms": 2480,
+      "p95_ms": 7516
+    },
+    "review_latency": {
+      "n": 42,
+      "p50_ms": 1460.0,
+      "p95_ms": 3592
+    },
+    "source_code_sha": "489228bb47a8fbe874ce01fcd21623f3db87c66f"
+  },
+  "formula_api_after_fix": {
+    "code_sha": "d0a3999371cddc3105695965515fe62ab10873b1",
+    "passed": true,
+    "scenarios": 2,
+    "provider_calls": 12,
+    "reviews_p95_ms": 2030,
+    "costs_usd": [
+      0.002829,
+      0.0026226
+    ],
+    "budget_usd_per_scenario": 0.04,
+    "scope": "local real Gemini -> TestClient API -> isolated SQLite; not production"
+  },
+  "technical_regression": {
+    "groups": 8,
+    "cases": 132,
+    "unit_integration_tests": 73,
+    "passed": true
+  },
+  "human_review_signatures_added": false,
+  "public_deployment_performed": false,
+  "new_release_tag_created": false,
+  "open_findings": [
+    "six_golden_verdict_disagreements",
+    "ambiguous_partial_labels_REV-021_REV-024_REV-039",
+    "production_new_code_and_release_tag_pending",
+    "AI_personal_ablation_explanation"
+  ],
+  "quota_pause_seconds": 6,
+  "quota_source": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier, limit 15",
+  "dataset_labels_changed": false
+}

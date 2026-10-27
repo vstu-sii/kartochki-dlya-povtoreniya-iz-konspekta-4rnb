@@ -1,0 +1,9 @@
+{
+  "scope": "isolated local TestClient API, current published AI source, deterministic model, SQLite",
+  "status": 502,
+  "body": {
+    "detail": {
+      "code": "MODEL_OUTPUT_INVALID"
+    }
+  }
+}

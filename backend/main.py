@@ -8,6 +8,8 @@ from pathlib import Path
 from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 
 from backend.database import init_db
 from backend.observability import metrics_middleware, metrics_response
@@ -44,7 +46,9 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="Карточки для повторения", version="0.4.0", lifespan=lifespan)
+APP_VERSION = os.getenv("APP_VERSION", "lab5")
+
+app = FastAPI(title="Карточки для повторения", version="0.5.0", lifespan=lifespan)
 app.middleware("http")(metrics_middleware)
 app.add_middleware(
     CORSMiddleware,
@@ -55,12 +59,21 @@ app.add_middleware(
 app.include_router(ai_router)
 
 
+@app.exception_handler(SQLAlchemyError)
+async def database_unavailable(_: Request, __: SQLAlchemyError):
+    """Return a stable degradation contract instead of leaking HTTP 500."""
+    return JSONResponse(status_code=503,
+                        content={"detail": {"code": "DATABASE_UNAVAILABLE", "retryable": True}},
+                        headers={"Retry-After": "5"})
+
+
 @app.get("/health")
 def health():
     return {
         "service": "application-api",
         "status": "ok",
-        "version": "lab4",
+        "version": APP_VERSION,
+        "commit_sha": os.getenv("RENDER_GIT_COMMIT", os.getenv("COMMIT_SHA", "unknown")),
         "telegram": "webhook" if TELEGRAM_BOT_TOKEN and os.getenv("RENDER_EXTERNAL_URL") else "local-polling-or-disabled",
     }
 

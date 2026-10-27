@@ -1,0 +1,16 @@
+{
+  "scope": "offline replay of actually captured rejected Gemini JSON, not new inference",
+  "new_code_sha": "d0a3999371cddc3105695965515fe62ab10873b1",
+  "cases": [
+    {
+      "original_error": "quote_mismatch",
+      "accepted_after_json_transport_repair": true,
+      "all_quotes_pass_real_guard": true
+    },
+    {
+      "original_error": "quote_mismatch",
+      "accepted_after_json_transport_repair": true,
+      "all_quotes_pass_real_guard": true
+    }
+  ]
+}

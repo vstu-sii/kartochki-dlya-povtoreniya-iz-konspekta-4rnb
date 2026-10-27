@@ -1,0 +1,196 @@
+{
+  "target": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health",
+  "sample_count": 30,
+  "period_start": "2026-10-26T22:33:51.088323+00:00",
+  "period_end": "2026-10-26T22:36:39.802634+00:00",
+  "observation_duration_seconds": 168.71,
+  "successful_samples": 30,
+  "uptime_percent": 100.0,
+  "latency_p50_ms": 586.24,
+  "latency_p95_ms": 2231.14,
+  "expected_version": null,
+  "version_match_percent": 100.0,
+  "method": "active HTTP health sampling; latency is calculated from successful responses",
+  "samples": [
+    {
+      "at": "2026-10-26T22:33:51.088323+00:00",
+      "status": 200,
+      "latency_ms": 2783.37,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:33:58.880599+00:00",
+      "status": 200,
+      "latency_ms": 744.7,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:04.709793+00:00",
+      "status": 200,
+      "latency_ms": 1260.59,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:11.000669+00:00",
+      "status": 200,
+      "latency_ms": 1766.65,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:17.882346+00:00",
+      "status": 200,
+      "latency_ms": 1212.78,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:24.098483+00:00",
+      "status": 200,
+      "latency_ms": 504.35,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:29.605938+00:00",
+      "status": 200,
+      "latency_ms": 583.58,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:35.213012+00:00",
+      "status": 200,
+      "latency_ms": 602.15,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:40.818398+00:00",
+      "status": 200,
+      "latency_ms": 553.45,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:46.374544+00:00",
+      "status": 200,
+      "latency_ms": 594.26,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:51.972570+00:00",
+      "status": 200,
+      "latency_ms": 518.94,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:34:57.494128+00:00",
+      "status": 200,
+      "latency_ms": 650.54,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:03.151481+00:00",
+      "status": 200,
+      "latency_ms": 919.85,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:09.075354+00:00",
+      "status": 200,
+      "latency_ms": 588.89,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:14.667704+00:00",
+      "status": 200,
+      "latency_ms": 526.63,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:20.197134+00:00",
+      "status": 200,
+      "latency_ms": 2231.14,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:27.431177+00:00",
+      "status": 200,
+      "latency_ms": 602.05,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:33.036560+00:00",
+      "status": 200,
+      "latency_ms": 514.77,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:38.554232+00:00",
+      "status": 200,
+      "latency_ms": 512.09,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:44.069113+00:00",
+      "status": 200,
+      "latency_ms": 527.97,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:49.599827+00:00",
+      "status": 200,
+      "latency_ms": 484.28,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:35:55.090345+00:00",
+      "status": 200,
+      "latency_ms": 577.23,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:00.670512+00:00",
+      "status": 200,
+      "latency_ms": 529.87,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:06.203426+00:00",
+      "status": 200,
+      "latency_ms": 580.12,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:11.786520+00:00",
+      "status": 200,
+      "latency_ms": 578.91,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:17.368194+00:00",
+      "status": 200,
+      "latency_ms": 597.01,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:22.969316+00:00",
+      "status": 200,
+      "latency_ms": 551.32,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:28.523389+00:00",
+      "status": 200,
+      "latency_ms": 540.87,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:34.068287+00:00",
+      "status": 200,
+      "latency_ms": 730.68,
+      "version": "lab4"
+    },
+    {
+      "at": "2026-10-26T22:36:39.802634+00:00",
+      "status": 200,
+      "latency_ms": 640.51,
+      "version": "lab4"
+    }
+  ]
+}

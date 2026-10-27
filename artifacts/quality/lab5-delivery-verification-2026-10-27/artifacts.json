@@ -1,0 +1,25 @@
+{
+  "total_count": 1,
+  "artifacts": [
+    {
+      "id": 12755712938,
+      "node_id": "MDg6QXJ0aWZhY3QxMjc1NTcxMjkzOA==",
+      "name": "lab5-quality-v0.5.3-quality-candidate",
+      "size_in_bytes": 96881,
+      "url": "https://api.github.com/repos/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/artifacts/12755712938",
+      "archive_download_url": "https://api.github.com/repos/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/artifacts/12755712938/zip",
+      "expired": false,
+      "digest": "sha256:7b4bc58113669894eab2ccd621a3ef6f1b88776e4e761ffa5b1de67fdb031c4c",
+      "created_at": "2026-10-27T17:51:40Z",
+      "updated_at": "2026-10-27T17:51:40Z",
+      "expires_at": "2027-01-25T17:51:18Z",
+      "workflow_run": {
+        "id": 40554481097,
+        "repository_id": 1357875177,
+        "head_repository_id": 1357875177,
+        "head_branch": "v0.5.3-quality-candidate",
+        "head_sha": "85b546e20f54a97f11dea1ac295e679902fc2b46"
+      }
+    }
+  ]
+}

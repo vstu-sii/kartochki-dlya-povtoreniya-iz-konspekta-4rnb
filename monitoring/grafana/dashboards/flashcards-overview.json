@@ -7,7 +7,8 @@
   "panels": [
     {"id": 1, "type": "stat", "title": "Requests / 5m", "datasource": {"uid": "prometheus"}, "targets": [{"expr": "sum(increase(flashcards_http_requests_total[5m]))"}], "gridPos": {"x": 0, "y": 0, "w": 6, "h": 5}},
     {"id": 2, "type": "stat", "title": "5xx / 5m", "datasource": {"uid": "prometheus"}, "targets": [{"expr": "sum(increase(flashcards_http_requests_total{status=~\"5..\"}[5m]))"}], "gridPos": {"x": 6, "y": 0, "w": 6, "h": 5}},
-    {"id": 3, "type": "stat", "title": "Cheap/rejected budget events", "datasource": {"uid": "prometheus"}, "targets": [{"expr": "sum(increase(flashcards_budget_events_total[1h]))"}], "gridPos": {"x": 12, "y": 0, "w": 6, "h": 5}},
+    {"id": 3, "type": "stat", "title": "Average latency / 5m (ms)", "datasource": {"uid": "prometheus"}, "targets": [{"expr": "1000 * sum(rate(flashcards_http_request_seconds_sum[5m])) / clamp_min(sum(rate(flashcards_http_request_seconds_count[5m])), 0.000001)"}], "gridPos": {"x": 12, "y": 0, "w": 6, "h": 5}},
+    {"id": 6, "type": "text", "title": "Environment / release", "options": {"mode": "markdown", "content": "**Environment:** integrated CI staging  \\n**Version:** lab5-integrated  \\nExact SHA is stored beside the screenshot in `grafana-integrated.json`."}, "gridPos": {"x": 18, "y": 0, "w": 6, "h": 5}},
     {"id": 4, "type": "logs", "title": "Service logs", "datasource": {"uid": "loki"}, "targets": [{"expr": "{service=~\"backend|ai-service|telegram-bot\"}"}], "gridPos": {"x": 0, "y": 5, "w": 12, "h": 9}},
     {"id": 5, "type": "logs", "title": "LLM traces", "datasource": {"uid": "loki"}, "targets": [{"expr": "{service=\"ai-service\"} |= \"llm_trace\""}], "gridPos": {"x": 12, "y": 5, "w": 12, "h": 9}}
   ]
