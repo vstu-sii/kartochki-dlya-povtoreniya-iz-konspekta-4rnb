@@ -73,8 +73,13 @@ def validate_generated_cards(response: dict, case: dict) -> tuple[bool, bool]:
     return bool(schema_ok), bool(grounding_ok)
 
 
-def run(mini: bool, output: Path, require_provider: bool = False) -> dict:
+def run(mini: bool, output: Path, require_provider: bool = False, case_ids=None, delay_seconds: float = 0) -> dict:
     cases = load_cases(mini)
+    if case_ids is not None:
+        known={case["id"] for case in cases}
+        if not case_ids or not set(case_ids).issubset(known):
+            raise ValueError("Empty or unknown retry case selection")
+        cases=[case for case in cases if case["id"] in case_ids]
     trace_path = ROOT / "artifacts/evals/eval-traces.jsonl"
     trace_path.parent.mkdir(parents=True, exist_ok=True)
     if trace_path.exists():
@@ -82,7 +87,9 @@ def run(mini: bool, output: Path, require_provider: bool = False) -> dict:
     model = BaselineModel(TraceClient(str(trace_path)))
     rows, latencies, input_tokens, output_tokens = [], [], 0, 0
 
-    for case in cases:
+    for index, case in enumerate(cases):
+        if index and delay_seconds and case["operation"] in {"generate_card", "review_answer"}:
+            time.sleep(delay_seconds)
         started = time.perf_counter()
         operation = case["operation"]
         schema_ok = grounding_ok = verdict_ok = safety_ok = None
@@ -181,6 +188,8 @@ def run(mini: bool, output: Path, require_provider: bool = False) -> dict:
         "dataset_version": DATASET_VERSION,
         "dataset_sha256": dataset_hash(),
         "dataset_case_count": len(cases),
+        "selected_case_ids": sorted(case_ids) if case_ids is not None else None,
+        "inter_case_delay_seconds": delay_seconds,
         "executed_case_count": executed_count,
         "skipped_case_count": len(cases) - executed_count,
         "execution_coverage_rate": round(executed_count / len(cases), 4) if cases else 0,
@@ -193,7 +202,7 @@ def run(mini: bool, output: Path, require_provider: bool = False) -> dict:
             "grounded_card_rate": rate("grounding_ok"),
             "review_agreement_rate": rate("verdict_ok"),
             "safety_guard_rate": rate("safety_ok"),
-            "model_quality_score": round(statistics.mean(measurable), 4),
+            "model_quality_score": round(statistics.mean(measurable), 4) if measurable else None,
             "latency_p50_ms": percentile(latencies, 0.5),
             "latency_p95_ms": percentile(latencies, 0.95),
             "input_tokens": input_tokens,
@@ -217,6 +226,8 @@ def main() -> int:
     parser.add_argument("--mini", action="store_true")
     parser.add_argument("--require-provider", action="store_true", help="Require real uncached Gemini for every generation/review; API/DB cases remain separately covered")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--ids-json", type=Path, help="Explicit subset for auditable retries; never presented as the full dataset")
+    parser.add_argument("--delay-seconds", type=float, default=0, help="Pause between cases for provider quota; excluded from each case latency")
     parser.add_argument("--min-schema", type=float)
     parser.add_argument("--min-grounding", type=float)
     parser.add_argument("--min-review", type=float)
@@ -229,7 +240,10 @@ def main() -> int:
         return 2
     if args.require_provider:
         os.environ["MODEL_CACHE_TTL_SECONDS"]="0"
-    report = run(args.mini, args.output, args.require_provider)
+    if args.delay_seconds < 0:
+        parser.error("delay-seconds must be nonnegative")
+    selected=json.loads(args.ids_json.read_text(encoding="utf-8")) if args.ids_json else None
+    report = run(args.mini, args.output, args.require_provider, selected, args.delay_seconds)
     thresholds = {
         "schema_pass_rate": args.min_schema,
         "grounded_card_rate": args.min_grounding,

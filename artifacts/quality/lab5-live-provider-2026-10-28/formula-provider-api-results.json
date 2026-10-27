@@ -1,0 +1,277 @@
+{
+  "run_at": "2026-10-27T21:11:18.978460+00:00",
+  "code_sha": "489228bb47a8fbe874ce01fcd21623f3db87c66f",
+  "source_sha256": "d93b49360a7cf1441c17c9bcd806de3562ea5b6fa6370c15d5ca8c8694b7bcac",
+  "scope": "local real Gemini -> TestClient API -> isolated SQLite; not production",
+  "answer_mode": "reference_copy_not_paraphrase",
+  "inter_call_delay_seconds": 6.0,
+  "scenarios": [
+    {
+      "number": 1,
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 1755,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно точно воспроизвели формулу квадрата суммы и разности.",
+            "missing_points": [],
+            "review_id": "review_a2fde4a86a54493ea2d8ba118791fb89",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_bbc4e4c8235f4ed089e779f6d79931a6",
+            "latency_ms": 1731,
+            "usage": {
+              "input_tokens": 285,
+              "output_tokens": 43
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1744,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формулировка и математическая формула приведены абсолютно верно. Уточнение не требуется.",
+            "missing_points": [],
+            "review_id": "review_66937c934c1940eea8639975874a52c8",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_fcf75f1a83a241eeaf51cb9200de1424",
+            "latency_ms": 1725,
+            "usage": {
+              "input_tokens": 303,
+              "output_tokens": 57
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1545,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали, что любое число в нулевой степени равно единице.",
+            "missing_points": [],
+            "review_id": "review_fc8d5f2c23d24ac08540ca60c68e34ae",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_3e147cbc1b13411da91ac439e03ecca8",
+            "latency_ms": 1536,
+            "usage": {
+              "input_tokens": 201,
+              "output_tokens": 56
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1392,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно точно воспроизвели соотношение из источника.",
+            "missing_points": [],
+            "review_id": "review_8685beb001444bcb8925f64f32d7c264",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_b693b23d3ee6422ab4ae4221778cb1be",
+            "latency_ms": 1383,
+            "usage": {
+              "input_tokens": 228,
+              "output_tokens": 50
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        },
+        {
+          "status": 200,
+          "wall_ms": 1751,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формулировка и формула абсолютно верны. Попробуйте теперь вспомнить формулу для косинуса двойного угла.",
+            "missing_points": [],
+            "review_id": "review_c4ecc4ae185e491798dfa52b8b882b3d",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_5afa7fec67834c25a2f776f6b836ca8b",
+            "latency_ms": 1740,
+            "usage": {
+              "input_tokens": 236,
+              "output_tokens": 65
+            },
+            "persisted": true
+          },
+          "persisted_review": true
+        }
+      ],
+      "generation": {
+        "status": 201,
+        "wall_ms": 4872,
+        "response": {
+          "card_set_id": "set_b4474d571eeb45f38d9d6c5d1d4ece81",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_0de97e54dce04fdbb2bfe922e8c942ab",
+          "latency_ms": 2636,
+          "usage": {
+            "input_tokens": 1115,
+            "output_tokens": 597
+          },
+          "cards": [
+            {
+              "card_id": "card_c71363f790bc4fdab3804e8c8c1ebc93",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения, плюс или минус удвоенное произведение первого на второе, плюс квадрат второго выражения: $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_9b46a35ec896417eb79e203387a6739b",
+              "question": "Как выглядит формула для суммы или разности кубов?",
+              "reference_answer": "Сумма или разность кубов равна произведению суммы или разности самих выражений и неполного квадрата разности или суммы этих выражений: $a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$.",
+              "source_page": 1,
+              "source_quote": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_3471cfa17bbf4d90842bf7e17e5489a7",
+              "question": "Чему равна нулевая степень числа?",
+              "reference_answer": "Любое число в нулевой степени равно единице: $a^{0} = 1$.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_6ca7e17e84494b64a18f3c8195c0a975",
+              "question": "Как выражается основное тригонометрическое тождество согласно тексту источника?",
+              "reference_answer": "В тексте источника приведено соотношение $sin^{2} α + cos^{2} β = 1$.",
+              "source_page": 2,
+              "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_bb97c59a91c64ee6ae7c51f97edf7de1",
+              "question": "Чему равен синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса на косинус этого угла: $sin 2α = 2 sin α cos α$.",
+              "source_page": 2,
+              "source_quote": "$sin 2α = 2 sin α cos α$",
+              "difficulty": "basic"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "persisted_cards": 5,
+      "session_status": 201,
+      "reopen_status": 200,
+      "reopened_cards": 5,
+      "passed": true,
+      "input_tokens": 2368,
+      "output_tokens_including_thinking": 868,
+      "cost_usd": 0.0028804
+    },
+    {
+      "number": 2,
+      "reviews": [],
+      "generation": {
+        "status": 201,
+        "wall_ms": 4873,
+        "response": {
+          "card_set_id": "set_fa6ad43d89534fd781cec608cd527c6f",
+          "title": "Карточки по загруженному материалу",
+          "model": "deterministic-grounded-v2",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": true,
+          "trace_id": "tr_591b7ce34311442c84e11ccd7386d9db",
+          "latency_ms": 4798,
+          "usage": {
+            "input_tokens": 621,
+            "output_tokens": 485
+          },
+          "cards": [
+            {
+              "card_id": "card_3ccf11ceb3034b5c87eb55592f51f17f",
+              "question": "Что говорится в материале о «$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$»?",
+              "reference_answer": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_8a0df7e43dbb4bf5a84463c3a034c2df",
+              "question": "Что говорится в материале о «$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$»?",
+              "reference_answer": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_6dc6605dc936413e99d6a9715003e29b",
+              "question": "Что говорится в материале о «$a^{2} − b^{2} = (a − b)(a + b)$»?",
+              "reference_answer": "$a^{2} − b^{2} = (a − b)(a + b)$",
+              "source_page": 1,
+              "source_quote": "$a^{2} − b^{2} = (a − b)(a + b)$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_518acfac97a14f229b5a2a142e36a5fe",
+              "question": "Что говорится в материале о «$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$»?",
+              "reference_answer": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+              "source_page": 1,
+              "source_quote": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_2229168f64fe481c969936fb8c788185",
+              "question": "Что говорится в материале о «$a^{n}b^{n} = (ab)^{n}$»?",
+              "reference_answer": "$a^{n}b^{n} = (ab)^{n}$",
+              "source_page": 1,
+              "source_quote": "$a^{n}b^{n} = (ab)^{n}$",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": "gemini_invalid_output",
+          "validation_error": "quote_mismatch",
+          "provider_usage": {
+            "input_tokens": 2305,
+            "output_tokens": 1134
+          }
+        }
+      },
+      "passed": false
+    }
+  ],
+  "status": "completed",
+  "passed": false,
+  "review_sample_size": 5,
+  "review_p50_ms": 1744,
+  "review_p95_ms": 1755,
+  "p95_method": "nearest rank",
+  "sample_scope": "small local sample, not stable production p95"
+}

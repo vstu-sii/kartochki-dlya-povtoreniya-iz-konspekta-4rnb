@@ -7,6 +7,10 @@ on:
         type: choice
         options: [gemini-3.5-flash-lite, gemini-3.8-flash]
         default: gemini-3.5-flash-lite
+      delay_seconds:
+        description: Quota pause between model cases (excluded from latency)
+        type: number
+        default: 6
       mini:
         description: Run only fixed 8-case mini (full model dataset otherwise)
         type: boolean
@@ -30,12 +34,13 @@ jobs:
           LLM_PRIMARY_MODEL: ${{ inputs.model }}
           LLM_CHEAP_MODEL: ${{ inputs.model }}
           MINI: ${{ inputs.mini }}
+          DELAY_SECONDS: ${{ inputs.delay_seconds }}
           TRACE_CONTENT: 'false'
         shell: bash
         run: |
           args=()
           if [ "$MINI" = 'true' ]; then args+=(--mini); fi
-          python tests/evals/run_evals.py "${args[@]}" --require-provider --min-schema 1 --min-grounding 1 --min-review .85 --min-safety 1 --output artifacts/evals/live-gemini-results.json
+          python tests/evals/run_evals.py "${args[@]}" --require-provider --delay-seconds "$DELAY_SECONDS" --min-schema 1 --min-grounding 1 --min-review .85 --min-safety 1 --output artifacts/evals/live-gemini-results.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

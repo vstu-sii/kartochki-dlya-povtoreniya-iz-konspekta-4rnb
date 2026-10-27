@@ -1,0 +1,561 @@
+{
+  "run_at": "2026-10-27T21:09:44.626928+00:00",
+  "mode": "model-and-input-guards",
+  "model": "live-gemini",
+  "prompt_version": "cards-v2.3/review-v2.1",
+  "dataset_version": "lab5-v1",
+  "dataset_sha256": "4ccad6ee986d38a51f1591c338c019dda7957891976b41847e78c50363764ca9",
+  "dataset_case_count": 13,
+  "selected_case_ids": [
+    "GEN-030",
+    "REV-004",
+    "REV-005",
+    "REV-006",
+    "REV-008",
+    "REV-009",
+    "REV-024",
+    "REV-026",
+    "REV-027",
+    "REV-028",
+    "REV-029",
+    "REV-030",
+    "REV-031"
+  ],
+  "inter_case_delay_seconds": 6.0,
+  "executed_case_count": 13,
+  "skipped_case_count": 0,
+  "execution_coverage_rate": 1.0,
+  "model_case_count": 13,
+  "safety_case_count": 0,
+  "latency_scope": "model adapter wall-clock, not UI/API latency",
+  "metrics": {
+    "provider_success_rate": 1.0,
+    "schema_pass_rate": 1.0,
+    "grounded_card_rate": 1.0,
+    "review_agreement_rate": 0.75,
+    "safety_guard_rate": null,
+    "model_quality_score": 0.9167,
+    "latency_p50_ms": 1507,
+    "latency_p95_ms": 3510,
+    "input_tokens": 2636,
+    "output_tokens": 1517
+  },
+  "cases": [
+    {
+      "id": "REV-004",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "correct",
+      "expected_verdict": "correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 1507,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ, все ключевые свойства ACID названы правильно.",
+        "missing_points": [],
+        "review_id": "review_61e8f8d5c5374740a924486a89dd6b9e",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_6bbc6f8d40174b9d98ea36725d8dc991",
+        "latency_ms": 1505,
+        "usage": {
+          "input_tokens": 206,
+          "output_tokens": 48
+        }
+      }
+    },
+    {
+      "id": "REV-005",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "incorrect",
+      "expected_verdict": "incorrect",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 3592,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Вы правильно обратили внимание на оценку сложности, но O(n) — это только лучший случай при условии раннего выхода. Уточните, какова сложность алгоритма в среднем и худшем случае.",
+        "missing_points": [
+          "O(n²) в среднем и худшем случае"
+        ],
+        "review_id": "review_addbc466bff044adb1c82506d4a1d21a",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_1d389d773d7b4a0f91f31d8cf87008ff",
+        "latency_ms": 3591,
+        "usage": {
+          "input_tokens": 222,
+          "output_tokens": 77
+        }
+      }
+    },
+    {
+      "id": "REV-006",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "partially_correct",
+      "expected_verdict": "partially_correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 1283,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Вы отлично заметили, что индекс занимает дополнительное место на диске. Уточните, как именно использование индекса влияет на скорость изменения данных (вставок и обновлений)?",
+        "missing_points": [
+          "Медленные вставки и обновления"
+        ],
+        "review_id": "review_013011a5d94c4d52865c48c69eb33d95",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_8184a8cd10ea4e33a984101fd196c07c",
+        "latency_ms": 1282,
+        "usage": {
+          "input_tokens": 198,
+          "output_tokens": 89
+        }
+      }
+    },
+    {
+      "id": "REV-008",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "incorrect",
+      "expected_verdict": "incorrect",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 1529,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Вы хорошо постарались ответить на вопрос, но перебор элементов по очереди — это характеристика линейного поиска, а не бинарного. Подумайте, как знание о том, что элементы упорядочены, помогает алгоритму быстрее отсекать ненужные варианты на каждом шаге.",
+        "missing_points": [
+          "Необходимо упомянуть сравнение со средним элементом",
+          "Необходимо указать на отбрасывание половины диапазона"
+        ],
+        "review_id": "review_c1934a5978d24e5ab5d73d978f4bd9ff",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_31b181f6e379458889a6b6b7c641c1c9",
+        "latency_ms": 1528,
+        "usage": {
+          "input_tokens": 206,
+          "output_tokens": 130
+        }
+      }
+    },
+    {
+      "id": "REV-009",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "partially_correct",
+      "expected_verdict": "partially_correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 3510,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Вы отлично справились с описанием потоков, отметив, что они используют общую память. Уточните, пожалуйста, чем в этом плане они отличаются от процессов?",
+        "missing_points": [
+          "Процессы имеют отдельные адресные пространства"
+        ],
+        "review_id": "review_a63ed118c7bc48e290350ab35e019039",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_849bab8945ac4f91a9ebbf4e4c938bce",
+        "latency_ms": 3507,
+        "usage": {
+          "input_tokens": 199,
+          "output_tokens": 87
+        }
+      }
+    },
+    {
+      "id": "GEN-030",
+      "operation": "generate_card",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": null,
+      "expected_verdict": null,
+      "schema_ok": true,
+      "grounding_ok": true,
+      "verdict_ok": null,
+      "safety_ok": null,
+      "latency_ms": 2416,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "title": "CAP-теорема",
+        "cards": [
+          {
+            "question": "Что утверждает CAP-теорема?",
+            "reference_answer": "CAP-теорема говорит, что при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "source_page": 4,
+            "source_quote": "CAP-теорема говорит, что при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "difficulty": "basic",
+            "card_id": "card_715c36818c1045aa928b0091ab8ecce9"
+          },
+          {
+            "question": "Между какими свойствами выбирает система при сетевом разделении согласно CAP-теореме?",
+            "reference_answer": "Согласно CAP-теореме, при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "source_page": 4,
+            "source_quote": "CAP-теорема говорит, что при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "difficulty": "basic",
+            "card_id": "card_d134714456cf496abf2eb9f5ea7dc1de"
+          },
+          {
+            "question": "В каких условиях, согласно CAP-теореме, система делает выбор между согласованностью и доступностью?",
+            "reference_answer": "Система делает выбор между согласованностью и доступностью при сетевом разделении.",
+            "source_page": 4,
+            "source_quote": "CAP-теорема говорит, что при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "difficulty": "intermediate",
+            "card_id": "card_0df484db6849437282129d6f5c55bd21"
+          },
+          {
+            "question": "Какое поведение системы описывает CAP-теорема в условиях сетевого разделения?",
+            "reference_answer": "В условиях сетевого разделения система выбирает между согласованностью и доступностью.",
+            "source_page": 4,
+            "source_quote": "CAP-теорема говорит, что при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "difficulty": "intermediate",
+            "card_id": "card_9624253ae4ca4f5694072542be2a2c02"
+          },
+          {
+            "question": "Что происходит с выбором системы в рамках CAP-теоремы при возникновении сетевого разделения?",
+            "reference_answer": "При сетевом разделении система выбирает между согласованностью и доступностью, как утверждает CAP-теорема.",
+            "source_page": 4,
+            "source_quote": "CAP-теорема говорит, что при сетевом разделении система выбирает между согласованностью и доступностью.",
+            "difficulty": "advanced",
+            "card_id": "card_6cc711342d4d42a5a079ee5cad3f4313"
+          }
+        ],
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "cards-v2.3",
+        "schema_version": "2.0",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "validation_error": null,
+        "provider_usage": null,
+        "trace_id": "tr_9744a9fc3bf343e1ab8c77c23dc7b60c",
+        "latency_ms": 2412,
+        "cache_hit": false,
+        "tool_status": "success",
+        "usage": {
+          "input_tokens": 268,
+          "output_tokens": 571
+        }
+      }
+    },
+    {
+      "id": "REV-024",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "correct",
+      "expected_verdict": "partially_correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": false,
+      "safety_ok": null,
+      "latency_ms": 1360,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы абсолютно верно указали, что при разделении сети выбор делается между согласованностью и доступностью.",
+        "missing_points": [],
+        "review_id": "review_821be990aacb49d5a6bfd523a2c6b368",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_d931091b21174fc78716ab98ad94ffad",
+        "latency_ms": 1357,
+        "usage": {
+          "input_tokens": 193,
+          "output_tokens": 60
+        }
+      }
+    },
+    {
+      "id": "REV-026",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "correct",
+      "expected_verdict": "correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 1329,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично! Вы абсолютно верно указали, что ROLLBACK отменяет незакрепленные изменения транзакции.",
+        "missing_points": [],
+        "review_id": "review_3bd23936db9c4009b3984ca721aa2fc1",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_95dcabb4c13048bd8d8d36f79b0908c3",
+        "latency_ms": 1328,
+        "usage": {
+          "input_tokens": 193,
+          "output_tokens": 41
+        }
+      }
+    },
+    {
+      "id": "REV-027",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "correct",
+      "expected_verdict": "partially_correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": false,
+      "safety_ok": null,
+      "latency_ms": 1280,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, основная суть передана верно! Для полной точности можно добавить, что обновление идет в направлении градиента именно функции потерь.",
+        "missing_points": [],
+        "review_id": "review_a218137ff87346658da704ba3fbbe86a",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_040c72e724dc47b8bf4726d89da7e74c",
+        "latency_ms": 1278,
+        "usage": {
+          "input_tokens": 195,
+          "output_tokens": 64
+        }
+      }
+    },
+    {
+      "id": "REV-028",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "incorrect",
+      "expected_verdict": "incorrect",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 2487,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "К сожалению, этот ответ не связан с вопросом. Пожалуйста, подумайте о том, как модель ведет себя на обучающих данных по сравнению с новыми данными.",
+        "missing_points": [
+          "Хороший результат на обучающих данных",
+          "Плохой результат на новых данных"
+        ],
+        "review_id": "review_0df12242546541149381edce150ec2db",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_19d833d76e7149eb9aebd1bfd637e425",
+        "latency_ms": 2486,
+        "usage": {
+          "input_tokens": 189,
+          "output_tokens": 93
+        }
+      }
+    },
+    {
+      "id": "REV-029",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "correct",
+      "expected_verdict": "correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 1427,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы абсолютно точно указали, что precision измеряет долю истинно положительных среди предсказанных положительных.",
+        "missing_points": [],
+        "review_id": "review_9d8a053570944f709d1a3d50896d345e",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_6a87eb6dec014e00b3a2b7f4002585c1",
+        "latency_ms": 1424,
+        "usage": {
+          "input_tokens": 199,
+          "output_tokens": 66
+        }
+      }
+    },
+    {
+      "id": "REV-030",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "incorrect",
+      "expected_verdict": "partially_correct",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": false,
+      "safety_ok": null,
+      "latency_ms": 2527,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Вы верно указали знаменатель формулы, но пропустили саму суть метрики — что именно измеряется (долю найденных положительных объектов). Подумайте, отношение какого количества элементов к чему именно показывает полнота (recall)?",
+        "missing_points": [
+          "Доля найденных истинно положительных объектов"
+        ],
+        "review_id": "review_dd6922c5e69b4e07bdcf12f8bbb37925",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_0d007dd1e7cf447480249d97dfab9e4c",
+        "latency_ms": 2526,
+        "usage": {
+          "input_tokens": 185,
+          "output_tokens": 103
+        }
+      }
+    },
+    {
+      "id": "REV-031",
+      "operation": "review_answer",
+      "executed": true,
+      "skip_reason": null,
+      "actual_verdict": "incorrect",
+      "expected_verdict": "incorrect",
+      "schema_ok": true,
+      "grounding_ok": null,
+      "verdict_ok": true,
+      "safety_ok": null,
+      "latency_ms": 1471,
+      "actual_model": "gemini-3.5-flash-lite",
+      "fallback_used": false,
+      "fallback_reason": null,
+      "validation_error": null,
+      "provider_ok": true,
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "К сожалению, ваш ответ не относится к поставленному вопросу. Пожалуйста, вспомните, какие две метрики объединяет F1-мера.",
+        "missing_points": [
+          "Precision",
+          "Recall",
+          "Гармоническое среднее"
+        ],
+        "review_id": "review_d0f094b9c4b0466aafc089e3ecdc01da",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.1",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_72bb6609599a4ee88d7b3c411cd6af14",
+        "latency_ms": 1468,
+        "usage": {
+          "input_tokens": 183,
+          "output_tokens": 88
+        }
+      }
+    }
+  ]
+}
