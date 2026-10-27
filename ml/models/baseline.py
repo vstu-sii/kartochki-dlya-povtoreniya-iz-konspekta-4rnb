@@ -632,7 +632,7 @@ class BaselineModel:
             "type": "object",
             "properties": {
                 "title": {"type": "string"},
-                "cards": {"type": "array", "minItems": 1, "maxItems": count, "items": card},
+                "cards": {"type": "array", "minItems": count, "maxItems": count, "items": card},
             },
             "required": ["title", "cards"],
         }
@@ -654,7 +654,7 @@ class BaselineModel:
     def _normalize_generated_cards(result: dict, payload: dict) -> dict:
         cards = result.get("cards")
         requested = payload.get("requested_card_count", 5)
-        if not isinstance(cards, list) or not 1 <= len(cards) <= requested:
+        if not isinstance(cards, list) or len(cards) != requested:
             raise ValueError("Gemini returned the wrong card count")
         pages = {page["page"]: page["text"] for page in payload["pages"]}
         seen_questions: set[str] = set()
