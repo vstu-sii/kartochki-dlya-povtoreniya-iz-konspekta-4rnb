@@ -19,7 +19,7 @@ from ml.tools import SourceLookupRequest, SourceLookupTool, build_retrieval_quer
 _PROMPT_VERSIONS = prompt_versions()
 PROMPT_VERSION = _PROMPT_VERSIONS["generation"]
 REVIEW_PROMPT_VERSION = _PROMPT_VERSIONS["review"]
-DETERMINISTIC_REVIEW_MODEL = "deterministic-review-v4"
+DETERMINISTIC_REVIEW_MODEL = "deterministic-review-v5"
 SCHEMA_VERSION = "2.0"
 PRIMARY_MODEL = os.getenv("LLM_PRIMARY_MODEL", "gemini-3.8-flash")
 CHEAP_MODEL = os.getenv("LLM_CHEAP_MODEL", "gemini-2.5-flash-lite")
@@ -198,6 +198,11 @@ class BaselineModel:
         contradiction = self._has_clear_contradiction(normalized_reference, normalized_answer)
 
         points = self._reference_points(reference)
+        supported_answer_points = self._supported_answer_points(
+            answer,
+            reference,
+            card.get("source_quote", ""),
+        )
         covered = [
             point
             for point in points
@@ -240,13 +245,24 @@ class BaselineModel:
             missing = []
             feedback = "Ответ верный и передаёт обязательный смысл эталона."
         elif verdict == "partially_correct":
-            correct_part = "; ".join(self._sentence(point).rstrip(".") for point in covered)
+            correct_part = "; ".join(
+                self._sentence(point).rstrip(".") for point in supported_answer_points
+            )
             missing_text = "; ".join(point.rstrip(".") for point in missing) + "." if missing else self._sentence(reference)
             if contradiction:
                 correction = self._contradiction_explanation(normalized_reference, normalized_answer)
                 feedback = f"Верно: {correct_part}. {correction}" if correct_part else correction
+            elif required_term and correct_part:
+                term = required_term.removeprefix("Не назван термин ").rstrip(".")
+                feedback = (
+                    f"Верно: {correct_part}. По согласованному критерию также нужно "
+                    f"явно назвать термин {term}."
+                )
+            elif correct_part:
+                clarification = self._sentence(reference) if not covered and len(missing) == 1 else missing_text
+                feedback = f"Верно: {correct_part}. Нужно дополнить: {clarification}"
             else:
-                feedback = f"Верно: {correct_part}. Нужно дополнить: {missing_text}"
+                feedback = f"Ответ содержит часть релевантного смысла. Нужно дополнить: {missing_text}"
         else:
             correction = self._contradiction_explanation(normalized_reference, normalized_answer)
             if unrelated:
@@ -272,7 +288,7 @@ class BaselineModel:
         """Split an answer into semantic clauses, preserving readable text."""
         text = " ".join(reference.split()).strip()
         parts = re.split(
-            r"\s*;\s*|\s*,\s*(?:поэтому|зато|но)\s+|\s+и\s+(?=[а-яё]+(?:ется|ются|ает|яет|ует|ит|ет|ют|ат|ят)\b)",
+            r"\s*;\s*|\s*,\s*(?:потому\s+что|поэтому|зато|но)\s+|\s+и\s+(?=[а-яё]+(?:ется|ются|ает|яет|ует|ит|ет|ют|ат|ят)\b)",
             text,
             flags=re.I,
         )
@@ -281,6 +297,21 @@ class BaselineModel:
             if place_tradeoff:
                 parts = ["Занимает дополнительное место", place_tradeoff.group(1)]
         return [part.strip(" .") for part in parts if part.strip(" .")]
+
+    @classmethod
+    def _supported_answer_points(cls, answer: str, reference: str, source: str) -> list[str]:
+        """Return only student-written clauses supported by the reference/source."""
+        normalized_reference = cls._normalize(reference)
+        normalized_source = cls._normalize(source)
+        supported: list[str] = []
+        for point in cls._reference_points(answer):
+            normalized_point = cls._normalize(point)
+            contradicted = cls._has_clear_contradiction(normalized_reference, normalized_point)
+            if contradicted:
+                continue
+            if cls._meaning_covered(point, reference) or (source and cls._meaning_covered(point, source)):
+                supported.append(point)
+        return supported
 
     @classmethod
     def _meaning_covered(cls, point: str, answer: str) -> bool:
@@ -367,7 +398,7 @@ class BaselineModel:
             return "Ошибка: при промахе процессор обращается к оперативной памяти, а не к жёсткому диску."
         if "fifo" in reference and "lifo" in answer:
             return "Ошибка: очередь работает по принципу FIFO, а не LIFO."
-        if "отдельн" in reference and ("общ" in answer or "разделяют памят" in answer):
+        if "отдельн" in reference and BaselineModel._claims_processes_share_memory(answer):
             return "Ошибка: процессы имеют отдельные адресные пространства, а не общую память."
         if "идентифиц" in reference and "сортир" in answer:
             return "Ошибка: первичный ключ не предназначен для сортировки строк."
@@ -628,7 +659,7 @@ class BaselineModel:
             and {"жестк", "диск"}.issubset(answer_words)
         ):
             return True
-        if "отдельн" in reference and ("общ" in answer or "разделяют памят" in answer):
+        if "отдельн" in reference and BaselineModel._claims_processes_share_memory(answer):
             return True
         if "разделяют памят" in reference and ("не разделяют" in answer or "отдельн памят" in answer):
             return True
@@ -639,6 +670,16 @@ class BaselineModel:
         return any(
             any(left in reference for left in expected) and any(right in answer for right in opposite)
             for expected, opposite in pairs
+        )
+
+    @staticmethod
+    def _claims_processes_share_memory(answer: str) -> bool:
+        """Detect a claim about processes themselves, not threads of one process."""
+        return bool(
+            re.search(
+                r"\b(?:процесс|процессы)\b[^.;]*(?:общ\w*\s+памят|разделяют\s+памят)",
+                answer,
+            )
         )
 
     @staticmethod

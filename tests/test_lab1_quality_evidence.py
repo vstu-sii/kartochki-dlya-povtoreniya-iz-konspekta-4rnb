@@ -24,6 +24,11 @@ class Lab1QualityEvidenceTest(unittest.TestCase):
         for row in self.report["answer_review_check"]["rows"]:
             self.assertTrue(all(value is None for value in row["quality_manual_review"].values()))
 
+    def test_no_review_contains_an_empty_correct_section(self):
+        for row in self.report["answer_review_check"]["rows"]:
+            with self.subTest(case_id=row["case_id"]):
+                self.assertNotIn("Верно: .", row["system_result"]["feedback"])
+
     def test_complete_raw_inputs_are_summarized(self):
         report = copy.deepcopy(self.report)
         for row in report["answer_review_check"]["rows"]:

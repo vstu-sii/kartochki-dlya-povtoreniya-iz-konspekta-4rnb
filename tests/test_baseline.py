@@ -86,7 +86,7 @@ class BaselineTest(unittest.TestCase):
                 )
         self.assertTrue(result["fallback_used"])
         self.assertEqual("gemini_invalid_output", result["fallback_reason"])
-        self.assertEqual("deterministic-review-v4", result["model"])
+        self.assertEqual("deterministic-review-v5", result["model"])
 
     def test_semantic_equivalents_do_not_create_false_missing_points(self):
         cases = (
@@ -142,6 +142,51 @@ class BaselineTest(unittest.TestCase):
         )
         self.assertEqual("partially_correct", result["verdict"])
         self.assertEqual(["Не назван термин FIFO."], result["missing_points"])
+        self.assertIn("Верно: Первым добавлен — первым извлечён.", result["feedback"])
+        self.assertIn("явно назвать термин FIFO", result["feedback"])
+        self.assertNotIn("Верно: По принципу FIFO", result["feedback"])
+
+    def test_partial_feedback_uses_only_supported_student_clauses(self):
+        cases = (
+            {
+                "card": {
+                    "question": "Какой компромисс делает UDP?",
+                    "reference_answer": "Нет гарантий доставки и порядка, зато меньше накладных расходов.",
+                    "source_quote": "UDP не устанавливает соединение и не гарантирует доставку или порядок пакетов, но имеет меньшие накладные расходы.",
+                },
+                "answer": "UDP быстрее, потому что не устанавливает соединение.",
+                "contains": ("Верно: Не устанавливает соединение.", "Нет гарантий доставки и порядка"),
+                "excludes": ("Верно: .", "Верно: UDP быстрее"),
+            },
+            {
+                "card": {
+                    "question": "Чем поток отличается от процесса по памяти?",
+                    "reference_answer": "Потоки разделяют память процесса; процессы имеют отдельные адресные пространства.",
+                    "source_quote": "Процесс имеет собственное адресное пространство, а потоки одного процесса разделяют память и ресурсы процесса.",
+                },
+                "answer": "Потоки одного процесса используют общую память.",
+                "contains": ("Верно: Потоки одного процесса используют общую память.", "Нужно дополнить"),
+                "excludes": ("Ошибка:", "Верно: ."),
+            },
+            {
+                "card": {
+                    "question": "Что обеспечивает mutex?",
+                    "reference_answer": "Вход только одного потока в критическую секцию.",
+                    "source_quote": "Mutex разрешает только одному потоку одновременно войти в критическую секцию.",
+                },
+                "answer": "Только одному потоку.",
+                "contains": ("Верно: Только одному потоку.", "Вход только одного потока в критическую секцию."),
+                "excludes": ("Верно: .",),
+            },
+        )
+        for case in cases:
+            with self.subTest(question=case["card"]["question"]):
+                result = self.model.review({"card": case["card"], "student_answer": case["answer"]})
+                self.assertEqual("partially_correct", result["verdict"])
+                for fragment in case["contains"]:
+                    self.assertIn(fragment, result["feedback"])
+                for fragment in case["excludes"]:
+                    self.assertNotIn(fragment, result["feedback"])
 
     def test_semantic_aliases_do_not_accept_contradictions(self):
         cases = (
@@ -169,7 +214,7 @@ class BaselineTest(unittest.TestCase):
             }
         )
         self.assertNotEqual("correct", result["verdict"])
-        self.assertIn("Верно: Процессор не находит данные в кэше.", result["feedback"])
+        self.assertIn("Верно: Данных нет в кэше.", result["feedback"])
         self.assertIn("оперативной памяти, а не к жёсткому диску", result["feedback"])
         self.assertNotIn(f"Верно: {answer}", result["feedback"])
 

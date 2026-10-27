@@ -25,7 +25,7 @@ python -m tests.evals.prepare_lab1_quality_evidence
 
 Смотреть: `docs/ml-final-metrics.md`, `docs/experiments/lab5.md`, `docs/quality/lab1-ai-evidence.md`, trace-конфиг `ml/tracing/`. Известные ограничения: один PDF, OCR зависит от качества скана, top-3 retrieval теряет четвёртый релевантный фрагмент, provider A/B мал и требует повторов перед коммерческим SLA. Критерии Lab 1, требующие исходных PDF, ручной разметки и live-среды, остаются открытыми до совместного замера и не подменяются локальным deterministic-runner.
 
-## Повторная проверка deterministic-review-v4
+## Повторная проверка deterministic-review-v5
 
 После совместного ревью Quality улучшено смысловое сопоставление ответов и формирование `feedback`/`missing_points`. Старые подтверждённые результаты сохранены отдельно, а новый набор тех же `REV-001…REV-020` подготовлен для повторной ручной проверки:
 
