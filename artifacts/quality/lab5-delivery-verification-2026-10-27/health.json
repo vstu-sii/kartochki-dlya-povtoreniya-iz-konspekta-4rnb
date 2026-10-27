@@ -1,0 +1,7 @@
+{
+  "service": "application-api",
+  "status": "ok",
+  "version": "lab5",
+  "commit_sha": "85b546e20f54a97f11dea1ac295e679902fc2b46",
+  "telegram": "webhook"
+}
