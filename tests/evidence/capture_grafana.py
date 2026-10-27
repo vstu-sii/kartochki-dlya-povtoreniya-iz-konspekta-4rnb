@@ -22,7 +22,7 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     captured_at = datetime.now(timezone.utc).isoformat()
-    dashboard_url = args.url.rstrip("/") + "/d/flashcards-prod/flashcards-production-overview?orgId=1&from=now-15m&to=now&refresh=5s"
+    dashboard_url = args.url.rstrip("/") + "/d/flashcards-prod/flashcards-production-overview?orgId=1&from=now-15m&to=now&refresh=off"
     with sync_playwright() as browser_api:
         browser = browser_api.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1600, "height": 1000}, device_scale_factor=1)
@@ -30,7 +30,8 @@ def main() -> None:
         page.get_by_label("Email or username").fill(args.user)
         page.locator('input[name="password"]').fill(args.password)
         page.get_by_role("button", name="Log in").click()
-        page.goto(dashboard_url, wait_until="networkidle")
+        page.wait_for_url(lambda url: "/login" not in url, timeout=30_000)
+        page.goto(dashboard_url, wait_until="domcontentloaded")
         page.wait_for_timeout(12_000)
         page.screenshot(path=str(args.output), full_page=True)
         title = page.title()
