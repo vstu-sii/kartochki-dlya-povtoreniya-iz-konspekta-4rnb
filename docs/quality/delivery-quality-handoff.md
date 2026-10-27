@@ -1,5 +1,13 @@
 # Delivery → Quality: Lab 5 handoff
 
+## Интегрированный кандидат 27.10.2026
+
+- Общий SHA: `7e19d89a8dcf198d2f62de1f051c9e8038a8c5a4`; новый тег `v0.5.4-integrated-candidate` включает AI `597a245` и Quality `9685b3e`.
+- [Render Manual Deploy](https://dashboard.render.com/web/srv-daem63n40ujc73fq8sr0/deploys/dep-dbgeqc4ipgvc73cir3q0); production `/health` вернул HTTP 200 и этот SHA.
+- На теге успешны [reproducible release CI](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40560297968), [release quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40560297999) и [integrated quality + Grafana](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40560297918). JSON, логи и другие артефакты находятся внутри соответствующих запусков. Автоматические quality gates используют deterministic модель.
+- Формульный PDF: один запрос без fallback на ранее развернутом SHA `85b546e`; затем три запроса с другим числом карточек завершились fallback `gemini_invalid_output`, в том числе на новом SHA. Устойчивость и полный живой сценарий с формулами остаются незакрытыми; это не подтверждено тестами с deterministic моделью.
+- Этот документ обновлён отдельным коммитом после создания тега. Развёрнутая и проверенная версия — SHA тега, а не более новый коммит только с обновлением отчёта.
+
 ## Дополнительная проверка формул и интеграции
 
 27.10.2026 в общую ветку включён AI-коммит `597a245856a0255c36a03bc9041dede82c2bae7e`, при конфликте сохранён документ Quality. При проверке формульного PDF запрос с пятью карточками вернул HTTP 201, модель `gemini-3.5-flash-lite`, `fallback_used=false`, четыре карточки; повтор с запросом шести карточек вернул fallback с `gemini_invalid_output`. Один успешный запрос подтверждает возможность работы, но не устойчивость и не успешный полный сценарий с формулами. Ошибку проверки нельзя считать исправленной.
