@@ -26,15 +26,22 @@ def validate_release(root, release_ref):
 
 
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--release-ref",required=True); p.add_argument("--output",default="artifacts/evals/lab5-release-results.json"); a=p.parse_args()
+    p=argparse.ArgumentParser(); p.add_argument("--release-ref",required=True); p.add_argument("--output",default="artifacts/evals/lab5-release-results.json"); p.add_argument("--reuse-existing-suite", action="store_true"); a=p.parse_args()
     try:
         commit, candidate = validate_release(ROOT, a.release_ref)
     except (ValueError, subprocess.CalledProcessError) as exc:
         print(f"Release validation failed: {exc}", file=sys.stderr)
         return 2
-    (ROOT/"artifacts/evals/full-suite-results.json").unlink(missing_ok=True)
-    code=subprocess.run([sys.executable,"tests/evals/run_full_suite.py"],cwd=ROOT).returncode
-    suite_path=ROOT/"artifacts/evals/full-suite-results.json"; suite=json.loads(suite_path.read_text(encoding="utf-8")) if suite_path.exists() else {}
+    suite_path=ROOT/"artifacts/evals/full-suite-results.json"
+    if a.reuse_existing_suite:
+        if not suite_path.exists():
+            print("Release validation failed: existing full-suite report is missing", file=sys.stderr)
+            return 2
+        code = 0
+    else:
+        suite_path.unlink(missing_ok=True)
+        code=subprocess.run([sys.executable,"tests/evals/run_full_suite.py"],cwd=ROOT).returncode
+    suite=json.loads(suite_path.read_text(encoding="utf-8")) if suite_path.exists() else {}
     report={"run_at":datetime.now(timezone.utc).isoformat(),"release_ref":a.release_ref,"commit":commit,
             "candidate_only":candidate,"passed":code==0 and suite.get("passed") is True,
             "thresholds":{"schema":1.0,"grounding":1.0,"review":.85,"safety":1.0,"hit_at_1":.90,"recall_at_3":1.0},
