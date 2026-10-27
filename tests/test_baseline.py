@@ -17,7 +17,7 @@ class BaselineTest(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
-    def test_gemini_lite_uses_supported_minimal_thinking_and_counts_thought_tokens(self):
+    def test_gemini_lite_counts_thought_tokens(self):
         from io import BytesIO
         response = {"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": "{}"}]}}],
                     "usageMetadata": {"promptTokenCount": 10, "candidatesTokenCount": 4, "thoughtsTokenCount": 3}}
@@ -27,7 +27,7 @@ class BaselineTest(unittest.TestCase):
             return BytesIO(json.dumps(response).encode())
         with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}), patch("ml.models.baseline.urlopen", side_effect=respond):
             result = self.model._call_gemini("test", {"type": "object"}, "gemini-3.5-flash-lite")
-        self.assertEqual(captured[0]["generationConfig"]["thinkingConfig"]["thinkingLevel"], "minimal")
+        self.assertEqual(captured[0]["generationConfig"]["thinkingConfig"]["thinkingLevel"], "low")
         self.assertEqual(result["_usage"], {"input_tokens": 10, "output_tokens": 7})
 
     def test_invalid_gemini_card_is_retried_and_never_accepted_without_grounding(self):
@@ -40,7 +40,7 @@ class BaselineTest(unittest.TestCase):
         with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
             model = BaselineModel(TraceClient(str(self.trace_path)))
             with patch.object(model, "_call_gemini", side_effect=[invalid, valid]) as provider:
-                result = model.generate({"pages": [{"page": 1, "text": source}], "requested_card_count": 5})
+                result = model.generate({"pages": [{"page": 1, "text": source}], "requested_card_count": 1})
         self.assertEqual(provider.call_count, 2)
         self.assertFalse(result["fallback_used"])
         self.assertEqual(result["cards"][0]["source_quote"], source)
@@ -52,7 +52,7 @@ class BaselineTest(unittest.TestCase):
         source = "Сила тока зависит от напряжения."
         card = {"question": "От чего зависит ток?", "reference_answer": source,
                 "source_page": 1, "source_quote": source, "difficulty": "basic"}
-        payload = {"pages": [{"page": 1, "text": source}], "requested_card_count": 5}
+        payload = {"pages": [{"page": 1, "text": source}], "requested_card_count": 1}
         with patch.dict("os.environ", {"MODEL_PROVIDER": "gemini", "GEMINI_API_KEY": "test"}):
             model = BaselineModel(TraceClient(str(self.trace_path)))
             with patch.object(model, "_call_gemini", side_effect=[ValueError("invalid"), ValueError("invalid"),

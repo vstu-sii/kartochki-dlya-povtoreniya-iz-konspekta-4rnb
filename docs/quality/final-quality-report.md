@@ -1,5 +1,9 @@
 # Финальный отчёт качества Lab 5
 
+## Новые данные интеграции
+
+Quality `7b0d3ce` и AI `042ec47` объединены в общую ветку, включая `cards-v2.2` и trace_id генерации. Локальный полный gate после объединения: 8/8 групп, 132/132 уникальных кейса; это deterministic, не live Gemini. На предыдущем live кандидате `b959a4a` трёх полных сценариев и 15 разборов было недостаточно для выполнения цели p95 ≤7 с: измерено 29,070 с, четвёртая генерация завершилась fallback. Измерение [сохранено](../../artifacts/quality/lab5-production-final/gemini-minimal-b959.json). Новые AI-изменения и промпт требуют отдельного релизного тега, CI и живого замера на том же SHA; достижение цели пока не подтверждено.
+
 ## Актуальное объединение AI, Quality и Delivery — 27.10.2026
 
 На интегрированном теге `v0.5.5-integrated-candidate` и SHA `bc56b605aaa7a9781fefd1bc576eb0d59bb20301` [полный release quality gate](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748484) и [сборка](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40563748214) прошли; JSON и логи находятся в артефактах запусков. Автоматический gate использует deterministic-модель. Результаты прежнего тега ниже сохранены как история.
