@@ -1,0 +1,57 @@
+Данные Delivery для Quality, проверено 26.10.2026.
+
+РЕЛИЗ ПОДТВЕРЖДЁН
+Тег: v0.5.1
+Commit SHA: e0ca9b9ae0ed80f971c4cc50a4ebd86d0e98079b
+Сборка success:
+https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842
+Quality gates success:
+https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651
+Release manifest:
+https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429842/artifacts/12171493450
+Полный прогон:
+https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/39221429651/artifacts/12171941812
+Не новый релиз, созданный при этой проверке, а уже существующий интеграционный тег от 19.10.2026.
+Локальная перепроверка тега 26.10.2026: все 8 групп passed, coverage 132/132, unit/integration 33/33 (Windows/Python 3.12, deterministic; CI — Linux/Python 3.11).
+
+GRAFANA
+Реальный screenshot с диапазоном/датой/окружением/версией отсутствует.
+Есть dashboard JSON и CI screenshot, они не заменяют нужный снимок Grafana.
+Исторический /health: 19.10.2026 01:48:44.554–01:49:40.248 UTC+3, 30/30, uptime по пробам 100%, p50 793,83 / p95 2437,77 мс.
+Это 55,693 секунды наблюдения. Недельная стабильность и чистота production alerts не подтверждены.
+На 26.10.2026 18:42:29 UTC+3 публичный /health ответил HTTP 200 за 500,26 мс и version=lab4; точный production SHA не определён.
+
+ЗАПРОШЕННЫЕ E2E ЗАМЕРЫ
+PDF -> готовые сохраненные карточки: повторные E2E значения с model/date/execution SHA не найдены.
+Ответ -> сохраненный разбор: таких полных E2E данных с execution SHA также нет.
+Нагрузочный профиль UC-01/02 содержит только агрегаты локального deterministic+SQLite и не проходит PDF extraction.
+Ниже — имеющиеся provider-only данные. Они не включают PDF/OCR, загрузку, БД, сеть клиента или отрисовку и не являются требуемым E2E.
+
+PROVIDER-ONLY A/B
+Источник: artifacts/experiments/lab4-provider-results.json
+Модель: gemini-3.5-flash-lite
+run_at: 17.10.2026 17:24:09.664 UTC+3 (2026-10-17T14:24:09.664408+00:00)
+N=20 разных кейсов (10 GEN и 10 REV) на вариант, 1 повтор каждого. Всего A+B=40 вызовов.
+Prompt A=v1, B=v2; выбран B.
+Commit добавления артефакта: edef5df5ef9b897fb1d1cea495153c2b62113180.
+SHA выполнения измерения в самом артефакте отсутствует; commit хранения нельзя выдавать за execution SHA.
+Значения в мс, порядок GEN-001..010 / REV-001..010:
+
+A, generation, n=10:
+6619.42, 6618.66, 6329.68, 6501.23, 6884.86, 6348.67, 6849.14, 6353.72, 7118.02, 6302.76
+A, answer review, n=10:
+5971.28, 6479.34, 5941.22, 6179.57, 6152.39, 5992.06, 6051.55, 6222.01, 6080.03, 6089.57
+B, generation, n=10:
+6567.26, 6337.92, 6142.96, 6248.09, 6207.60, 6270.67, 6569.36, 6498.69, 6545.45, 6574.70
+B, answer review, n=10:
+6161.83, 6407.23, 6146.77, 5939.67, 5985.04, 6153.47, 6076.86, 6427.89, 5947.95, 6076.95
+
+Пересчёт: p50=median; p95=nearest rank sorted[ceil(0.95*n)-1].
+B generation: p50 6418.305, p95 6574.70 мс.
+B review: p50 6111.860, p95 6427.89 мс.
+B все 20: p50 6227.845, p95 6569.36 мс.
+Документированные p50 6248.09 / p95 6849.14 не соответствуют B; использовать пересчёт с описанным методом.
+Полная таблица со всеми 40 значениями и ID: provider-latencies.csv рядом с этим файлом.
+
+СТАТУС ПЕРЕД ПРИЁМКОЙ
+Не объявлять все Delivery критерии закрытыми: нет PR Lab5 Delivery, Grafana screenshot, достаточного production window, требуемых E2E замеров и подтверждения выкатки релиза.

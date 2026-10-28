@@ -1,0 +1,38 @@
+{
+  "received_on": "2026-10-27",
+  "files": {
+    "artifacts/quality/lab5-handoff-2026-10-27/ai-baseline-v4-received.py": {
+      "received_filename": "baseline (1).py",
+      "sha256": "f8ae5c0c3c5d80eca36b9e1b7b831c4cde33390e69b73555aadcac7d50b69bcb"
+    },
+    "artifacts/quality/lab5-handoff-2026-10-27/ai-full-suite-received.json": {
+      "received_filename": "full-suite-results (1).json",
+      "sha256": "1df363bbdae06d33a6304b1d8c76d258555c4d33b11d125774ce02097443ebbe"
+    },
+    "docs/quality/lab1-ai-evidence-after-fix.md": {
+      "received_filename": "lab1-ai-evidence-after-fix (1).md",
+      "sha256": "23ccc3b1942d6e42c771ffbdd589070bf92241191f80b06ba0f9fca028b4586b",
+      "source_received_sha256": "580890f187e44b331d537b95453e1da8ec9b4068f6fc4d610b170be7d8c06d39",
+      "normalization": "Text-only whitespace normalization; original received hash retained."
+    },
+    "artifacts/evals/lab1-ai-quality-evidence-after-fix.json": {
+      "received_filename": "lab1-ai-quality-evidence-after-fix (1).json",
+      "sha256": "02979699258fe3ba17684175b49258ad562fa8be3dc4f2ec294305d12ef94d04"
+    },
+    "artifacts/quality/lab5-handoff-2026-10-27/provider-latencies.csv": {
+      "received_filename": "provider-latencies.csv",
+      "sha256": "49cb93b02e086fe8e6d5d933ac0e9c4b9d9b87e8f64eee7a34a121262abfa41e"
+    },
+    "artifacts/quality/lab5-handoff-2026-10-27/delivery-handoff-received.txt": {
+      "received_filename": "quality-handoff.txt",
+      "sha256": "32e4e90ca4031275fdddb3dcf6ad03a24b5e8715d72b4e51cef8f148c265940e",
+      "source_received_sha256": "178004f239968abfd6022e56c8f419aec80db84c0f3827640dbf456390512450",
+      "normalization": "Text-only whitespace normalization; original received hash retained."
+    },
+    "artifacts/quality/lab5-handoff-2026-10-27/ai-generator-received-2026-10-26.py": {
+      "received_filename": "prepare_lab1_quality_evidence.py",
+      "received_with": "previous AI handoff on 2026-10-26; not verified as generator of final v4 commit",
+      "sha256": "1397b546de27233975028deb62d229723e06bc561bae672bd00d660ee5bcb551"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "status": 201,
+  "persisted_cards": 5,
+  "mode": "local TestClient / inprocess / deterministic / SQLite",
+  "response": {
+    "card_set_id": "set_24c5fd3addca4497a685c6e0065bcbbd",
+    "title": "Карточки по загруженному материалу",
+    "model": "deterministic-grounded-v2",
+    "prompt_version": "cards-v2.1",
+    "fallback_used": false,
+    "latency_ms": 3,
+    "usage": {
+      "input_tokens": 539,
+      "output_tokens": 454
+    },
+    "cards": [
+      {
+        "card_id": "card_d78a8d35ac7c451dbe124b5bb172dc82",
+        "question": "Что говорится в материале о «$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$»?",
+        "reference_answer": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+        "source_page": 1,
+        "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+        "difficulty": "basic"
+      },
+      {
+        "card_id": "card_fb6a73e3330d492fb830050298ceade6",
+        "question": "Что говорится в материале о «$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$»?",
+        "reference_answer": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+        "source_page": 1,
+        "source_quote": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+        "difficulty": "basic"
+      },
+      {
+        "card_id": "card_0587fb84957e43f3b4418c6fc1f2c09a",
+        "question": "Что говорится в материале о «$a^{2} − b^{2} = (a − b)(a + b)$»?",
+        "reference_answer": "$a^{2} − b^{2} = (a − b)(a + b)$",
+        "source_page": 1,
+        "source_quote": "$a^{2} − b^{2} = (a − b)(a + b)$",
+        "difficulty": "intermediate"
+      },
+      {
+        "card_id": "card_039b746ee40947b09c3f3fc78a0c3a6f",
+        "question": "Что говорится в материале о «$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$»?",
+        "reference_answer": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+        "source_page": 1,
+        "source_quote": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+        "difficulty": "intermediate"
+      },
+      {
+        "card_id": "card_7601f2bbb82842d68c9b89c2af254003",
+        "question": "Что говорится в материале о «$a^{n}b^{n} = (ab)^{n}$»?",
+        "reference_answer": "$a^{n}b^{n} = (ab)^{n}$",
+        "source_page": 1,
+        "source_quote": "$a^{n}b^{n} = (ab)^{n}$",
+        "difficulty": "intermediate"
+      }
+    ],
+    "fallback_reason": null
+  }
+}

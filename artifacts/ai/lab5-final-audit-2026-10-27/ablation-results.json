@@ -1,0 +1,888 @@
+{
+  "run_at": "2026-10-27T20:32:36.417489+00:00",
+  "dataset": "frozen Lab2+Lab3 review cases",
+  "review_case_count": 42,
+  "ablation": {
+    "full_semantic_rules": {
+      "agreement": 0.9286,
+      "delta_vs_full_pp": 0.0
+    },
+    "without_phrase_aliases": {
+      "agreement": 0.881,
+      "delta_vs_full_pp": -4.76
+    },
+    "without_stemming": {
+      "agreement": 0.881,
+      "delta_vs_full_pp": -4.76
+    },
+    "without_source_precision": {
+      "agreement": 0.9048,
+      "delta_vs_full_pp": -2.38
+    },
+    "without_contradiction_guard": {
+      "agreement": 0.881,
+      "delta_vs_full_pp": -4.76
+    },
+    "raw_lexical_overlap": {
+      "agreement": 0.7143,
+      "delta_vs_full_pp": -21.43
+    }
+  },
+  "prompt_provider_evidence": {
+    "provider": "google-gemini-api",
+    "model": "gemini-3.5-flash-lite",
+    "prompt_a": {
+      "prompt": "v1",
+      "agreement": 0.95,
+      "tokens": 3843
+    },
+    "prompt_b": {
+      "prompt": "v2",
+      "agreement": 1.0,
+      "tokens": 6380
+    },
+    "decision": "B"
+  },
+  "cases": [
+    {
+      "id": "REV-001",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": false,
+        "without_stemming": false,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-002",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": false,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-003",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": false,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-004",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-005",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-006",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-007",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-008",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-009",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-010",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": false,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-011",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-012",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": false,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-013",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-014",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-015",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-016",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-017",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-018",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-019",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-020",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-021",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": false,
+        "without_phrase_aliases": false,
+        "without_stemming": false,
+        "without_source_precision": false,
+        "without_contradiction_guard": false,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-022",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-023",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-024",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": false,
+        "without_phrase_aliases": false,
+        "without_stemming": false,
+        "without_source_precision": false,
+        "without_contradiction_guard": false,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-025",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-026",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-027",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-028",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-029",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-030",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-031",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-032",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-033",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-034",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-035",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-036",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-037",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-038",
+      "expected": "correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-039",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "correct",
+        "without_phrase_aliases": "correct",
+        "without_stemming": "correct",
+        "without_source_precision": "correct",
+        "without_contradiction_guard": "correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": false,
+        "without_phrase_aliases": false,
+        "without_stemming": false,
+        "without_source_precision": false,
+        "without_contradiction_guard": false,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-040",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "incorrect",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": true
+      }
+    },
+    {
+      "id": "REV-LIVE-001",
+      "expected": "partially_correct",
+      "predictions": {
+        "full_semantic_rules": "partially_correct",
+        "without_phrase_aliases": "partially_correct",
+        "without_stemming": "partially_correct",
+        "without_source_precision": "partially_correct",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "incorrect"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": true,
+        "raw_lexical_overlap": false
+      }
+    },
+    {
+      "id": "REV-LIVE-002",
+      "expected": "incorrect",
+      "predictions": {
+        "full_semantic_rules": "incorrect",
+        "without_phrase_aliases": "incorrect",
+        "without_stemming": "incorrect",
+        "without_source_precision": "incorrect",
+        "without_contradiction_guard": "partially_correct",
+        "raw_lexical_overlap": "partially_correct"
+      },
+      "correct": {
+        "full_semantic_rules": true,
+        "without_phrase_aliases": true,
+        "without_stemming": true,
+        "without_source_precision": true,
+        "without_contradiction_guard": false,
+        "raw_lexical_overlap": false
+      }
+    }
+  ]
+}

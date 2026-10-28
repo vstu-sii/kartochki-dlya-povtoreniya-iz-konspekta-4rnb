@@ -1,0 +1,58 @@
+{
+  "title": "Карточки по загруженному материалу",
+  "cards": [
+    {
+      "card_id": "card_9f2ced320ac14829a94b69618210610d",
+      "question": "Какова цель этой работы?",
+      "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+      "source_page": 1,
+      "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+      "difficulty": "basic"
+    },
+    {
+      "card_id": "card_1671442594fb4ef2bc33856a88f6b8a8",
+      "question": "Что говорится в материале о «Compose, упаковать веб -приложение с ML -моделью в контейнер,»?",
+      "reference_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+      "source_page": 1,
+      "source_quote": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+      "difficulty": "basic"
+    },
+    {
+      "card_id": "card_0e24c7c9daad4120a4903bcc3e722ba6",
+      "question": "Что говорится в материале о «организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,»?",
+      "reference_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+      "source_page": 1,
+      "source_quote": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+      "difficulty": "intermediate"
+    },
+    {
+      "card_id": "card_70a065aad4334d3e8ac56b21f2ff397a",
+      "question": "Что говорится в материале о «обеспечить воспроизводимость запуска и подготовить приложение к»?",
+      "reference_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+      "source_page": 1,
+      "source_quote": "обеспечить воспроизводимость запуска и подготовить приложение к",
+      "difficulty": "intermediate"
+    },
+    {
+      "card_id": "card_7ff34394e344414f8ab960404eb99a0d",
+      "question": "Что говорится в материале о «дальнейшей автоматизации в CI/CD»?",
+      "reference_answer": "дальнейшей автоматизации в CI/CD.",
+      "source_page": 1,
+      "source_quote": "дальнейшей автоматизации в CI/CD.",
+      "difficulty": "intermediate"
+    }
+  ],
+  "model": "deterministic-grounded-v1",
+  "prompt_version": "cards-v2.1",
+  "schema_version": "2.0",
+  "fallback_used": false,
+  "fallback_reason": null,
+  "trace_id": "tr_6af19e850e644eaca9c88d6e297fac5b",
+  "latency_ms": 17,
+  "cache_hit": false,
+  "tool_status": "success",
+  "usage": {
+    "input_tokens": 929,
+    "output_tokens": 518
+  }
+}

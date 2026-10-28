@@ -1,4 +1,4 @@
-name: Lab4 delivery staging and observability
+name: Delivery staging and observability
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - "monitoring/**"
       - ".github/workflows/delivery-validation.yml"
   push:
-    branches: [lab4-delivery-infrastructure, main]
+    branches: [lab4-delivery-infrastructure, lab5-delivery-testing, main]
   workflow_dispatch:
 
 jobs:
@@ -35,6 +35,14 @@ jobs:
           curl --fail --retry 12 --retry-delay 5 http://localhost:9091/-/ready
           curl --fail --retry 12 --retry-delay 5 http://localhost:3002/api/health
           curl --fail --retry 12 --retry-delay 5 http://localhost:9091/api/v1/rules
+          python tests/reliability/check_prometheus_alerts.py --url http://localhost:9091/api/v1/alerts
+      - name: Keep staging alert evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-alert-status
+          path: artifacts/reliability/staging-alerts.json
+          if-no-files-found: warn
       - name: Show diagnostics after a failure
         if: failure()
         run: docker compose -f compose.yml -f compose.staging.yml logs --no-color

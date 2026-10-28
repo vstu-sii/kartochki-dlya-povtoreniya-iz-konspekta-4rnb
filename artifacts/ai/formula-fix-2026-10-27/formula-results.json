@@ -1,0 +1,708 @@
+{
+  "source_sha256": "d93b49360a7cf1441c17c9bcd806de3562ea5b6fa6370c15d5ca8c8694b7bcac",
+  "base_commit": "205e740acdb0ebaf6f808f4d7b08d03e1f77fd75",
+  "working_tree_changes_included": true,
+  "provider": "deterministic",
+  "review_kind": "automated_against_agent_visual_transcription",
+  "human_review": null,
+  "total": 39,
+  "preserved": 39,
+  "lost_or_degraded": 0,
+  "loss_rate": 0.0,
+  "target": 0.1,
+  "passed": true,
+  "scope": "Exhaustive per-formula generation in batches <=10, on one vector PDF. Not whole-document set coverage, OCR, production or Gemini.",
+  "pages": [
+    {
+      "page": 1,
+      "text": "Элементарная математика\nФормулы сокращенного умножения\n$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$\n$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$\n$a^{2} − b^{2} = (a − b)(a + b)$\n$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$\nCвойства степени\n$a^{n}b^{n} = (ab)^{n}$\n$(a^{m})^{n} = a^{mn}$\n$a^{0} = 1$\n$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$\n$a^{−n} = \\frac{1}{a^{n}}$\n$a^{m}a^{n} = a^{m+n}$\n$a^{n} ÷ a^{m} = a^{n−m}$\n$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$\nCвойства логарифмов\n$a^{log_{a} b} = b$\n$log_{a} a^{b} = b$\n$log_{a} b^{c} = c log_{a} b$\n$log_{a} bc = log_{a} b + log_{a} c$\n$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$\n$log_{a} b = \\frac{log_{c} b}{log_{c} a}$\n$log_{a^{c}} b = \\frac{1}{c} log_{a} b$\n6",
+      "method": "math_layout"
+    },
+    {
+      "page": 2,
+      "text": "Формулы тригонометрии\n$sin^{2} α + cos^{2} β = 1$\n$ctg α = \\frac{cos α}{sin α}$\n$tg α = \\frac{sin α}{cos α}$\n$cosec α = \\frac{1}{sin α}$\n$sec α = \\frac{1}{cos α}$\n$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$\n$1 + tg^{2} α = \\frac{1}{cos^{2} α}$\n$sin 2α = 2 sin α cos α$\n$cos 2α = cos^{2} α − sin^{2} α$\n$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$\n$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$\n$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$\n$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$\n$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$\n$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$\n$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$\n$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$\n$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$\n$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$\n$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$\n7",
+      "method": "math_layout"
+    }
+  ],
+  "rows": [
+    {
+      "id": "FORM-001",
+      "page": 1,
+      "expected_latex": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-002",
+      "page": 1,
+      "expected_latex": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-003",
+      "page": 1,
+      "expected_latex": "$a^{2} − b^{2} = (a − b)(a + b)$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-004",
+      "page": 1,
+      "expected_latex": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-005",
+      "page": 1,
+      "expected_latex": "$a^{n}b^{n} = (ab)^{n}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-006",
+      "page": 1,
+      "expected_latex": "$(a^{m})^{n} = a^{mn}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-007",
+      "page": 1,
+      "expected_latex": "$a^{0} = 1$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-008",
+      "page": 1,
+      "expected_latex": "$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-009",
+      "page": 1,
+      "expected_latex": "$a^{−n} = \\frac{1}{a^{n}}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-010",
+      "page": 1,
+      "expected_latex": "$a^{m}a^{n} = a^{m+n}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-011",
+      "page": 1,
+      "expected_latex": "$a^{n} ÷ a^{m} = a^{n−m}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-012",
+      "page": 1,
+      "expected_latex": "$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-013",
+      "page": 1,
+      "expected_latex": "$a^{log_{a} b} = b$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-014",
+      "page": 1,
+      "expected_latex": "$log_{a} a^{b} = b$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-015",
+      "page": 1,
+      "expected_latex": "$log_{a} b^{c} = c log_{a} b$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-016",
+      "page": 1,
+      "expected_latex": "$log_{a} bc = log_{a} b + log_{a} c$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-017",
+      "page": 1,
+      "expected_latex": "$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-018",
+      "page": 1,
+      "expected_latex": "$log_{a} b = \\frac{log_{c} b}{log_{c} a}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-019",
+      "page": 1,
+      "expected_latex": "$log_{a^{c}} b = \\frac{1}{c} log_{a} b$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-020",
+      "page": 2,
+      "expected_latex": "$sin^{2} α + cos^{2} β = 1$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-021",
+      "page": 2,
+      "expected_latex": "$ctg α = \\frac{cos α}{sin α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-022",
+      "page": 2,
+      "expected_latex": "$tg α = \\frac{sin α}{cos α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-023",
+      "page": 2,
+      "expected_latex": "$cosec α = \\frac{1}{sin α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-024",
+      "page": 2,
+      "expected_latex": "$sec α = \\frac{1}{cos α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-025",
+      "page": 2,
+      "expected_latex": "$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-026",
+      "page": 2,
+      "expected_latex": "$1 + tg^{2} α = \\frac{1}{cos^{2} α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-027",
+      "page": 2,
+      "expected_latex": "$sin 2α = 2 sin α cos α$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-028",
+      "page": 2,
+      "expected_latex": "$cos 2α = cos^{2} α − sin^{2} α$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-029",
+      "page": 2,
+      "expected_latex": "$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-030",
+      "page": 2,
+      "expected_latex": "$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-031",
+      "page": 2,
+      "expected_latex": "$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-032",
+      "page": 2,
+      "expected_latex": "$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-033",
+      "page": 2,
+      "expected_latex": "$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-034",
+      "page": 2,
+      "expected_latex": "$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-035",
+      "page": 2,
+      "expected_latex": "$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-036",
+      "page": 2,
+      "expected_latex": "$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-037",
+      "page": 2,
+      "expected_latex": "$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-038",
+      "page": 2,
+      "expected_latex": "$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    },
+    {
+      "id": "FORM-039",
+      "page": 2,
+      "expected_latex": "$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$",
+      "extracted_intact": true,
+      "preserved_in_generated_thesis": true
+    }
+  ],
+  "batches": [
+    {
+      "page": 1,
+      "start": 0,
+      "source": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$\n$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$\n$a^{2} − b^{2} = (a − b)(a + b)$\n$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$\n$a^{n}b^{n} = (ab)^{n}$\n$(a^{m})^{n} = a^{mn}$\n$a^{0} = 1$\n$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$\n$a^{−n} = \\frac{1}{a^{n}}$\n$a^{m}a^{n} = a^{m+n}$",
+      "output": {
+        "title": "Карточки по загруженному материалу",
+        "cards": [
+          {
+            "card_id": "card_1afe12797dfc45ce959b58d0c94f4074",
+            "question": "Что говорится в материале о «$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$»?",
+            "reference_answer": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+            "source_page": 1,
+            "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_f78af42f01b343df826ad46bf4bfb439",
+            "question": "Что говорится в материале о «$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$»?",
+            "reference_answer": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+            "source_page": 1,
+            "source_quote": "$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_c9d7b72e12844cd2a5b5c864b7d66911",
+            "question": "Что говорится в материале о «$a^{2} − b^{2} = (a − b)(a + b)$»?",
+            "reference_answer": "$a^{2} − b^{2} = (a − b)(a + b)$",
+            "source_page": 1,
+            "source_quote": "$a^{2} − b^{2} = (a − b)(a + b)$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_61c94f1f93f943d183a8b9b55402a22a",
+            "question": "Что говорится в материале о «$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$»?",
+            "reference_answer": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+            "source_page": 1,
+            "source_quote": "$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_6f9acaa81f4b4c4b978a85a7e67bb1f7",
+            "question": "Что говорится в материале о «$a^{n}b^{n} = (ab)^{n}$»?",
+            "reference_answer": "$a^{n}b^{n} = (ab)^{n}$",
+            "source_page": 1,
+            "source_quote": "$a^{n}b^{n} = (ab)^{n}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_080c9fe027b04b0b8e5f2bcc56fd7ea1",
+            "question": "Что говорится в материале о «$(a^{m})^{n} = a^{mn}$»?",
+            "reference_answer": "$(a^{m})^{n} = a^{mn}$",
+            "source_page": 1,
+            "source_quote": "$(a^{m})^{n} = a^{mn}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_f2c3fc5c621f45bdaa67c5ca2daae9da",
+            "question": "Что говорится в материале о «$a^{0} = 1$»?",
+            "reference_answer": "$a^{0} = 1$",
+            "source_page": 1,
+            "source_quote": "$a^{0} = 1$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_c371bc6b7097484aa81ce74a35dfdc3c",
+            "question": "Что говорится в материале о «$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$»?",
+            "reference_answer": "$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$",
+            "source_page": 1,
+            "source_quote": "$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_d098deff415c43ddacc61d7fae9f6ac1",
+            "question": "Что говорится в материале о «$a^{−n} = \\frac{1}{a^{n}}$»?",
+            "reference_answer": "$a^{−n} = \\frac{1}{a^{n}}$",
+            "source_page": 1,
+            "source_quote": "$a^{−n} = \\frac{1}{a^{n}}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_9dd3abf6447e4522b24583363170883a",
+            "question": "Что говорится в материале о «$a^{m}a^{n} = a^{m+n}$»?",
+            "reference_answer": "$a^{m}a^{n} = a^{m+n}$",
+            "source_page": 1,
+            "source_quote": "$a^{m}a^{n} = a^{m+n}$",
+            "difficulty": "intermediate"
+          }
+        ],
+        "model": "deterministic-grounded-v2",
+        "prompt_version": "cards-v2.1",
+        "schema_version": "2.0",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_3cb292e5db79437388d0ee8f18e0ec3f",
+        "latency_ms": 2,
+        "cache_hit": false,
+        "tool_status": "success",
+        "usage": {
+          "input_tokens": 218,
+          "output_tokens": 789
+        }
+      }
+    },
+    {
+      "page": 1,
+      "start": 10,
+      "source": "$a^{n} ÷ a^{m} = a^{n−m}$\n$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$\n$a^{log_{a} b} = b$\n$log_{a} a^{b} = b$\n$log_{a} b^{c} = c log_{a} b$\n$log_{a} bc = log_{a} b + log_{a} c$\n$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$\n$log_{a} b = \\frac{log_{c} b}{log_{c} a}$\n$log_{a^{c}} b = \\frac{1}{c} log_{a} b$",
+      "output": {
+        "title": "Карточки по загруженному материалу",
+        "cards": [
+          {
+            "card_id": "card_3342e7ad35b0491bb5a25d34b5d86d35",
+            "question": "Что говорится в материале о «$a^{n} ÷ a^{m} = a^{n−m}$»?",
+            "reference_answer": "$a^{n} ÷ a^{m} = a^{n−m}$",
+            "source_page": 1,
+            "source_quote": "$a^{n} ÷ a^{m} = a^{n−m}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_b1dc31c057304bb8af4c59d563e91290",
+            "question": "Что говорится в материале о «$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$»?",
+            "reference_answer": "$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$",
+            "source_page": 1,
+            "source_quote": "$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_01d0a3384059481597689e17a7bca9cc",
+            "question": "Что говорится в материале о «$a^{log_{a} b} = b$»?",
+            "reference_answer": "$a^{log_{a} b} = b$",
+            "source_page": 1,
+            "source_quote": "$a^{log_{a} b} = b$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_9ddec955ee8f4deebd0ff261b61570a8",
+            "question": "Что говорится в материале о «$log_{a} a^{b} = b$»?",
+            "reference_answer": "$log_{a} a^{b} = b$",
+            "source_page": 1,
+            "source_quote": "$log_{a} a^{b} = b$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_2eed7a4586d1484987cc31cc4f17bc10",
+            "question": "Что говорится в материале о «$log_{a} b^{c} = c log_{a} b$»?",
+            "reference_answer": "$log_{a} b^{c} = c log_{a} b$",
+            "source_page": 1,
+            "source_quote": "$log_{a} b^{c} = c log_{a} b$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_c8a279f684ec483fbb706e7f34e1dc86",
+            "question": "Что говорится в материале о «$log_{a} bc = log_{a} b + log_{a} c$»?",
+            "reference_answer": "$log_{a} bc = log_{a} b + log_{a} c$",
+            "source_page": 1,
+            "source_quote": "$log_{a} bc = log_{a} b + log_{a} c$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_cad5307c06bb4eedaa92f13387daf3c4",
+            "question": "Что говорится в материале о «$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$»?",
+            "reference_answer": "$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$",
+            "source_page": 1,
+            "source_quote": "$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_76254feaeaf148ddaebfe76c58eb35a9",
+            "question": "Что говорится в материале о «$log_{a} b = \\frac{log_{c} b}{log_{c} a}$»?",
+            "reference_answer": "$log_{a} b = \\frac{log_{c} b}{log_{c} a}$",
+            "source_page": 1,
+            "source_quote": "$log_{a} b = \\frac{log_{c} b}{log_{c} a}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_573d577ffaaa42dc94b7c43c63a45bee",
+            "question": "Что говорится в материале о «$log_{a^{c}} b = \\frac{1}{c} log_{a} b$»?",
+            "reference_answer": "$log_{a^{c}} b = \\frac{1}{c} log_{a} b$",
+            "source_page": 1,
+            "source_quote": "$log_{a^{c}} b = \\frac{1}{c} log_{a} b$",
+            "difficulty": "intermediate"
+          }
+        ],
+        "model": "deterministic-grounded-v2",
+        "prompt_version": "cards-v2.1",
+        "schema_version": "2.0",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_1143c969e03348f59420baf6c17820f7",
+        "latency_ms": 1,
+        "cache_hit": false,
+        "tool_status": "success",
+        "usage": {
+          "input_tokens": 213,
+          "output_tokens": 729
+        }
+      }
+    },
+    {
+      "page": 2,
+      "start": 0,
+      "source": "$sin^{2} α + cos^{2} β = 1$\n$ctg α = \\frac{cos α}{sin α}$\n$tg α = \\frac{sin α}{cos α}$\n$cosec α = \\frac{1}{sin α}$\n$sec α = \\frac{1}{cos α}$\n$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$\n$1 + tg^{2} α = \\frac{1}{cos^{2} α}$\n$sin 2α = 2 sin α cos α$\n$cos 2α = cos^{2} α − sin^{2} α$\n$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$",
+      "output": {
+        "title": "Карточки по загруженному материалу",
+        "cards": [
+          {
+            "card_id": "card_e965233def1b44379866626fcf487e96",
+            "question": "Что говорится в материале о «$sin^{2} α + cos^{2} β = 1$»?",
+            "reference_answer": "$sin^{2} α + cos^{2} β = 1$",
+            "source_page": 2,
+            "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_e18afd909a004fb0bf5a8b84fc5ce967",
+            "question": "Что говорится в материале о «$ctg α = \\frac{cos α}{sin α}$»?",
+            "reference_answer": "$ctg α = \\frac{cos α}{sin α}$",
+            "source_page": 2,
+            "source_quote": "$ctg α = \\frac{cos α}{sin α}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_11dbfc7d80554d07881ea0f1cdead20b",
+            "question": "Что говорится в материале о «$tg α = \\frac{sin α}{cos α}$»?",
+            "reference_answer": "$tg α = \\frac{sin α}{cos α}$",
+            "source_page": 2,
+            "source_quote": "$tg α = \\frac{sin α}{cos α}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_46d616012f4a44fdb28e7a9fdff184ea",
+            "question": "Что говорится в материале о «$cosec α = \\frac{1}{sin α}$»?",
+            "reference_answer": "$cosec α = \\frac{1}{sin α}$",
+            "source_page": 2,
+            "source_quote": "$cosec α = \\frac{1}{sin α}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_1b74a7a911b146399eb904d5bbfebc6a",
+            "question": "Что говорится в материале о «$sec α = \\frac{1}{cos α}$»?",
+            "reference_answer": "$sec α = \\frac{1}{cos α}$",
+            "source_page": 2,
+            "source_quote": "$sec α = \\frac{1}{cos α}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_648191a7d98645018dd9e99e0c82fa78",
+            "question": "Что говорится в материале о «$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$»?",
+            "reference_answer": "$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$",
+            "source_page": 2,
+            "source_quote": "$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_cce6c596b261427fb8692f1c9e4cef2f",
+            "question": "Что говорится в материале о «$1 + tg^{2} α = \\frac{1}{cos^{2} α}$»?",
+            "reference_answer": "$1 + tg^{2} α = \\frac{1}{cos^{2} α}$",
+            "source_page": 2,
+            "source_quote": "$1 + tg^{2} α = \\frac{1}{cos^{2} α}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_0d1f335eeaf4494284ec84c15f6f6ebd",
+            "question": "Что говорится в материале о «$sin 2α = 2 sin α cos α$»?",
+            "reference_answer": "$sin 2α = 2 sin α cos α$",
+            "source_page": 2,
+            "source_quote": "$sin 2α = 2 sin α cos α$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_464f43ac4f72467185d123b0e1460edc",
+            "question": "Что говорится в материале о «$cos 2α = cos^{2} α − sin^{2} α$»?",
+            "reference_answer": "$cos 2α = cos^{2} α − sin^{2} α$",
+            "source_page": 2,
+            "source_quote": "$cos 2α = cos^{2} α − sin^{2} α$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_8836162f1e8d4858bee5522abf043715",
+            "question": "Что говорится в материале о «$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$»?",
+            "reference_answer": "$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$",
+            "source_page": 2,
+            "source_quote": "$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$",
+            "difficulty": "intermediate"
+          }
+        ],
+        "model": "deterministic-grounded-v2",
+        "prompt_version": "cards-v2.1",
+        "schema_version": "2.0",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_82bc7ebd5483472fb6e3cf1cdfae4afc",
+        "latency_ms": 2,
+        "cache_hit": false,
+        "tool_status": "success",
+        "usage": {
+          "input_tokens": 217,
+          "output_tokens": 789
+        }
+      }
+    },
+    {
+      "page": 2,
+      "start": 10,
+      "source": "$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$\n$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$\n$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$\n$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$\n$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$\n$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$\n$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$\n$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$\n$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$\n$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$",
+      "output": {
+        "title": "Карточки по загруженному материалу",
+        "cards": [
+          {
+            "card_id": "card_b15726a1a4b14cd69d397300e82dcb02",
+            "question": "Что говорится в материале о «$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$»?",
+            "reference_answer": "$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$",
+            "source_page": 2,
+            "source_quote": "$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_6ba9b3fa092844beb17e01e4d9fd5ab6",
+            "question": "Что говорится в материале о «$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$»?",
+            "reference_answer": "$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$",
+            "source_page": 2,
+            "source_quote": "$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_7e126a10d7ea4d49a46a880d06fd3f92",
+            "question": "Что говорится в материале о «$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 +…»?",
+            "reference_answer": "$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$",
+            "source_page": 2,
+            "source_quote": "$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_f88053d548364a279ecd313b1c461376",
+            "question": "Что говорится в материале о «$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$»?",
+            "reference_answer": "$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$",
+            "source_page": 2,
+            "source_quote": "$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_689f8a9d140547d5833028eee2622de3",
+            "question": "Что говорится в материале о «$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$»?",
+            "reference_answer": "$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$",
+            "source_page": 2,
+            "source_quote": "$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_8ba69e98975544ffb1c86a75f187714f",
+            "question": "Что говорится в материале о «$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$»?",
+            "reference_answer": "$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$",
+            "source_page": 2,
+            "source_quote": "$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_037e5bb6e9284165acd2cd65ee1eb83b",
+            "question": "Что говорится в материале о «$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$»?",
+            "reference_answer": "$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$",
+            "source_page": 2,
+            "source_quote": "$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_8908f081852843f6bcc9d3bc05a842e5",
+            "question": "Что говорится в материале о «$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$»?",
+            "reference_answer": "$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$",
+            "source_page": 2,
+            "source_quote": "$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_270b08bad4c54c1f8efc4be5d802acc6",
+            "question": "Что говорится в материале о «$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$»?",
+            "reference_answer": "$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$",
+            "source_page": 2,
+            "source_quote": "$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_6915b7a77c3946ea9f970a1619c13763",
+            "question": "Что говорится в материале о «$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$»?",
+            "reference_answer": "$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$",
+            "source_page": 2,
+            "source_quote": "$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$",
+            "difficulty": "intermediate"
+          }
+        ],
+        "model": "deterministic-grounded-v2",
+        "prompt_version": "cards-v2.1",
+        "schema_version": "2.0",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_cacc632f40534cc0a291132b50569f4b",
+        "latency_ms": 2,
+        "cache_hit": false,
+        "tool_status": "success",
+        "usage": {
+          "input_tokens": 276,
+          "output_tokens": 977
+        }
+      }
+    }
+  ]
+}

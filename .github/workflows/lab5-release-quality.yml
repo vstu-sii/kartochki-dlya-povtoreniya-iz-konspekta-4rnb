@@ -1,0 +1,25 @@
+name: Lab5 release quality gates
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+jobs:
+  release-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11", cache: pip}
+      - run: pip install -r backend/requirements.txt
+      - run: python tests/evals/run_release_evals.py --release-ref "${{ github.ref_type == 'tag' && github.ref_name || 'WORKTREE' }}"
+        env: {MODEL_PROVIDER: deterministic}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: "lab5-quality-${{ github.ref_type == 'tag' && github.ref_name || 'WORKTREE' }}"
+          path: |
+            artifacts/evals/
+            artifacts/security/
+            artifacts/experiments/

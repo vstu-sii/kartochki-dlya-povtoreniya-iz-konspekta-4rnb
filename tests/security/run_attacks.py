@@ -135,7 +135,7 @@ def main():
                     "scope": "historical input guard admission, not model exploitation"}
     else:
         rows = current_http_cases(cases)
-        metadata = {"scope": "current HTTP API, extracted PDF text/answer; model transport mocked; no binary PDF parsing"}
+        metadata = {"scope": "in-process router handlers, extracted PDF text/answer; model transport mocked; no HTTP transport or binary PDF parsing"}
     result = {"run_at": datetime.now(timezone.utc).isoformat(), "mode": args.mode,
               "attack_set_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
               "case_count": len(rows), "passed": sum(r["passed"] for r in rows),

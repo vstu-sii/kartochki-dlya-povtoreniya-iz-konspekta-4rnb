@@ -1,0 +1,20 @@
+name: Lab5 reproducible release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11", cache: pip}
+      - run: pip install -r requirements.lock
+      - run: python -m unittest discover -s tests -p "test_*.py"
+        env: {MODEL_PROVIDER: deterministic}
+      - run: docker compose -f compose.yml config
+      - run: docker compose -f compose.yml build
+      - run: python scripts/build_release_manifest.py
+      - uses: actions/upload-artifact@v4
+        with: {name: "lab5-release-${{ github.ref_name }}", path: artifacts/release/lab5-manifest.json}
