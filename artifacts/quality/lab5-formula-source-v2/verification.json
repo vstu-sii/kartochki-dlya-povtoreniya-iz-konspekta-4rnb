@@ -1,0 +1,30 @@
+{
+  "scope": "local extraction and deterministic review; not new live Gemini or production run",
+  "source_sha256": "306c805be0f7069eb100fac921db31a34830f66384e4077ca2a377ac9ecf9490",
+  "extracted_pages": [
+    {
+      "page": 1,
+      "text": "Corrected trigonometry fixture v2\nsin²α + cos²α = 1\nsin(α + β) = sin α cos β + cos α sin β\ncos(α + β) = cos α cos β ­ sin α sin β\nsin(2α) = 2 sin α cos α\ncos(2α) = cos²α ­ sin²α",
+      "method": "text_layer"
+    }
+  ],
+  "corrected_reference": "sin²α + cos²α = 1",
+  "review": {
+    "verdict": "correct",
+    "score": 2,
+    "feedback": "Ответ верный и передаёт обязательный смысл эталона.",
+    "missing_points": [],
+    "review_id": "review_91807389996a488680d3bd1c46cbd7f5",
+    "model": "deterministic-review-v5",
+    "prompt_version": "review-v2.2",
+    "fallback_used": false,
+    "fallback_reason": null,
+    "trace_id": "tr_752a44a1f4d8451a8b4626e2c3ab11f3",
+    "latency_ms": 13,
+    "usage": {
+      "input_tokens": 374,
+      "output_tokens": 91
+    }
+  },
+  "original_fixture_preserved": true
+}
