@@ -1,0 +1,307 @@
+{
+  "measured_at": "2026-10-28T14:11:42.012173+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "provider-only full scenarios; nearest-rank p95",
+  "scenario_count": 1,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.04,
+  "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 26185,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "1b320e130100eff40088e2b5e6e741bc04d379c5",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-trigonometry-corrected-v2.pdf",
+      "user_alias": "quality-final-1793196729-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 21181,
+        "response": {
+          "card_set_id": "set_c1369b4e5db84b95ba22f99cb4192a9f",
+          "title": "Тригонометрические тождества",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_a67863b795344b3689014ea701bbd26c",
+          "latency_ms": 18197,
+          "usage": {
+            "input_tokens": 322,
+            "output_tokens": 588
+          },
+          "cards": [
+            {
+              "card_id": "card_3aca13cab20248f6a5d866ce808ae3e2",
+              "question": "Чему равна сумма квадратов синуса и косинуса одного угла?",
+              "reference_answer": "Сумма квадратов синуса и косинуса одного угла (sin²α + cos²α) всегда равна единице.",
+              "source_page": 1,
+              "source_quote": "sin²α + cos²α = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_35917ce9f2054cfbb1d92c7590a92d38",
+              "question": "Как раскрывается синус суммы двух углов sin(α + β)?",
+              "reference_answer": "Синус суммы двух углов равен сумме произведений синуса первого угла на косинус второго и косинуса первого на синус второго: sin α cos β + cos α sin β.",
+              "source_page": 1,
+              "source_quote": "sin(α + β) = sin α cos β + cos α sin β",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_408e5f6ed1a3468b94c9d901a622e9fd",
+              "question": "Какова формула для косинуса суммы двух углов cos(α + β)?",
+              "reference_answer": "Косинус суммы двух углов равен разности произведений косинусов этих углов и произведений синусов этих углов: cos α cos β ­ sin α sin β.",
+              "source_page": 1,
+              "source_quote": "cos(α + β) = cos α cos β ­ sin α sin β",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_4bbedce2ec74444a941e1a338bab9483",
+              "question": "Чему равен синус двойного угла sin(2α)?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса этого угла: 2 sin α cos α.",
+              "source_page": 1,
+              "source_quote": "sin(2α) = 2 sin α cos α",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_a476cff0cf2643d89a1c76747ecc900f",
+              "question": "Как выражается косинус двойного угла через квадраты синуса и косинуса?",
+              "reference_answer": "Косинус двойного угла равен разности квадрата косинуса и квадрата синуса этого угла: cos²α ­ sin²α.",
+              "source_page": 1,
+              "source_quote": "cos(2α) = cos²α ­ sin²α",
+              "difficulty": "advanced"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 31990,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали значение суммы квадратов синуса и косинуса.",
+            "missing_points": [],
+            "review_id": "review_050847c158ba4fdfb8263926e40efc4b",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_70b4cf0c97af48c5962c3600bf6239bc",
+            "latency_ms": 30910,
+            "usage": {
+              "input_tokens": 405,
+              "output_tokens": 57
+            },
+            "persisted": true
+          },
+          "student_answer": "Сумма квадратов синуса и косинуса одного угла (sin²α + cos²α) всегда равна единице.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 16752,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формула и словесное определение полностью верны.",
+            "missing_points": [],
+            "review_id": "review_c05d47b4fcb3470fb845447fccf13712",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_658f9f5bf2bd432c8bc3b1d040228af3",
+            "latency_ms": 16176,
+            "usage": {
+              "input_tokens": 437,
+              "output_tokens": 49
+            },
+            "persisted": true
+          },
+          "student_answer": "Синус суммы двух углов равен сумме произведений синуса первого угла на косинус второго и косинуса первого на синус второго: sin α cos β + cos α sin β.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 26176,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали формулу косинуса суммы двух углов.",
+            "missing_points": [],
+            "review_id": "review_b79fafcd7fa0487086232a446fc38505",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_6c27b46eb0e24230ae64979bb437a952",
+            "latency_ms": 25310,
+            "usage": {
+              "input_tokens": 434,
+              "output_tokens": 55
+            },
+            "persisted": true
+          },
+          "student_answer": "Косинус суммы двух углов равен разности произведений косинусов этих углов и произведений синусов этих углов: cos α cos β ­ sin α sin β.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 21826,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно и полно указали формулу синуса двойного угла.",
+            "missing_points": [],
+            "review_id": "review_3b47d327b5eb446db1dd69653e0272e9",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_a4888adb2b3241e5a89234c2c7264e71",
+            "latency_ms": 20892,
+            "usage": {
+              "input_tokens": 407,
+              "output_tokens": 55
+            },
+            "persisted": true
+          },
+          "student_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса этого угла: 2 sin α cos α.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 17917,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно выразили косинус двойного угла через разность квадратов косинуса и синуса.",
+            "missing_points": [],
+            "review_id": "review_1c5bfc6d15ab4685a1886733e1ce5a13",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_f6e490c8d9cd4c6cae4052f1679b26d9",
+            "latency_ms": 17365,
+            "usage": {
+              "input_tokens": 420,
+              "output_tokens": 64
+            },
+            "persisted": true
+          },
+          "student_answer": "Косинус двойного угла равен разности квадрата косинуса и квадрата синуса этого угла: cos²α ­ sin²α.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        }
+      ],
+      "status": "completed",
+      "answer_mode": "reference_copy_not_paraphrase",
+      "session": {
+        "status": 201,
+        "wall_ms": 316,
+        "response": {
+          "card_set_id": "set_c1369b4e5db84b95ba22f99cb4192a9f",
+          "title": "Тригонометрические тождества",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_a67863b795344b3689014ea701bbd26c",
+          "latency_ms": 18197,
+          "usage": {
+            "input_tokens": 322,
+            "output_tokens": 588
+          },
+          "cards": [
+            {
+              "card_id": "card_3aca13cab20248f6a5d866ce808ae3e2",
+              "question": "Чему равна сумма квадратов синуса и косинуса одного угла?",
+              "reference_answer": "Сумма квадратов синуса и косинуса одного угла (sin²α + cos²α) всегда равна единице.",
+              "source_page": 1,
+              "source_quote": "sin²α + cos²α = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_35917ce9f2054cfbb1d92c7590a92d38",
+              "question": "Как раскрывается синус суммы двух углов sin(α + β)?",
+              "reference_answer": "Синус суммы двух углов равен сумме произведений синуса первого угла на косинус второго и косинуса первого на синус второго: sin α cos β + cos α sin β.",
+              "source_page": 1,
+              "source_quote": "sin(α + β) = sin α cos β + cos α sin β",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_408e5f6ed1a3468b94c9d901a622e9fd",
+              "question": "Какова формула для косинуса суммы двух углов cos(α + β)?",
+              "reference_answer": "Косинус суммы двух углов равен разности произведений косинусов этих углов и произведений синусов этих углов: cos α cos β ­ sin α sin β.",
+              "source_page": 1,
+              "source_quote": "cos(α + β) = cos α cos β ­ sin α sin β",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_4bbedce2ec74444a941e1a338bab9483",
+              "question": "Чему равен синус двойного угла sin(2α)?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса этого угла: 2 sin α cos α.",
+              "source_page": 1,
+              "source_quote": "sin(2α) = 2 sin α cos α",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_a476cff0cf2643d89a1c76747ecc900f",
+              "question": "Как выражается косинус двойного угла через квадраты синуса и косинуса?",
+              "reference_answer": "Косинус двойного угла равен разности квадрата косинуса и квадрата синуса этого угла: cos²α ­ sin²α.",
+              "source_page": 1,
+              "source_quote": "cos(2α) = cos²α ­ sin²α",
+              "difficulty": "advanced"
+            }
+          ],
+          "session_id": "session_2a242299a38d46c78fc67cead22b92b7",
+          "user_id": "quality-final-1793196729-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reopen": {
+        "status": 200,
+        "wall_ms": 678,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 2425,
+        "output_tokens": 868,
+        "cost_usd": 0.0028975,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "completed",
+  "summary": {
+    "all_provider_calls_without_fallback": true,
+    "generation_p50_wall_ms": 21181,
+    "generation_p95_wall_ms": 21181,
+    "review_p50_wall_ms": 21826,
+    "review_p95_wall_ms": 31990,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 1,
+    "review_sample_size": 5,
+    "total_input_tokens": 2425,
+    "total_output_tokens": 868,
+    "total_cost_usd": 0.0028975
+  }
+}

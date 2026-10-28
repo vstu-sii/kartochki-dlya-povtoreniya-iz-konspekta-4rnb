@@ -1,0 +1,43 @@
+{
+  "scope": "public Gemini paraphrase on corrected fixture",
+  "deployment": {
+    "status": 200,
+    "elapsed_ms": 26185,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "1b320e130100eff40088e2b5e6e741bc04d379c5",
+      "telegram": "webhook"
+    }
+  },
+  "card": {
+    "card_id": "card_3aca13cab20248f6a5d866ce808ae3e2",
+    "question": "Чему равна сумма квадратов синуса и косинуса одного угла?",
+    "reference_answer": "Сумма квадратов синуса и косинуса одного угла (sin²α + cos²α) всегда равна единице.",
+    "source_page": 1,
+    "source_quote": "sin²α + cos²α = 1",
+    "difficulty": "basic"
+  },
+  "student_answer": "Для одного и того же угла квадрат синуса плюс квадрат косинуса равняется единице.",
+  "status": 200,
+  "wall_ms": 10938,
+  "response": {
+    "verdict": "correct",
+    "score": 2,
+    "feedback": "Отлично, вы верно указали основное тригонометрическое тождество. Попробуйте в следующий раз также записывать его в виде формулы для большей наглядности.",
+    "missing_points": [],
+    "review_id": "review_a8fb2ce22c8d4b6398fa624c7d788188",
+    "model": "gemini-3.5-flash-lite",
+    "prompt_version": "review-v2.2",
+    "fallback_used": false,
+    "fallback_reason": null,
+    "trace_id": "tr_8c65b28bc04945838b2336188abd81e5",
+    "latency_ms": 9163,
+    "usage": {
+      "input_tokens": 398,
+      "output_tokens": 72
+    },
+    "persisted": true
+  }
+}
