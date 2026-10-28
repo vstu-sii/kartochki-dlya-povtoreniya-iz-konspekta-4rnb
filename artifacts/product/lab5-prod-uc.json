@@ -1,0 +1,60 @@
+{
+  "run_at": "2026-10-18T22:57:01.175487+00:00",
+  "target": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "test_user": "lab5-external-smoke-1792364207",
+  "passed": true,
+  "steps": [
+    {
+      "uc": "system",
+      "step": "health",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "uc": "UC-05",
+      "step": "reject_untrusted_document",
+      "status": 422,
+      "ok": true,
+      "code": "PROMPT_INJECTION_BLOCKED"
+    },
+    {
+      "uc": "UC-01",
+      "step": "generate",
+      "status": 201,
+      "ok": true,
+      "card_count": 5
+    },
+    {
+      "uc": "UC-04",
+      "step": "create_session",
+      "status": 201,
+      "ok": true
+    },
+    {
+      "uc": "UC-02",
+      "step": "review",
+      "status": 200,
+      "ok": true,
+      "verdict": "correct"
+    },
+    {
+      "uc": "UC-03",
+      "step": "rating",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "uc": "UC-04",
+      "step": "persist_progress",
+      "status": 200,
+      "ok": true,
+      "position": 5
+    },
+    {
+      "uc": "UC-04",
+      "step": "resume",
+      "status": 200,
+      "ok": true
+    }
+  ]
+}
