@@ -1,0 +1,126 @@
+{
+  "source": "gemini-live-1b320.json",
+  "method": "hand-written paraphrases; wall-clock time",
+  "results": [
+    {
+      "question": "Какова главная цель данной лабораторной работы?",
+      "answer": "Мы учимся запускать ML-веб-сервис в Docker с Compose, подключать PostgreSQL на другой машине и готовить повторяемый запуск для CI/CD.",
+      "wall_ms": 1550,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно перечислили все ключевые цели лабораторной работы, включая контейнеризацию с Docker и Compose, работу с базой данных и подготовку к CI/CD. Для полного совершенства можно было бы также упомянуть заложение основы для многоконтейнерной архитектуры.",
+        "missing_points": [],
+        "review_id": "review_3184b7212ac74ed895302a5035d2a85c",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_0802717341e640e2aa9f01705a1045c8",
+        "latency_ms": 1074,
+        "usage": {
+          "input_tokens": 493,
+          "output_tokens": 97
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Какая задача выполняется перед началом работы с Docker на ВМ2?",
+      "answer": "Сначала в Proxmox надо сохранить снимок виртуальной машины app-server.",
+      "wall_ms": 1519,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно указали необходимость создания снимка виртуальной машины в Proxmox перед началом работы. Для полной точности можно было бы также упомянуть название виртуальной машины (ВМ2).",
+        "missing_points": [],
+        "review_id": "review_fffa73c5642c45bba8f7ffbd81b2838b",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_65add6c391784763b3a2d0355d5f1db1",
+        "latency_ms": 1001,
+        "usage": {
+          "input_tokens": 401,
+          "output_tokens": 77
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Что представляет собой Docker-контейнер с точки зрения теории?",
+      "answer": "Это образ Docker, который уже запущен как отдельный процесс.",
+      "wall_ms": 1404,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы абсолютно верно указали, что контейнер является запущенным экземпляром образа. Хотелось бы уточнить, как изоляция процессов реализуется на уровне операционной системы.",
+        "missing_points": [],
+        "review_id": "review_1aedd8db0e2942bc9bc47df8ed066ba3",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_e8b4e3e681e2451ea9e2134beed37f75",
+        "latency_ms": 947,
+        "usage": {
+          "input_tokens": 380,
+          "output_tokens": 75
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Для чего используются переменные окружения при подключении к базе данных?",
+      "answer": "Через них настройки соединения с БД передаются снаружи, поэтому менять образ не требуется и его проще переносить.",
+      "wall_ms": 1283,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно указали, что параметры соединения передаются снаружи без изменения образа, что обеспечивает переносимость приложения. Подумайте также о том, как это влияет на безопасность.",
+        "missing_points": [],
+        "review_id": "review_79851031c0a449ee86e422eec253dad5",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_5f496b911382411eb654312ff8ecff61",
+        "latency_ms": 765,
+        "usage": {
+          "input_tokens": 414,
+          "output_tokens": 73
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Как добавить пользователя student в группу docker для работы без sudo?",
+      "answer": "Добавить пользователя в группу docker командой sudo usermod -aG docker $USER, затем выполнить newgrp docker.",
+      "wall_ms": 1963,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно указали обе необходимые команды для добавления пользователя в группу и применения изменений.",
+        "missing_points": [],
+        "review_id": "review_7955a5b12cf14a42b102c204a7dcc4df",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_43b4c4e616514f1aaf2b1231176829e1",
+        "latency_ms": 916,
+        "usage": {
+          "input_tokens": 393,
+          "output_tokens": 54
+        },
+        "persisted": true
+      }
+    }
+  ]
+}

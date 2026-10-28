@@ -1,0 +1,590 @@
+{
+  "measured_at": "2026-10-27T22:55:00.974544+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "provider-only full scenarios; nearest-rank p95",
+  "scenario_count": 2,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.04,
+  "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 467,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "1b320e130100eff40088e2b5e6e741bc04d379c5",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793141701-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 6063,
+        "response": {
+          "card_set_id": "set_96ce5155f3ed4cbbbbdce47242b2273d",
+          "title": "Лабораторная работа №4 «Виртуализация и контейнеризация в DevOps»",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_3244a6d6546c4196acbe034510e2439c",
+          "latency_ms": 2292,
+          "usage": {
+            "input_tokens": 1164,
+            "output_tokens": 631
+          },
+          "cards": [
+            {
+              "card_id": "card_433f3fec16ff4be1b342737dad607e04",
+              "question": "Какова главная цель данной лабораторной работы?",
+              "reference_answer": "Цель работы заключается в освоении основ контейнеризации с помощью Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска и подготовке приложения к дальнейшей автоматизации в CI/CD, а также заложении основы для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_ff64138d097d46b5bdd1f5228a8f7fef",
+              "question": "Какая задача выполняется перед началом работы с Docker на ВМ2?",
+              "reference_answer": "Перед началом работы необходимо создать снапшот ВМ2 (app-server) в веб-интерфейсе Proxmox.",
+              "source_page": 1,
+              "source_quote": "1. Создание снапшота ВМ2 (app-server) перед началом работы.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_420f05d4c6de478da68d0aa6c3c912e4",
+              "question": "Что представляет собой Docker-контейнер с точки зрения теории?",
+              "reference_answer": "Docker-контейнер представляет собой запущенный экземпляр Docker-образа.",
+              "source_page": 3,
+              "source_quote": "Docker-контейнер – запущенный экземпляр образа.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_38017c4741374cabba751457e8d00ef7",
+              "question": "Для чего используются переменные окружения при подключении к базе данных?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что крайне важно для обеспечения безопасности и переносимости приложения.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "advanced"
+            },
+            {
+              "card_id": "card_61b480395daa430790d3fbbe715998ec",
+              "question": "Как добавить пользователя student в группу docker для работы без sudo?",
+              "reference_answer": "Для этого необходимо выполнить команды sudo usermod -aG docker $USER и newgrp docker.",
+              "source_page": 4,
+              "source_quote": "sudo usermod -aG docker $USER\nnewgrp docker",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 1425,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы полностью и точно перечислили все ключевые цели лабораторной работы.",
+            "missing_points": [],
+            "review_id": "review_88cbbaaffed24de9b5c35adf8e8b5307",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ca392e460c454e149a21ae0133ece10a",
+            "latency_ms": 822,
+            "usage": {
+              "input_tokens": 549,
+              "output_tokens": 54
+            },
+            "persisted": true
+          },
+          "student_answer": "Цель работы заключается в освоении основ контейнеризации с помощью Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска и подготовке приложения к дальнейшей автоматизации в CI/CD, а также заложении основы для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1297,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, ответ полностью совпадает с эталоном и содержит все необходимые детали.",
+            "missing_points": [],
+            "review_id": "review_42fa47f1aa7f492d9150eb6ccaee79f3",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_e4ba6eace00d421d9f08361b168caee2",
+            "latency_ms": 818,
+            "usage": {
+              "input_tokens": 411,
+              "output_tokens": 51
+            },
+            "persisted": true
+          },
+          "student_answer": "Перед началом работы необходимо создать снапшот ВМ2 (app-server) в веб-интерфейсе Proxmox.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1379,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, полностью передающий смысл эталона.",
+            "missing_points": [],
+            "review_id": "review_3664958a34124b4a9996856120185639",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_6605c65d868a496b934c79c4d9f3e33e",
+            "latency_ms": 767,
+            "usage": {
+              "input_tokens": 385,
+              "output_tokens": 48
+            },
+            "persisted": true
+          },
+          "student_answer": "Docker-контейнер представляет собой запущенный экземпляр Docker-образа.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1534,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, ответ полностью совпадает с эталоном и содержит все ключевые смыслы. Дополнительных уточнений не требуется.",
+            "missing_points": [],
+            "review_id": "review_865656f96357446280880514f3f7a2a4",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_515247dc3cdb4a2286675f8354ecd272",
+            "latency_ms": 686,
+            "usage": {
+              "input_tokens": 422,
+              "output_tokens": 63
+            },
+            "persisted": true
+          },
+          "student_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что крайне важно для обеспечения безопасности и переносимости приложения.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1290,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, ответ полностью совпадает с эталоном и содержит все необходимые команды. Дополнительных уточнений не требуется.",
+            "missing_points": [],
+            "review_id": "review_8edb6ef1d46742bc98672c5436f80b45",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_73138250cbf14b7caa7732977e48dbd2",
+            "latency_ms": 800,
+            "usage": {
+              "input_tokens": 388,
+              "output_tokens": 60
+            },
+            "persisted": true
+          },
+          "student_answer": "Для этого необходимо выполнить команды sudo usermod -aG docker $USER и newgrp docker.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        }
+      ],
+      "status": "completed",
+      "answer_mode": "reference_copy_not_paraphrase",
+      "session": {
+        "status": 201,
+        "wall_ms": 289,
+        "response": {
+          "card_set_id": "set_96ce5155f3ed4cbbbbdce47242b2273d",
+          "title": "Лабораторная работа №4 «Виртуализация и контейнеризация в DevOps»",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_3244a6d6546c4196acbe034510e2439c",
+          "latency_ms": 2292,
+          "usage": {
+            "input_tokens": 1164,
+            "output_tokens": 631
+          },
+          "cards": [
+            {
+              "card_id": "card_433f3fec16ff4be1b342737dad607e04",
+              "question": "Какова главная цель данной лабораторной работы?",
+              "reference_answer": "Цель работы заключается в освоении основ контейнеризации с помощью Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска и подготовке приложения к дальнейшей автоматизации в CI/CD, а также заложении основы для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_ff64138d097d46b5bdd1f5228a8f7fef",
+              "question": "Какая задача выполняется перед началом работы с Docker на ВМ2?",
+              "reference_answer": "Перед началом работы необходимо создать снапшот ВМ2 (app-server) в веб-интерфейсе Proxmox.",
+              "source_page": 1,
+              "source_quote": "1. Создание снапшота ВМ2 (app-server) перед началом работы.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_420f05d4c6de478da68d0aa6c3c912e4",
+              "question": "Что представляет собой Docker-контейнер с точки зрения теории?",
+              "reference_answer": "Docker-контейнер представляет собой запущенный экземпляр Docker-образа.",
+              "source_page": 3,
+              "source_quote": "Docker-контейнер – запущенный экземпляр образа.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_38017c4741374cabba751457e8d00ef7",
+              "question": "Для чего используются переменные окружения при подключении к базе данных?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что крайне важно для обеспечения безопасности и переносимости приложения.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "advanced"
+            },
+            {
+              "card_id": "card_61b480395daa430790d3fbbe715998ec",
+              "question": "Как добавить пользователя student в группу docker для работы без sudo?",
+              "reference_answer": "Для этого необходимо выполнить команды sudo usermod -aG docker $USER и newgrp docker.",
+              "source_page": 4,
+              "source_quote": "sudo usermod -aG docker $USER\nnewgrp docker",
+              "difficulty": "intermediate"
+            }
+          ],
+          "session_id": "session_a4174dbe2c0b4ca5a25ec76f08dcf812",
+          "user_id": "quality-final-1793141701-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reopen": {
+        "status": 200,
+        "wall_ms": 321,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 3319,
+        "output_tokens": 907,
+        "cost_usd": 0.0032632,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    },
+    {
+      "number": 2,
+      "fixture": "lab5-formulas-source.pdf",
+      "user_alias": "quality-final-1793141751-2",
+      "generation": {
+        "status": 201,
+        "wall_ms": 3353,
+        "response": {
+          "card_set_id": "set_aaff01fb76e546a88f6fe67d058e4cfd",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_b06eb696e51242d2af0e489931404966",
+          "latency_ms": 2096,
+          "usage": {
+            "input_tokens": 1115,
+            "output_tokens": 686
+          },
+          "cards": [
+            {
+              "card_id": "card_d24b4f3efab945f397f48ee2db0167db",
+              "question": "Как выглядит формула квадрата суммы и разности?",
+              "reference_answer": "Формула квадрата суммы и разности записывается как $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$. Она позволяет быстро возвести двучлен в квадрат.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_6ba87311c6e943438702dd70e700b606",
+              "question": "Чему равна нулевая степень числа по свойству степени?",
+              "reference_answer": "Любое ненулевое число в нулевой степени равно единице, что выражается формулой $a^{0} = 1$.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_51028a1081964e77bb61d7693f7caf58",
+              "question": "Как выражается основное свойство логарифма через основное логарифмическое тождество?",
+              "reference_answer": "Основное логарифмическое тождество записывается в виде $a^{log_{a} b} = b$. Оно показывает взаимосвязь между показательной и логарифмической функциями.",
+              "source_page": 1,
+              "source_quote": "$a^{log_{a} b} = b$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_1ff9d3350f6e495aa817e89573c957f5",
+              "question": "Чему равна сумма квадратов синуса и косинуса в тригонометрии из представленных формул?",
+              "reference_answer": "В тексте приведено соотношение $sin^{2} α + cos^{2} β = 1$.",
+              "source_page": 2,
+              "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_aedbc862321c43ed9130d275ed994020",
+              "question": "Как выражается тангенс через синус и косинус?",
+              "reference_answer": "Тангенс угла альфа равен отношению синуса этого угла к косинусу: $tg α = \\frac{sin α}{cos α}$.",
+              "source_page": 2,
+              "source_quote": "$tg α = \\frac{sin α}{cos α}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_97dc341b199d4b8a8b0901ce3fd93350",
+              "question": "Какова формула для синуса двойного угла?",
+              "reference_answer": "Синус двойного угла выражается через произведение синуса и косинуса одинарного угла: $sin 2α = 2 sin α cos α$.",
+              "source_page": 2,
+              "source_quote": "$sin 2α = 2 sin α cos α$",
+              "difficulty": "advanced"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 6965,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, формула и её назначение названы абсолютно верно. Дополнительных уточнений не требуется.",
+            "missing_points": [],
+            "review_id": "review_673fb31a4fca426fb9750511084664c6",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_c808a795f92844f6a6ee930639cddd7c",
+            "latency_ms": 738,
+            "usage": {
+              "input_tokens": 439,
+              "output_tokens": 56
+            },
+            "persisted": true
+          },
+          "student_answer": "Формула квадрата суммы и разности записывается как $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$. Она позволяет быстро возвести двучлен в квадрат.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1817,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали свойство нулевой степени и привели точную формулу.",
+            "missing_points": [],
+            "review_id": "review_5429b7c638a94f5780720fc387b2b412",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_0bef6c12809e40b5a88f0d495727de0a",
+            "latency_ms": 858,
+            "usage": {
+              "input_tokens": 401,
+              "output_tokens": 57
+            },
+            "persisted": true
+          },
+          "student_answer": "Любое ненулевое число в нулевой степени равно единице, что выражается формулой $a^{0} = 1$.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1405,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно привели формулу основного логарифмического тождества и указали его связь с показательной и логарифмической функциями. Уточнение не требуется.",
+            "missing_points": [],
+            "review_id": "review_6b2b475ac7fc4aa1b56c304683621590",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ce132ea5613546af861ee71585f0ca5c",
+            "latency_ms": 849,
+            "usage": {
+              "input_tokens": 443,
+              "output_tokens": 76
+            },
+            "persisted": true
+          },
+          "student_answer": "Основное логарифмическое тождество записывается в виде $a^{log_{a} b} = b$. Оно показывает взаимосвязь между показательной и логарифмической функциями.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 2318,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали соотношение из текста.",
+            "missing_points": [],
+            "review_id": "review_51dea6ff3e044baaa0e865f427905237",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_d0833499e4654ffbab58c515376980fd",
+            "latency_ms": 854,
+            "usage": {
+              "input_tokens": 409,
+              "output_tokens": 49
+            },
+            "persisted": true
+          },
+          "student_answer": "В тексте приведено соотношение $sin^{2} α + cos^{2} β = 1$.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1434,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, формулировка полностью верна и содержит все необходимые элементы. Уточнений нет.",
+            "missing_points": [],
+            "review_id": "review_02cbba9c31694231b73efaeeb70e376b",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_281bcbbdb4944036b95fb1c1aca86626",
+            "latency_ms": 740,
+            "usage": {
+              "input_tokens": 416,
+              "output_tokens": 56
+            },
+            "persisted": true
+          },
+          "student_answer": "Тангенс угла альфа равен отношению синуса этого угла к косинусу: $tg α = \\frac{sin α}{cos α}$.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        }
+      ],
+      "status": "completed",
+      "answer_mode": "reference_copy_not_paraphrase",
+      "session": {
+        "status": 201,
+        "wall_ms": 316,
+        "response": {
+          "card_set_id": "set_aaff01fb76e546a88f6fe67d058e4cfd",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_b06eb696e51242d2af0e489931404966",
+          "latency_ms": 2096,
+          "usage": {
+            "input_tokens": 1115,
+            "output_tokens": 686
+          },
+          "cards": [
+            {
+              "card_id": "card_d24b4f3efab945f397f48ee2db0167db",
+              "question": "Как выглядит формула квадрата суммы и разности?",
+              "reference_answer": "Формула квадрата суммы и разности записывается как $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$. Она позволяет быстро возвести двучлен в квадрат.",
+              "source_page": 1,
+              "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_6ba87311c6e943438702dd70e700b606",
+              "question": "Чему равна нулевая степень числа по свойству степени?",
+              "reference_answer": "Любое ненулевое число в нулевой степени равно единице, что выражается формулой $a^{0} = 1$.",
+              "source_page": 1,
+              "source_quote": "$a^{0} = 1$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_51028a1081964e77bb61d7693f7caf58",
+              "question": "Как выражается основное свойство логарифма через основное логарифмическое тождество?",
+              "reference_answer": "Основное логарифмическое тождество записывается в виде $a^{log_{a} b} = b$. Оно показывает взаимосвязь между показательной и логарифмической функциями.",
+              "source_page": 1,
+              "source_quote": "$a^{log_{a} b} = b$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_1ff9d3350f6e495aa817e89573c957f5",
+              "question": "Чему равна сумма квадратов синуса и косинуса в тригонометрии из представленных формул?",
+              "reference_answer": "В тексте приведено соотношение $sin^{2} α + cos^{2} β = 1$.",
+              "source_page": 2,
+              "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_aedbc862321c43ed9130d275ed994020",
+              "question": "Как выражается тангенс через синус и косинус?",
+              "reference_answer": "Тангенс угла альфа равен отношению синуса этого угла к косинусу: $tg α = \\frac{sin α}{cos α}$.",
+              "source_page": 2,
+              "source_quote": "$tg α = \\frac{sin α}{cos α}$",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_97dc341b199d4b8a8b0901ce3fd93350",
+              "question": "Какова формула для синуса двойного угла?",
+              "reference_answer": "Синус двойного угла выражается через произведение синуса и косинуса одинарного угла: $sin 2α = 2 sin α cos α$.",
+              "source_page": 2,
+              "source_quote": "$sin 2α = 2 sin α cos α$",
+              "difficulty": "advanced"
+            }
+          ],
+          "session_id": "session_9b96194fc5164e7c8edb6447a4daed5a",
+          "user_id": "quality-final-1793141751-2",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reopen": {
+        "status": 200,
+        "wall_ms": 388,
+        "card_count": 6
+      },
+      "totals": {
+        "input_tokens": 3223,
+        "output_tokens": 980,
+        "cost_usd": 0.0034169,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "completed",
+  "summary": {
+    "all_provider_calls_without_fallback": true,
+    "generation_p50_wall_ms": 4708,
+    "generation_p95_wall_ms": 6063,
+    "review_p50_wall_ms": 1430,
+    "review_p95_wall_ms": 6965,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 2,
+    "review_sample_size": 10,
+    "total_input_tokens": 6542,
+    "total_output_tokens": 1887,
+    "total_cost_usd": 0.0066801
+  }
+}

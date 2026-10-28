@@ -1,0 +1,128 @@
+{
+  "source": "gemini-live-1b320.json",
+  "method": "hand-written paraphrases; wall-clock time",
+  "results": [
+    {
+      "question": "Как выглядит формула квадрата суммы и разности?",
+      "answer": "Квадрат двучлена равен квадрату первого слагаемого, плюс или минус удвоенное произведение, плюс квадрат второго.",
+      "wall_ms": 1804,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно описали формулу квадрата суммы и разности в словесной форме. Для большей точности в следующий раз можно также привести её математическую запись.",
+        "missing_points": [],
+        "review_id": "review_9883ddbdc0684753bcc644ac33afbf2f",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_28b5f4664e514ffab34eb9b2c04bd647",
+        "latency_ms": 905,
+        "usage": {
+          "input_tokens": 422,
+          "output_tokens": 70
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Чему равна нулевая степень числа по свойству степени?",
+      "answer": "Для любого числа, кроме нуля, при степени ноль получится единица.",
+      "wall_ms": 2196,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отличный ответ! Вы абсолютно верно указали, что любое число, кроме нуля, в нулевой степени дает единицу.",
+        "missing_points": [],
+        "review_id": "review_1a5a521b0a444835b4a9dbd6771ec99e",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_eda244de1c214810b17629539c22f2c3",
+        "latency_ms": 948,
+        "usage": {
+          "input_tokens": 386,
+          "output_tokens": 60
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Как выражается основное свойство логарифма через основное логарифмическое тождество?",
+      "answer": "Если основание возвести в логарифм числа по этому основанию, вернётся само число b.",
+      "wall_ms": 1583,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно передали суть основного логарифмического тождества и его результат. Для полной точности можно также упомянуть саму формулу в буквенном виде.",
+        "missing_points": [],
+        "review_id": "review_423979c0bdf44497a935665bc549fdb2",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_472f8869115946f7a7014268cb25afbf",
+        "latency_ms": 877,
+        "usage": {
+          "input_tokens": 423,
+          "output_tokens": 74
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Чему равна сумма квадратов синуса и косинуса в тригонометрии из представленных формул?",
+      "answer": "При одном и том же угле сумма квадратов синуса и косинуса равна единице.",
+      "wall_ms": 1745,
+      "status": 200,
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Ты верно указал значение суммы квадратов, равное единице. Уточни, что данное тождество справедливо для одинаковых углов.",
+        "missing_points": [
+          "Использование одинакового угла для синуса и косинуса в формуле"
+        ],
+        "review_id": "review_3b78d8aa65b74bea98925893c20629f2",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_3658bd4ad77e422c91a5fee8921daf78",
+        "latency_ms": 1032,
+        "usage": {
+          "input_tokens": 407,
+          "output_tokens": 92
+        },
+        "persisted": true
+      }
+    },
+    {
+      "question": "Как выражается тангенс через синус и косинус?",
+      "answer": "Тангенс — это синус того же угла, делённый на его косинус.",
+      "wall_ms": 1389,
+      "status": 200,
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично, вы верно указали формулу тангенса через отношение синуса к косинусу. Пожалуйста, продолжайте в том же духе!",
+        "missing_points": [],
+        "review_id": "review_f599f85b260c4da7a584148a3c227eb7",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_74a98e648ca2442c8ca3213a11f712a7",
+        "latency_ms": 901,
+        "usage": {
+          "input_tokens": 404,
+          "output_tokens": 69
+        },
+        "persisted": true
+      }
+    }
+  ]
+}
