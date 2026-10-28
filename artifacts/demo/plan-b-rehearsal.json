@@ -1,12 +1,12 @@
 {
   "status": "passed",
-  "generated_at": "2026-10-26T23:24:10.589251+00:00",
+  "generated_at": "2026-10-28T18:52:10.192327+00:00",
   "provider_failure": "simulated URLError before any external request",
   "degradation": {
     "fallback_used": true,
     "fallback_reason": "gemini_network",
     "cards_returned": 3,
-    "latency_ms": 981.31
+    "latency_ms": 27962.83
   },
   "video_backup": {
     "path": "docs/demo/demo-backup.mp4",
@@ -19,6 +19,7 @@
       "service": "application-api",
       "status": "ok",
       "version": "lab5",
+      "commit_sha": "1b320e130100eff40088e2b5e6e741bc04d379c5",
       "telegram": "webhook"
     }
   }

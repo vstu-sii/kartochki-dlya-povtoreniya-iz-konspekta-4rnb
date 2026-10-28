@@ -38,5 +38,4 @@ python scripts/demo-seed/reset_demo.py
 python scripts/demo-rehearsal.py --public-url https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com
 ```
 
-Успех: пять демо-карточек созданы, `fallback_used=true`, видео читается, публичный
-`/health` отвечает HTTP 200 и `status=ok`.
+Скрипт проверяет, что возвращена хотя бы одна карточка с `fallback_used=true`, файл видео существует и больше 10 КБ, а публичный `/health` отвечает HTTP 200. Размер файла не доказывает воспроизведение видео; его нужно отдельно открыть и проверить. Это локальная симуляция отказа провайдера, а не проверка отказа через Telegram на проде.
