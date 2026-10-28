@@ -7,5 +7,5 @@ COPY backend /app/backend
 COPY ml /app/ml
 COPY telegram_bot /app/telegram_bot
 COPY frontend/prototype /app/frontend
-ENV PYTHONPATH=/app STATIC_DIR=/app/frontend AI_SERVICE_URL=inprocess BACKEND_URL=http://127.0.0.1:10000 DATABASE_URL=sqlite:////tmp/lab4.db PORT=10000 TRACE_CONTENT=false OCR_LANGUAGES=rus+eng
+ENV PYTHONPATH=/app STATIC_DIR=/app/frontend AI_SERVICE_URL=inprocess BACKEND_URL=http://127.0.0.1:10000 DATABASE_URL=sqlite:////tmp/lab5.db APP_VERSION=lab5 PORT=10000 TRACE_CONTENT=false OCR_LANGUAGES=rus+eng
 CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-10000}"]

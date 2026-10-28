@@ -1,0 +1,28 @@
+{
+  "reviewed_on": "2026-10-27",
+  "reviewed_quality_head": "f30a828daf57d31d91da05fd480976642e2679ea",
+  "docker_cli_installed": false,
+  "gemini_api_key_available_in_local_environment": false,
+  "published_ai_branch_head": "a06f73e70ac27c2c5e0445a002af1b8c5a39d221",
+  "ai_v5_declared_source_sha": "57e8ee98c7cf1dac02ff2928ca0fefb0558b2170",
+  "github_commit_lookup": "HTTP 422; exact source not available from the published repository",
+  "new_delivery_release_tag": "v0.5.2-demo",
+  "new_delivery_release_sha": "af194ff1b5823afe17ad1508ef1ef1a92fbdfef5",
+  "new_delivery_build_run": {
+    "id": 40419542561,
+    "name": "Lab5 reproducible release",
+    "conclusion": "success"
+  },
+  "lab5_release_quality_workflow_present_on_new_delivery_tag": false,
+  "production_health_version": "lab5",
+  "production_review_model_observed": "deterministic-review-v2",
+  "generation_under_60s_on_3_runs": true,
+  "answer_p95_under_7s": false,
+  "remaining_external_dependencies": [
+    "Full published v5 source, dataset and tests for integration/release.",
+    "Real Grafana environment and dashboard capture; Docker is absent here.",
+    "PDF corpus containing mathematical formulas for the loss measurement.",
+    "Human confirmation of thesis review; preliminary assistant inspection exposes fragmented cards.",
+    "Successful provider scenario/billing evidence; production currently falls back on HTTP 429/503."
+  ]
+}

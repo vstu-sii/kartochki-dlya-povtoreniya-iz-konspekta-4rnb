@@ -37,7 +37,7 @@ HTTP security=1, retrieval hit@1≥0.90 и recall@3=1. Неполный охва
 | Database | constraints, FK/cascade, миграция с нуля, отклонение просроченной сессии, изоляция user_id | временный PostgreSQL/SQLite | каждый PR |
 | Integration | Telegram Adapter → Application API → mock AI/Data | compose, provider mock | каждый PR |
 | AI eval mini | 8 фиксированных кейсов: 4 generation, 2 review и 2 safety guard | `tests/evals/run_evals.py --mini`, замороженные model/prompt/guard | каждый PR |
-| AI eval full | все модельные кейсы `generate_card` и `review_answer` из 128 строк dataset v2 | тот же runner; одна детерминированная реализация baseline | nightly, вручную и перед релизом |
+| AI eval full | все модельные кейсы `generate_card` и `review_answer` из 132 строк dataset v3 | тот же runner; одна детерминированная реализация baseline | nightly, вручную и перед релизом |
 | API/DB E2E | `reject_input`, `validate_model_output`, `rate_card`, `resume_session`, `complete_session` | compose + HTTP assertions | Delivery CI; расширение security-набора — лаба 4 |
 | Security | prompt injection, oversized input, output escaping, secret/log leak, IDOR | pytest + attack fixtures; модельный runner не подменяет эти проверки | каждый PR (дешёвые), полный в лабе 4 |
 | Performance | p50/p95 generation/review, concurrency, timeout/fallback | k6/Locust | перед релизом |
@@ -69,7 +69,7 @@ HTTP security=1, retrieval hit@1≥0.90 и recall@3=1. Неполный охва
 
 На PR запускается mini-eval с отдельными порогами `schema=1.00`, `grounding=0.95`, `review=0.85`: плохую метрику нельзя скрыть средним баллом. По расписанию и вручную запускается полный eval. Результаты и JSONL-трейсы сохраняются как CI-артефакты с `model`, `prompt_version`, `dataset_version`, latency и токенами.
 
-Полный dataset содержит 128 строк. Model runner выполняет 95 модельных случаев и оставляет 33 API/DB-сценария отдельному контуру. Delivery-runner `tests/evals/run_application_evals.py` вызывает реальные guard-, router- и ORM-функции; сохранённый результат — 33/33 в `artifacts/evals/application-results.json`. Вместе два отчёта покрывают 128/128 строк, но метрики не смешиваются. Текущий baseline детерминированный и выполняется один раз; три стохастических прогона, сравнение primary/fallback и денежная стоимость появятся после подключения внешнего провайдера и не выдаются за уже выполненные.
+Полный dataset v3 содержит 132 строки. Model-and-guards runner исполняет 95 модельных и 12 safety-случаев; application runner — 37 API/DB-сценариев. Двенадцать security ID намеренно пересекаются, поэтому объединённое уникальное покрытие равно 132/132, а не сумме строк двух отчётов. `tests/evals/run_application_evals.py` вызывает реальные guard-, router- и ORM-функции. Deterministic gate воспроизводим без секрета; отдельно сохранён настоящий Gemini prompt-only A/B на 20 кейсах, но он не подменяет полный релизный набор.
 
 ## Тестовые данные
 

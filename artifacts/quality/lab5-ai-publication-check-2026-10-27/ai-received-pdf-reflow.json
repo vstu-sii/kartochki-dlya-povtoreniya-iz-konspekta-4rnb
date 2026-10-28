@@ -1,0 +1,126 @@
+{
+  "generated_at": "2026-10-27T15:33:09.477472+00:00",
+  "generator": "tests/evals/run_pdf_card_quality.py",
+  "generation_command": "tests/evals/run_pdf_card_quality.py --git-object origin/lab5-quality-testing:tests/fixtures/lab5-devops-source.pdf --output artifacts/evals/lab5-devops-pdf-cards-after-reflow.json --count 5",
+  "source_revision": {
+    "git_sha": "e0c9755a34a8d8ac4bf3a2409416a7747a8b85ee",
+    "working_tree_clean": true
+  },
+  "source": {
+    "kind": "git_object",
+    "value": "origin/lab5-quality-testing:tests/fixtures/lab5-devops-source.pdf"
+  },
+  "source_pdf_sha256": "6ed2a591d1cce8a16e0600940bb385f393618049b94916d7134d9e8ef2abef22",
+  "page_count": 10,
+  "model": "deterministic-grounded-v2",
+  "prompt_version": "cards-v2.1",
+  "card_count": 5,
+  "automatic_summary": {
+    "grounded_count": 5,
+    "looks_complete_count": 5
+  },
+  "human_thesis_accuracy": null,
+  "note": "Automatic completeness is a guard, not the Lab1 human accuracy metric.",
+  "rows": [
+    {
+      "card": {
+        "card_id": "card_0a7f321c976644b1a4b3823768bd962f",
+        "question": "Какова цель этой работы?",
+        "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб -приложение с ML -моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+        "source_page": 1,
+        "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб -приложение с ML -моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+        "difficulty": "basic"
+      },
+      "automatic_checks": {
+        "quote_grounded": true,
+        "statement_looks_complete": true
+      },
+      "quality_manual_review": {
+        "thesis_correct": null,
+        "standalone_complete_statement": null,
+        "reviewer": null,
+        "comment": null
+      }
+    },
+    {
+      "card": {
+        "card_id": "card_09506f6327514c02a177f7714fee8e95",
+        "question": "Что говорится в материале о «Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service»»?",
+        "reference_answer": "Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+        "source_page": 1,
+        "source_quote": "Заложить основу для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+        "difficulty": "basic"
+      },
+      "automatic_checks": {
+        "quote_grounded": true,
+        "statement_looks_complete": true
+      },
+      "quality_manual_review": {
+        "thesis_correct": null,
+        "standalone_complete_statement": null,
+        "reviewer": null,
+        "comment": null
+      }
+    },
+    {
+      "card": {
+        "card_id": "card_2b9e1b83c91f47dcbac4f753b83f603c",
+        "question": "Что говорится в материале о «Создание снапшота ВМ2 (app-server) перед началом работы»?",
+        "reference_answer": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+        "source_page": 1,
+        "source_quote": "Создание снапшота ВМ2 (app-server) перед началом работы.",
+        "difficulty": "intermediate"
+      },
+      "automatic_checks": {
+        "quote_grounded": true,
+        "statement_looks_complete": true
+      },
+      "quality_manual_review": {
+        "thesis_correct": null,
+        "standalone_complete_statement": null,
+        "reviewer": null,
+        "comment": null
+      }
+    },
+    {
+      "card": {
+        "card_id": "card_a66fd204893b4a9081c74e766c8662fc",
+        "question": "Что говорится в материале о «Установка Docker и Docker Compose на ВМ2»?",
+        "reference_answer": "Установка Docker и Docker Compose на ВМ2.",
+        "source_page": 1,
+        "source_quote": "Установка Docker и Docker Compose на ВМ2.",
+        "difficulty": "intermediate"
+      },
+      "automatic_checks": {
+        "quote_grounded": true,
+        "statement_looks_complete": true
+      },
+      "quality_manual_review": {
+        "thesis_correct": null,
+        "standalone_complete_statement": null,
+        "reviewer": null,
+        "comment": null
+      }
+    },
+    {
+      "card": {
+        "card_id": "card_8936102c13be458fa5281f9a143ad0ce",
+        "question": "Что говорится в материале о «Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict»?",
+        "reference_answer": "Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict.",
+        "source_page": 1,
+        "source_quote": "Написание Flask-приложения, которое загружает обученную ML - модель и обрабатывает POST-запросы /predict.",
+        "difficulty": "intermediate"
+      },
+      "automatic_checks": {
+        "quote_grounded": true,
+        "statement_looks_complete": true
+      },
+      "quality_manual_review": {
+        "thesis_correct": null,
+        "standalone_complete_statement": null,
+        "reviewer": null,
+        "comment": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "finding": "Q5-PDF-02",
+  "status": "fixed_verified_local_ai_branch",
+  "date": "2026-10-27",
+  "ai_commit": "205e740acdb0ebaf6f808f4d7b08d03e1f77fd75",
+  "provider": "deterministic",
+  "ai_service": "inprocess",
+  "http_status": 201,
+  "persisted_cards": 5,
+  "contract_tests": 3,
+  "unit_integration_tests": 44,
+  "eval_groups_passed": 8,
+  "executed_unique_cases": 132,
+  "production_verified": false,
+  "release_tag_verified": false,
+  "guard_weakened": false
+}

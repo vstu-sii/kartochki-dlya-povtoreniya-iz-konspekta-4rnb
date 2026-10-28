@@ -1,0 +1,291 @@
+{
+  "measured_at": "2026-10-27T18:17:50.109182+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "provider-only full scenarios; nearest-rank p95",
+  "scenario_count": 1,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.1,
+  "cost_note": "Paid-tier estimate from exposed input and output counts; thinking tokens may be omitted. Actual free-tier charges and provider billing are not inferred.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 613,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "85b546e20f54a97f11dea1ac295e679902fc2b46",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793125071-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 5916,
+        "response": {
+          "card_set_id": "set_89926453221441a98a81c5d5ee9a98d1",
+          "title": "Лабораторная работа №4 Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": false,
+          "latency_ms": 2374,
+          "usage": {
+            "input_tokens": 1071,
+            "output_tokens": 447
+          },
+          "cards": [
+            {
+              "card_id": "card_c2634438e84b4a8d96d7e8a08277d782",
+              "question": "Что представляет собой Docker-образ?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_c6a8cc66d8c1448f9547021dbef1ec2f",
+              "question": "Каково назначение инструмента Docker Compose?",
+              "reference_answer": "Docker Compose используется для описания и запуска многоконтейнерных приложений через YAML-файл.",
+              "source_page": 3,
+              "source_quote": "Docker Compose –\nинструмент для описания и запуска многоконтейнерных приложений через\nYAML-файл.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_83067ee6af2c4db293436357e6ccdc4b",
+              "question": "Для чего используются переменные окружения в контексте работы с БД?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что важно для безопасности и переносимости.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_63f386d826814406a3a0d26fefb878af",
+              "question": "Какую задачу выполняет инструкция WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR определяет рабочую директорию внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_a975151f3ae2484f9f6ab170824214fa",
+              "question": "В чем заключается главное отличие контейнеров от виртуальных машин согласно теоретической справке?",
+              "reference_answer": "Контейнеры используют ядро хоста, что делает их легче виртуальных машин и обеспечивает быстрый запуск.",
+              "source_page": 3,
+              "source_quote": "Контейнеры\nиспользуют ядро хоста, что делает их легче виртуальных машин и\nобеспечивает быстрый запуск.",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 263,
+        "response": {
+          "card_set_id": "set_89926453221441a98a81c5d5ee9a98d1",
+          "title": "Лабораторная работа №4 Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.1",
+          "fallback_used": false,
+          "latency_ms": 2374,
+          "usage": {
+            "input_tokens": 1071,
+            "output_tokens": 447
+          },
+          "cards": [
+            {
+              "card_id": "card_c2634438e84b4a8d96d7e8a08277d782",
+              "question": "Что представляет собой Docker-образ?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_c6a8cc66d8c1448f9547021dbef1ec2f",
+              "question": "Каково назначение инструмента Docker Compose?",
+              "reference_answer": "Docker Compose используется для описания и запуска многоконтейнерных приложений через YAML-файл.",
+              "source_page": 3,
+              "source_quote": "Docker Compose –\nинструмент для описания и запуска многоконтейнерных приложений через\nYAML-файл.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_83067ee6af2c4db293436357e6ccdc4b",
+              "question": "Для чего используются переменные окружения в контексте работы с БД?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что важно для безопасности и переносимости.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_63f386d826814406a3a0d26fefb878af",
+              "question": "Какую задачу выполняет инструкция WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR определяет рабочую директорию внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_a975151f3ae2484f9f6ab170824214fa",
+              "question": "В чем заключается главное отличие контейнеров от виртуальных машин согласно теоретической справке?",
+              "reference_answer": "Контейнеры используют ядро хоста, что делает их легче виртуальных машин и обеспечивает быстрый запуск.",
+              "source_page": 3,
+              "source_quote": "Контейнеры\nиспользуют ядро хоста, что делает их легче виртуальных машин и\nобеспечивает быстрый запуск.",
+              "difficulty": "intermediate"
+            }
+          ],
+          "session_id": "session_4c680787d5a0451ca22b6ea8de8bb888",
+          "user_id": "quality-final-1793125071-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 21496,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно и полно описали, что представляет собой Docker-образ.",
+            "missing_points": [],
+            "review_id": "review_25f7106e74584529bf6e7536d7826026",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_8f43143aa49242a88f9b021558c35b02",
+            "latency_ms": 4845,
+            "usage": {
+              "input_tokens": 219,
+              "output_tokens": 54
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 5429,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали назначение Docker Compose.",
+            "missing_points": [],
+            "review_id": "review_1a4cc8b69dc04887aa40c61c5962f2ed",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_8a972c007bbc4100944d820525d009f8",
+            "latency_ms": 4210,
+            "usage": {
+              "input_tokens": 222,
+              "output_tokens": 49
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 3387,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали все ключевые моменты! Подумайте, в каких еще сценариях разработки могут пригодиться переменные окружения.",
+            "missing_points": [],
+            "review_id": "review_64ca7847e4924ba39c38a158457fe114",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_81fea1f9be734401b8981043be9fc795",
+            "latency_ms": 2713,
+            "usage": {
+              "input_tokens": 243,
+              "output_tokens": 59
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 4371,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно указали назначение инструкции WORKDIR. Уточните, для каких последующих команд (например, RUN или CMD) она задает эту директорию.",
+            "missing_points": [],
+            "review_id": "review_c43e1615f5284be78a6ae55b5a28741c",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_383821981a314f038cc9a4c3bc4428e3",
+            "latency_ms": 3638,
+            "usage": {
+              "input_tokens": 207,
+              "output_tokens": 72
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 13057,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично! Вы абсолютно верно указали, что контейнеры используют ядро хоста, что делает их легче и обеспечивает быстрый запуск. Для полного понимания темы можете изучить, как именно изолируются процессы внутри контейнеров.",
+            "missing_points": [],
+            "review_id": "review_c5024498140b475785430fb63cd03b22",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_b4476b3565694f158c648436a6e79ca1",
+            "latency_ms": 12231,
+            "usage": {
+              "input_tokens": 246,
+              "output_tokens": 83
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 318,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 2208,
+        "output_tokens": 764,
+        "cost_usd": 0.0025724,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "completed",
+  "summary": {
+    "all_provider_calls_without_fallback": true,
+    "generation_p50_wall_ms": 5916,
+    "generation_p95_wall_ms": 5916,
+    "review_p50_wall_ms": 5429,
+    "review_p95_wall_ms": 21496,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 1,
+    "review_sample_size": 5,
+    "total_input_tokens": 2208,
+    "total_output_tokens": 764,
+    "total_cost_usd": 0.0025724
+  }
+}

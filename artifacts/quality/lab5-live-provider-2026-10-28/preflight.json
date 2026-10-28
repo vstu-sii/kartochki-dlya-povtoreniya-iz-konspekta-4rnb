@@ -1,0 +1,20 @@
+{
+  "key_value_saved": false,
+  "list_models_http_status": 200,
+  "previous_model_available": true,
+  "selected_model": "gemini-3.5-flash-lite",
+  "generation_http_status": 200,
+  "usage": {
+    "promptTokenCount": 7,
+    "candidatesTokenCount": 9,
+    "totalTokenCount": 16,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "model_version": "gemini-3.5-flash-lite"
+}

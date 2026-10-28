@@ -1,0 +1,56 @@
+FFF
+======================================================================
+FAIL: test_generated_quotes_pass_application_guard_for_real_pdf (test_pdf_generation_contract.PdfGenerationContractTests.test_generated_quotes_pass_application_guard_for_real_pdf) (card=1, page=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\sftkc\Documents\Codex\2026-10-14\https-github-com-vstu-sii-kartochki\work\audit-lab5-ai-published-20261027\tests\test_pdf_generation_contract.py", line 34, in test_generated_quotes_pass_application_guard_for_real_pdf
+    self.assertIsNone(
+    ~~~~~~~~~~~~~~~~~^
+        validate_model_card(card, source),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "Generated quote is rejected by the API; retain the original "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "source span when reflowing the display/reference text.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: GuardFailure(status=502, code='MODEL_OUTPUT_INVALID') is not None : Generated quote is rejected by the API; retain the original source span when reflowing the display/reference text.
+
+======================================================================
+FAIL: test_generated_quotes_pass_application_guard_for_real_pdf (test_pdf_generation_contract.PdfGenerationContractTests.test_generated_quotes_pass_application_guard_for_real_pdf) (card=2, page=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\sftkc\Documents\Codex\2026-10-14\https-github-com-vstu-sii-kartochki\work\audit-lab5-ai-published-20261027\tests\test_pdf_generation_contract.py", line 34, in test_generated_quotes_pass_application_guard_for_real_pdf
+    self.assertIsNone(
+    ~~~~~~~~~~~~~~~~~^
+        validate_model_card(card, source),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "Generated quote is rejected by the API; retain the original "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "source span when reflowing the display/reference text.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: GuardFailure(status=502, code='MODEL_OUTPUT_INVALID') is not None : Generated quote is rejected by the API; retain the original source span when reflowing the display/reference text.
+
+======================================================================
+FAIL: test_generated_quotes_pass_application_guard_for_real_pdf (test_pdf_generation_contract.PdfGenerationContractTests.test_generated_quotes_pass_application_guard_for_real_pdf) (card=5, page=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\sftkc\Documents\Codex\2026-10-14\https-github-com-vstu-sii-kartochki\work\audit-lab5-ai-published-20261027\tests\test_pdf_generation_contract.py", line 34, in test_generated_quotes_pass_application_guard_for_real_pdf
+    self.assertIsNone(
+    ~~~~~~~~~~~~~~~~~^
+        validate_model_card(card, source),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "Generated quote is rejected by the API; retain the original "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "source span when reflowing the display/reference text.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+AssertionError: GuardFailure(status=502, code='MODEL_OUTPUT_INVALID') is not None : Generated quote is rejected by the API; retain the original source span when reflowing the display/reference text.
+
+----------------------------------------------------------------------
+Ran 1 test in 1.020s
+
+FAILED (failures=3)

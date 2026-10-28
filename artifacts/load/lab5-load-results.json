@@ -1,0 +1,58 @@
+{
+  "run_at": "2026-10-17T22:34:03.104099+00:00",
+  "target": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health",
+  "slo": {
+    "p95_ms": 2000,
+    "max_error_rate": 0.01
+  },
+  "levels": [
+    {
+      "concurrency": 1,
+      "requests": 10,
+      "errors": 0,
+      "error_rate": 0.0,
+      "latency_p50_ms": 764.73,
+      "latency_p95_ms": 805.31,
+      "within_slo": true
+    },
+    {
+      "concurrency": 5,
+      "requests": 10,
+      "errors": 0,
+      "error_rate": 0.0,
+      "latency_p50_ms": 1102.14,
+      "latency_p95_ms": 1537.01,
+      "within_slo": true
+    },
+    {
+      "concurrency": 10,
+      "requests": 10,
+      "errors": 0,
+      "error_rate": 0.0,
+      "latency_p50_ms": 1007.66,
+      "latency_p95_ms": 1138.13,
+      "within_slo": true
+    },
+    {
+      "concurrency": 20,
+      "requests": 10,
+      "errors": 0,
+      "error_rate": 0.0,
+      "latency_p50_ms": 1106.07,
+      "latency_p95_ms": 1502.23,
+      "within_slo": true
+    },
+    {
+      "concurrency": 40,
+      "requests": 10,
+      "errors": 0,
+      "error_rate": 0.0,
+      "latency_p50_ms": 1154.14,
+      "latency_p95_ms": 1528.25,
+      "within_slo": true
+    }
+  ],
+  "verified_sustainable_concurrency": 40,
+  "first_failed_concurrency": null,
+  "limit_interpretation": "not reached; lower bound only"
+}
