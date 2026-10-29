@@ -1,7 +1,7 @@
 {
   "schema_version": "lab6-ai-demo-run-v1",
   "generated_at": "2026-10-29T23:13:25.179176+00:00",
-  "command": "C:\\Users\\levyt\\Documents\\Codex\\lab6-ai-demo\\tests\\evals\\run_lab6_demo.py --base-url https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com --repeats 3 --pause-seconds 2 --output artifacts/demo/lab6-ai-demo-v0.5.10.json --backup-output docs/demo/cache/ai-demo-backup-v0.5.10.json",
+  "command": "C:\\Users\\levyt\\Documents\\Codex\\lab6-ai-demo\\tests\\evals\\run_lab6_demo.py --revalidate-existing artifacts/demo/lab6-ai-demo-v0.5.10.json --output artifacts/demo/lab6-ai-demo-v0.5.10.json",
   "output_path": "artifacts/demo/lab6-ai-demo-v0.5.10.json",
   "public_run": {
     "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
@@ -954,8 +954,10 @@
   },
   "passed": true,
   "source": {
-    "git_sha": "55b8a1ce2a3be637a910fbb56b2d37dc63e6dd26",
+    "git_sha": "1565b57bf576e8f1340ee056949bd9cce1a27934",
     "working_tree_clean_before_write": true,
     "runner": "tests/evals/run_lab6_demo.py"
-  }
+  },
+  "revalidated_at": "2026-10-29T23:15:53.585140+00:00",
+  "revalidation_note": "Stored raw HTTP responses rechecked; no provider calls were made."
 }
