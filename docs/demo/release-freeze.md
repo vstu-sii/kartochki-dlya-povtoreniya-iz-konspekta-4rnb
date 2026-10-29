@@ -2,7 +2,7 @@
 
 - Публичный сервис: https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com
 - Проверка: https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health
-- Версия и дата демо: ещё не подтверждены.
+- Дата демо: **31.10.2026**, время не указано; кандидат `v0.5.10-demo-candidate`, SHA `a60eee706ad17238c11e0c79f53f026fd68bdf81`.
 - Начало фриза: **не объявлено**.
 - Ответственная за фриз и Plan B: Delivery — Ермакова Алиса
 
