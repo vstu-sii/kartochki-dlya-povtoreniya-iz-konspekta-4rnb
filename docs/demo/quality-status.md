@@ -1,5 +1,9 @@
 # Lab6 Quality: статус и зависимости — 29.10.2026
 
+## Обновление Delivery: релизный кандидат
+
+Тег `v0.5.10-demo-candidate` соответствует публичному SHA `a60eee706ad17238c11e0c79f53f026fd68bdf81`. На нём прошли [quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40919274884), [сборка](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40919274864) и [integrated quality](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40919274836). Проверки используют детерминированный режим. Локальный набор проверок входов на этом SHA прошёл 17/17: [результат](lab6-tag-attack-a60eee7.json); модельный транспорт подменён. Командное подтверждение версии и публичная репетиция атак остаются открытыми.
+
 Это сверка документов, не свидетельство новых тестовых прогонов или репетиций.
 
 | Требование Quality | Статус | Доказательство / остаток |
