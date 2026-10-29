@@ -1,0 +1,29 @@
+{
+  "run_at": "2026-10-29T12:19:41Z",
+  "environment": "Windows, Python 3.10",
+  "commands": [
+    "py -3 -m unittest discover -s tests -v",
+    "py -3 tests/evals/run_full_suite.py",
+    "python code-cell execution check for notebooks/lab6_demo_cases.ipynb"
+  ],
+  "unit_and_integration": {
+    "passed": true,
+    "tests_run": 78,
+    "failures": 0,
+    "errors": 0
+  },
+  "full_suite": {
+    "passed": true,
+    "groups_passed": 8,
+    "groups_total": 8,
+    "coverage_expected": 132,
+    "coverage_executed_unique": 132,
+    "missing_ids": [],
+    "unexpected_ids": []
+  },
+  "notebook": {
+    "json_valid": true,
+    "code_cells_executed": true,
+    "note": "Jupyter is not installed in the verification environment; code cells were executed sequentially with Python from the repository root."
+  }
+}
