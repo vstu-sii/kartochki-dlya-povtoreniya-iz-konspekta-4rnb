@@ -82,12 +82,10 @@ async def show_card(chat_id: int) -> None:
     card = state["cards"][state["index"]]
     state["awaiting_answer"] = True
     question = html.escape(_compact(card["question"], 220))
-    quote = html.escape(_compact(card["source_quote"], 260))
     await send(
         chat_id,
         f"📚 <b>Карточка {state['index'] + 1} из {len(state['cards'])}</b>\n\n"
         f"❓ <b>Вопрос</b>\n{question}\n\n"
-        f"📖 <b>Источник · страница {card['source_page']}</b>\n<i>«{quote}»</i>\n\n"
         "✍️ Напишите ответ одним сообщением.",
         card_keyboard(),
         "HTML",
@@ -299,7 +297,7 @@ async def process_update(update: dict) -> None:
             await send(chat_id, "👋 С возвращением! Продолжаем с карточки, на которой вы остановились.")
             await show_card(chat_id)
         else:
-            await send(chat_id, "👋 <b>Здравствуйте!</b>\n\nПришлите PDF до 10 МБ и 40 страниц. Я прочитаю текст или распознаю скан, создам 5 содержательных карточек с источниками и проверю ответы по смыслу — формулировать дословно не нужно.", parse_mode="HTML")
+            await send(chat_id, "👋 <b>Здравствуйте!</b>\n\nПришлите PDF до 10 МБ и 40 страниц. Я прочитаю текст или распознаю скан, создам 5 содержательных карточек и проверю ответы по смыслу — формулировать дословно не нужно.", parse_mode="HTML")
     elif document := message.get("document"):
         now = time.monotonic()
         if now - action_times.get((chat_id, "pdf"), 0) < 15:
