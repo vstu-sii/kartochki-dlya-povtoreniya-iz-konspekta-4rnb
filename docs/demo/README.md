@@ -5,7 +5,7 @@
 | Публичный прод на релизном теге | Кандидат `v0.5.10-demo-candidate` указывает на `a60eee706ad17238c11e0c79f53f026fd68bdf81`, совпавший с публичным `/health` 29.10.2026. [Release quality gates](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40919274884) и [сборка](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/40919274864) прошли. Перед демо повторить проверку. |
 | Демо-данные и сброс одной командой | `scripts/demo-seed/reset_demo.py`; повторный запуск проверяется тестом |
 | Деградация и видео-бэкап | `scripts/demo-rehearsal.py`, `artifacts/demo/plan-b-rehearsal.json`, `demo-backup.mp4` |
-| Фриз за сутки | `release-freeze.md`: не объявлен, ожидает даты демо и решения команды. |
+| Фриз за сутки | `release-freeze.md`: объявлен в репозитории 29.10.2026 в 23:24 по Волгограду; получение командой отдельно не подтверждено. |
 
 Это Delivery-артефакты. Сценарий выступления, финальные слайды и публикация
 внешней ссылки на видео принадлежат Product, а модельные кейсы — AI Engineer.
