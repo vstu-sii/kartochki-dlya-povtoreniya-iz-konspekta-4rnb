@@ -936,6 +936,11 @@
     }
   },
   "passed": true,
-  "revalidated_at": "2026-10-29T12:17:06.502544+00:00",
-  "revalidation_note": "Stored raw HTTP responses rechecked; no provider calls were made."
+  "revalidated_at": "2026-10-29T12:20:55.144825+00:00",
+  "revalidation_note": "Stored raw HTTP responses rechecked; no provider calls were made.",
+  "source": {
+    "git_sha": "e37b71dc046f723c1a61d8e72e146dce9d488fe7",
+    "working_tree_clean_before_write": true,
+    "runner": "tests/evals/run_lab6_demo.py"
+  }
 }
