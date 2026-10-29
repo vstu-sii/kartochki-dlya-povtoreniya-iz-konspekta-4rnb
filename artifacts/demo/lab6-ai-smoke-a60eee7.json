@@ -1,7 +1,7 @@
 {
   "schema_version": "lab6-ai-demo-run-v1",
   "generated_at": "2026-10-29T15:52:04.322061+00:00",
-  "command": "C:\\Users\\levyt\\Documents\\Codex\\lab6-ai-demo\\tests\\evals\\run_lab6_demo.py --repeats 1 --pause-seconds 0 --output artifacts/demo/lab6-ai-smoke-a60eee7.json --backup-output C:\\Users\\levyt\\AppData\\Local\\Temp\\lab6-ai-smoke-a60eee7-final2-backup.json",
+  "command": "C:\\Users\\levyt\\Documents\\Codex\\lab6-ai-demo\\tests\\evals\\run_lab6_demo.py --revalidate-existing artifacts/demo/lab6-ai-smoke-a60eee7.json --output artifacts/demo/lab6-ai-smoke-a60eee7.json --backup-output C:\\Users\\levyt\\AppData\\Local\\Temp\\lab6-ai-smoke-a60eee7-revalidated-backup.json",
   "output_path": "artifacts/demo/lab6-ai-smoke-a60eee7.json",
   "public_run": {
     "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
@@ -482,8 +482,10 @@
   },
   "passed": false,
   "source": {
-    "git_sha": "81a3f46f493090f5ed4d659dc772508e42e91a8e",
-    "working_tree_clean_before_write": false,
+    "git_sha": "ca2833929d410cc03357c2da36aad95c1befd0ed",
+    "working_tree_clean_before_write": true,
     "runner": "tests/evals/run_lab6_demo.py"
-  }
+  },
+  "revalidated_at": "2026-10-29T15:53:38.202675+00:00",
+  "revalidation_note": "Stored raw HTTP responses rechecked; no provider calls were made."
 }
