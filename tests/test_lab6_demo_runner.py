@@ -2,12 +2,31 @@ import unittest
 
 from tests.evals.run_lab6_demo import (
     CONCEPT_SOURCE,
+    select_generated_card,
     validate_generation,
     validate_review,
 )
 
 
 class Lab6DemoRunnerTest(unittest.TestCase):
+    def test_card_selection_never_invents_an_id_on_semantic_miss(self):
+        cards = [
+            {
+                "card_id": "real-card",
+                "question": "Что делает кэш?",
+                "reference_answer": "Ускоряет доступ.",
+                "source_quote": "Кэш ускоряет доступ.",
+            }
+        ]
+        selected, exact = select_generated_card(cards, (("промах",), ("оператив",)))
+        self.assertFalse(exact)
+        self.assertIs(selected, cards[0])
+        self.assertEqual("real-card", selected["card_id"])
+
+        selected, exact = select_generated_card(cards, (("ускор", "быстр"),))
+        self.assertTrue(exact)
+        self.assertIs(selected, cards[0])
+
     def test_generation_requires_exact_grounded_gemini_result(self):
         cards = [
             {

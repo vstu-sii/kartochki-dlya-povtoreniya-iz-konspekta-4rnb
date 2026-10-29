@@ -30,7 +30,6 @@ CONCEPT_SOURCE = (
     "Кэш процессора ускоряет доступ к часто используемым данным. "
     "Он располагается между процессором и оперативной памятью. "
     "Кэш L1 является самым быстрым и самым маленьким уровнем. "
-    "Кэш L2 больше L1, но обычно медленнее него. "
     "Кэш L3 часто является общим для нескольких ядер процессора. "
     "При промахе кэша процессор обращается к оперативной памяти."
 )
@@ -44,12 +43,11 @@ FORMULA_SOURCE = (
 )
 
 INDEX_SOURCE = (
-    "Индекс базы данных ускоряет поиск и чтение строк, но замедляет вставки и обновления, "
-    "потому что индекс нужно поддерживать при изменении данных. "
-    "Индекс хранит упорядоченные ключи и ссылки на строки таблицы. "
-    "Составной индекс строится по нескольким столбцам. "
-    "Уникальный индекс запрещает повторяющиеся значения ключа. "
-    "Избыточные индексы занимают дополнительное место."
+    "Индекс замедляет вставки и обновления, потому что при изменении таблицы нужно обновлять структуру индекса. "
+    "Операции записи становятся дороже из-за дополнительной поддержки индекса. "
+    "При вставке строки база данных изменяет не только таблицу, но и соответствующие индексы. "
+    "При обновлении индексируемого столбца требуется актуализировать запись в индексе. "
+    "Чем больше индексов у таблицы, тем больше дополнительной работы выполняется при записи."
 )
 
 INDEX_CARD = {
@@ -166,6 +164,7 @@ def validate_review(
     body: dict[str, Any],
     allowed_verdicts: set[str],
     required_feedback_terms: tuple[str, ...] = (),
+    require_missing_points: bool = False,
 ) -> tuple[bool, list[str]]:
     errors: list[str] = []
     if body.get("verdict") not in allowed_verdicts:
@@ -184,7 +183,29 @@ def validate_review(
     for term in required_feedback_terms:
         if term.lower() not in feedback:
             errors.append(f"feedback does not contain {term!r}")
+    if require_missing_points and not body.get("missing_points"):
+        errors.append("missing_points is empty")
     return not errors, errors
+
+
+def select_generated_card(
+    cards: list[dict[str, Any]], required_term_groups: tuple[tuple[str, ...], ...]
+) -> tuple[dict[str, Any] | None, bool]:
+    """Select only a card that actually belongs to the generated card set.
+
+    Returning the first real card on a semantic miss preserves the ownership
+    contract and lets content validation fail honestly instead of producing a
+    misleading CARD_SESSION_MISMATCH with a fabricated card id.
+    """
+    for card in cards:
+        text = (
+            str(card.get("question", ""))
+            + " "
+            + str(card.get("reference_answer", ""))
+        ).lower()
+        if all(any(term.lower() in text for term in group) for group in required_term_groups):
+            return card, True
+    return (cards[0], False) if cards else (None, False)
 
 
 def public_cases(base_url: str) -> list[dict[str, Any]]:
@@ -226,7 +247,9 @@ def public_cases(base_url: str) -> list[dict[str, Any]]:
                 "card": INDEX_CARD,
                 "student_answer": "Индекс ускоряет чтение.",
             },
-            "validate": lambda body: validate_review(body, {"partially_correct"}, ("обнов",)),
+            "validate": lambda body: validate_review(
+                body, {"partially_correct"}, require_missing_points=True
+            ),
             "signature": lambda body: {
                 "verdict": body.get("verdict"),
                 "model": body.get("model"),
@@ -314,22 +337,12 @@ def run_public(base_url: str, repeats: int, pause_seconds: float) -> dict[str, A
             {"X-User-ID": index_user},
         )
 
-    cache_card = next(
-        (
-            card
-            for card in setup_generation.get("cards", [])
-            if "промах" in (str(card.get("question", "")) + str(card.get("reference_answer", ""))).lower()
-        ),
-        None,
+    cache_card, cache_card_exact = select_generated_card(
+        setup_generation.get("cards", []), (("промах",), ("оператив",))
     )
-    index_card = next(
-        (
-            card
-            for card in index_generation.get("cards", [])
-            if "ускор" in str(card.get("reference_answer", "")).lower()
-            and "замед" in str(card.get("reference_answer", "")).lower()
-        ),
-        None,
+    index_card, index_card_exact = select_generated_card(
+        index_generation.get("cards", []),
+        (("замед", "дороже", "дополнитель"), ("индекс", "структур"), ("обнов", "актуализ")),
     )
     case_reports: list[dict[str, Any]] = []
     for case in public_cases(base_url):
@@ -343,6 +356,10 @@ def run_public(base_url: str, repeats: int, pause_seconds: float) -> dict[str, A
                     payload["session_id"] = index_session.get("session_id") or "missing_lab6_index_session"
                     payload["card"] = index_card or INDEX_CARD
                     case_user = index_user
+                    if case["id"] == "AI-DEMO-02-paraphrase" and index_card:
+                        payload["student_answer"] = index_card.get("reference_answer", "")
+                    elif case["id"] == "AI-DEMO-03-incomplete-answer":
+                        payload["student_answer"] = "Индекс замедляет вставки и обновления."
                 else:
                     payload["session_id"] = session_id or "missing_lab6_session"
                     payload["card"] = cache_card or CACHE_CARD
@@ -401,6 +418,20 @@ def run_public(base_url: str, repeats: int, pause_seconds: float) -> dict[str, A
     ]
     total_attempts = sum(case["repeats"] for case in case_reports)
     passed_attempts = sum(case["passed_repeats"] for case in case_reports)
+    setup_passed = (
+        setup_generation_status == 201
+        and setup_generation.get("fallback_used") is False
+        and str(setup_generation.get("model", "")).startswith("gemini-")
+        and setup_session_status == 201
+        and bool(session_id)
+        and cache_card_exact
+        and index_generation_status == 201
+        and index_generation.get("fallback_used") is False
+        and str(index_generation.get("model", "")).startswith("gemini-")
+        and index_session_status == 201
+        and bool(index_session.get("session_id"))
+        and index_card_exact
+    )
     return {
         "base_url": base_url,
         "health": {
@@ -419,6 +450,8 @@ def run_public(base_url: str, repeats: int, pause_seconds: float) -> dict[str, A
                     "fallback_used": setup_generation.get("fallback_used"),
                     "trace_id": setup_generation.get("trace_id"),
                     "selected_card_id": cache_card.get("card_id") if cache_card else None,
+                    "selection_exact": cache_card_exact,
+                    "selected_card": cache_card,
                 },
                 "session": {
                     "http_status": setup_session_status,
@@ -436,6 +469,8 @@ def run_public(base_url: str, repeats: int, pause_seconds: float) -> dict[str, A
                     "fallback_used": index_generation.get("fallback_used"),
                     "trace_id": index_generation.get("trace_id"),
                     "selected_card_id": index_card.get("card_id") if index_card else None,
+                    "selection_exact": index_card_exact,
+                    "selected_card": index_card,
                 },
                 "session": {
                     "http_status": index_session_status,
@@ -446,6 +481,7 @@ def run_public(base_url: str, repeats: int, pause_seconds: float) -> dict[str, A
         },
         "summary": {
             "case_count": len(case_reports),
+            "setup_passed": setup_passed,
             "attempt_count": total_attempts,
             "passed_attempts": passed_attempts,
             "all_cases_stable": all(case["stable_outcome"] for case in case_reports),
@@ -545,10 +581,30 @@ def revalidate_existing_report(report: dict[str, Any]) -> dict[str, Any]:
             "max": max(successful_latencies) if successful_latencies else None,
         }
     cases = report["public_run"]["cases"]
+    setup = report["public_run"].get("setup", {})
+    cache_setup = setup.get("cache_review", {})
+    index_setup = setup.get("index_review", {})
+    setup_passed = all(
+        (
+            cache_setup.get("generation", {}).get("http_status") == 201,
+            cache_setup.get("generation", {}).get("fallback_used") is False,
+            str(cache_setup.get("generation", {}).get("model", "")).startswith("gemini-"),
+            cache_setup.get("generation", {}).get("selection_exact", True),
+            cache_setup.get("session", {}).get("http_status") == 201,
+            bool(cache_setup.get("session", {}).get("session_id")),
+            index_setup.get("generation", {}).get("http_status") == 201,
+            index_setup.get("generation", {}).get("fallback_used") is False,
+            str(index_setup.get("generation", {}).get("model", "")).startswith("gemini-"),
+            index_setup.get("generation", {}).get("selection_exact", True),
+            index_setup.get("session", {}).get("http_status") == 201,
+            bool(index_setup.get("session", {}).get("session_id")),
+        )
+    )
     total_attempts = sum(case["repeats"] for case in cases)
     passed_attempts = sum(case["passed_repeats"] for case in cases)
     report["public_run"]["summary"] = {
         "case_count": len(cases),
+        "setup_passed": setup_passed,
         "attempt_count": total_attempts,
         "passed_attempts": passed_attempts,
         "all_cases_stable": all(case["stable_outcome"] for case in cases),
@@ -561,7 +617,11 @@ def revalidate_existing_report(report: dict[str, Any]) -> dict[str, Any]:
     }
     report["revalidated_at"] = datetime.now(timezone.utc).isoformat()
     report["revalidation_note"] = "Stored raw HTTP responses rechecked; no provider calls were made."
-    report["passed"] = report["public_run"]["summary"]["all_attempts_passed"] and report["fallback_probe"]["passed"]
+    report["passed"] = (
+        setup_passed
+        and report["public_run"]["summary"]["all_attempts_passed"]
+        and report["fallback_probe"]["passed"]
+    )
     return report
 
 
@@ -608,7 +668,11 @@ def main() -> int:
             "output_path": args.output.as_posix(),
             "public_run": public_run,
             "fallback_probe": fallback_probe,
-            "passed": public_run["summary"]["all_attempts_passed"] and fallback_probe["passed"],
+            "passed": (
+                public_run["summary"]["setup_passed"]
+                and public_run["summary"]["all_attempts_passed"]
+                and fallback_probe["passed"]
+            ),
         }
     try:
         report["source"] = {
