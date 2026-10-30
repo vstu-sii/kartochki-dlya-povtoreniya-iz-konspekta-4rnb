@@ -1,0 +1,35 @@
+{
+  "received_on": "2026-10-27",
+  "reported_by": "Доброквашина Анастасия (Product)",
+  "source": "Product handoff text forwarded by the user; named files are absent from the fetched Product branch 765e2f4",
+  "period_start": "2026-10-15",
+  "period_end": "2026-10-18",
+  "positive_rating_events": 2,
+  "total_rating_events": 3,
+  "positive_event_rate": 0.6666666666666666,
+  "target_min": 0.8,
+  "target_met_on_reported_sample": false,
+  "events": [
+    {
+      "source": "external Denis session screenshots 3-4",
+      "rating": "useful"
+    },
+    {
+      "source": "external Denis session screenshots 3-4",
+      "rating": "not_useful",
+      "note": "Changed rating; not an independent user/card observation"
+    },
+    {
+      "source": "prod smoke lab5-prod-uc.json",
+      "rating": "useful",
+      "note": "Service smoke event, not an independent external user"
+    }
+  ],
+  "limitations": [
+    "Event ratio; not a cohort of three independent students/cards.",
+    "Includes a rating change and a service smoke event.",
+    "Period is stated by Product; source raw export is not provided."
+  ],
+  "presentation_security_wording_reported_corrected": true,
+  "presentation_security_wording_verified_in_product_branch": false
+}

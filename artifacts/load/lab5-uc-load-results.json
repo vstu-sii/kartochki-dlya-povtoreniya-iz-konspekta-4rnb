@@ -1,0 +1,43 @@
+{
+  "measured_at": "2026-10-18T22:48:10.718422+00:00",
+  "scenario": "UC-01: UI/API generation path with model and database persistence",
+  "base_url": "http://127.0.0.1:8095",
+  "slo": {
+    "error_rate_lte": 0.01,
+    "p95_ms_lte": 500.0
+  },
+  "verified_sustainable_concurrency": 5,
+  "first_failed_concurrency": 10,
+  "levels": [
+    {
+      "concurrency": 1,
+      "requests": 40,
+      "successes": 40,
+      "error_rate": 0.0,
+      "p50_ms": 31.65,
+      "p95_ms": 56.51,
+      "passed_slo": true,
+      "failures": []
+    },
+    {
+      "concurrency": 5,
+      "requests": 40,
+      "successes": 40,
+      "error_rate": 0.0,
+      "p50_ms": 131.16,
+      "p95_ms": 146.83,
+      "passed_slo": true,
+      "failures": []
+    },
+    {
+      "concurrency": 10,
+      "requests": 40,
+      "successes": 40,
+      "error_rate": 0.0,
+      "p50_ms": 257.35,
+      "p95_ms": 1016.92,
+      "passed_slo": false,
+      "failures": []
+    }
+  ]
+}

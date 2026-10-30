@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent / "evals"))
 from dataset_catalog import load_dataset
-from run_evals import failed_thresholds, load_cases, MINI_IDS
+from run_evals import failed_thresholds, load_cases, MINI_IDS, run
 from run_full_suite import coverage
 
 
@@ -31,6 +31,18 @@ class GateContractTest(unittest.TestCase):
             path.write_text(json.dumps({**row, "operation": "unimplemented"}), encoding="utf-8")
             with self.assertRaises(ValueError):
                 load_dataset((path,))
+
+    def test_retry_subset_cannot_silently_claim_full_coverage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            report=run(False,Path(directory)/"retry.json",case_ids={"SAFE-001"})
+        self.assertEqual(report["selected_case_ids"],["SAFE-001"])
+        self.assertEqual(report["dataset_case_count"],1)
+        self.assertEqual(len(report["cases"]),1)
+
+    def test_unknown_retry_id_is_rejected_before_model_calls(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(ValueError):
+                run(False,Path(directory)/"retry.json",case_ids={"MISSING-CASE"})
 
     def test_mini_is_fixed_and_lab4_additions_are_loaded(self):
         self.assertEqual(MINI_IDS, {row["id"] for row in load_cases(True)})

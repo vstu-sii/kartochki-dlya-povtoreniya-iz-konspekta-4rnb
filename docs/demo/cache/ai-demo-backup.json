@@ -1,0 +1,282 @@
+{
+  "warning": "Static Demo Day backup. It must be presented as a recorded response, not as a live call.",
+  "generated_at": "2026-10-29T12:16:34.855827+00:00",
+  "source_report": "artifacts/demo/lab6-ai-demo-run.json",
+  "release": {
+    "service": "application-api",
+    "status": "ok",
+    "version": "lab5",
+    "commit_sha": "1b320e130100eff40088e2b5e6e741bc04d379c5",
+    "telegram": "webhook"
+  },
+  "cases": [
+    {
+      "id": "AI-DEMO-01-grounded-concepts",
+      "source": "first successful response from the recorded rehearsal",
+      "response": {
+        "card_set_id": "set_3be949c8c05f4002beb589676367bd99",
+        "title": "Кэш процессора",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "cards-v2.3",
+        "fallback_used": false,
+        "trace_id": "tr_816e5fd4561746aebbf7375736845220",
+        "latency_ms": 9101,
+        "usage": {
+          "input_tokens": 333,
+          "output_tokens": 388
+        },
+        "cards": [
+          {
+            "card_id": "card_904b54404c9d475cb1ecf0d1b6ff07ea",
+            "question": "Каково основное назначение кэша процессора?",
+            "reference_answer": "Кэш процессора предназначен для ускорения доступа к часто используемым данным.",
+            "source_page": 1,
+            "source_quote": "Кэш процессора ускоряет доступ к часто используемым данным.",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_bef55f7a189c4fe7b2b49542032e4e4d",
+            "question": "Где физически располагается кэш процессора?",
+            "reference_answer": "Кэш процессора располагается между самим процессором и оперативной памятью.",
+            "source_page": 1,
+            "source_quote": "Он располагается между процессором и оперативной памятью.",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_200b3d2a9e7b43598ad9567c6a12b711",
+            "question": "Какой уровень кэша является самым быстрым и самым маленьким?",
+            "reference_answer": "Кэш уровня L1 является самым быстрым и самым маленьким уровнем кэша.",
+            "source_page": 1,
+            "source_quote": "Кэш L1 является самым быстрым и самым маленьким уровнем.",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_192b7ee41a314db2bc6ec88d8b56480f",
+            "question": "Для чего часто используется кэш L3?",
+            "reference_answer": "Кэш L3 часто является общим ресурсом для нескольких ядер процессора.",
+            "source_page": 1,
+            "source_quote": "Кэш L3 часто является общим для нескольких ядер процессора.",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_b7a1d02f0e2b40a8b6264b8ad1b6b9d0",
+            "question": "Куда обращается процессор в случае промаха кэша?",
+            "reference_answer": "При промахе кэша процессор осуществляет обращение к оперативной памяти.",
+            "source_page": 1,
+            "source_quote": "При промахе кэша процессор обращается к оперативной памяти.",
+            "difficulty": "advanced"
+          }
+        ],
+        "fallback_reason": null,
+        "validation_error": null,
+        "provider_usage": null
+      }
+    },
+    {
+      "id": "AI-DEMO-02-paraphrase",
+      "source": "first successful response from the recorded rehearsal",
+      "response": {
+        "verdict": "correct",
+        "score": 2,
+        "feedback": "Отлично! Вы верно указали, что индекс ускоряет поиск и замедляет запись из-за необходимости его обновления. Для полного понимания можно также отметить влияние индексов на операции удаления.",
+        "missing_points": [],
+        "review_id": "review_a5baa22ea05647bc988e18d00c718365",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_2cb3d10759af4b04973f20ceef9aafc9",
+        "latency_ms": 5230,
+        "usage": {
+          "input_tokens": 427,
+          "output_tokens": 74
+        },
+        "persisted": true
+      }
+    },
+    {
+      "id": "AI-DEMO-03-incomplete-answer",
+      "source": "first successful response from the recorded rehearsal",
+      "response": {
+        "verdict": "partially_correct",
+        "score": 1,
+        "feedback": "Вы верно отметили, что индекс ускоряет чтение. Пожалуйста, уточните, как именно индекс влияет на операции записи, вставки и обновления данных.",
+        "missing_points": [
+          "Замедление операций вставки и обновления данных"
+        ],
+        "review_id": "review_e4811e06d36a45fdae344a155f63e79d",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_f2d39d34c5b04a94b62f685ea56d376e",
+        "latency_ms": 10482,
+        "usage": {
+          "input_tokens": 409,
+          "output_tokens": 86
+        },
+        "persisted": true
+      }
+    },
+    {
+      "id": "AI-DEMO-04-error-correction",
+      "source": "first successful response from the recorded rehearsal",
+      "response": {
+        "verdict": "incorrect",
+        "score": 0,
+        "feedback": "Вы верно отметили причину промаха кэша, но ошиблись с целевым устройством. Подумайте, куда именно обращается процессор за данными, если их нет в кэше?",
+        "missing_points": [
+          "Процессор обращается к оперативной памяти, а не к жёсткому диску"
+        ],
+        "review_id": "review_bb3027c5501e435789ec789bba23e70d",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "review-v2.2",
+        "fallback_used": false,
+        "fallback_reason": null,
+        "trace_id": "tr_148b60f81b3a45c1b035f8ae6481927b",
+        "latency_ms": 3520,
+        "usage": {
+          "input_tokens": 386,
+          "output_tokens": 102
+        },
+        "persisted": true
+      }
+    },
+    {
+      "id": "AI-DEMO-05-formulas",
+      "source": "first successful response from the recorded rehearsal",
+      "response": {
+        "card_set_id": "set_253a1c6cf2ed494ba91741c0f9d0cf43",
+        "title": "Тригонометрические формулы и тождества",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "cards-v2.3",
+        "fallback_used": false,
+        "trace_id": "tr_765cf5ccb20f40f985b5742f9bc093a1",
+        "latency_ms": 3951,
+        "usage": {
+          "input_tokens": 352,
+          "output_tokens": 672
+        },
+        "cards": [
+          {
+            "card_id": "card_d9eea419632d45a2b810f4064cfc9105",
+            "question": "Как формулируется основное тригонометрическое тождество?",
+            "reference_answer": "Основное тригонометрическое тождество выражает связь между синусом и косинусом одного угла и записывается как сумма их квадратов, равная единице: sin² x + cos² x = 1.",
+            "source_page": 1,
+            "source_quote": "Основное тригонометрическое тождество: sin² x + cos² x = 1.",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_16ad0988fab8412d974d4a037fd8edb3",
+            "question": "Через какие тригонометрические функции и при каком условии определяется тангенс?",
+            "reference_answer": "Тангенс угла x определяется как отношение синуса этого угла к косинусу: tg x = sin x / cos x, при этом значение косинуса не должно быть равно нулю (cos x ≠ 0).",
+            "source_page": 1,
+            "source_quote": "Тангенс определяется формулой tg x = sin x / cos x при cos x ≠ 0.",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_4774320caa8a482f9c2983fe31b926a5",
+            "question": "Каково определение котангенса и какие ограничения накладываются на аргумент?",
+            "reference_answer": "Котангенс определяется как отношение косинуса к синусу: ctg x = cos x / sin x, с условием, что синус не равен нулю (sin x ≠ 0).",
+            "source_page": 1,
+            "source_quote": "Котангенс определяется формулой ctg x = cos x / sin x при sin x ≠ 0.",
+            "difficulty": "basic"
+          },
+          {
+            "card_id": "card_35203873412146ca82faa3987d7e801a",
+            "question": "Чему равен синус двойного угла согласно формуле?",
+            "reference_answer": "Синус двойного угла равен удвоенному произведению синуса и косинуса исходного угла: sin 2x = 2 sin x cos x.",
+            "source_page": 1,
+            "source_quote": "Формула двойного угла: sin 2x = 2 sin x cos x.",
+            "difficulty": "intermediate"
+          },
+          {
+            "card_id": "card_7c99b479d83b437dafe80e0954a89497",
+            "question": "Какая формула описывает косинус двойного угла через квадраты синуса и косинуса?",
+            "reference_answer": "Косинус двойного угла равен разности квадрата косинуса и квадрата синуса этого же угла: cos 2x = cos² x − sin² x.",
+            "source_page": 1,
+            "source_quote": "Ещё одна формула двойного угла: cos 2x = cos² x − sin² x.",
+            "difficulty": "intermediate"
+          }
+        ],
+        "fallback_reason": null,
+        "validation_error": null,
+        "provider_usage": null
+      }
+    }
+  ],
+  "fallback_probe": {
+    "method": "provider timeout injected with unittest.mock; no network or real key used",
+    "passed": true,
+    "checks": {
+      "fallback_used": true,
+      "fallback_reason": "gemini_timeout",
+      "model": "deterministic-grounded-v2",
+      "card_count": 5,
+      "trace_id_present": true
+    },
+    "response": {
+      "title": "Карточки по загруженному материалу",
+      "cards": [
+        {
+          "card_id": "card_008b4d64e49e4e2b8376cb60274ed253",
+          "question": "Что говорится в материале о «Кэш процессора ускоряет доступ к часто используемым данным»?",
+          "reference_answer": "Кэш процессора ускоряет доступ к часто используемым данным.",
+          "source_page": 1,
+          "source_quote": "Кэш процессора ускоряет доступ к часто используемым данным.",
+          "difficulty": "basic"
+        },
+        {
+          "card_id": "card_84b71c9937ad400993e79047f25a029d",
+          "question": "Что говорится в материале о «Он располагается между процессором и оперативной памятью»?",
+          "reference_answer": "Он располагается между процессором и оперативной памятью.",
+          "source_page": 1,
+          "source_quote": "Он располагается между процессором и оперативной памятью.",
+          "difficulty": "basic"
+        },
+        {
+          "card_id": "card_a7807e4bbbdc48138533edc2848f8038",
+          "question": "Что говорится в материале о «Кэш L1 является самым быстрым и самым маленьким уровнем»?",
+          "reference_answer": "Кэш L1 является самым быстрым и самым маленьким уровнем.",
+          "source_page": 1,
+          "source_quote": "Кэш L1 является самым быстрым и самым маленьким уровнем.",
+          "difficulty": "intermediate"
+        },
+        {
+          "card_id": "card_fce0fcfa6713411689f4fbc44a7deeb9",
+          "question": "Что говорится в материале о «Кэш L2 больше L1, но обычно медленнее него»?",
+          "reference_answer": "Кэш L2 больше L1, но обычно медленнее него.",
+          "source_page": 1,
+          "source_quote": "Кэш L2 больше L1, но обычно медленнее него.",
+          "difficulty": "intermediate"
+        },
+        {
+          "card_id": "card_34c79ac622924701b66a440cd689b3d1",
+          "question": "Что говорится в материале о «Кэш L3 часто является общим для нескольких ядер процессора»?",
+          "reference_answer": "Кэш L3 часто является общим для нескольких ядер процессора.",
+          "source_page": 1,
+          "source_quote": "Кэш L3 часто является общим для нескольких ядер процессора.",
+          "difficulty": "intermediate"
+        }
+      ],
+      "model": "deterministic-grounded-v2",
+      "prompt_version": "cards-v2.3",
+      "schema_version": "2.0",
+      "fallback_used": true,
+      "fallback_reason": "gemini_timeout",
+      "validation_error": null,
+      "provider_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0
+      },
+      "trace_id": "tr_7eb5d8987e6f42e3be7cd47be0c28592",
+      "latency_ms": 3,
+      "cache_hit": false,
+      "tool_status": "forbidden_fallback_to_request_pages",
+      "usage": {
+        "input_tokens": 305,
+        "output_tokens": 552
+      }
+    }
+  }
+}

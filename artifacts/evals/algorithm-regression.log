@@ -1,0 +1,1 @@
+{"experiment": "review-algorithm-ab", "variant_a": {"name": "lexical-overlap-v1", "agreement": 0.825}, "variant_b": {"name": "normalized-semantic-rules-v2", "agreement": 0.925}, "passed": true}

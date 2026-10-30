@@ -22,6 +22,7 @@ class TraceClient:
             "prompt_version": response.get("prompt_version"),
             "usage": response.get("usage", {}),
             "fallback_reason": response.get("fallback_reason"),
+            "validation_error": response.get("validation_error"),
             "cache_hit": response.get("cache_hit", False),
             "tool_status": response.get("tool_status"),
         }

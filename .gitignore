@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 *.db
+artifacts/release/lab5-manifest.json
 test_lab3.db
 .pytest_cache/
 artifacts/traces.jsonl

@@ -1,0 +1,28 @@
+{
+  "received_on": "2026-10-27",
+  "files": {
+    "artifacts/quality/lab5-handoff-v5-2026-10-27/ai-baseline-v5-received.py": {
+      "received_filename": "baseline (2).py",
+      "sha256": "ed8539600cae7152daf14d989264313a0a17c09d9ff1962dac3945337cbb6cd9"
+    },
+    "artifacts/quality/lab5-handoff-v5-2026-10-27/ai-full-suite-received.json": {
+      "received_filename": "full-suite-results (2).json",
+      "sha256": "9c1ffcda83ab24bdebb4d0ce4719d8b9f2794e79417b5970f96cbd62896d487a"
+    },
+    "artifacts/quality/lab5-handoff-v5-2026-10-27/ai-evidence-after-fix-received.md": {
+      "received_filename": "lab1-ai-evidence-after-fix (2).md",
+      "sha256": "636dacb371fe3e2de38d05349cdbd38bf3b08fee8891ae805040d090c5a2b408",
+      "source_received_sha256": "061d3e96866dce5f1b39d573a93d4c73bc222320b8333e532d21822b55ff5c27",
+      "normalization": "Whitespace-only normalization; original source hash retained."
+    },
+    "artifacts/quality/lab5-handoff-v5-2026-10-27/ai-model-results-received.json": {
+      "received_filename": "lab5-final-results-after-review-fix.json",
+      "sha256": "7692e08d61e5ba52c627f88ba3f72348f92bcfac9f88d01a65e5e33dac43ac5a"
+    },
+    "artifacts/quality/lab5-handoff-v5-2026-10-27/ai-evidence-unreviewed-received.json": {
+      "received_filename": "lab1-ai-quality-evidence-after-fix (2).json",
+      "sha256": "336949df5732fb82d453f06e3a95b71db5bff33a3419a9e05fa8a58a19de2db4"
+    }
+  },
+  "reviewed_copy": "artifacts/evals/lab1-ai-quality-evidence-after-fix-v5.json"
+}

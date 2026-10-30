@@ -1,0 +1,7 @@
+{
+  "checkout_commit": "f30a828daf57d31d91da05fd480976642e2679ea",
+  "scope": "Local Quality candidate; active model is the published legacy implementation, not the supplied v5 snapshot. No release tag created.",
+  "exit_code": 0,
+  "dataset_scope": "Current Quality catalog, independent of revised v5 dataset",
+  "source_pdf_sha256": "6ed2a591d1cce8a16e0600940bb385f393618049b94916d7134d9e8ef2abef22"
+}

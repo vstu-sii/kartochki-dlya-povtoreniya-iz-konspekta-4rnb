@@ -1,0 +1,273 @@
+{
+  "scope": "offline replay of previously returned real Gemini cards through new quote normalizer; not new paid inference",
+  "new_code_sha": "d0a3999371cddc3105695965515fe62ab10873b1",
+  "total": 53,
+  "passed": true,
+  "cases": [
+    {
+      "id": "GEN-001",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-002",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-003",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-004",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-005",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-006",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-007",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-008",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-009",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-010",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-011",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-012",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-013",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-014",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-015",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-016",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "SAFE-003",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-017",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-018",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-019",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-020",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-021",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-022",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-023",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-024",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-025",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-026",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-027",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-028",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-029",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-030",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-031",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-032",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-033",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-034",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-035",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-036",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-037",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-038",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-039",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-040",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-041",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-042",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-043",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-044",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-045",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-046",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-047",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-048",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-049",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-050",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-LIVE-001",
+      "passed": true,
+      "cards_unchanged": true
+    },
+    {
+      "id": "GEN-LIVE-002",
+      "passed": true,
+      "cards_unchanged": true
+    }
+  ]
+}

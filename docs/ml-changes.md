@@ -17,7 +17,7 @@
 ## Фактические метрики
 
 - algorithm A/B: 82,5% против 90,0%; это алгоритмы, не prompts;
-- prompt contract: 100% шаблонов рендерятся, provider не вызывался;
+- prompt contract: 100% шаблонов рендерятся; отдельно выполнен настоящий Gemini prompt-only A/B на 20 кейсах (`artifacts/experiments/lab4-provider-results.json`);
 - curated retrieval: hit@1 100%, recall@3 100% на 10 синтетических кейсах;
 - production query builder: метрики записаны отдельно в retrieval artifact;
 - coverage probe показывает потерю страниц 4–5 при фиксированном top-3.
@@ -30,4 +30,4 @@
 
 ## Оставшиеся ограничения
 
-Provider prompt A/B не выполнен без ключа. Top-3 может потерять важный факт длинного документа. Cache и limiter process-local. Локальные latency не являются production SLA.
+Gemini prompt A/B выполнен один раз на 20 кейсах и не заменяет полный deterministic gate. Top-3 может потерять важный факт длинного документа. Cache и limiter process-local. Provider p95 6849,14 мс измерен на малой выборке и не является production SLA.

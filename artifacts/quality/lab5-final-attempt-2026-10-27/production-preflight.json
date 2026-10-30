@@ -1,0 +1,31 @@
+[
+  {
+    "path": "/health",
+    "status": 200,
+    "elapsed_ms": 22993.32,
+    "response": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "telegram": "webhook"
+    }
+  },
+  {
+    "path": "/openapi.json",
+    "status": 200,
+    "elapsed_ms": 280.57,
+    "paths": [
+      "/v1/ai/card-sets",
+      "/v1/ai/card-sets/from-pdf",
+      "/v1/ai/answer-reviews",
+      "/v1/ai/card-sets/latest",
+      "/v1/ai/sessions",
+      "/v1/ai/sessions/resume",
+      "/v1/ai/sessions/{session_id}",
+      "/v1/ai/sessions/{session_id}/progress",
+      "/v1/ai/sessions/{session_id}/ratings/{card_id}",
+      "/v1/ai/sessions/{session_id}/complete",
+      "/health"
+    ]
+  }
+]

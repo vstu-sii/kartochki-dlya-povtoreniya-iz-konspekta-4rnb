@@ -1,0 +1,76 @@
+{
+  "reviewed_on": "2026-10-27",
+  "review_type": "assistant_document_inspection_not_human_team_confirmation",
+  "source_pdf": "tests/fixtures/lab5-devops-source.pdf",
+  "source_pdf_sha256": "6ed2a591d1cce8a16e0600940bb385f393618049b94916d7134d9e8ef2abef22",
+  "scope": "Five unique cards from the first real production scenario, repeated unchanged in the other two runs; independent offline v5 generation has the same PDF line-break defect.",
+  "quote_alignment_count": 5,
+  "standalone_complete_statement_count": 0,
+  "sample_count": 5,
+  "human_thesis_accuracy": null,
+  "human_confirmation_status": "pending",
+  "formula_check": {
+    "source_formula_count_observed": 0,
+    "extracted_formula_count_observed": 0,
+    "loss_rate": null,
+    "status": "not_applicable_zero_denominator_requires_pdf_with_formulas",
+    "method": "pypdf extraction and visual contact sheet of all ten pages; code snippets are not counted as standalone mathematical formulas"
+  },
+  "rows": [
+    {
+      "card_id": "card_02169c5e14fa4ef793816664eb776306",
+      "question": "Какова цель этой работы?",
+      "reference_answer": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+      "source_page": 1,
+      "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker",
+      "quote_aligned": true,
+      "standalone_complete_statement": false,
+      "technical_review_comment": "Фраза обрывается на повторённом Docker и не завершает цель занятия.",
+      "human_review": null
+    },
+    {
+      "card_id": "card_f0bfed530b48451cb04e4357e6ee88ff",
+      "question": "Что говорится в материале о «Compose, упаковать веб -приложение с ML -моделью в контейнер,»?",
+      "reference_answer": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+      "source_page": 1,
+      "source_quote": "Compose, упаковать веб -приложение с ML -моделью в контейнер,",
+      "quote_aligned": true,
+      "standalone_complete_statement": false,
+      "technical_review_comment": "Начинается с продолжения предыдущей строки «Compose,»; самостоятельный тезис не сформирован.",
+      "human_review": null
+    },
+    {
+      "card_id": "card_a09d7cc99dd44abbabbb6f65918f36bf",
+      "question": "Что говорится в материале о «организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,»?",
+      "reference_answer": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+      "source_page": 1,
+      "source_quote": "организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,",
+      "quote_aligned": true,
+      "standalone_complete_statement": false,
+      "technical_review_comment": "Местоимение «его» ссылается на предыдущее предложение, субъект не назван; фрагмент не самодостаточен.",
+      "human_review": null
+    },
+    {
+      "card_id": "card_74c4dd7afd0e4b36bf3ad084be0e16a4",
+      "question": "Что говорится в материале о «обеспечить воспроизводимость запуска и подготовить приложение к»?",
+      "reference_answer": "обеспечить воспроизводимость запуска и подготовить приложение к",
+      "source_page": 1,
+      "source_quote": "обеспечить воспроизводимость запуска и подготовить приложение к",
+      "quote_aligned": true,
+      "standalone_complete_statement": false,
+      "technical_review_comment": "Фраза обрывается на предлоге «к».",
+      "human_review": null
+    },
+    {
+      "card_id": "card_c03c1fd949bd4dfdad8302c8a760bde7",
+      "question": "Что говорится в материале о «дальнейшей автоматизации в CI/CD»?",
+      "reference_answer": "дальнейшей автоматизации в CI/CD.",
+      "source_page": 1,
+      "source_quote": "дальнейшей автоматизации в CI/CD.",
+      "quote_aligned": true,
+      "standalone_complete_statement": false,
+      "technical_review_comment": "Продолжение предыдущей строки о CI/CD, не самостоятельное утверждение.",
+      "human_review": null
+    }
+  ]
+}

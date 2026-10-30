@@ -1,0 +1,52 @@
+{
+  "checked_on": "2026-10-27",
+  "csv_matches_all_40_source_values": true,
+  "source_ref": "v0.5.1:artifacts/experiments/lab4-provider-results.json",
+  "method": "p50 median; p95 nearest rank sorted[ceil(.95*n)-1]",
+  "scope": "provider-only, not end-to-end",
+  "execution_sha": null,
+  "statistics": [
+    {
+      "variant": "A",
+      "operation": "combined",
+      "n": 20,
+      "p50_ms": 6316.22,
+      "p95_ms": 6884.86
+    },
+    {
+      "variant": "A",
+      "operation": "generate_card",
+      "n": 10,
+      "p50_ms": 6559.945,
+      "p95_ms": 7118.02
+    },
+    {
+      "variant": "A",
+      "operation": "review_answer",
+      "n": 10,
+      "p50_ms": 6084.8,
+      "p95_ms": 6479.34
+    },
+    {
+      "variant": "B",
+      "operation": "combined",
+      "n": 20,
+      "p50_ms": 6227.845,
+      "p95_ms": 6569.36
+    },
+    {
+      "variant": "B",
+      "operation": "generate_card",
+      "n": 10,
+      "p50_ms": 6418.305,
+      "p95_ms": 6574.7
+    },
+    {
+      "variant": "B",
+      "operation": "review_answer",
+      "n": 10,
+      "p50_ms": 6111.86,
+      "p95_ms": 6427.89
+    }
+  ]
+}
