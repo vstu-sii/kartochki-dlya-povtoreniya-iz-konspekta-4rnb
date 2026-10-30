@@ -7,7 +7,7 @@
 **Демо:** 31.10.2026, время не указано  
 **Фриз:** с 29.10.2026, 23:24 (Europe/Volgograd), Delivery — Ермакова Алиса  
 **Слайды:** `docs/demo/presentation.pdf`  
-**Видео:** `docs/demo/telegram-demo.mp4`  
+**Видео:** `docs/demo/video-demo.mp4`  
 **Порог бэкапа:** 30 секунд  
 **Полный командный прогон:** 7 минут
 
