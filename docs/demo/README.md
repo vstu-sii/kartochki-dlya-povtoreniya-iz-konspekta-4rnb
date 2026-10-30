@@ -15,3 +15,6 @@
 29.10: Render Shell недоступен на бесплатном тарифе, поэтому сброс в production не выполнен. [Промо Product](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/lab6-product-demo/docs/demo/telegram-promo.mp4) сделано на предыдущем SHA `1b320e1`, до скрытия цитат в Telegram; оно не является видео текущего интерфейса.
 
 После фриза выполнен [публичный API-сценарий](../../artifacts/demo/lab6-public-a60.json): обычный PDF, 5 карточек, 5 ответов и повторное открытие сессии; все вызовы Gemini без fallback, сохранение подтверждено ответом API. Ответы повторяли эталон и это не прогон Telegram или сброс тестовых данных. P95 пяти ответов 1,914 с; эта малая выборка не доказывает стабильность и не отменяет прежний замер 31,990 с.
+
+
+**Актуализация:** основной видеобэкап Product — [video-demo.mp4](https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/blob/lab6-product-demo/docs/demo/video-demo.mp4); предыдущие сведения выше относятся к старым роликам. Новое видео необходимо скачать и проверить офлайн до демо.
