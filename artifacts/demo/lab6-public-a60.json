@@ -1,0 +1,307 @@
+{
+  "measured_at": "2026-10-29T20:26:17.220901+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "fallback-enabled diagnostic; nearest-rank timings",
+  "scenario_count": 1,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.04,
+  "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 21838,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "a60eee706ad17238c11e0c79f53f026fd68bdf81",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793305599-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 6703,
+        "response": {
+          "card_set_id": "set_f2e544b0f15942808da05ba080ec8972",
+          "title": "Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_d39f5648c172473483601390c107f8d9",
+          "latency_ms": 2578,
+          "usage": {
+            "input_tokens": 1164,
+            "output_tokens": 752
+          },
+          "cards": [
+            {
+              "card_id": "card_a80c884fc02242b8ae91e1cee8da438f",
+              "question": "Какова главная цель лабораторной работы №4?",
+              "reference_answer": "Цель работы заключается в освоении основ контейнеризации с использованием Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска, подготовке приложения к автоматизации в CI/CD и создании основы для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD. Заложить основу для многоконтейнерной\nархитектуры сквозного проекта «ML Prediction Service».",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_79121fb1438f4afc8574dc19b3c6bede",
+              "question": "Что представляет собой Docker-контейнер и чем он отличается от образа согласно теоретической справке?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные. В то время как Docker-контейнер представляет собой уже запущенный экземпляр этого образа.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные. Docker-контейнер – запущенный экземпляр образа.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_02c10972c39241b8b0b1584d8d6021d2",
+              "question": "Для чего используются переменные окружения при подключении к базе данных в контейнере?",
+              "reference_answer": "Переменные окружения дают возможность передавать параметры подключения к базе данных без необходимости изменять сам образ, что имеет важное значение для обеспечения безопасности и переносимости приложения.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_b89ddecb233b43ebae21f77c3edf7f65",
+              "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR используется для определения рабочей директории внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_999e76cdf50945ffaaa090d173645a56",
+              "question": "Какие действия нужно выполнить для добавления текущего пользователя в группу docker с целью работы без привилегий sudo?",
+              "reference_answer": "Для этого необходимо выполнить команду добавления пользователя student в группу docker с помощью sudo usermod -aG docker $USER, а затем применить изменения командой newgrp docker.",
+              "source_page": 4,
+              "source_quote": "2. Добавьте пользователя student в группу docker, чтобы работать без\nsudo:\nsudo usermod -aG docker $USER\nnewgrp docker",
+              "difficulty": "advanced"
+            }
+          ],
+          "fallback_reason": null,
+          "validation_error": null,
+          "provider_usage": null
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 1817,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно точно перечислили все ключевые цели лабораторной работы, включая контейнеризацию, работу с PostgreSQL и подготовку к CI/CD.",
+            "missing_points": [],
+            "review_id": "review_8f3fa03927324d4197dbe5a384ec7ce4",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_788bd3afa67f48c0966952a8f924bdba",
+            "latency_ms": 1220,
+            "usage": {
+              "input_tokens": 605,
+              "output_tokens": 70
+            },
+            "persisted": true
+          },
+          "student_answer": "Цель работы заключается в освоении основ контейнеризации с использованием Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска, подготовке приложения к автоматизации в CI/CD и создании основы для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1579,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно описали и Docker-образ, и Docker-контейнер, а также их ключевое различие. Пожалуйста, продолжайте в том же духе!",
+            "missing_points": [],
+            "review_id": "review_1cc07fec286143b8a600db156d374112",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_3cb3236119f64c81a791164031d86571",
+            "latency_ms": 909,
+            "usage": {
+              "input_tokens": 461,
+              "output_tokens": 73
+            },
+            "persisted": true
+          },
+          "student_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные. В то время как Docker-контейнер представляет собой уже запущенный экземпляр этого образа.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1293,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы полностью и точно описали все ключевые аспекты использования переменных окружения.",
+            "missing_points": [],
+            "review_id": "review_63c24aae3bb94c87ae559fdaa0791cd3",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_be44869e6713492f85425c76dd1d8159",
+            "latency_ms": 760,
+            "usage": {
+              "input_tokens": 434,
+              "output_tokens": 55
+            },
+            "persisted": true
+          },
+          "student_answer": "Переменные окружения дают возможность передавать параметры подключения к базе данных без необходимости изменять сам образ, что имеет важное значение для обеспечения безопасности и переносимости приложения.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1914,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно указали назначение инструкции WORKDIR.",
+            "missing_points": [],
+            "review_id": "review_d140dde4cb9c4320ba30eb5d518fd3e2",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_8811d753307b4820802290cf45fedb14",
+            "latency_ms": 1146,
+            "usage": {
+              "input_tokens": 378,
+              "output_tokens": 48
+            },
+            "persisted": true
+          },
+          "student_answer": "Инструкция WORKDIR используется для определения рабочей директории внутри контейнера.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        },
+        {
+          "status": 200,
+          "wall_ms": 1677,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, ответ полностью совпадает с эталоном и содержит все необходимые шаги. Пожалуйста, не забывайте проверять актуальность текущего пользователя при выполнении команд.",
+            "missing_points": [],
+            "review_id": "review_74419475272a43828b504ed3d35b23be",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.2",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_2c019746ff8c499d9b0e7f7892db90e0",
+            "latency_ms": 991,
+            "usage": {
+              "input_tokens": 449,
+              "output_tokens": 70
+            },
+            "persisted": true
+          },
+          "student_answer": "Для этого необходимо выполнить команду добавления пользователя student в группу docker с помощью sudo usermod -aG docker $USER, а затем применить изменения командой newgrp docker.",
+          "answer_mode": "reference_copy_not_paraphrase"
+        }
+      ],
+      "status": "completed",
+      "answer_mode": "reference_copy_not_paraphrase",
+      "session": {
+        "status": 201,
+        "wall_ms": 733,
+        "response": {
+          "card_set_id": "set_f2e544b0f15942808da05ba080ec8972",
+          "title": "Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.3",
+          "fallback_used": false,
+          "trace_id": "tr_d39f5648c172473483601390c107f8d9",
+          "latency_ms": 2578,
+          "usage": {
+            "input_tokens": 1164,
+            "output_tokens": 752
+          },
+          "cards": [
+            {
+              "card_id": "card_a80c884fc02242b8ae91e1cee8da438f",
+              "question": "Какова главная цель лабораторной работы №4?",
+              "reference_answer": "Цель работы заключается в освоении основ контейнеризации с использованием Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска, подготовке приложения к автоматизации в CI/CD и создании основы для многоконтейнерной архитектуры сквозного проекта «ML Prediction Service».",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD. Заложить основу для многоконтейнерной\nархитектуры сквозного проекта «ML Prediction Service».",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_79121fb1438f4afc8574dc19b3c6bede",
+              "question": "Что представляет собой Docker-контейнер и чем он отличается от образа согласно теоретической справке?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные. В то время как Docker-контейнер представляет собой уже запущенный экземпляр этого образа.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные. Docker-контейнер – запущенный экземпляр образа.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_02c10972c39241b8b0b1584d8d6021d2",
+              "question": "Для чего используются переменные окружения при подключении к базе данных в контейнере?",
+              "reference_answer": "Переменные окружения дают возможность передавать параметры подключения к базе данных без необходимости изменять сам образ, что имеет важное значение для обеспечения безопасности и переносимости приложения.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_b89ddecb233b43ebae21f77c3edf7f65",
+              "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR используется для определения рабочей директории внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_999e76cdf50945ffaaa090d173645a56",
+              "question": "Какие действия нужно выполнить для добавления текущего пользователя в группу docker с целью работы без привилегий sudo?",
+              "reference_answer": "Для этого необходимо выполнить команду добавления пользователя student в группу docker с помощью sudo usermod -aG docker $USER, а затем применить изменения командой newgrp docker.",
+              "source_page": 4,
+              "source_quote": "2. Добавьте пользователя student в группу docker, чтобы работать без\nsudo:\nsudo usermod -aG docker $USER\nnewgrp docker",
+              "difficulty": "advanced"
+            }
+          ],
+          "session_id": "session_facb1cded5224c6b8eba3dfa65b83c38",
+          "user_id": "quality-final-1793305599-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reopen": {
+        "status": 200,
+        "wall_ms": 274,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 3491,
+        "output_tokens": 1068,
+        "cost_usd": 0.0037173,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "completed",
+  "summary": {
+    "all_provider_calls_without_fallback": true,
+    "generation_p50_wall_ms": 6703,
+    "generation_p95_wall_ms": 6703,
+    "review_p50_wall_ms": 1677,
+    "review_p95_wall_ms": 1914,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 1,
+    "review_sample_size": 5,
+    "total_input_tokens": 3491,
+    "total_output_tokens": 1068,
+    "total_cost_usd": 0.0037173
+  }
+}

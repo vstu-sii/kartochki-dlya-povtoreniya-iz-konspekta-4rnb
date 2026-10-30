@@ -1,0 +1,31 @@
+{
+  "measured_at": "2026-10-19T07:43:12.462534+00:00",
+  "base_url": "http://127.0.0.1:8095",
+  "concurrency": 5,
+  "profiles": [
+    {
+      "scenario": "UC-01 generate/model/DB",
+      "requests": 40,
+      "successes": 40,
+      "error_rate": 0.0,
+      "p50_ms": 120.34,
+      "p95_ms": 283.33
+    },
+    {
+      "scenario": "UC-02 review/model/DB",
+      "requests": 40,
+      "successes": 40,
+      "error_rate": 0.0,
+      "p50_ms": 71.73,
+      "p95_ms": 96.33
+    },
+    {
+      "scenario": "UC-04 resume/DB",
+      "requests": 40,
+      "successes": 40,
+      "error_rate": 0.0,
+      "p50_ms": 37.48,
+      "p95_ms": 61.93
+    }
+  ]
+}

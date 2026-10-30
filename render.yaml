@@ -5,6 +5,8 @@ services:
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     envVars:
+      - key: APP_VERSION
+        value: lab5
       - key: MODEL_PROVIDER
         value: gemini
       - key: LLM_PRIMARY_MODEL
