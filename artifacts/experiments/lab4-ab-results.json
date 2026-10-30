@@ -1,0 +1,39 @@
+{
+  "experiment": "lab4-review-prompts-ab",
+  "dataset": "docs/quality/golden-dataset/dataset.jsonl",
+  "case_count": 40,
+  "variant_a": {
+    "name": "lab3-lexical-v1",
+    "agreement": 0.825,
+    "estimated_input_tokens": 1283
+  },
+  "variant_b": {
+    "name": "review-v2.1",
+    "agreement": 0.9,
+    "estimated_input_tokens": 6846
+  },
+  "delta_agreement_pp": 7.5,
+  "changed_examples": [
+    {
+      "id": "REV-002",
+      "expected": "partially_correct",
+      "a": "incorrect",
+      "b": "partially_correct"
+    },
+    {
+      "id": "REV-007",
+      "expected": "correct",
+      "a": "incorrect",
+      "b": "correct"
+    },
+    {
+      "id": "REV-018",
+      "expected": "partially_correct",
+      "a": "incorrect",
+      "b": "partially_correct"
+    }
+  ],
+  "duration_ms": 21,
+  "decision": "B",
+  "notes": "Offline deterministic comparison; provider latency and billing are intentionally not inferred."
+}

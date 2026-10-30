@@ -1,0 +1,306 @@
+{
+  "dataset_version": "lab5-v1",
+  "dataset_sha256": "4ccad6ee986d38a51f1591c338c019dda7957891976b41847e78c50363764ca9",
+  "suite": "application-api-db",
+  "case_count": 37,
+  "passed_count": 37,
+  "failed_count": 0,
+  "pass_rate": 1.0,
+  "cases": [
+    {
+      "id": "SAFE-001",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "INVALID_REQUEST",
+      "actual_status": 422
+    },
+    {
+      "id": "SAFE-002",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "DOCUMENT_TOO_LARGE",
+      "actual_status": 413
+    },
+    {
+      "id": "SAFE-004",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "PDF_TEXT_LAYER_REQUIRED",
+      "actual_status": 422
+    },
+    {
+      "id": "SAFE-005",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "INSUFFICIENT_CONTENT",
+      "actual_status": 422
+    },
+    {
+      "id": "SAFE-006",
+      "operation": "validate_model_output",
+      "passed": true,
+      "actual_code": "MODEL_OUTPUT_INVALID",
+      "accepted": false
+    },
+    {
+      "id": "UX-001",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "useful",
+      "rating_rows": 1,
+      "event_count": 1
+    },
+    {
+      "id": "UX-002",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "not_useful",
+      "rating_rows": 1,
+      "event_count": 2
+    },
+    {
+      "id": "STATE-001",
+      "operation": "complete_session",
+      "passed": true,
+      "session_id": "ses_01J9STUDY",
+      "status": "completed",
+      "counts": {
+        "correct": 1,
+        "partially_correct": 1,
+        "incorrect": 1,
+        "skipped": 1
+      }
+    },
+    {
+      "id": "STATE-002",
+      "operation": "resume_session",
+      "passed": true,
+      "resumed": true,
+      "position": 3
+    },
+    {
+      "id": "UX-003",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "useful",
+      "rating_rows": 1,
+      "event_count": 1
+    },
+    {
+      "id": "UX-004",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "useful",
+      "rating_rows": 1,
+      "event_count": 2
+    },
+    {
+      "id": "UX-005",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "not_useful",
+      "rating_rows": 1,
+      "event_count": 1
+    },
+    {
+      "id": "UX-006",
+      "operation": "rate_card",
+      "passed": true,
+      "actual_code": "FORBIDDEN",
+      "actual_status": 403
+    },
+    {
+      "id": "UX-007",
+      "operation": "rate_card",
+      "passed": true,
+      "actual_code": "SESSION_NOT_FOUND",
+      "actual_status": 404
+    },
+    {
+      "id": "UX-008",
+      "operation": "rate_card",
+      "passed": true,
+      "actual_code": "CARD_NOT_FOUND",
+      "actual_status": 404
+    },
+    {
+      "id": "UX-009",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "not_useful",
+      "rating_rows": 1,
+      "event_count": 1
+    },
+    {
+      "id": "UX-010",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "useful",
+      "rating_rows": 1,
+      "event_count": 2
+    },
+    {
+      "id": "STATE-003",
+      "operation": "resume_session",
+      "passed": true,
+      "actual_code": "SESSION_EXPIRED",
+      "actual_status": 410
+    },
+    {
+      "id": "STATE-004",
+      "operation": "resume_session",
+      "passed": true,
+      "actual_code": "FORBIDDEN",
+      "actual_status": 403
+    },
+    {
+      "id": "STATE-005",
+      "operation": "complete_session",
+      "passed": true,
+      "session_id": "ses_done",
+      "status": "completed",
+      "counts": {
+        "correct": 0,
+        "partially_correct": 0,
+        "incorrect": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "STATE-006",
+      "operation": "complete_session",
+      "passed": true,
+      "session_id": "ses_empty",
+      "status": "completed",
+      "counts": {
+        "correct": 0,
+        "partially_correct": 0,
+        "incorrect": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "STATE-007",
+      "operation": "resume_session",
+      "passed": true,
+      "resumed": true,
+      "position": 0
+    },
+    {
+      "id": "STATE-008",
+      "operation": "resume_session",
+      "passed": true,
+      "resumed": true,
+      "position": 9
+    },
+    {
+      "id": "STATE-009",
+      "operation": "complete_session",
+      "passed": true,
+      "session_id": "ses_mix",
+      "status": "completed",
+      "counts": {
+        "correct": 2,
+        "partially_correct": 0,
+        "incorrect": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "STATE-010",
+      "operation": "resume_session",
+      "passed": true,
+      "actual_code": "SESSION_NOT_FOUND",
+      "actual_status": 404
+    },
+    {
+      "id": "SAFE-007",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "UNSUPPORTED_MEDIA_TYPE",
+      "actual_status": 415
+    },
+    {
+      "id": "SAFE-008",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "DOCUMENT_TOO_LARGE",
+      "actual_status": 413
+    },
+    {
+      "id": "SAFE-009",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "TOKEN_BUDGET_EXCEEDED",
+      "actual_status": 413
+    },
+    {
+      "id": "SAFE-010",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "ANSWER_TOO_LONG",
+      "actual_status": 422
+    },
+    {
+      "id": "SAFE-LIVE-001",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "FILE_TOO_LARGE",
+      "actual_status": 413
+    },
+    {
+      "id": "SAFE-LIVE-002",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "UNSUPPORTED_MEDIA_TYPE",
+      "actual_status": 415
+    },
+    {
+      "id": "STATE-LIVE-001",
+      "operation": "resume_session",
+      "passed": true,
+      "resumed": true,
+      "position": 0
+    },
+    {
+      "id": "UX-LIVE-001",
+      "operation": "rate_card",
+      "passed": true,
+      "current_rating": "off_topic",
+      "rating_rows": 1,
+      "event_count": 2
+    },
+    {
+      "id": "SEC-L4-001",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "PROMPT_INJECTION_BLOCKED",
+      "actual_status": 422
+    },
+    {
+      "id": "SEC-L4-002",
+      "operation": "reject_input",
+      "passed": true,
+      "actual_code": "PROMPT_INJECTION_BLOCKED",
+      "actual_status": 422
+    },
+    {
+      "id": "BUDGET-L4-001",
+      "operation": "budget_limit",
+      "passed": true,
+      "actual_status": 429,
+      "actual_code": "REQUEST_LIMIT_EXCEEDED",
+      "model_calls": 50,
+      "measurement_scope": "Router request-count quota; model transport mocked, real guard and DB; ASGI transport is a separate CI check"
+    },
+    {
+      "id": "TOOL-L4-001",
+      "operation": "tool_timeout",
+      "passed": true,
+      "tool_status": "timeout_fallback_to_request_pages",
+      "elapsed_ms": 1.531,
+      "max_elapsed_ms": 200,
+      "issue": null
+    }
+  ]
+}

@@ -41,6 +41,7 @@ services:
   backend:
     build: ./backend
     environment:
+      APP_VERSION: ${APP_VERSION:-lab5}
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-cards}:${POSTGRES_PASSWORD:-cards}@postgres:5432/${POSTGRES_DB:-cards}
       AI_SERVICE_URL: http://ai-service:8001
       OCR_LANGUAGES: ${OCR_LANGUAGES:-rus+eng}

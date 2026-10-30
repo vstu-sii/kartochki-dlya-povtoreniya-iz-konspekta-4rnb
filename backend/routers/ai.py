@@ -1,5 +1,6 @@
 """Public AI endpoints: validate, call the model service, then persist results."""
 
+import asyncio
 import hashlib
 import json
 import os
@@ -23,6 +24,8 @@ from backend.quality_guards import validate_model_card, validate_untrusted_input
 
 router = APIRouter(prefix="/v1/ai", tags=["AI"])
 AI_SERVICE_URL = os.getenv("AI_SERVICE_URL", "http://ai-service:8001")
+AI_TIMEOUT_SECONDS = max(1.0, min(120.0, float(os.getenv("AI_TIMEOUT_SECONDS", "65"))))
+AI_MAX_ATTEMPTS = max(1, min(3, int(os.getenv("AI_MAX_ATTEMPTS", "2"))))
 
 
 class Page(BaseModel):
@@ -69,6 +72,11 @@ class CompleteRequest(BaseModel):
     answers: list[dict] = Field(default_factory=list, max_length=100)
 
 
+def is_retryable_model_status(status_code: int) -> bool:
+    """Retry only throttling and transient provider failures, never client errors."""
+    return status_code == 429 or status_code >= 500
+
+
 def ensure_session_access(study_session: StudySession | None, user_id: str | None = None) -> StudySession:
     if not study_session:
         raise HTTPException(status_code=404, detail={"code": "SESSION_NOT_FOUND"})
@@ -91,16 +99,23 @@ async def call_model(path: str, payload: dict) -> dict:
         model = BaselineModel()
         return model.generate(payload) if path.endswith("card-sets") else model.review(payload)
 
-    try:
-        async with httpx.AsyncClient(timeout=65.0) as client:
-            response = await client.post(f"{AI_SERVICE_URL}{path}", json=payload)
-            response.raise_for_status()
-            return response.json()
-    except (httpx.TimeoutException, httpx.NetworkError) as exc:
-        raise HTTPException(status_code=503, detail={"code": "AI_PROVIDER_UNAVAILABLE", "message": str(exc)}) from exc
-    except httpx.HTTPStatusError as exc:
-        detail = exc.response.json() if exc.response.headers.get("content-type", "").startswith("application/json") else exc.response.text
-        raise HTTPException(status_code=exc.response.status_code, detail=detail) from exc
+    last_error: Exception | None = None
+    async with httpx.AsyncClient(timeout=AI_TIMEOUT_SECONDS) as client:
+        for attempt in range(1, AI_MAX_ATTEMPTS + 1):
+            try:
+                response = await client.post(f"{AI_SERVICE_URL}{path}", json=payload)
+                response.raise_for_status()
+                return response.json()
+            except (httpx.TimeoutException, httpx.NetworkError) as exc:
+                last_error = exc
+            except httpx.HTTPStatusError as exc:
+                if not is_retryable_model_status(exc.response.status_code):
+                    detail = exc.response.json() if exc.response.headers.get("content-type", "").startswith("application/json") else exc.response.text
+                    raise HTTPException(status_code=exc.response.status_code, detail=detail) from exc
+                last_error = exc
+            if attempt < AI_MAX_ATTEMPTS:
+                await asyncio.sleep(0.1 * attempt)
+    raise HTTPException(status_code=503, detail={"code": "AI_PROVIDER_UNAVAILABLE", "attempts": AI_MAX_ATTEMPTS}) from last_error
 
 
 async def model_generation_version() -> str:
@@ -132,6 +147,22 @@ def request_fingerprint(request: GenerateRequest) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:32]
 
 
+def stored_trace_id(idempotency_trace: str, model_trace: object) -> str:
+    """Persist idempotency identity and the provider trace without a migration."""
+    if isinstance(model_trace, str) and model_trace.startswith("tr_"):
+        return f"{idempotency_trace}|{model_trace}"
+    return idempotency_trace
+
+
+def idempotency_trace_id(value: str) -> str:
+    return value.partition("|")[0]
+
+
+def model_trace_id(value: str) -> str | None:
+    _identity, separator, trace_id = value.partition("|")
+    return trace_id if separator and trace_id.startswith("tr_") else None
+
+
 @router.post("/card-sets", status_code=201)
 async def generate_card_set(
     request: GenerateRequest,
@@ -151,7 +182,7 @@ async def generate_card_set(
     trace_prefix = f"idem:{scope}:"
     existing = db.scalar(select(CardSet).where(CardSet.trace_id.like(f"{trace_prefix}%")))
     if existing:
-        if existing.trace_id != f"{trace_prefix}{fingerprint}":
+        if idempotency_trace_id(existing.trace_id) != f"{trace_prefix}{fingerprint}":
             raise HTTPException(status_code=409, detail={"code": "IDEMPOTENCY_CONFLICT"})
         return serialize_set(existing)
 
@@ -190,7 +221,7 @@ async def generate_card_set(
         model=result["model"],
         prompt_version=result["prompt_version"],
         fallback_used=result.get("fallback_used", False),
-        trace_id=f"{trace_prefix}{fingerprint}",
+        trace_id=stored_trace_id(f"{trace_prefix}{fingerprint}", result.get("trace_id")),
         latency_ms=result.get("latency_ms", 0),
         input_tokens=result.get("usage", {}).get("input_tokens", 0),
         output_tokens=result.get("usage", {}).get("output_tokens", 0),
@@ -207,6 +238,8 @@ async def generate_card_set(
     # Safe provider diagnostic for a newly generated set. It contains only a
     # category such as gemini_http_403, never an API key or provider body.
     response["fallback_reason"] = result.get("fallback_reason")
+    response["validation_error"] = result.get("validation_error")
+    response["provider_usage"] = result.get("provider_usage")
     return response
 
 
@@ -231,7 +264,13 @@ async def generate_card_set_from_pdf(
     except PdfExtractionError as exc:
         status = 413 if exc.code in {"PDF_TOO_MANY_PAGES"} else 422
         raise HTTPException(status_code=status, detail={"code": exc.code, "message": str(exc)}) from exc
-    digest = hashlib.sha256(raw).hexdigest()[:24]
+    digest_input = raw
+    if any(page.method == "math_layout" for page in extracted):
+        # Re-upload after the extractor upgrade must not collide with a set
+        # cached from the old flattened math text (or return stale formulas).
+        structured = "\n".join(page.text for page in extracted).encode("utf-8")
+        digest_input += b"\x00math-layout-v1\x00" + structured
+    digest = hashlib.sha256(digest_input).hexdigest()[:24]
     request = GenerateRequest(
         document_id=f"pdf_{digest}",
         language=language,
@@ -299,7 +338,11 @@ async def review_answer(
     )
     db.add(review)
     db.commit()
-    return result
+    db.refresh(review)
+    response = dict(result)
+    response["review_id"] = review.id
+    response["persisted"] = True
+    return response
 
 
 @router.get("/card-sets/latest")
@@ -419,6 +462,7 @@ def serialize_set(card_set: CardSet) -> dict:
         "model": card_set.model,
         "prompt_version": card_set.prompt_version,
         "fallback_used": card_set.fallback_used,
+        "trace_id": model_trace_id(card_set.trace_id),
         "latency_ms": card_set.latency_ms,
         "usage": {"input_tokens": card_set.input_tokens, "output_tokens": card_set.output_tokens},
         "cards": [

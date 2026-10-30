@@ -1,0 +1,341 @@
+{
+  "experiment": "review-algorithm-ab",
+  "claim_scope": "Local deterministic reviewer algorithms; not prompt or LLM quality.",
+  "case_count": 40,
+  "variant_a": {
+    "name": "lexical-overlap-v1",
+    "agreement": 0.825
+  },
+  "variant_b": {
+    "name": "normalized-semantic-rules-v2",
+    "agreement": 0.925
+  },
+  "delta_agreement_pp": 10.0,
+  "cases": [
+    {
+      "id": "REV-001",
+      "expected": "correct",
+      "a": "partially_correct",
+      "b": "correct",
+      "a_correct": false,
+      "b_correct": true
+    },
+    {
+      "id": "REV-002",
+      "expected": "partially_correct",
+      "a": "incorrect",
+      "b": "partially_correct",
+      "a_correct": false,
+      "b_correct": true
+    },
+    {
+      "id": "REV-003",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-004",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-005",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-006",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-007",
+      "expected": "correct",
+      "a": "incorrect",
+      "b": "correct",
+      "a_correct": false,
+      "b_correct": true
+    },
+    {
+      "id": "REV-008",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-009",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-010",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-011",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-012",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-013",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-014",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-015",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-016",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-017",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-018",
+      "expected": "partially_correct",
+      "a": "incorrect",
+      "b": "partially_correct",
+      "a_correct": false,
+      "b_correct": true
+    },
+    {
+      "id": "REV-019",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-020",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-021",
+      "expected": "partially_correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": false,
+      "b_correct": false
+    },
+    {
+      "id": "REV-022",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-023",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-024",
+      "expected": "partially_correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": false,
+      "b_correct": false
+    },
+    {
+      "id": "REV-025",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-026",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-027",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-028",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-029",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-030",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-031",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-032",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-033",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-034",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-035",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-036",
+      "expected": "partially_correct",
+      "a": "partially_correct",
+      "b": "partially_correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-037",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-038",
+      "expected": "correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": true,
+      "b_correct": true
+    },
+    {
+      "id": "REV-039",
+      "expected": "partially_correct",
+      "a": "correct",
+      "b": "correct",
+      "a_correct": false,
+      "b_correct": false
+    },
+    {
+      "id": "REV-040",
+      "expected": "incorrect",
+      "a": "incorrect",
+      "b": "incorrect",
+      "a_correct": true,
+      "b_correct": true
+    }
+  ],
+  "decision": "B",
+  "passed": true,
+  "run_at": "2026-10-27T14:58:55.074434+00:00",
+  "dataset": "C:/Users/sftkc/Documents/Codex/2026-10-14/https-github-com-vstu-sii-kartochki/work/fix-lab5-quality/docs/quality/golden-dataset/dataset.jsonl",
+  "mode": "algorithm"
+}

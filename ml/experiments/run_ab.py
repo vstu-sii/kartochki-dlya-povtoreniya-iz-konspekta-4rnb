@@ -121,13 +121,24 @@ def _grade_generation(case: dict, response: dict) -> bool:
     return False
 
 
-def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int) -> dict:
+def _select_provider_cases(cases: list[dict], case_limit: int | None) -> list[dict]:
+    selected = [case for case in cases if case.get("operation") in {"generate_card", "review_answer"}]
+    if case_limit is None:
+        return selected
+    generation = [case for case in selected if case["operation"] == "generate_card"]
+    review = [case for case in selected if case["operation"] == "review_answer"]
+    first = case_limit // 2
+    return generation[:first] + review[: case_limit - first]
+
+
+def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int, case_limit: int | None) -> dict:
     """Run a real prompt-only A/B with identical model, schema and parameters."""
     if not os.getenv("GEMINI_API_KEY"):
         raise RuntimeError("GEMINI_API_KEY is required for --mode provider")
     model = BaselineModel()
-    selected = [case for case in cases if case.get("operation") in {"generate_card", "review_answer"}]
+    selected = _select_provider_cases(cases, case_limit)
     rows = []
+    actual_models = set()
     totals = {"a": {"correct": 0, "tokens": 0}, "b": {"correct": 0, "tokens": 0}}
     for repeat in range(repeats):
         for case in selected:
@@ -138,6 +149,7 @@ def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int) -> 
                 prompt = render(template, case)
                 started = time.perf_counter()
                 response = model._call_gemini(prompt, schema, model_name)
+                actual_models.add(response.pop("_provider_model", model_name))
                 usage = response.pop("_usage", {})
                 if operation == "review_answer":
                     correct = response.get("verdict") == case["expected_output"]["verdict"]
@@ -154,7 +166,10 @@ def run_provider_prompt_ab(cases: list[dict], model_name: str, repeats: int) -> 
     return {
         "experiment": "provider-prompt-only-ab",
         "provider_called": True,
-        "model": model_name,
+        "provider": "google-gemini-api",
+        "requested_model": model_name,
+        "actual_models": sorted(actual_models),
+        "case_count": len(selected),
         "parameters": {"response_mime_type": "application/json", "thinking_level": "low",
                        "max_output_tokens": 6000, "temperature": "not sent", "repeats": repeats},
         "controlled_variables": ["dataset", "model", "generation parameters", "schema", "grader"],
@@ -173,6 +188,7 @@ def main() -> int:
     parser.add_argument("--mode", choices=("algorithm", "contract", "provider"), default="algorithm")
     parser.add_argument("--model", default=PRIMARY_MODEL)
     parser.add_argument("--repeats", type=int, default=1)
+    parser.add_argument("--case-limit", type=int)
     parser.add_argument("--min-b-agreement", type=float, default=0.85)
     parser.add_argument("--fail-on-regression", action="store_true")
     parser.add_argument("--output", type=Path)
@@ -187,7 +203,7 @@ def main() -> int:
         result = run_contract(cases)
         failed = not result["passed"]
     else:
-        result = run_provider_prompt_ab(cases, args.model, max(1, args.repeats))
+        result = run_provider_prompt_ab(cases, args.model, max(1, args.repeats), args.case_limit)
         failed = result["variant_b"]["agreement"] < args.min_b_agreement
         if args.fail_on_regression:
             failed = failed or result["variant_b"]["agreement"] < result["variant_a"]["agreement"]

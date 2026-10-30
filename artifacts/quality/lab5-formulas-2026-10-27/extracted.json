@@ -1,0 +1,12 @@
+[
+  {
+    "page": 1,
+    "text": "Элементарная математика\nФормулы сокращенного умножения\n(a ±b)2 = a2 ±2ab + b2\n(a ±b)3 = a3 ±3a2b + 3ab2 ±b3\na2 −b2 = (a −b)(a + b)\na3 ±b3 = (a ±b)(a2 ∓ab + b2\nCвойства степени\nanbn = (ab)n\nan\nbn =\n(a\nb\n)n\naman = am+n\nan ÷am = an−m\n(am)n = amn\na0 = 1\na−n = 1\nan\nn√\nam = a\nm\nn\nCвойства логарифмов\naloga b = b\nloga bc = c loga b\nloga\nb\nc = loga b −loga c\nlogac b = 1\nc loga b\nloga ab = b\nloga bc = loga b + loga c\nloga b = logc b\nlogc a\n6",
+    "method": "text_layer"
+  },
+  {
+    "page": 2,
+    "text": "Формулы тригонометрии\nsin2 α+ cos2 β= 1\ntg α= sin α\ncos α\nsec α= 1\ncos α\n1 + tg2 α= 1\ncos2 α\nctg α= cos α\nsin α\ncosec α= 1\nsin α\n1 + ctg2 α= 1\nsin2 α\nsin 2α= 2 sinαcos α\ncos 2α= cos2 α−sin2 α\ntg 2α= 2 tgα\n1 −tg2 α\nsin2 α\n2 = 1 −cos α\n2 cos2 α\n2 = 1 + cos α\n2\ntg α\n2 = 1 −cos α\nsin α = sin α\n1 + cos α\nsin α=\n2tgα\n2\n1 + tg2 α\n2\ntg α=\n2 tgα\n2\n1 + tg2 α\n2\ncos α=\n1 −tg2 α\n2\n1 + tg2 α\n2\nctg α=\n1 −tg2 α\n2\n2 tgα\n2\nsin αcos β= 1\n2(sin(α+ β) + sin(α−β))\ncos αcos β= 1\n2(cos(α+ β) + cos(α−β))\nsin αsin β= 1\n2(cos(α−β) −cos(α+ β))\n7",
+    "method": "text_layer"
+  }
+]

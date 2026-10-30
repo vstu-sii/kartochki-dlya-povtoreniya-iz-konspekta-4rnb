@@ -1,0 +1,127 @@
+{
+  "scope": "bounded diagnostic on public mathematical fixture; raw model candidates only, no credentials",
+  "pages": [
+    {
+      "page": 1,
+      "text": "Элементарная математика\nФормулы сокращенного умножения\n$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$\n$(a ± b)^{3} = a^{3} ± 3a^{2}b + 3ab^{2} ± b^{3}$\n$a^{2} − b^{2} = (a − b)(a + b)$\n$a^{3} ± b^{3} = (a ± b)(a^{2} ∓ ab + b^{2}$\nCвойства степени\n$a^{n}b^{n} = (ab)^{n}$\n$(a^{m})^{n} = a^{mn}$\n$a^{0} = 1$\n$\\frac{a^{n}}{b^{n}} = (\\frac{a}{b})^{n}$\n$a^{−n} = \\frac{1}{a^{n}}$\n$a^{m}a^{n} = a^{m+n}$\n$a^{n} ÷ a^{m} = a^{n−m}$\n$\\sqrt[n]{a^{m}} = a^{\\frac{m}{n}}$\nCвойства логарифмов\n$a^{log_{a} b} = b$\n$log_{a} a^{b} = b$\n$log_{a} b^{c} = c log_{a} b$\n$log_{a} bc = log_{a} b + log_{a} c$\n$log_{a} \\frac{b}{c} = log_{a} b − log_{a} c$\n$log_{a} b = \\frac{log_{c} b}{log_{c} a}$\n$log_{a^{c}} b = \\frac{1}{c} log_{a} b$\n6",
+      "method": "math_layout"
+    },
+    {
+      "page": 2,
+      "text": "Формулы тригонометрии\n$sin^{2} α + cos^{2} β = 1$\n$ctg α = \\frac{cos α}{sin α}$\n$tg α = \\frac{sin α}{cos α}$\n$cosec α = \\frac{1}{sin α}$\n$sec α = \\frac{1}{cos α}$\n$1 + ctg^{2} α = \\frac{1}{sin^{2} α}$\n$1 + tg^{2} α = \\frac{1}{cos^{2} α}$\n$sin 2α = 2 sin α cos α$\n$cos 2α = cos^{2} α − sin^{2} α$\n$tg 2α = \\frac{2 tg α}{1 − tg^{2} α}$\n$sin^{2} \\frac{α}{2} = \\frac{1 − cos α}{2}$\n$cos^{2} \\frac{α}{2} = \\frac{1 + cos α}{2}$\n$tg \\frac{α}{2} = \\frac{1 − cos α}{sin α} = \\frac{sin α}{1 + cos α}$\n$sin α = \\frac{2tg\\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$\n$cos α = \\frac{1 − tg^{2} \\frac{α}{2}}{1 + tg^{2}\\frac{α}{2}}$\n$tg α = \\frac{2 tg \\frac{α}{2}}{1 + tg^{2} \\frac{α}{2}}$\n$ctg α = \\frac{1 − tg^{2} \\frac{α}{2}}{2 tg \\frac{α}{2}}$\n$sin α cos β = \\frac{1}{2}(sin(α + β) + sin(α − β))$\n$cos α cos β = \\frac{1}{2}(cos(α + β) + cos(α − β))$\n$sin α sin β = \\frac{1}{2}(cos(α − β) − cos(α + β))$\n7",
+      "method": "math_layout"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "rejected": [],
+      "fallback_used": false
+    },
+    {
+      "attempt": 2,
+      "rejected": [],
+      "fallback_used": false
+    },
+    {
+      "attempt": 3,
+      "rejected": [
+        {
+          "code": "quote_mismatch",
+          "candidate": {
+            "title": "Элементарная математика",
+            "cards": [
+              {
+                "question": "Как выглядит формула квадрата суммы и разности?",
+                "reference_answer": "Формула квадрата суммы и разности записывается как $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$. Она позволяет быстро возвести двучлен в квадрат.",
+                "source_page": 1,
+                "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+                "difficulty": "basic"
+              },
+              {
+                "question": "Чему равен результат возведения числа в нулевую степень?",
+                "reference_answer": "Любое число в нулевой степени равно единице, что выражается формулой $a^{0} = 1$.",
+                "source_page": 1,
+                "source_quote": "$a^{0} = 1$",
+                "difficulty": "basic"
+              },
+              {
+                "question": "Каково основное тригонометрическое тождество согласно источнику?",
+                "reference_answer": "В тексте приведено следующее соотношение для квадратов синуса и косинуса: $sin^{2} α + cos^{2} β = 1$.",
+                "source_page": 2,
+                "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+                "difficulty": "intermediate"
+              },
+              {
+                "question": "Как выражается тангенс через синус и косинус?",
+                "reference_answer": "Тангенс угла равен отношению синуса этого угла к косинусу: $tg α = \frac{sin α}{cos α}$.",
+                "source_page": 2,
+                "source_quote": "$tg α = \frac{sin α}{cos α}$",
+                "difficulty": "basic"
+              },
+              {
+                "question": "Чему равен логарифм произведения по свойству логарифмов?",
+                "reference_answer": "Логарифм произведения равен сумме логарифмов его множителей: $log_{a} bc = log_{a} b + log_{a} c$.",
+                "source_page": 1,
+                "source_quote": "$log_{a} bc = log_{a} b + log_{a} c$",
+                "difficulty": "intermediate"
+              }
+            ],
+            "_usage": {
+              "input_tokens": 1115,
+              "output_tokens": 575
+            }
+          }
+        },
+        {
+          "code": "quote_mismatch",
+          "candidate": {
+            "title": "Элементарная математика",
+            "cards": [
+              {
+                "question": "Как выглядит формула квадрата суммы и разности?",
+                "reference_answer": "Квадрат суммы и разности двух выражений равен квадрату первого выражения, плюс или минус удвоенное произведение первого на второе, плюс квадрат второго выражения: $(a ± b)^{2} = a^{2} ± 2ab + b^{2}$.",
+                "source_page": 1,
+                "source_quote": "$(a ± b)^{2} = a^{2} ± 2ab + b^{2}$",
+                "difficulty": "basic"
+              },
+              {
+                "question": "Чему равна нулевая степень любого числа, отличного от нуля?",
+                "reference_answer": "Нулевая степень числа равна единице: $a^{0} = 1$.",
+                "source_page": 1,
+                "source_quote": "$a^{0} = 1$",
+                "difficulty": "basic"
+              },
+              {
+                "question": "Как выражается основное свойство логарифма через основное логарифмическое тождество?",
+                "reference_answer": "Основное логарифмическое тождество записывается как $a^{log_{a} b} = b$.",
+                "source_page": 1,
+                "source_quote": "$a^{log_{a} b} = b$",
+                "difficulty": "intermediate"
+              },
+              {
+                "question": "Каково соотношение между синусом и косинусом через основное тригонометрическое тождество в представлении текста?",
+                "reference_answer": "В тексте приведено соотношение $sin^{2} α + cos^{2} β = 1$.",
+                "source_page": 2,
+                "source_quote": "$sin^{2} α + cos^{2} β = 1$",
+                "difficulty": "intermediate"
+              },
+              {
+                "question": "Как выражается тангенс через синус и косинус?",
+                "reference_answer": "Тангенс угла равен отношению синуса этого угла к его косинусу: $tg α = \frac{sin α}{cos α}$.",
+                "source_page": 2,
+                "source_quote": "$tg α = \frac{sin α}{cos α}$",
+                "difficulty": "basic"
+              }
+            ],
+            "_usage": {
+              "input_tokens": 1190,
+              "output_tokens": 571
+            }
+          }
+        }
+      ],
+      "fallback_used": true
+    }
+  ]
+}

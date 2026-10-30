@@ -1,0 +1,310 @@
+{
+  "scope": "Offline regrading of frozen model outputs; no new provider inference",
+  "source_report": "consolidated-results.json",
+  "original_dataset_sha256": "4ccad6ee986d38a51f1591c338c019dda7957891976b41847e78c50363764ca9",
+  "revised_dataset_sha256": "b259e5ba8b9ca702f2cd4901574ba863f265bd3ce549f88b2cd05081d901a12f",
+  "review_cases": 42,
+  "agreed": 39,
+  "review_agreement_rate": 0.9285714285714286,
+  "remaining_mismatch_ids": [
+    "REV-015",
+    "REV-027",
+    "REV-030"
+  ],
+  "cases": [
+    {
+      "id": "REV-001",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-002",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-003",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-004",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-005",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-006",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-007",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-008",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-009",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-010",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-011",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-012",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-013",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-014",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-015",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": false
+    },
+    {
+      "id": "REV-016",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-017",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-018",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-019",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-020",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-021",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-022",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-023",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-024",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-025",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-026",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-027",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": false
+    },
+    {
+      "id": "REV-028",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-029",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-030",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": false
+    },
+    {
+      "id": "REV-031",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-032",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-033",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-034",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-035",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-036",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-037",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-038",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-039",
+      "actual_verdict": "correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-040",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    },
+    {
+      "id": "REV-LIVE-001",
+      "actual_verdict": "partially_correct",
+      "original_expected_verdict": "partially_correct",
+      "revised_expected_verdict": "partially_correct",
+      "agrees": true
+    },
+    {
+      "id": "REV-LIVE-002",
+      "actual_verdict": "incorrect",
+      "original_expected_verdict": "incorrect",
+      "revised_expected_verdict": "incorrect",
+      "agrees": true
+    }
+  ]
+}

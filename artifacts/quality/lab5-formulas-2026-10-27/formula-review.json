@@ -1,0 +1,414 @@
+{
+  "date": "2026-10-27",
+  "source_sha256": "d93b49360a7cf1441c17c9bcd806de3562ea5b6fa6370c15d5ca8c8694b7bcac",
+  "extractor": "backend.pdf_extractor.extract_pdf_pages",
+  "extractor_git_commit": "e229a3d76ec6320d1dc2c7ccba6977c96f8908c8",
+  "pages": 2,
+  "source_printed_page_numbers": [
+    6,
+    7
+  ],
+  "method": "Визуальная сверка рендеров с реальным выводом extractor; оценка агентом, без приписывания человеческой подписи",
+  "counting_rule": "Одна отображённая формула/цепочка равенств = один кейс; ± не разворачивается в две формулы. Перестановка колонок не является потерей. Равнозначный линейный формат допустим, догадки о степенях/дробях — нет. Ошибки исходника не считаются потерями извлечения.",
+  "total_formulas": 39,
+  "completely_missing": 0,
+  "presence_loss_rate": 0,
+  "structure_degraded": 38,
+  "semantics_preserved": 1,
+  "semantic_loss_rate": 0.9743589743589743,
+  "target": "semantic_loss_rate < 0.10",
+  "target_met": false,
+  "scope": "Текстовый слой одного PDF, не OCR, не Gemini, не production. Не оценивалась корректность математических тождеств исходника.",
+  "rows": [
+    {
+      "id": "FORM-001",
+      "page": 1,
+      "group": "Сокращённое умножение",
+      "visual_transcription": "(a ± b)^2 = a^2 ± 2ab + b^2",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-002",
+      "page": 1,
+      "group": "Сокращённое умножение",
+      "visual_transcription": "(a ± b)^3 = a^3 ± 3a^2b + 3ab^2 ± b^3",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-003",
+      "page": 1,
+      "group": "Сокращённое умножение",
+      "visual_transcription": "a^2 − b^2 = (a − b)(a + b)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-004",
+      "page": 1,
+      "group": "Сокращённое умножение",
+      "visual_transcription": "a^3 ± b^3 = (a ± b)(a^2 ∓ ab + b^2 [закрывающая скобка отсутствует в PDF]",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-005",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "a^n b^n = (ab)^n",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-006",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "a^n / b^n = (a/b)^n",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-007",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "a^m a^n = a^(m+n)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-008",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "a^n ÷ a^m = a^(n−m)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-009",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "(a^m)^n = a^(mn)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-010",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "a^0 = 1",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-011",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "a^(−n) = 1/a^n",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-012",
+      "page": 1,
+      "group": "Степени",
+      "visual_transcription": "root(n,a^m) = a^(m/n)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-013",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "a^(log_a b) = b",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-014",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "log_a(b^c) = c log_a b",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-015",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "log_a(b/c) = log_a b − log_a c",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-016",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "log_(a^c) b = (1/c) log_a b",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-017",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "log_a(a^b) = b",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-018",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "log_a(bc) = log_a b + log_a c",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-019",
+      "page": 1,
+      "group": "Логарифмы",
+      "visual_transcription": "log_a b = log_c b / log_c a",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-020",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sin^2 α + cos^2 β = 1 [β именно в исходнике]",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-021",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "tg α = sin α / cos α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-022",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "ctg α = cos α / sin α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-023",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sec α = 1/cos α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-024",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "cosec α = 1/sin α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-025",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "1 + tg^2 α = 1/cos^2 α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-026",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "1 + ctg^2 α = 1/sin^2 α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-027",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sin 2α = 2 sin α cos α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": true,
+      "status": "preserved",
+      "reason": "Однозначная линейная запись сохранена"
+    },
+    {
+      "id": "FORM-028",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "cos 2α = cos^2 α − sin^2 α",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-029",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "tg 2α = 2 tg α / (1 − tg^2 α)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-030",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sin^2(α/2) = (1 − cos α)/2",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-031",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "cos^2(α/2) = (1 + cos α)/2",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-032",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "tg(α/2) = (1 − cos α)/sin α = sin α/(1 + cos α)",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-033",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sin α = 2tg(α/2)/(1 + tg^2(α/2))",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-034",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "cos α = (1 − tg^2(α/2))/(1 + tg^2(α/2))",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-035",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "tg α = 2tg(α/2)/(1 + tg^2(α/2)) [плюс именно в PDF]",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-036",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "ctg α = (1 − tg^2(α/2))/(2tg(α/2))",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-037",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sin α cos β = (sin(α+β) + sin(α−β))/2",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-038",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "cos α cos β = (cos(α+β) + cos(α−β))/2",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    },
+    {
+      "id": "FORM-039",
+      "page": 2,
+      "group": "Тригонометрия",
+      "visual_transcription": "sin α sin β = (cos(α−β) − cos(α+β))/2",
+      "present_in_extracted_text": true,
+      "semantics_preserved": false,
+      "status": "structure_degraded",
+      "reason": "В extracted.json не сохранены необходимые верхние/нижние индексы и/или дробные черты; отсутствует эквивалентная запись через ^, / или LaTeX"
+    }
+  ]
+}

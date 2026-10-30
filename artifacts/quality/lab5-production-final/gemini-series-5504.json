@@ -1,0 +1,847 @@
+{
+  "measured_at": "2026-10-27T19:50:21.204518+00:00",
+  "base_url": "https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com",
+  "method": "provider-only full scenarios; nearest-rank p95",
+  "scenario_count": 3,
+  "prices_usd_per_million_tokens": {
+    "input": 0.3,
+    "output": 2.5
+  },
+  "budget_usd_per_scenario": 0.04,
+  "cost_note": "Paid-tier estimate from exposed provider counts; actual free-tier charges and provider billing are not inferred. Confirm the deployed revision includes thinking-token accounting.",
+  "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+  "health": {
+    "status": 200,
+    "elapsed_ms": 480,
+    "body": {
+      "service": "application-api",
+      "status": "ok",
+      "version": "lab5",
+      "commit_sha": "5504ef5d73ec2c6b1a5fedb7e675737e32df4135",
+      "telegram": "webhook"
+    }
+  },
+  "scenarios": [
+    {
+      "number": 1,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793130622-1",
+      "generation": {
+        "status": 201,
+        "wall_ms": 6222,
+        "response": {
+          "card_set_id": "set_8d0d2b6adc7f488788320a81750157d8",
+          "title": "Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_f6c8292a6f2a4bffabcaa9e27a6f465d",
+          "latency_ms": 2947,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 693
+          },
+          "cards": [
+            {
+              "card_id": "card_7fd1f723b2f54bb8a5f6a58a137e731c",
+              "question": "Какова главная цель лабораторной работы №4?",
+              "reference_answer": "Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб-приложение с ML-моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_89656fc502ac44b28a52c4059fc1713e",
+              "question": "Что представляет собой Docker-образ согласно теоретической справке?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_f9b895b7ddf94379a0cdf5c2d99afc07",
+              "question": "Для чего используются переменные окружения в контексте подключения к базе данных?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что важно с точки зрения безопасности и переносимости.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_c4c1167448f7409badddd3550b86393c",
+              "question": "Какие основные задачи выполняются в самом начале работы на ВМ2 перед установкой Docker?",
+              "reference_answer": "Перед началом работы в веб-интерфейсе Proxmox создается снапшот ВМ2 (app-server) с именем before_docker_lab4, после чего осуществляется подключение к ВМ2 по SSH и обновление системы.",
+              "source_page": 4,
+              "source_quote": "1. В веб -интерфейсе Proxmox выберите ВМ2 (app-server) – Snapshots –\nTake Snapshot. Имя: before_docker_lab4.\n2. Подключитесь к ВМ2 по SSH.\n3. Обновите систему.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_57b3e07cb474450b9870e04b6c566a37",
+              "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR используется для задания рабочей директории внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "advanced"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 290,
+        "response": {
+          "card_set_id": "set_8d0d2b6adc7f488788320a81750157d8",
+          "title": "Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_f6c8292a6f2a4bffabcaa9e27a6f465d",
+          "latency_ms": 2947,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 693
+          },
+          "cards": [
+            {
+              "card_id": "card_7fd1f723b2f54bb8a5f6a58a137e731c",
+              "question": "Какова главная цель лабораторной работы №4?",
+              "reference_answer": "Освоить основы контейнеризации с помощью Docker и Docker Compose, упаковать веб-приложение с ML-моделью в контейнер, организовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1, обеспечить воспроизводимость запуска и подготовить приложение к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_89656fc502ac44b28a52c4059fc1713e",
+              "question": "Что представляет собой Docker-образ согласно теоретической справке?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_f9b895b7ddf94379a0cdf5c2d99afc07",
+              "question": "Для чего используются переменные окружения в контексте подключения к базе данных?",
+              "reference_answer": "Переменные окружения позволяют передавать параметры подключения к базе данных без изменения самого образа, что важно с точки зрения безопасности и переносимости.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_c4c1167448f7409badddd3550b86393c",
+              "question": "Какие основные задачи выполняются в самом начале работы на ВМ2 перед установкой Docker?",
+              "reference_answer": "Перед началом работы в веб-интерфейсе Proxmox создается снапшот ВМ2 (app-server) с именем before_docker_lab4, после чего осуществляется подключение к ВМ2 по SSH и обновление системы.",
+              "source_page": 4,
+              "source_quote": "1. В веб -интерфейсе Proxmox выберите ВМ2 (app-server) – Snapshots –\nTake Snapshot. Имя: before_docker_lab4.\n2. Подключитесь к ВМ2 по SSH.\n3. Обновите систему.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_57b3e07cb474450b9870e04b6c566a37",
+              "question": "Каково назначение инструкции WORKDIR в Dockerfile?",
+              "reference_answer": "Инструкция WORKDIR используется для задания рабочей директории внутри контейнера.",
+              "source_page": 3,
+              "source_quote": " WORKDIR – рабочая директория внутри контейнера;",
+              "difficulty": "advanced"
+            }
+          ],
+          "session_id": "session_4263fcfd5bb14bc889ecfaf0fe70f5f2",
+          "user_id": "quality-final-1793130622-1",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 6820,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно точно и подробно описали главную цель лабораторной работы! Уточните, какие именно инструменты Docker вы планируете использовать для связи приложения с базой данных?",
+            "missing_points": [],
+            "review_id": "review_5dca1d49f7d14be4b1a395226485ae50",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_3552b12e5b9d4b1f8d6204f35a4fc1ac",
+            "latency_ms": 4638,
+            "usage": {
+              "input_tokens": 364,
+              "output_tokens": 72
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 3728,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно и точно описали Docker-образ. Попробуйте теперь подумать, из каких компонентов или слоев он обычно формируется.",
+            "missing_points": [],
+            "review_id": "review_b941fdecfc644ba39f400d31680979e9",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ed75381eed5a40128fb1a9a6bb59e556",
+            "latency_ms": 1089,
+            "usage": {
+              "input_tokens": 224,
+              "output_tokens": 66
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1670,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно и полно описали назначение переменных окружения. Уточнение не требуется.",
+            "missing_points": [],
+            "review_id": "review_d4ad989ffb2f47e0a6976e9321317cd0",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_0c564293fd074a249cd3364ab43fde20",
+            "latency_ms": 921,
+            "usage": {
+              "input_tokens": 248,
+              "output_tokens": 48
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 23807,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно перечислили все необходимые действия перед установкой Docker.",
+            "missing_points": [],
+            "review_id": "review_3f79b6f98e3a48feab37600675dc3304",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_b251657c14a9466badf72b0ef23c6d13",
+            "latency_ms": 2947,
+            "usage": {
+              "input_tokens": 330,
+              "output_tokens": 53
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 7180,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ, вы абсолютно верно указали назначение инструкции WORKDIR для задания рабочей директории внутри контейнера.",
+            "missing_points": [],
+            "review_id": "review_0f862e07fa72403aafa9de983fe8e8e7",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_e1dc11f4339c40feba980e80d757170a",
+            "latency_ms": 1635,
+            "usage": {
+              "input_tokens": 205,
+              "output_tokens": 49
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 305,
+        "card_count": 5
+      },
+      "totals": {
+        "input_tokens": 2453,
+        "output_tokens": 981,
+        "cost_usd": 0.0031884,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    },
+    {
+      "number": 2,
+      "fixture": "lab5-formulas-source.pdf",
+      "user_alias": "quality-final-1793130708-2",
+      "generation": {
+        "status": 201,
+        "wall_ms": 8028,
+        "response": {
+          "card_set_id": "set_248456bb4ffb411f8d13d2d0fe535b1c",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_d398bf7c5133498ea63649733a3af2c0",
+          "latency_ms": 5384,
+          "usage": {
+            "input_tokens": 2066,
+            "output_tokens": 1001
+          },
+          "cards": [
+            {
+              "card_id": "card_683cb2727c4943339ede7865c02617da",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения плюс-минус удвоенное произведение первого на второе плюс квадрат второго выражения: (a ± b)^2 = a^2 ± 2ab + b^2.",
+              "source_page": 1,
+              "source_quote": "(a ± b)^{2} = a^{2} ± 2ab + b^{2}",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_88032fa7905746dea96c1f1fa8bfe90d",
+              "question": "Как выглядит формула разности квадратов?",
+              "reference_answer": "Разность квадратов двух выражений равна произведению разности этих выражений и их суммы: a^2 − b^2 = (a − b)(a + b).",
+              "source_page": 1,
+              "source_quote": "a^{2} − b^{2} = (a − b)(a + b)",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_85acc88e65c54824922f23505aadf0f8",
+              "question": "Каково свойство нулевой степени числа?",
+              "reference_answer": "Любое число в нулевой степени равно единице: a^0 = 1.",
+              "source_page": 1,
+              "source_quote": "a^{0} = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_2a81bb4c7bc44d37b3cff30363669f59",
+              "question": "Чему равен логарифм произведения по одному основанию?",
+              "reference_answer": "Логарифм произведения равен сумме логарифмов его множителей: log_a bc = log_a b + log_a c.",
+              "source_page": 1,
+              "source_quote": "log_{a} bc = log_{a} b + log_{a} c",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_6ffb734464bf4c5ca1429fe03eda700e",
+              "question": "Какое основное тригонометрическое тождество связывает синус и косинус?",
+              "reference_answer": "Сумма квадратов синуса и косинуса равна единице: sin^2 α + cos^2 β = 1.",
+              "source_page": 2,
+              "source_quote": "sin^{2} α + cos^{2} β = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_6d70c46fb31248679717063ab9a852d5",
+              "question": "Чему равен синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса на косинус этого угла: sin 2α = 2 sin α cos α.",
+              "source_page": 2,
+              "source_quote": "sin 2α = 2 sin α cos α",
+              "difficulty": "intermediate"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 613,
+        "response": {
+          "card_set_id": "set_248456bb4ffb411f8d13d2d0fe535b1c",
+          "title": "Элементарная математика",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_d398bf7c5133498ea63649733a3af2c0",
+          "latency_ms": 5384,
+          "usage": {
+            "input_tokens": 2066,
+            "output_tokens": 1001
+          },
+          "cards": [
+            {
+              "card_id": "card_683cb2727c4943339ede7865c02617da",
+              "question": "Чему равен квадрат суммы или разности двух выражений?",
+              "reference_answer": "Квадрат суммы или разности двух выражений равен квадрату первого выражения плюс-минус удвоенное произведение первого на второе плюс квадрат второго выражения: (a ± b)^2 = a^2 ± 2ab + b^2.",
+              "source_page": 1,
+              "source_quote": "(a ± b)^{2} = a^{2} ± 2ab + b^{2}",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_88032fa7905746dea96c1f1fa8bfe90d",
+              "question": "Как выглядит формула разности квадратов?",
+              "reference_answer": "Разность квадратов двух выражений равна произведению разности этих выражений и их суммы: a^2 − b^2 = (a − b)(a + b).",
+              "source_page": 1,
+              "source_quote": "a^{2} − b^{2} = (a − b)(a + b)",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_85acc88e65c54824922f23505aadf0f8",
+              "question": "Каково свойство нулевой степени числа?",
+              "reference_answer": "Любое число в нулевой степени равно единице: a^0 = 1.",
+              "source_page": 1,
+              "source_quote": "a^{0} = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_2a81bb4c7bc44d37b3cff30363669f59",
+              "question": "Чему равен логарифм произведения по одному основанию?",
+              "reference_answer": "Логарифм произведения равен сумме логарифмов его множителей: log_a bc = log_a b + log_a c.",
+              "source_page": 1,
+              "source_quote": "log_{a} bc = log_{a} b + log_{a} c",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_6ffb734464bf4c5ca1429fe03eda700e",
+              "question": "Какое основное тригонометрическое тождество связывает синус и косинус?",
+              "reference_answer": "Сумма квадратов синуса и косинуса равна единице: sin^2 α + cos^2 β = 1.",
+              "source_page": 2,
+              "source_quote": "sin^{2} α + cos^{2} β = 1",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_6d70c46fb31248679717063ab9a852d5",
+              "question": "Чему равен синус двойного угла?",
+              "reference_answer": "Синус двойного угла равен удвоенному произведению синуса на косинус этого угла: sin 2α = 2 sin α cos α.",
+              "source_page": 2,
+              "source_quote": "sin 2α = 2 sin α cos α",
+              "difficulty": "intermediate"
+            }
+          ],
+          "session_id": "session_18c99be9df1e434ab436fff0d2b024c7",
+          "user_id": "quality-final-1793130708-2",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 2996,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно сформулировали правило и привели правильную формулу.",
+            "missing_points": [],
+            "review_id": "review_6f7597370c28419b9ba677e89cf53242",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_d338241b58234d90ad35c41765700c21",
+            "latency_ms": 2489,
+            "usage": {
+              "input_tokens": 284,
+              "output_tokens": 54
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 2107,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно описали формулу разности квадратов и привели её математическую запись.",
+            "missing_points": [],
+            "review_id": "review_d46e04891fe442a6a97aa5859ecbfce1",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_a4b48148fefe43ba92df153df50ae9d9",
+            "latency_ms": 930,
+            "usage": {
+              "input_tokens": 250,
+              "output_tokens": 58
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 3291,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно указали свойство нулевой степени числа. Уточните, есть ли исключения для этого правила?",
+            "missing_points": [],
+            "review_id": "review_e9fbe85cf3a24a1abfc32aab800f56d8",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_ad6fd5995af347048478cb7f0553ef85",
+            "latency_ms": 1667,
+            "usage": {
+              "input_tokens": 201,
+              "output_tokens": 51
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1249,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно сформулировали правило логарифма произведения.",
+            "missing_points": [],
+            "review_id": "review_6a53fba995cf44bda65145fb932145e5",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_f786d831440e40a183889ca87f6a78bf",
+            "latency_ms": 720,
+            "usage": {
+              "input_tokens": 243,
+              "output_tokens": 52
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 5190,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично получилось! Вы абсолютно верно назвали и записали основное тригонометрическое тождество.",
+            "missing_points": [],
+            "review_id": "review_aa1bbb223d4a41aaaba5390fe7769bcd",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_c0090b95cc28456792039a478826590a",
+            "latency_ms": 919,
+            "usage": {
+              "input_tokens": 242,
+              "output_tokens": 57
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 310,
+        "card_count": 6
+      },
+      "totals": {
+        "input_tokens": 3286,
+        "output_tokens": 1273,
+        "cost_usd": 0.0041683,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    },
+    {
+      "number": 3,
+      "fixture": "lab5-devops-source.pdf",
+      "user_alias": "quality-final-1793130767-3",
+      "generation": {
+        "status": 201,
+        "wall_ms": 6324,
+        "response": {
+          "card_set_id": "set_0dd858b06f2e49daa112dd33a45b8b0e",
+          "title": "Карточки по лабораторной работе №4 Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_9216873d96a84bd3968f51baaa57ac38",
+          "latency_ms": 2674,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 859
+          },
+          "cards": [
+            {
+              "card_id": "card_614f2d8f949f464b96c9c765a529d754",
+              "question": "Какова главная цель данной лабораторной работы?",
+              "reference_answer": "Цель работы заключается в освоении основ контейнеризации с помощью Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска и подготовке приложения к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_58569a50016e43ea892b8be8971b424e",
+              "question": "Что представляет собой Docker-образ согласно теоретической справке?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_3239c742368f44e8bb674ebcec36785f",
+              "question": "Для чего используются переменные окружения при подключении к базе данных?",
+              "reference_answer": "Переменные окружения дают возможность передавать параметры подключения к базе данных без необходимости изменять сам образ, что имеет важное значение для безопасности и переносимости.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_8149a35bdb1943629bc63c1760d87db7",
+              "question": "Какое действие нужно выполнить в веб-интерфейсе Proxmox перед началом работы с ВМ2?",
+              "reference_answer": "Необходимо выбрать ВМ2 (app-server), перейти в раздел Snapshots и создать снимок (Take Snapshot) с именем before_docker_lab4.",
+              "source_page": 4,
+              "source_quote": "1. В веб -интерфейсе Proxmox выберите ВМ2 (app-server) – Snapshots –\nTake Snapshot. Имя: before_docker_lab4.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_1b7449d8a9854fb3ab08a1918a0726a9",
+              "question": "Какая инструкция в Dockerfile отвечает за объявление порта?",
+              "reference_answer": "Для объявления порта используется инструкция EXPOSE.",
+              "source_page": 3,
+              "source_quote": " EXPOSE – объявление порта;",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_45269d87df08496caee61e2a55bff778",
+              "question": "Какую команду нужно выполнить для добавления пользователя student в группу docker?",
+              "reference_answer": "Нужно выполнить команду sudo usermod -aG docker $USER, а затем newgrp docker.",
+              "source_page": 4,
+              "source_quote": "sudo usermod -aG docker $USER\nnewgrp docker",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_091f1fa600f5438e93ef4d77b8531b1d",
+              "question": "Что такое Docker Compose?",
+              "reference_answer": "Docker Compose представляет собой инструмент, предназначенный для описания и запуска многоконтейнерных приложений с помощью YAML-файла.",
+              "source_page": 3,
+              "source_quote": "Docker Compose –\nинструмент для описания и запуска многоконтейнерных приложений через\nYAML-файл.",
+              "difficulty": "basic"
+            }
+          ],
+          "fallback_reason": null
+        }
+      },
+      "session": {
+        "status": 201,
+        "wall_ms": 282,
+        "response": {
+          "card_set_id": "set_0dd858b06f2e49daa112dd33a45b8b0e",
+          "title": "Карточки по лабораторной работе №4 Виртуализация и контейнеризация в DevOps",
+          "model": "gemini-3.5-flash-lite",
+          "prompt_version": "cards-v2.2",
+          "fallback_used": false,
+          "trace_id": "tr_9216873d96a84bd3968f51baaa57ac38",
+          "latency_ms": 2674,
+          "usage": {
+            "input_tokens": 1082,
+            "output_tokens": 859
+          },
+          "cards": [
+            {
+              "card_id": "card_614f2d8f949f464b96c9c765a529d754",
+              "question": "Какова главная цель данной лабораторной работы?",
+              "reference_answer": "Цель работы заключается в освоении основ контейнеризации с помощью Docker и Docker Compose, упаковке веб-приложения с ML-моделью в контейнер, организации его взаимодействия с внешней базой данных PostgreSQL на ВМ1, обеспечении воспроизводимости запуска и подготовке приложения к дальнейшей автоматизации в CI/CD.",
+              "source_page": 1,
+              "source_quote": "Цель: Освоить основы контейнеризации с помощью Docker и Docker\nCompose, упаковать веб -приложение с ML -моделью в контейнер,\nорганизовать его взаимодействие с внешней базой данных PostgreSQL на ВМ1,\nобеспечить воспроизводимость запуска и подготовить приложение к\nдальнейшей автоматизации в CI/CD.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_58569a50016e43ea892b8be8971b424e",
+              "question": "Что представляет собой Docker-образ согласно теоретической справке?",
+              "reference_answer": "Docker-образ является неизменяемым шаблоном, который содержит файловую систему и метаданные.",
+              "source_page": 3,
+              "source_quote": "Docker-образ – неизменяемый шаблон, содержащий файловую систему\nи метаданные.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_3239c742368f44e8bb674ebcec36785f",
+              "question": "Для чего используются переменные окружения при подключении к базе данных?",
+              "reference_answer": "Переменные окружения дают возможность передавать параметры подключения к базе данных без необходимости изменять сам образ, что имеет важное значение для безопасности и переносимости.",
+              "source_page": 3,
+              "source_quote": "Переменные окружения позволяют передавать параметры подключения\nк БД без изменения образа. Это важно для безопасности и переносимости.",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_8149a35bdb1943629bc63c1760d87db7",
+              "question": "Какое действие нужно выполнить в веб-интерфейсе Proxmox перед началом работы с ВМ2?",
+              "reference_answer": "Необходимо выбрать ВМ2 (app-server), перейти в раздел Snapshots и создать снимок (Take Snapshot) с именем before_docker_lab4.",
+              "source_page": 4,
+              "source_quote": "1. В веб -интерфейсе Proxmox выберите ВМ2 (app-server) – Snapshots –\nTake Snapshot. Имя: before_docker_lab4.",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_1b7449d8a9854fb3ab08a1918a0726a9",
+              "question": "Какая инструкция в Dockerfile отвечает за объявление порта?",
+              "reference_answer": "Для объявления порта используется инструкция EXPOSE.",
+              "source_page": 3,
+              "source_quote": " EXPOSE – объявление порта;",
+              "difficulty": "basic"
+            },
+            {
+              "card_id": "card_45269d87df08496caee61e2a55bff778",
+              "question": "Какую команду нужно выполнить для добавления пользователя student в группу docker?",
+              "reference_answer": "Нужно выполнить команду sudo usermod -aG docker $USER, а затем newgrp docker.",
+              "source_page": 4,
+              "source_quote": "sudo usermod -aG docker $USER\nnewgrp docker",
+              "difficulty": "intermediate"
+            },
+            {
+              "card_id": "card_091f1fa600f5438e93ef4d77b8531b1d",
+              "question": "Что такое Docker Compose?",
+              "reference_answer": "Docker Compose представляет собой инструмент, предназначенный для описания и запуска многоконтейнерных приложений с помощью YAML-файла.",
+              "source_page": 3,
+              "source_quote": "Docker Compose –\nинструмент для описания и запуска многоконтейнерных приложений через\nYAML-файл.",
+              "difficulty": "basic"
+            }
+          ],
+          "session_id": "session_dce0608bac0a45b58110456f61fc9032",
+          "user_id": "quality-final-1793130767-3",
+          "current_position": 0,
+          "completed": false,
+          "ratings": {}
+        }
+      },
+      "reviews": [
+        {
+          "status": 200,
+          "wall_ms": 5005,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно точно перечислили все ключевые цели лабораторной работы, включая Docker, Docker Compose, ML-модель, базу данных PostgreSQL и подготовку к CI/CD.",
+            "missing_points": [],
+            "review_id": "review_f242634d8d3344c4ad69c3bb90ef2224",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_cac9d8ca1df446349457023e2302c901",
+            "latency_ms": 3009,
+            "usage": {
+              "input_tokens": 374,
+              "output_tokens": 75
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1549,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно и точно описали Docker-образ. Попробуйте теперь вспомнить, как этот шаблон используется для создания контейнеров.",
+            "missing_points": [],
+            "review_id": "review_eaf02dd590d1456a83c9ab7e3056552d",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_8765700324084cc288a5b9c71b0cb991",
+            "latency_ms": 998,
+            "usage": {
+              "input_tokens": 224,
+              "output_tokens": 65
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 1707,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы полностью передали все ключевые смыслы, упомянув независимость образа от параметров подключения, а также важность для безопасности и переносимости.",
+            "missing_points": [],
+            "review_id": "review_97cd79a93e974a5d8976044119bc8506",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_777c13e3b6184e24b9140223b3d4c40b",
+            "latency_ms": 1183,
+            "usage": {
+              "input_tokens": 253,
+              "output_tokens": 71
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 7223,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отличный ответ! Вы абсолютно верно указали все необходимые шаги и имя для создания снимка виртуальной машины.",
+            "missing_points": [],
+            "review_id": "review_2c7ca36848774a1e947487dab1347de2",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_25fc589b1fef48e987a0534926a161f4",
+            "latency_ms": 1072,
+            "usage": {
+              "input_tokens": 277,
+              "output_tokens": 58
+            },
+            "persisted": true
+          }
+        },
+        {
+          "status": 200,
+          "wall_ms": 5173,
+          "response": {
+            "verdict": "correct",
+            "score": 2,
+            "feedback": "Отлично, вы абсолютно верно указали нужную инструкцию! Единственное уточнение: можете ли вы кратко пояснить, для чего именно используется этот порт в Dockerfile?",
+            "missing_points": [],
+            "review_id": "review_8e2add310d27483d85ae799a23e9eaac",
+            "model": "gemini-3.5-flash-lite",
+            "prompt_version": "review-v2.1",
+            "fallback_used": false,
+            "fallback_reason": null,
+            "trace_id": "tr_8aee2ded4d0c47acb22fbdb7427a3e35",
+            "latency_ms": 1145,
+            "usage": {
+              "input_tokens": 188,
+              "output_tokens": 70
+            },
+            "persisted": true
+          }
+        }
+      ],
+      "reopen": {
+        "status": 200,
+        "wall_ms": 1033,
+        "card_count": 7
+      },
+      "totals": {
+        "input_tokens": 2398,
+        "output_tokens": 1198,
+        "cost_usd": 0.0037144,
+        "within_budget": true,
+        "usage_note": "provider usage"
+      }
+    }
+  ],
+  "status": "completed",
+  "summary": {
+    "all_provider_calls_without_fallback": true,
+    "generation_p50_wall_ms": 6324,
+    "generation_p95_wall_ms": 8028,
+    "review_p50_wall_ms": 3728,
+    "review_p95_wall_ms": 23807,
+    "p95_method": "nearest-rank, wall-clock latency",
+    "generation_sample_size": 3,
+    "review_sample_size": 15,
+    "total_input_tokens": 8137,
+    "total_output_tokens": 3452,
+    "total_cost_usd": 0.0110711
+  }
+}
