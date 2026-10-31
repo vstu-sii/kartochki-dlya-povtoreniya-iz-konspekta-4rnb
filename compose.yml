@@ -6,15 +6,21 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-cards}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cards}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./migrations/001_lab3_prototype.sql:/docker-entrypoint-initdb.d/001_lab3.sql:ro
+    - postgres-data:/var/lib/postgresql/data
+    - ./migrations/001_lab3_prototype.sql:/docker-entrypoint-initdb.d/001_lab3.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cards} -d ${POSTGRES_DB:-cards}"]
+      test:
+      - CMD-SHELL
+      - pg_isready -U ${POSTGRES_USER:-cards} -d ${POSTGRES_DB:-cards}
       interval: 5s
       timeout: 3s
       retries: 12
-    networks: [internal]
-
+      start_period: 60s
+    networks:
+    - internal
+    restart: unless-stopped
+    labels:
+      lab-health-restart: 'true'
   ai-service:
     build: ./ml
     environment:
@@ -30,14 +36,23 @@ services:
       MODEL_CACHE_MAX_ENTRIES: ${MODEL_CACHE_MAX_ENTRIES:-256}
       SOURCE_TOOL_TIMEOUT_SECONDS: ${SOURCE_TOOL_TIMEOUT_SECONDS:-1.0}
     volumes:
-      - traces:/data
+    - traces:/data
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://localhost:8001/health')
       interval: 5s
       timeout: 3s
       retries: 12
-    networks: [internal, egress]
-
+      start_period: 60s
+    networks:
+    - internal
+    - egress
+    restart: unless-stopped
+    labels:
+      lab-health-restart: 'true'
   backend:
     build: ./backend
     environment:
@@ -49,107 +64,179 @@ services:
       MAX_TOKENS_PER_USER_DAY: ${MAX_TOKENS_PER_USER_DAY:-120000}
       BUDGET_DEGRADE_RATIO: ${BUDGET_DEGRADE_RATIO:-0.80}
     depends_on:
-      postgres: {condition: service_healthy}
-      ai-service: {condition: service_healthy}
+      postgres:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://localhost:8000/health')
       interval: 5s
       timeout: 3s
       retries: 12
-    networks: [internal, edge]
-
+      start_period: 60s
+    networks:
+    - internal
+    - edge
+    restart: unless-stopped
+    labels:
+      lab-health-restart: 'true'
   frontend:
     build: ./frontend/prototype
-    ports: ["${APP_PORT:-8080}:80"]
+    ports:
+    - ${APP_PORT:-8080}:80
     depends_on:
-      backend: {condition: service_healthy}
+      backend:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/ || exit 1"]
+      test:
+      - CMD-SHELL
+      - wget -q --spider http://127.0.0.1/ || exit 1
       interval: 5s
       timeout: 3s
       retries: 12
-    networks: [edge]
-
+      start_period: 60s
+    networks:
+    - edge
+    restart: unless-stopped
+    labels:
+      lab-health-restart: 'true'
   telegram-bot:
-    build: ./telegram_bot
+    build:
+      context: .
+      dockerfile: telegram_bot/Dockerfile
     environment:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       BACKEND_URL: http://backend:8000
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-cards}:${POSTGRES_PASSWORD:-cards}@postgres:5432/${POSTGRES_DB:-cards}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      PORT: '8002'
     depends_on:
-      backend: {condition: service_healthy}
+      backend:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')"]
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://localhost:8002/health')
       interval: 5s
       timeout: 3s
       retries: 12
-    networks: [internal, egress]
-
+      start_period: 60s
+    networks:
+    - internal
+    - egress
+    restart: unless-stopped
+    labels:
+      lab-health-restart: 'true'
   tracing:
     build: ./ml/tracing
     environment:
       TRACE_FILE: /data/traces.jsonl
     volumes:
-      - traces:/data:ro
-    ports: ["${TRACE_PORT:-3000}:3000"]
+    - traces:/data:ro
+    ports:
+    - ${TRACE_PORT:-3000}:3000
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/health')"]
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://localhost:3000/health')
       interval: 5s
       timeout: 3s
       retries: 12
-    networks: [edge]
-
+      start_period: 60s
+    networks:
+    - edge
+    restart: unless-stopped
+    labels:
+      lab-health-restart: 'true'
   prometheus:
     image: prom/prometheus:v2.55.1
-    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    - --storage.tsdb.path=/prometheus
     volumes:
-      - ./monitoring/prometheus:/etc/prometheus:ro
-      - prometheus-data:/prometheus
-    ports: ["${PROMETHEUS_PORT:-9090}:9090"]
+    - ./monitoring/prometheus:/etc/prometheus:ro
+    - prometheus-data:/prometheus
+    ports:
+    - ${PROMETHEUS_PORT:-9090}:9090
     depends_on:
-      backend: {condition: service_healthy}
-    networks: [internal, edge]
-
+      backend:
+        condition: service_healthy
+    networks:
+    - internal
+    - edge
+    restart: unless-stopped
   loki:
     image: grafana/loki:3.2.1
-    command: ["-config.file=/etc/loki/loki-config.yml"]
+    command:
+    - -config.file=/etc/loki/loki-config.yml
     volumes:
-      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
-      - loki-data:/loki
-    networks: [internal]
-
+    - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+    - loki-data:/loki
+    networks:
+    - internal
+    restart: unless-stopped
   promtail:
     image: grafana/promtail:3.2.1
-    command: ["-config.file=/etc/promtail/promtail-config.yml"]
+    command:
+    - -config.file=/etc/promtail/promtail-config.yml
     volumes:
-      - ./monitoring/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    depends_on: [loki]
-    networks: [internal]
-
+    - ./monitoring/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+    - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+    - loki
+    networks:
+    - internal
+    restart: unless-stopped
   grafana:
     image: grafana/grafana:11.3.1
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
-      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_USERS_ALLOW_SIGN_UP: 'false'
     volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - grafana-data:/var/lib/grafana
-    ports: ["${GRAFANA_PORT:-3001}:3000"]
-    depends_on: [prometheus, loki]
-    networks: [internal, edge]
-
+    - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    - grafana-data:/var/lib/grafana
+    ports:
+    - ${GRAFANA_PORT:-3001}:3000
+    depends_on:
+    - prometheus
+    - loki
+    networks:
+    - internal
+    - edge
+    restart: unless-stopped
+  autoheal:
+    image: willfarrell/autoheal:1.1.0
+    restart: unless-stopped
+    network_mode: none
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: lab-health-restart
+      AUTOHEAL_INTERVAL: '5'
+      AUTOHEAL_START_PERIOD: '60'
+      AUTOHEAL_DEFAULT_STOP_TIMEOUT: '20'
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 networks:
-  edge:
+  edge: null
   internal:
     internal: true
-  egress:
-
+  egress: null
 volumes:
-  postgres-data:
-  traces:
-  prometheus-data:
-  loki-data:
-  grafana-data:
+  postgres-data: null
+  traces: null
+  prometheus-data: null
+  loki-data: null
+  grafana-data: null

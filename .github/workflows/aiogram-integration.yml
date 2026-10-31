@@ -1,0 +1,26 @@
+name: Aiogram integration
+on:
+  push:
+    branches: [feature/aiogram-integration]
+  pull_request:
+jobs:
+  migration-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install -r requirements.lock pytest==8.3.4 pytest-asyncio==0.25.0
+      - run: python -m pytest tests/aiogram -q -o asyncio_mode=auto -o asyncio_default_fixture_loop_scope=function
+      - run: cp .env.example .env && docker compose config --quiet
+      - run: docker build -t studybot-render .
+      - run: docker build -f telegram_bot/Dockerfile -t studybot-adapter .
+      - name: Render image health and legacy API smoke (no real token)
+        run: |
+          docker run -d --name studybot-test -p 10000:10000 -e TELEGRAM_BOT_TOKEN= studybot-render
+          for i in $(seq 1 30); do curl --fail http://localhost:10000/health && break; sleep 2; done
+          curl --fail http://localhost:10000/health
+          curl --fail http://localhost:10000/openapi.json
+      - name: Logs
+        if: failure()
+        run: docker logs studybot-test || true

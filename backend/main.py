@@ -28,7 +28,8 @@ except ModuleNotFoundError:  # local multi-container topology
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    init_db()
+    import asyncio
+    await asyncio.to_thread(init_db)
     public_url = os.getenv("RENDER_EXTERNAL_URL", "").rstrip("/")
     if TELEGRAM_BOT_TOKEN and public_url and telegram:
         if configure_bot:
@@ -40,10 +41,15 @@ async def lifespan(_: FastAPI):
                 "url": f"{public_url}/telegram/webhook",
                 "secret_token": secret,
                 "allowed_updates": ["message", "callback_query"],
-                "drop_pending_updates": True,
+                "drop_pending_updates": False,
             },
         )
-    yield
+    try:
+        yield
+    finally:
+        if configure_bot:
+            from telegram_bot.app import shutdown_bot
+            await shutdown_bot()
 
 
 APP_VERSION = os.getenv("APP_VERSION", "lab5")
@@ -69,18 +75,28 @@ async def database_unavailable(_: Request, __: SQLAlchemyError):
 
 @app.get("/health")
 def health():
+    from backend.database import engine
+    from sqlalchemy import text
+    with engine.connect() as connection:
+        connection.execute(text("SELECT 1"))
     return {
         "service": "application-api",
         "status": "ok",
         "version": APP_VERSION,
         "commit_sha": os.getenv("RENDER_GIT_COMMIT", os.getenv("COMMIT_SHA", "unknown")),
+        "telegram_adapter": "aiogram",
         "telegram": "webhook" if TELEGRAM_BOT_TOKEN and os.getenv("RENDER_EXTERNAL_URL") else "local-polling-or-disabled",
     }
 
 
 @app.get("/metrics", include_in_schema=False)
 def metrics():
-    return metrics_response()
+    response=metrics_response()
+    if TELEGRAM_BOT_TOKEN:
+        from prometheus_client import generate_latest
+        from starlette.responses import Response
+        return Response(response.body + b"\n" + generate_latest(),media_type="text/plain; version=0.0.4")
+    return response
 
 
 @app.post("/telegram/webhook", include_in_schema=False)
