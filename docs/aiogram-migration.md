@@ -13,3 +13,11 @@ Compose использует прежний postgres-data volume. Все сер�
 Для production нужен постоянный PostgreSQL DATABASE_URL. Напоминания требуют работающего без сна экземпляра. Разбор PDF в новом боте подключён к прежнему OCR и обработке формул через asyncio.to_thread. Образы включают Tesseract и зависимости. Требуются ручная приёмка и проверка webhook после переключения.
 
 Меню: Мои наборы / Повторить / Загрузить PDF / Прогресс / Напоминания / Помощь. Напоминания выключены по умолчанию; пользователь включает сам. Источник и цитата в сообщениях не показываются.
+
+Проверенная реализация: 937e9cd316acd18ce5f925f913e6ae6944d40c16. CI: https://github.com/vstu-sii/kartochki-dlya-povtoreniya-iz-konspekta-4rnb/actions/runs/41241827071 — success (15 tests, обе Docker-сборки, Compose config, health/OpenAPI smoke). Дополнительно локально 75 прежних unittest — OK.
+
+01.11.2026: по запросу владельца начата замена production на aiogram; прежний фриз больше не является запретом на эту выкладку. Исторические записи Demo Day и теги сохранены. Render Deploy: dep-dbj5hv67bikc73efofgg. Итоговое состояние фиксируется отдельно после /health.
+
+Итоговая проверка production, 01.11.2026 (после 00:11 по Волгограду): Render Deploy succeeded / Live; GET https://kartochki-dlya-povtoreniya-iz-konspekta.onrender.com/health -> 200, status=ok, commit_sha=937e9cd316acd18ce5f925f913e6ae6944d40c16, telegram_adapter=aiogram, telegram=webhook. Startup завершён без ошибки. Ручной пользовательский сценарий /start -> PDF -> карточки -> повторение после выкладки отдельно не подтверждён. Проверка восстановления unhealthy-контейнера на настоящем Docker-хосте ещё не выполнялась; CI проверил конфигурацию и сборки, но не имитацию unhealthy.
+
+Production развёрнут на указанном коммите реализации. Более поздний коммит этой документации не меняет исходники запущенного приложения. PR не создавался; main и старые теги не перемещались.
