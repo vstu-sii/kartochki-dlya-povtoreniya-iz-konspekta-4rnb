@@ -53,3 +53,18 @@ async def test_busy_provider_only_retries_once(monkeypatch):
         with pytest.raises(ModelUnavailable):
             await Model(client).call('test', {}, 2)
     assert len(calls) == 2
+
+
+@pytest.mark.parametrize('name,thinking', [
+    ('gemini-3.8-flash', {'thinkingLevel': 'low'}),
+    ('gemini-3.1-flash-lite', {'thinkingLevel': 'low'}),
+    ('gemini-2.5-flash', {'thinkingBudget': 512}),
+    ('gemini-2.5-flash-lite', {'thinkingBudget': 0}),
+    ('another-model', None),
+])
+def test_model_specific_thinking_controls(name, thinking):
+    model = Model(None)
+    model.name = name
+    config = model.generation_config(1000)
+    assert config.get('thinkingConfig') == thinking
+    assert config['maxOutputTokens'] == 1000
