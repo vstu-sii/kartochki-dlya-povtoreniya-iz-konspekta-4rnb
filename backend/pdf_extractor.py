@@ -74,7 +74,7 @@ def _ocr_pages(raw: bytes, page_numbers: list[int]) -> dict[int, str]:
             pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
             image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
             result[page_number] = clean_text(
-                pytesseract.image_to_string(image, lang=OCR_LANGUAGES, config="--psm 6")
+                pytesseract.image_to_string(image, lang=OCR_LANGUAGES, config="--psm 6", timeout=12)
             )
     except PdfExtractionError:
         raise

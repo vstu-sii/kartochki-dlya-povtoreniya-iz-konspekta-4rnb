@@ -18,12 +18,14 @@ from aiohttp import web
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter
+from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter, TelegramBadRequest
 from aiogram.filters import Command, CommandStart
-from aiogram.types import BotCommand, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, Message, ReplyKeyboardMarkup, Update
+from aiogram.types import BotCommand, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, Message, ReplyKeyboardMarkup, Update, ErrorEvent
 
 from bot.model import Model, ModelUnavailable, extract_pdf
 from bot.storage import Store
+from bot.progress import progress
+from concurrent.futures import ThreadPoolExecutor
 from bot.observability import measured, operation, setup_logging, setup_tracing, measure_loop_lag, REMINDERS
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 
@@ -35,6 +37,7 @@ store = None
 model = None
 locks = defaultdict(asyncio.Lock)
 jobs = asyncio.Semaphore(4)
+pdf_workers = ThreadPoolExecutor(max_workers=2, thread_name_prefix="pdf")
 MENU = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text="📚 Мои наборы"), KeyboardButton(text="🔁 Повторить")],
     [KeyboardButton(text="➕ Загрузить PDF"), KeyboardButton(text="📊 Прогресс")],
@@ -103,7 +106,8 @@ async def receive_pdf(message: Message):
 @router.callback_query(F.data.startswith("generate:"))
 @measured('telegram.generate')
 async def generate(callback: CallbackQuery, bot: Bot):
-    await callback.answer()
+    with suppress(TelegramBadRequest):
+        await callback.answer()
     uid = callback.from_user.id
     if locks[uid].locked():
         await callback.message.answer("⏳ Ваш запрос ещё выполняется.")
@@ -119,25 +123,39 @@ async def generate(callback: CallbackQuery, bot: Bot):
         if not await store.allow_generation(uid):
             await callback.message.answer("На сегодня достигнут лимит: 10 попыток генерации. Завтра можно продолжить; сохранённые наборы доступны сейчас.")
             return
-        await callback.message.answer("⏳ Читаю PDF и составляю вопросы. Можно продолжать пользоваться меню.")
         try:
-            async with jobs:
-                buffer = BytesIO()
-                await bot.download(state["file_id"], destination=buffer, timeout=45)
-                raw = buffer.getvalue()
-                if len(raw) > 10 * 1024 * 1024:
-                    raise ValueError("Файл больше 10 МБ.")
-                with operation('pdf.extract'):
-                    pages = await asyncio.to_thread(extract_pdf, raw)
-                title, cards = await model.generate(pages, count)
-                deck_id = await store.save_deck(uid, title, cards)
-            await store.state(uid, {})
+            async with progress(callback.message) as status:
+                async with asyncio.timeout(100):
+                    async with asyncio.timeout(15):
+                        await jobs.acquire()
+                    try:
+                        await status.set("Скачиваю PDF")
+                        buffer = BytesIO()
+                        async with asyncio.timeout(25):
+                            await bot.download(state["file_id"], destination=buffer, timeout=20)
+                        raw = buffer.getvalue()
+                        if len(raw) > 10 * 1024 * 1024:
+                            raise ValueError("Файл больше 10 МБ.")
+                        await status.set("Читаю текст и формулы; сканы требуют распознавания")
+                        with operation('pdf.extract'):
+                            async with asyncio.timeout(40):
+                                pages = await asyncio.get_running_loop().run_in_executor(pdf_workers, extract_pdf, raw)
+                        await status.set("Составляю вопросы по материалу")
+                        title, cards = await model.generate(pages, count)
+                        await status.set("Сохраняю карточки в библиотеку")
+                        async with asyncio.timeout(10):
+                            deck_id = await store.save_deck(uid, title, cards)
+                            await store.state(uid, {})
+                    finally:
+                        jobs.release()
             await callback.message.answer(f"✅ <b>{esc(title)}</b>\nСохранено карточек: {len(cards)}. Набор доступен в библиотеке.", reply_markup=keyboard([[('Начать занятие', f'deck:{deck_id}')]]))
+        except TimeoutError:
+            await callback.message.answer("Не удалось закончить вовремя. Попробуйте PDF с меньшим числом страниц или повторите позже. Если набор успел сохраниться, он уже в библиотеке.", reply_markup=MENU)
         except (ValueError, ModelUnavailable) as exc:
-            await callback.message.answer(esc(str(exc)))
+            await callback.message.answer(esc(str(exc)), reply_markup=MENU)
         except Exception:
             log.exception("PDF job failed")
-            await callback.message.answer("Не удалось обработать PDF. Наборы в библиотеке сохранены. Попробуйте снова позже.")
+            await callback.message.answer("Не удалось обработать PDF. Наборы в библиотеке сохранены. Попробуйте снова позже.", reply_markup=MENU)
 
 
 async def library(message, uid, offset=0):
@@ -165,7 +183,8 @@ async def library_message(message: Message):
 
 @router.callback_query(F.data.startswith("library:"))
 async def library_page(callback: CallbackQuery):
-    await callback.answer()
+    with suppress(TelegramBadRequest):
+        await callback.answer()
     await library(callback.message, callback.from_user.id, max(0, int(callback.data.split(":")[1])))
 
 
@@ -188,7 +207,8 @@ async def show_card(message, uid):
 @router.callback_query(F.data.startswith("deck:"))
 @measured('telegram.open_deck')
 async def open_deck(callback: CallbackQuery):
-    await callback.answer()
+    with suppress(TelegramBadRequest):
+        await callback.answer()
     uid = callback.from_user.id
     async with locks[uid]:
         cards = await store.cards(uid, deck=callback.data.split(":")[1])
@@ -235,7 +255,8 @@ async def active_card(uid, cid=None, phase=None):
 
 @router.callback_query(F.data.startswith("reveal:"))
 async def reveal(callback: CallbackQuery):
-    await callback.answer()
+    with suppress(TelegramBadRequest):
+        await callback.answer()
     uid = callback.from_user.id
     async with locks[uid]:
         state, card = await active_card(uid, callback.data.split(":")[1])
@@ -250,7 +271,8 @@ async def reveal(callback: CallbackQuery):
 @router.callback_query(F.data.startswith("grade:"))
 @measured('telegram.grade')
 async def grade(callback: CallbackQuery):
-    await callback.answer()
+    with suppress(TelegramBadRequest):
+        await callback.answer()
     uid = callback.from_user.id
     async with locks[uid]:
         _, value, cid = callback.data.split(":")
@@ -289,7 +311,8 @@ async def settings(message: Message):
 
 @router.callback_query(F.data.startswith("notify:") | F.data.startswith("hour:") | F.data.startswith("tz:"))
 async def change_settings(callback: CallbackQuery):
-    await callback.answer()
+    with suppress(TelegramBadRequest):
+        await callback.answer()
     uid = callback.from_user.id
     await user(uid)
     key, value = callback.data.split(":", 1)
@@ -318,14 +341,15 @@ async def answer(message: Message):
         if len(message.text) > 2000:
             await message.answer("Ответ слишком длинный. Уложитесь в 2000 символов.")
             return
-        await message.answer("⏳ Сравниваю смысл ответа с материалом…")
         try:
-            result = await model.review(card.content, message.text)
+            async with progress(message) as status:
+                await status.set("Проверяю смысл ответа по материалу")
+                result = await model.review(card.content, message.text)
             await store.state(uid, {**state, "phase": "grade", "result": result})
             titles = {"correct": "✅ Верно", "partial": "🟡 Частично верно", "incorrect": "📝 Есть что повторить"}
             await message.answer(f"<b>{titles[result['verdict']]}</b>\n\n{esc(result['feedback'])}\n\n<b>Эталон</b>\n{esc(card.content['answer'])}\n\nAI может ошибаться. Выберите сложность по своим ощущениям:", reply_markup=grade_keyboard(card.id))
-        except ModelUnavailable as exc:
-            await message.answer(esc(str(exc)), reply_markup=keyboard([[('Открыть эталон', f'reveal:{card.id}')]]))
+        except (ModelUnavailable, TimeoutError) as exc:
+            await message.answer(esc(str(exc)) or "Проверка заняла слишком много времени. Можно открыть эталон.", reply_markup=keyboard([[('Открыть эталон', f'reveal:{card.id}')]]))
 
 
 async def reminders(bot):
@@ -422,6 +446,20 @@ async def main():
         await store.engine.dispose()
         await asyncio.to_thread(tracing.shutdown)
         listener.stop()
+
+
+@router.error()
+async def unexpected_error(event: ErrorEvent):
+    # A database/provider/Telegram failure must not leave the chat silent.
+    exc = event.exception
+    log.error("telegram_handler_failed", exc_info=(type(exc), exc, exc.__traceback__))
+    update = event.update
+    message = update.message or (update.callback_query.message if update.callback_query else None)
+    if message is not None:
+        with suppress(Exception):
+            async with asyncio.timeout(5):
+                await message.answer("Не удалось завершить действие. Попробуйте ещё раз через меню; сохранённые наборы остаются в библиотеке.", reply_markup=MENU)
+    return True
 
 
 if __name__ == '__main__':
