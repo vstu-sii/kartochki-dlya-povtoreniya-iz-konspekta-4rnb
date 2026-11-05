@@ -38,7 +38,7 @@ class JsonFormatter(logging.Formatter):
         data = {'timestamp':datetime.now(timezone.utc).isoformat(), 'level':record.levelname,
                 'logger':record.name, 'event':getattr(record,'event','log_record'),
                 'trace_id':format(context.trace_id,'032x') if context.is_valid else None}
-        for key in ('operation','outcome','duration_seconds','error_type'):
+        for key in ('operation','outcome','duration_seconds','error_type','model','provider_status','fallback_used'):
             if hasattr(record,key): data[key]=getattr(record,key)
         if record.exc_info: data['error_type']=record.exc_info[0].__name__
         return json.dumps(data,ensure_ascii=False)

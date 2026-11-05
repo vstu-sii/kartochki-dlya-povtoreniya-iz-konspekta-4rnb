@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import time
 import re
 from collections import Counter
 from dataclasses import dataclass
@@ -57,7 +58,7 @@ def _remove_margins(text: str, repeated: set[str]) -> str:
     return "\n".join(line for line in text.splitlines() if line.strip() not in repeated).strip()
 
 
-def _ocr_pages(raw: bytes, page_numbers: list[int]) -> dict[int, str]:
+def _ocr_pages(raw: bytes, page_numbers: list[int], budget: float = 45) -> dict[int, str]:
     """OCR only pages whose text layer is absent or clearly unusable."""
     try:
         import fitz  # PyMuPDF
@@ -67,14 +68,18 @@ def _ocr_pages(raw: bytes, page_numbers: list[int]) -> dict[int, str]:
         raise PdfExtractionError("OCR_UNAVAILABLE", "OCR dependencies are not installed") from exc
 
     result: dict[int, str] = {}
+    deadline = time.monotonic() + budget
     try:
         document = fitz.open(stream=raw, filetype="pdf")
         for page_number in page_numbers:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise PdfExtractionError("OCR_TIMEOUT", "Распознавание сканов заняло слишком много времени. Разделите PDF на главы.")
             page = document.load_page(page_number - 1)
             pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
             image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
             result[page_number] = clean_text(
-                pytesseract.image_to_string(image, lang=OCR_LANGUAGES, config="--psm 6", timeout=12)
+                pytesseract.image_to_string(image, lang=OCR_LANGUAGES, config="--psm 6", timeout=min(8, remaining))
             )
     except PdfExtractionError:
         raise
@@ -83,7 +88,7 @@ def _ocr_pages(raw: bytes, page_numbers: list[int]) -> dict[int, str]:
     return result
 
 
-def extract_pdf_pages(raw: bytes) -> list[ExtractedPage]:
+def extract_pdf_pages(raw: bytes, *, ocr_budget: float | None = None) -> list[ExtractedPage]:
     """Extract a bounded, cleaned set of pages suitable for a grounded prompt."""
     try:
         reader = PdfReader(BytesIO(raw), strict=False)
@@ -128,7 +133,7 @@ def extract_pdf_pages(raw: bytes) -> list[ExtractedPage]:
     needs_ocr = [index for index, text in enumerate(texts, start=1) if len(text) < MIN_TEXT_LAYER_CHARS]
     if needs_ocr:
         try:
-            recognized = _ocr_pages(raw, needs_ocr)
+            recognized = _ocr_pages(raw, needs_ocr) if ocr_budget is None else _ocr_pages(raw, needs_ocr, ocr_budget)
         except PdfExtractionError:
             # A partially scanned PDF remains useful if other pages have a
             # readable text layer. Reject only when OCR is the sole option.

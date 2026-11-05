@@ -43,7 +43,7 @@ async def test_progress_telegram_failure_does_not_cancel_work():
         await state.set('Сохраняю')
     assert message.answer.await_count == 2
 
-async def test_busy_provider_only_retries_once(monkeypatch):
+async def test_busy_provider_tries_unique_candidates(monkeypatch):
     monkeypatch.setenv('GEMINI_API_KEY', 'test')
     calls = []
     async def handler(request):
@@ -53,6 +53,7 @@ async def test_busy_provider_only_retries_once(monkeypatch):
         with pytest.raises(ModelUnavailable):
             await Model(client).call('test', {}, 2)
     assert len(calls) == 2
+    assert len({str(c.url) for c in calls}) == 2
 
 
 @pytest.mark.parametrize('name,thinking', [
@@ -68,3 +69,23 @@ def test_model_specific_thinking_controls(name, thinking):
     config = model.generation_config(1000)
     assert config.get('thinkingConfig') == thinking
     assert config['maxOutputTokens'] == 1000
+
+
+async def test_quota_rotates_immediately_and_cools_down_primary(monkeypatch):
+    monkeypatch.setenv('GEMINI_API_KEY', 'test')
+    monkeypatch.setenv('GEMINI_MODEL', 'primary')
+    monkeypatch.setenv('GEMINI_FALLBACK_MODELS', 'backup')
+    calls = []
+    async def handler(request):
+        calls.append(request.url.path)
+        if 'primary:' in request.url.path:
+            return httpx.Response(429, headers={'retry-after':'120'})
+        return httpx.Response(200, json={'candidates':[{'content':{'parts':[{'text':'{"verdict":"correct","feedback":"ok"}'}]}}]})
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        model = Model(client)
+        await model.review({}, 'answer')
+        await model.review({}, 'answer')
+    assert len(calls) == 3
+    assert 'primary:' in calls[0]
+    assert all('backup:' in c for c in calls[1:])
+    assert model.name == 'primary'
