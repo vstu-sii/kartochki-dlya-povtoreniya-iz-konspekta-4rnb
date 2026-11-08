@@ -20,7 +20,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.exceptions import TelegramForbiddenError, TelegramRetryAfter, TelegramBadRequest
 from aiogram.filters import Command, CommandStart
-from aiogram.types import BotCommand, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, Message, ReplyKeyboardMarkup, Update, ErrorEvent
+from aiogram.types import BotCommand, CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, Message, ReplyKeyboardMarkup, Update, ErrorEvent, ForceReply
 
 from bot.model import Model, ModelUnavailable, extract_pdf
 from bot.storage import Store
@@ -241,7 +241,7 @@ async def repeat(message: Message):
 
 
 def grade_keyboard(cid):
-    return keyboard([[('Снова · 10 мин', f'grade:again:{cid}')], [('Трудно', f'grade:hard:{cid}'), ('Знаю', f'grade:good:{cid}')]])
+    return keyboard([[('Следующая карточка', f'grade:again:{cid}')], [('Трудно', f'grade:hard:{cid}'), ('Знаю', f'grade:good:{cid}')]])
 
 
 async def active_card(uid, cid=None, phase=None):
@@ -265,7 +265,7 @@ async def reveal(callback: CallbackQuery):
             return
         state = {**state, "phase": "grade", "result": {"verdict": "self_review"}}
         await store.state(uid, state)
-        await callback.message.answer(f"📖 <b>Эталонный ответ</b>\n\n{esc(card.content['answer'])}\n\nНасколько легко вы вспомнили материал?", reply_markup=grade_keyboard(card.id))
+        await callback.message.answer(f"📖 <b>Эталонный ответ</b>\n\n{esc(card.content['answer'])}\n\nНасколько легко вы вспомнили материал?\n«Следующая карточка» вернёт эту в очередь через 10 минут.", reply_markup=grade_keyboard(card.id))
 
 
 @router.callback_query(F.data.startswith("grade:"))
@@ -291,16 +291,66 @@ async def stats(message: Message):
     uid = message.from_user.id
     await user(uid)
     total, due, reviews = await store.stats(uid)
-    await message.answer(f"📊 <b>Ваш прогресс</b>\n\nКарточек: {total}\nПора повторить: {due}\nПовторений завершено: {reviews}\n\nЭто статистика занятий, а не доказанный процент запоминания.", reply_markup=MENU)
+    reviewed = await store.reviewed_count(uid)
+    filled = reviewed * 10 // total if total else 0
+    bar = "█" * filled + "░" * (10 - filled)
+    percent = reviewed * 100 // total if total else 0
+    await message.answer(
+        f"📊 <b>Ваш прогресс</b>\n\n{bar} {percent}%\n"
+        f"Повторяли хотя бы раз: {reviewed} из {total}\n"
+        f"Доступно к изучению или повторению: {due}\n"
+        f"Всего повторений: {reviews}", reply_markup=MENU,
+    )
+
+
+DEADLINE_PROMPT = (
+    "Через сколько дней нужно сдать или рассказать материал? "
+    "Ответьте числом от 1 до 365, например 7. Этот срок будет общим для ваших карточек."
+)
+
+
+async def ask_deadline(message):
+    await message.answer(DEADLINE_PROMPT, reply_markup=ForceReply())
+
+
+@router.message(Command("srok"))
+@router.message(F.reply_to_message.text == DEADLINE_PROMPT)
+async def set_deadline(message: Message):
+    text = message.text or ""
+    if text.startswith("/"):
+        text = text.partition(" ")[2]
+    text = text.strip()
+    if not text.isascii() or not text.isdecimal() or len(text) > 3 or not 1 <= int(text) <= 365:
+        await ask_deadline(message)
+        return
+    uid = message.from_user.id
+    async with locks[uid]:
+        await user(uid)
+        await store.set_study_target(uid, int(text))
+    await settings_view(message, uid)
 
 
 async def settings_view(message, uid):
     u = await user(uid)
-    await message.answer(f"🔔 <b>Напоминания</b>\n\n{'Включены' if u.reminders else 'Выключены'} · {u.reminder_hour:02d}:00\nЧасовой пояс: {esc(u.timezone)}\n\nНе больше одного напоминания в день и только когда есть карточки к повторению.", reply_markup=keyboard([
-        [('Выключить' if u.reminders else 'Включить', f'notify:{0 if u.reminders else 1}')],
-        [('09:00', 'hour:9'), ('14:00', 'hour:14'), ('19:00', 'hour:19')],
-        [('Москва / Волгоград', 'tz:Europe/Volgograd')],
-        [('Екатеринбург', 'tz:Asia/Yekaterinburg'), ('Новосибирск', 'tz:Asia/Novosibirsk')]]))
+    target = await store.study_target(uid)
+    status = "Включены" if u.reminders and target else "Выключены"
+    due_date = datetime.fromisoformat(target).strftime("%d.%m.%Y") if target else "укажите срок"
+    await message.answer(
+        f"🔔 <b>Интервальные повторения</b>\n\n"
+        f"Напоминания: {status}\nСрок подготовки: {due_date}\n"
+        f"Местное время: с {u.reminder_hour:02d}:00 · {esc(u.timezone)}\n\n"
+        "Интервальное повторение опирается на идею кривой забывания Эббингауза. "
+        "Чем легче вспомнить ответ, тем дольше пауза до повтора. "
+        "Перед сдачей бот сокращает интервалы. Напоминание приходит, "
+        "когда подошёл срок повтора карточек, максимум раз в день.",
+        reply_markup=keyboard([
+            [("Изменить срок" if target else "Указать срок и включить", "deadline:set")],
+            [("Выключить" if status == "Включены" else "Включить", f"notify:{0 if status == 'Включены' else 1}")],
+            [("09:00", "hour:9"), ("14:00", "hour:14"), ("19:00", "hour:19")],
+            [("Москва / Волгоград", "tz:Europe/Volgograd")],
+            [("Екатеринбург", "tz:Asia/Yekaterinburg"), ("Новосибирск", "tz:Asia/Novosibirsk")],
+        ]),
+    )
 
 
 @router.message(F.text == "🔔 Напоминания")
@@ -309,13 +359,16 @@ async def settings(message: Message):
     await settings_view(message, message.from_user.id)
 
 
-@router.callback_query(F.data.startswith("notify:") | F.data.startswith("hour:") | F.data.startswith("tz:"))
+@router.callback_query((F.data == "deadline:set") | F.data.startswith("notify:") | F.data.startswith("hour:") | F.data.startswith("tz:"))
 async def change_settings(callback: CallbackQuery):
     with suppress(TelegramBadRequest):
         await callback.answer()
     uid = callback.from_user.id
     await user(uid)
     key, value = callback.data.split(":", 1)
+    if key == "deadline" or (key == "notify" and value == "1" and not await store.study_target(uid)):
+        await ask_deadline(callback.message)
+        return
     if key == "notify" and value in {"0", "1"}:
         await store.settings(uid, reminders=value == "1")
     elif key == "hour" and value in {"9", "14", "19"}:
@@ -347,7 +400,7 @@ async def answer(message: Message):
                 result = await model.review(card.content, message.text)
             await store.state(uid, {**state, "phase": "grade", "result": result})
             titles = {"correct": "✅ Верно", "partial": "🟡 Частично верно", "incorrect": "📝 Есть что повторить"}
-            await message.answer(f"<b>{titles[result['verdict']]}</b>\n\n{esc(result['feedback'])}\n\n<b>Эталон</b>\n{esc(card.content['answer'])}\n\nAI может ошибаться. Выберите сложность по своим ощущениям:", reply_markup=grade_keyboard(card.id))
+            await message.answer(f"<b>{titles[result['verdict']]}</b>\n\n{esc(result['feedback'])}\n\n<b>Эталон</b>\n{esc(card.content['answer'])}\n\nВыберите сложность. «Следующая карточка» вернёт эту в очередь через 10 минут.", reply_markup=grade_keyboard(card.id))
         except (ModelUnavailable, TimeoutError) as exc:
             await message.answer(esc(str(exc)) or "Проверка заняла слишком много времени. Можно открыть эталон.", reply_markup=keyboard([[('Открыть эталон', f'reveal:{card.id}')]]))
 
@@ -357,13 +410,18 @@ async def reminders(bot):
         try:
             for u in await store.reminder_users():
                 local = datetime.now(ZoneInfo(u.timezone))
-                if local.hour != u.reminder_hour or not (await store.cards(u.id, due=True)):
-                    continue
                 day = local.date().isoformat()
+                if local.hour < u.reminder_hour or u.last_reminder_day == day:
+                    continue
+                if not await store.study_target(u.id):
+                    continue
+                count = await store.due_review_count(u.id)
+                if not count:
+                    continue
                 if not await store.claim_reminder(u.id, day):
                     continue
                 try:
-                    await bot.send_message(u.id, "🔁 Пора ненадолго вернуться к карточкам. Откройте «Повторить» — начнём с тех, которые уже подошли по расписанию.", reply_markup=MENU)
+                    await bot.send_message(u.id, f"🔁 Интервальное повторение. Карточек к повтору: {count}. Откройте «Повторить», чтобы освежить материал.", reply_markup=MENU)
                     await store.finish_reminder(u.id, day)
                     REMINDERS.labels('sent').inc()
                 except TelegramForbiddenError:

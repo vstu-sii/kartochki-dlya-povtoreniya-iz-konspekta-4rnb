@@ -1,5 +1,6 @@
 """Async persistence. All ownership checks happen in repository queries."""
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, time as clock_time, timedelta, timezone
+from zoneinfo import ZoneInfo
 from uuid import uuid4
 
 from sqlalchemy import BigInteger, Boolean, Float, Integer, JSON, String, select, update
@@ -29,6 +30,27 @@ class User(Base):
     state: Mapped[dict] = mapped_column(JSON, default=dict)
     generation_day: Mapped[str] = mapped_column(String(10), default="")
     generation_count: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class StudyPlan(Base):
+    __tablename__ = "tg_study_plans"
+    user_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    target_day: Mapped[str] = mapped_column(String(10))
+
+
+def target_timestamp(target_day, user):
+    return datetime.combine(
+        date.fromisoformat(target_day), clock_time(user.reminder_hour),
+        tzinfo=ZoneInfo(user.timezone),
+    ).timestamp()
+
+
+def planned_due(timestamp, interval, target):
+    due = timestamp + interval * 86400
+    if target > timestamp:
+        checkpoint = min(target, timestamp + max(3600, (target - timestamp) / 2))
+        return min(due, checkpoint)
+    return due
 
 
 class Deck(Base):
@@ -140,6 +162,37 @@ class Store:
         async with self.sessions.begin() as s:
             await s.execute(update(User).where(User.id == uid).values(**allowed))
 
+    async def study_target(self, uid):
+        async with self.sessions() as s:
+            plan = await s.get(StudyPlan, uid)
+            return plan.target_day if plan else None
+
+    async def set_study_target(self, uid, days):
+        async with self.sessions.begin() as s:
+            u = await s.get(User, uid, with_for_update=True)
+            target_day = (datetime.now(ZoneInfo(u.timezone)).date() + timedelta(days=days)).isoformat()
+            await s.merge(StudyPlan(user_id=uid, target_day=target_day))
+            u.reminders = True
+            cutoff = planned_due(now(), 365, target_timestamp(target_day, u))
+            await s.execute(update(Card).where(
+                Card.user_id == uid, Card.interval_days > 0, Card.due > cutoff,
+            ).values(due=cutoff))
+            return target_day
+
+    async def reviewed_count(self, uid):
+        from sqlalchemy import func
+        async with self.sessions() as s:
+            return await s.scalar(select(func.count()).select_from(Card).where(
+                Card.user_id == uid, Card.interval_days > 0,
+            ))
+
+    async def due_review_count(self, uid):
+        from sqlalchemy import func
+        async with self.sessions() as s:
+            return await s.scalar(select(func.count()).select_from(Card).where(
+                Card.user_id == uid, Card.interval_days > 0, Card.due <= now(),
+            ))
+
     async def save_deck(self, uid, title, cards):
         async with self.sessions.begin() as s:
             d = Deck(user_id=uid, title=title[:200])
@@ -169,12 +222,15 @@ class Store:
         async with self.sessions.begin() as s:
             if await s.get(Review, event_id):
                 return False
+            u = await s.get(User, uid, with_for_update=True)
             c = await s.scalar(select(Card).where(Card.id == cid, Card.user_id == uid).with_for_update())
             if c is None:
                 raise ValueError("Card not owned")
             interval, repetitions = next_interval(c.interval_days, c.repetitions, grade)
             c.interval_days, c.repetitions = interval, repetitions
-            c.due = now() + interval * 86400
+            plan = await s.get(StudyPlan, uid)
+            target = target_timestamp(plan.target_day, u) if plan else 0
+            c.due = planned_due(now(), interval, target)
             s.add(Review(id=event_id, user_id=uid, card_id=cid, result={**result, "grade": grade}))
             if next_state is not None:
                 await s.execute(update(User).where(User.id == uid).values(state=next_state))

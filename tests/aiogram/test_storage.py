@@ -70,3 +70,26 @@ async def test_concurrent_first_contact_and_independent_writes(store):
     assert all(u.id==44 for u in users)
     await asyncio.gather(*(store.save_deck(44,f'Topic {i}',[{'question':'Q','answer':'A'}]) for i in range(25)))
     assert (await store.stats(44))[0]==25
+
+
+
+async def test_preparation_deadline_brings_existing_reviews_forward(store):
+    from bot.storage import now
+
+    await store.user(1, "Asia/Yekaterinburg")
+    deck = await store.save_deck(1, "Topic", [{"question": "Q"}, {"question": "Q2"}])
+    first, untouched = await store.cards(1, deck)
+    for i in range(4):
+        await store.rate(1, first.id, "good", f"event-{i}", {})
+    before = (await store.card(1, first.id)).due
+    target = await store.set_study_target(1, 1)
+    card = await store.card(1, first.id)
+    assert card.due < before
+    assert now() < card.due < now() + 86400
+    assert (await store.card(1, untouched.id)).due == untouched.due
+    assert await store.study_target(1) == target
+    assert (await store.user(1)).reminders
+    assert await store.reviewed_count(1) == 1
+    assert await store.due_review_count(1) == 0
+    await store.rate(1, first.id, "again", "next-card", {})
+    assert 590 < (await store.card(1, first.id)).due - now() <= 600
